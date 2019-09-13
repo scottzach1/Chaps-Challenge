@@ -1,0 +1,1 @@
+Chap’s challenge is a creative clone of the (first level of the) 1989 Atari game Chips Challenge. 
