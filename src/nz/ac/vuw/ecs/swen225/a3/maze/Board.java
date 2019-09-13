@@ -2,7 +2,7 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
 
 public class Board {
 
-  public static String level1 =
+  private static String level1 =
         "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
       + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
       + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
@@ -24,14 +24,15 @@ public class Board {
       + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
       + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|";
 
+
   public Board() {
     parseBoard(level1);
   }
 
   private void parseBoard(String level) {
-    String values[] = level.split("\\|");
-    for(String v : values) {
-      
+    String[] values = level.split("\\|");
+    for (String v : values) {
+
     }
   }
 
