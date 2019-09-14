@@ -1,9 +1,12 @@
 package nz.ac.vuw.ecs.swen225.a3.renderer;
 
+import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.io.IOException;
 
 /**
  * GUI class extends JFrame and is responsible with
@@ -37,6 +40,15 @@ public class GUI extends JFrame implements ComponentListener {
     setResizable(true);
     setMinimumSize(new Dimension(sreenSize / 5, sreenSize / 5));
     setVisible(true);
+
+    addComponentListener(this);
+
+    // Load Assets
+    try {
+      AssetManager.loadAssets();
+    } catch (IOException e) {
+      System.out.println("Failed to load assets " + e);
+    }
 
     // Add components.
     setupComponents();
@@ -101,7 +113,6 @@ public class GUI extends JFrame implements ComponentListener {
   public void redraw() {
     revalidate();
     repaint();
-
   }
 
 
@@ -117,8 +128,8 @@ public class GUI extends JFrame implements ComponentListener {
     canvasSize = sreenSize;
     dashboardWidth = sreenSize / 3;
 
-    setupComponents();
-    redraw();
+    revalidate();
+    repaint();
   }
 
   /**
