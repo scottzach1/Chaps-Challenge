@@ -6,8 +6,9 @@ public class Free extends Tiles {
    * Constructor.
    * Sets the isAccessible to true.
    */
-  public Free() {
+   Free() {
     isAccessible = true;
+    imageUrl = "assets/free.png";
   }
 
   /**
@@ -17,5 +18,18 @@ public class Free extends Tiles {
   @Override
   public String toString() {
     return "Free";
+  }
+
+
+
+  /**
+   * Checks if the interaction between a character and a tile is valid.
+   *
+   * @param p The player
+   * @return if the interaction is valid
+   */
+  @Override
+  boolean interact(Player p) {
+    return false;
   }
 }

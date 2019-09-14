@@ -3,15 +3,18 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
 public class LockedDoor extends Tiles {
   private String colour;
 
+
   /**
    * Constructor.
    * Sets the isAccessible to true.
    * Sets the colour of the door to the parameter.
    * @param colour the colour of the door.
    */
-  public LockedDoor(String colour) {
+   LockedDoor(String colour) {
     isAccessible = false;
     this.colour = colour;
+    setActive(true);
+    imageUrl = "assets/locked_door.png";
   }
 
   /**
@@ -21,5 +24,19 @@ public class LockedDoor extends Tiles {
   @Override
   public String toString() {
     return colour + " LockedDoor";
+  }
+
+  /**
+   * Checks if the interaction between a character and a tile is valid.
+   * @param p The player
+   * @return if the interaction is valid
+   */
+  @Override
+  boolean interact(Player p) {
+    if (p.getItem(colour+" Key")){
+      setActive(false);
+      setAccessible(true);
+    }
+    return isAccessible;
   }
 }

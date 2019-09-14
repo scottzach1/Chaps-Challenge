@@ -2,16 +2,21 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
 
 public abstract class Tiles {
   boolean isAccessible;
+  private boolean isActive;
+
+  public String getImageUrl() {
+    return imageUrl;
+  }
+
+  String imageUrl;
 
   public boolean isActive() {
     return isActive;
   }
 
-  public void setActive(boolean active) {
+   void setActive(boolean active) {
     isActive = active;
   }
-
-  boolean isActive;
 
   /**
    * Checks if the current tile is accessible.
@@ -25,7 +30,7 @@ public abstract class Tiles {
    * Sets the boolean isAccessible based on the parameter.
    * @param accessible boolean to set isAccessible to.
    */
-  public void setAccessible(boolean accessible) {
+   void setAccessible(boolean accessible) {
     isAccessible = accessible;
   }
 
@@ -67,5 +72,11 @@ public abstract class Tiles {
     return adjacent[Direction.Down.ordinal()];
   }
 
+  /**
+   * Checks if the interaction between a character and a tile is valid.
+   *  @param p The player
+   * @return if the interaction is valid
+   */
+  abstract boolean interact(Player p);
 
 }
