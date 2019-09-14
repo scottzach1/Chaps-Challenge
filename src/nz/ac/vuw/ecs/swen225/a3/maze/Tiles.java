@@ -4,6 +4,12 @@ public abstract class Tiles {
   boolean isAccessible;
   private boolean isActive;
 
+  public String getImageUrl() {
+    return imageUrl;
+  }
+
+  String imageUrl;
+
   public boolean isActive() {
     return isActive;
   }

@@ -12,6 +12,7 @@ public class InfoField extends Tiles {
    InfoField(String info) {
     isAccessible = true;
     this.info = info;
+    imageUrl = "assets/info_field.png";
   }
 
   /**

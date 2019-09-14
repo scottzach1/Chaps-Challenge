@@ -8,6 +8,7 @@ public class Chap extends Tiles {
    */
   public Chap() {
     isAccessible = true;
+    imageUrl = "assets/chap.png";
   }
 
   /**

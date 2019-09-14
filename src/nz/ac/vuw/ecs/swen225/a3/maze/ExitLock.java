@@ -10,6 +10,7 @@ public class ExitLock extends Tiles {
   public ExitLock(int treasures) {
     isAccessible = false;
     totalTreasures=treasures;
+    imageUrl = "assets/exit_lock.png";
   }
 
   /**

@@ -10,6 +10,7 @@ public class Treasure extends Tiles {
    Treasure() {
     isAccessible = true;
     setActive(true);
+    imageUrl = "assets/treasure.png";
   }
 
   /**

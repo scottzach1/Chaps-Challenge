@@ -8,6 +8,7 @@ public class Wall extends Tiles {
    */
    Wall() {
     isAccessible = false;
+    imageUrl = "assets/wall.png";
   }
 
 
