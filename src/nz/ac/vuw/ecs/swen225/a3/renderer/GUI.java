@@ -16,9 +16,9 @@ public class GUI extends JFrame implements ComponentListener {
 
   // Dimension of the frame, based on screen size
   private static Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
-  static int SCREEN_SIZE = (Math.min(screenDimension.width, screenDimension.height));
-  static int CANVAS_SIZE = SCREEN_SIZE;
-  static int DASHBOARD_WIDTH = SCREEN_SIZE / 3;
+  static int sreenSize = (Math.min(screenDimension.width, screenDimension.height));
+  static int canvasSize = sreenSize;
+  static int dashboardWidth = sreenSize / 3;
 
   // Main component fields.
   private Canvas canvas;
@@ -35,7 +35,7 @@ public class GUI extends JFrame implements ComponentListener {
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
     setResizable(true);
-    setMinimumSize(new Dimension(SCREEN_SIZE / 5, SCREEN_SIZE / 5));
+    setMinimumSize(new Dimension(sreenSize / 5, sreenSize / 5));
     setVisible(true);
 
     // Add components.
@@ -54,8 +54,8 @@ public class GUI extends JFrame implements ComponentListener {
    */
   public static void main(String[] args) {
     GUI gui = new GUI();
-    System.out.printf("Screen width %d, height %d\n", SCREEN_SIZE, SCREEN_SIZE);
-    System.out.printf("Dashboard width %d, height %d\n", DASHBOARD_WIDTH, CANVAS_SIZE);
+    System.out.printf("Screen width %d, height %d\n", sreenSize, sreenSize);
+    System.out.printf("Dashboard width %d, height %d\n", dashboardWidth, canvasSize);
   }
 
   /**
@@ -67,7 +67,7 @@ public class GUI extends JFrame implements ComponentListener {
     setJMenuBar(menuBar);
 
     // Set Layout
-    int padding = SCREEN_SIZE / 11;
+    int padding = sreenSize / 11;
     setLayout(new GridBagLayout());
     GridBagConstraints constraints = new GridBagConstraints();
 
@@ -113,9 +113,9 @@ public class GUI extends JFrame implements ComponentListener {
   @Override
   public void componentResized(ComponentEvent e) {
     screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
-    SCREEN_SIZE = (Math.min(screenDimension.width, screenDimension.height));
-    CANVAS_SIZE = SCREEN_SIZE;
-    DASHBOARD_WIDTH = SCREEN_SIZE / 3;
+    sreenSize = (Math.min(screenDimension.width, screenDimension.height));
+    canvasSize = sreenSize;
+    dashboardWidth = sreenSize / 3;
 
     setupComponents();
     redraw();

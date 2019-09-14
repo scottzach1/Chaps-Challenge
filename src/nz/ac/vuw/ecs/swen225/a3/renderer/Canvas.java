@@ -12,8 +12,12 @@ public class Canvas extends JPanel {
   /**
    * Constructor: Creates and initializes canvas to the correct size.
    */
+  static int VIEW_SIZE = 9;
+  static int cellSize = 1;
+
   public Canvas() {
-    setPreferredSize(new Dimension(GUI.CANVAS_SIZE, GUI.CANVAS_SIZE));
+    setPreferredSize(new Dimension(GUI.canvasSize, GUI.canvasSize));
+    cellSize = getWidth() / 9;
 
     // TODO: Remove me.
     setBackground(Color.red);
