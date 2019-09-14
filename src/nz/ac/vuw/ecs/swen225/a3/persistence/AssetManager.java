@@ -37,8 +37,6 @@ public class AssetManager {
         .map(f -> f.replace("\\", "/"))
         .forEach(f -> {
           ImageIcon imageIcon = new ImageIcon(f);
-          if (imageIcon.getIconHeight() <= 0 || imageIcon.getIconWidth() <= 0)
-            imageIcon = new ImageIcon("assets/unknown.png");
           baseImageIcons.put(f, imageIcon);
           scaledImageIcons.put(f, imageIcon);
         });
@@ -65,7 +63,11 @@ public class AssetManager {
    * @return ImageIcon.
    */
   public static ImageIcon getScaledImage(String fname) {
-    return scaledImageIcons.get(fname);
+    ImageIcon scaledIcon = scaledImageIcons.get(fname);
+    if (scaledIcon == null) {
+      scaledIcon = scaledImageIcons.get("assets/unknown.png");
+    }
+    return scaledIcon;
   }
 
   /**
