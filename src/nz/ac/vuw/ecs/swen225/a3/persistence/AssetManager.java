@@ -2,7 +2,7 @@ package nz.ac.vuw.ecs.swen225.a3.persistence;
 
 import nz.ac.vuw.ecs.swen225.a3.renderer.Canvas;
 
-import javax.swing.ImageIcon;
+import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -17,6 +17,9 @@ import java.util.Map;
  */
 public class AssetManager {
 
+  /**
+   * Private static fields to store important GUI data.
+   */
   private static Map<String, ImageIcon> baseImageIcons = new HashMap<>();
   private static Map<String, ImageIcon> scaledImageIcons = new HashMap<>();
   private static int cellSize = 10;
@@ -60,6 +63,11 @@ public class AssetManager {
     }
   }
 
+  /**
+   * Gets an ImageIcon and the last scaled size.
+   * @param fname file path.
+   * @return ImageIcon.
+   */
   public static ImageIcon getScaledImage(String fname) {
     return scaledImageIcons.get(fname);
   }

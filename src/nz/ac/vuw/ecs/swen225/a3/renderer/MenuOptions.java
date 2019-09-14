@@ -15,7 +15,7 @@ public class MenuOptions extends JMenuBar {
    */
   public MenuOptions() {
     // Set the Size of the Control panel
-    setPreferredSize(new Dimension(GUI.sreenSize, GUI.sreenSize / 30));
+    setPreferredSize(new Dimension(GUI.screenWidth, GUI.MENU_HEIGHT));
     setFont(new Font("Serif", Font.BOLD, 18));
 
     // Create the file menu

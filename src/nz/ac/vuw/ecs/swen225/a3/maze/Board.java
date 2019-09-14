@@ -106,8 +106,8 @@ public class Board {
   }
 
   /**
-   * Gets stream of all Cells, left to right, top to bottom.
-   *
+   * Gets stream of all Cells, currently top left 9x9 cells.
+   * From left to right, top to bottom.
    * @return Stream of all cells, left to right, top to bottom.
    */
   public Stream<Tiles> getStream() {

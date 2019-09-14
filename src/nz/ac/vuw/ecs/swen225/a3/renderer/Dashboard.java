@@ -6,7 +6,7 @@ import java.awt.*;
 public class Dashboard extends JPanel {
 
   public Dashboard() {
-    setPreferredSize(new Dimension(GUI.dashboardWidth, GUI.canvasSize));
+    setPreferredSize(new Dimension(GUI.dashboardWidth, GUI.screenHeight));
 
     // TODO: Remove me.
     setBackground(Color.MAGENTA);
