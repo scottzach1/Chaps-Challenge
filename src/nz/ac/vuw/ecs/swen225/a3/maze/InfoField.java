@@ -21,5 +21,5 @@ public class InfoField extends Tiles {
   @Override
   public String toString() {
     return "InfoField";
-  }
+  } 
 }
