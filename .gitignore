@@ -1,0 +1,8 @@
+# Ignore class files
+.class
+
+# Ignore Output folder
+out/
+
+# Ignore IntelliJ config folder.
+.idea/
