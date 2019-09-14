@@ -1,7 +1,8 @@
 package nz.ac.vuw.ecs.swen225.a3.renderer;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import java.awt.Color;
+import java.awt.Dimension;
 
 /**
  * Canvas displays the game maze on the screen.
