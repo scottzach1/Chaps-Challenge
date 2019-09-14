@@ -6,8 +6,19 @@ public class Wall extends Tiles {
    * Constructor.
    * Sets the isAccessible field to false.
    */
-  public Wall() {
+   Wall() {
     isAccessible = false;
+  }
+
+
+  /**
+   * Checks if the interaction between a character and a tile is valid.
+   *
+   * @return if the interaction is valid
+   */
+  @Override
+  boolean interact(Player p) {
+    return isAccessible;
   }
 
   /**

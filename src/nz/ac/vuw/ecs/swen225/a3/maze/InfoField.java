@@ -9,7 +9,7 @@ public class InfoField extends Tiles {
    * Sets the isAccessible to true.
    * Sets the information contained in the tile.
    */
-  public InfoField(String info) {
+   InfoField(String info) {
     isAccessible = true;
     this.info = info;
   }
@@ -21,5 +21,18 @@ public class InfoField extends Tiles {
   @Override
   public String toString() {
     return "InfoField";
-  } 
+  }
+
+
+  /**
+   * Checks if the interaction between a character and a tile is valid.
+   *
+   * @param p The player
+   * @return if the interaction is valid
+   */
+  @Override
+  boolean interact(Player p) {
+  //TODO change print to a popup
+    System.out.println(info);
+    return isAccessible;  }
 }

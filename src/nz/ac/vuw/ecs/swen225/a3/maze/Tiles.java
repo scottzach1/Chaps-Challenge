@@ -41,5 +41,11 @@ public abstract class Tiles {
     return adjacent[Direction.Down.ordinal()];
   }
 
+  /**
+   * Checks if the interaction between a character and a tile is valid.
+   *  @param p The player
+   * @return if the interaction is valid
+   */
+  abstract boolean interact(Player p);
 
 }

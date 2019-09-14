@@ -6,8 +6,8 @@ public class Exit extends Tiles {
    * Constructor.
    * Sets the isAccessible to true.
    */
-  public Exit() {
-    isAccessible = false;
+   Exit() {
+    isAccessible = true;
   }
 
   /**
@@ -17,5 +17,16 @@ public class Exit extends Tiles {
   @Override
   public String toString() {
     return "Exit";
+  }
+
+  /**
+   * Checks if the interaction between a character and a tile is valid.
+   * @param p The player
+   * @return if the interaction is valid
+   */
+  @Override
+  boolean interact(Player p) {
+    //todo continue to next level/end of game screen
+    return isAccessible;
   }
 }
