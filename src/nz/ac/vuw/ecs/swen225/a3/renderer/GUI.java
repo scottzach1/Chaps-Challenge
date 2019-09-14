@@ -1,9 +1,12 @@
 package nz.ac.vuw.ecs.swen225.a3.renderer;
 
+import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.io.IOException;
 
 /**
  * GUI class extends JFrame and is responsible with
@@ -16,9 +19,11 @@ public class GUI extends JFrame implements ComponentListener {
 
   // Dimension of the frame, based on screen size
   private static Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
-  static int SCREEN_SIZE = (Math.min(screenDimension.width, screenDimension.height));
-  static int CANVAS_SIZE = SCREEN_SIZE;
-  static int DASHBOARD_WIDTH = SCREEN_SIZE / 3;
+  public static final int MENU_HEIGHT = screenDimension.height / 30;
+  static int screenWidth = screenDimension.width;
+  static int screenHeight = screenDimension.height - MENU_HEIGHT;
+  static int canvasWidth = (screenDimension.width * 2) / 3;
+  static int dashboardWidth = (screenDimension.width) / 3;
 
   // Main component fields.
   private Canvas canvas;
@@ -35,13 +40,23 @@ public class GUI extends JFrame implements ComponentListener {
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
     setResizable(true);
-    setMinimumSize(new Dimension(SCREEN_SIZE / 5, SCREEN_SIZE / 5));
+    setMinimumSize(new Dimension(screenDimension.width / 5, screenDimension.height / 5));
     setVisible(true);
 
-    // Add components.
-    setupComponents();
+    addComponentListener(this);
 
-    pack();
+    // Load Assets
+    try {
+      AssetManager.loadAssets();
+    } catch (IOException e) {
+      System.out.println("Failed to load assets " + e);
+    }
+
+    // Add components.
+    canvas = new Canvas();
+    dashboard = new Dashboard();
+    menuBar = new MenuOptions();
+    addLayoutComponents();
 
     // Render.
     redraw();
@@ -54,43 +69,42 @@ public class GUI extends JFrame implements ComponentListener {
    */
   public static void main(String[] args) {
     GUI gui = new GUI();
-    System.out.printf("Screen width %d, height %d\n", SCREEN_SIZE, SCREEN_SIZE);
-    System.out.printf("Dashboard width %d, height %d\n", DASHBOARD_WIDTH, CANVAS_SIZE);
+    System.out.printf("Screen width %d, height %d\n", canvasWidth, screenHeight);
+    System.out.printf("Dashboard width %d, height %d\n", dashboardWidth, screenHeight);
   }
 
   /**
    * Sets up GridBagLayout with all screen components.
    */
-  public void setupComponents() {
+  public void addLayoutComponents() {
     // Add MenuBar.
-    menuBar = new MenuOptions();
     setJMenuBar(menuBar);
 
-    // Set Layout
-    int padding = SCREEN_SIZE / 11;
+    // Set GridBag
     setLayout(new GridBagLayout());
     GridBagConstraints constraints = new GridBagConstraints();
 
+    // Set Layout
+    int padding = Math.min(screenHeight, canvasWidth) / 11;
 
-    // Create & Set Canvas.
-    canvas = new Canvas();
+    // Set Canvas.
     constraints.insets = new Insets(padding, padding, padding, padding / 2);
-    constraints.gridx = 0;
-    constraints.gridy = 0;
-    constraints.weightx = 3;
-    constraints.weighty = 3;
+    constraints.weightx = 1;
+    constraints.weighty = 1;
+
     constraints.fill = GridBagConstraints.BOTH;
     add(canvas, constraints);
 
-    // Create & Set Dashboard.
-    dashboard = new Dashboard();
+    // Set Dashboard.
     constraints.insets = new Insets(padding, padding / 2, padding, padding);
-    constraints.gridx = 3;
-    constraints.gridy = 0;
+
     constraints.weightx = 1;
-    constraints.weighty = 3;
+    constraints.weighty = 1;
+
     constraints.fill = GridBagConstraints.BOTH;
     add(dashboard, constraints);
+
+    pack();
   }
 
   /**
@@ -101,7 +115,6 @@ public class GUI extends JFrame implements ComponentListener {
   public void redraw() {
     revalidate();
     repaint();
-
   }
 
 
@@ -112,13 +125,15 @@ public class GUI extends JFrame implements ComponentListener {
    */
   @Override
   public void componentResized(ComponentEvent e) {
-    screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
-    SCREEN_SIZE = (Math.min(screenDimension.width, screenDimension.height));
-    CANVAS_SIZE = SCREEN_SIZE;
-    DASHBOARD_WIDTH = SCREEN_SIZE / 3;
+    screenDimension = getSize();
 
-    setupComponents();
-    redraw();
+    screenWidth = screenDimension.width;
+    screenHeight = screenDimension.height - MENU_HEIGHT;
+    canvasWidth = (screenDimension.width * 2) / 3;
+    dashboardWidth = (screenDimension.width) / 3;
+
+    revalidate();
+    repaint();
   }
 
   /**
@@ -132,7 +147,7 @@ public class GUI extends JFrame implements ComponentListener {
 
   /**
    * Overridden but not utilized.
-   * @param e
+   * @param e event.
    */
   @Override
   public void componentShown(ComponentEvent e) {
@@ -141,7 +156,7 @@ public class GUI extends JFrame implements ComponentListener {
 
   /**
    * Overridden but not utilized.
-   * @param e
+   * @param e event.
    */
   @Override
   public void componentHidden(ComponentEvent e) {
