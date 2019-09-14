@@ -39,20 +39,36 @@ public abstract class Tiles {
   }
 
   Tiles[] adjacent = new Tiles[4];
-
-  public Tiles getLeft(){
+  
+  /**
+   * Gets the tile to the left.
+   * @return left of tile.
+   */
+  public Tiles getLeft() {
     return adjacent[Direction.Left.ordinal()];
   }
-
-  public Tiles getRight(){
+  
+  /**
+   * Gets the tile to the right.
+   * @return right of tile.
+   */
+  public Tiles getRight() {
     return adjacent[Direction.Right.ordinal()];
   }
-
-  public Tiles getUp(){
+  
+  /**
+   * Gets the tile above.
+   * @return up of tile.
+   */
+  public Tiles getUp() {
     return adjacent[Direction.Up.ordinal()];
   }
-
-  public Tiles getDown(){
+  
+  /**
+   * Gets the tile below.
+   * @return down of tile.
+   */
+  public Tiles getDown() {
     return adjacent[Direction.Down.ordinal()];
   }
 
