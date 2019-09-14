@@ -36,14 +36,11 @@ public class AssetManager {
         .filter(f -> f.endsWith(".png"))
         .map(f -> f.replace("\\", "/"))
         .forEach(f -> {
-          // f should be a png filename.
-          System.out.println(f);
           ImageIcon imageIcon = new ImageIcon(f);
           if (imageIcon.getIconHeight() <= 0 || imageIcon.getIconWidth() <= 0)
             imageIcon = new ImageIcon("assets/unknown.png");
           baseImageIcons.put(f, imageIcon);
           scaledImageIcons.put(f, imageIcon);
-          System.out.println(imageIcon.getIconHeight() + "x" + imageIcon.getIconWidth());
         });
   }
 
@@ -53,7 +50,6 @@ public class AssetManager {
    */
   public static void scaleIcons(int newCellSize) {
     if (cellSize == newCellSize) return;
-    System.out.println("Getting newCellSize" + newCellSize);
     cellSize = newCellSize;
     for (String key : baseImageIcons.keySet()) {
       Image baseImage = baseImageIcons.get(key).getImage();
