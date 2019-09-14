@@ -35,6 +35,7 @@ public class LockedDoor extends Tiles {
   boolean interact(Player p) {
     if (p.getItem(colour+" Key")){
       setActive(false);
+
       setAccessible(true);
     }
     return isAccessible;
