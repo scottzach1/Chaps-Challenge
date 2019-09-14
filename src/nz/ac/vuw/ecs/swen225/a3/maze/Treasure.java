@@ -1,7 +1,6 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
 public class Treasure extends Tiles {
-  private boolean active; //an active tile is a tile which is not blank.
 
 
   /**
@@ -10,7 +9,7 @@ public class Treasure extends Tiles {
    */
    Treasure() {
     isAccessible = true;
-    active=true;
+    setActive(true);
   }
 
   /**
@@ -30,7 +29,7 @@ public class Treasure extends Tiles {
   @Override
   boolean interact(Player p) {
 
-    active=false;
+    setActive(false);
     return isAccessible;
   }
 }

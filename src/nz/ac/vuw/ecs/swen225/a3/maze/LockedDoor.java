@@ -2,7 +2,7 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
 
 public class LockedDoor extends Tiles {
   private String colour;
-  private boolean active; //an active tile is a tile which is not blank.
+
 
   /**
    * Constructor.
@@ -13,7 +13,7 @@ public class LockedDoor extends Tiles {
    LockedDoor(String colour) {
     isAccessible = false;
     this.colour = colour;
-    active=true;
+    setActive(true);
   }
 
   /**
@@ -32,7 +32,10 @@ public class LockedDoor extends Tiles {
    */
   @Override
   boolean interact(Player p) {
-    //active=false;
-    return false;
+    if (p.getItem(colour+" Key")){
+      setActive(false);
+      setAccessible(true);
+    }
+    return isAccessible;
   }
 }

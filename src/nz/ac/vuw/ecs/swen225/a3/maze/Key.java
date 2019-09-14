@@ -2,7 +2,6 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
 
 public class Key extends Tiles {
   private String colour;
-  private boolean active; //an active tile is a tile which is not blank.
 
   /**
    * Constructor.
@@ -13,7 +12,7 @@ public class Key extends Tiles {
    Key(String colour) {
     isAccessible = true;
     this.colour = colour;
-    active=true;
+    setActive(true);
   }
 
   /**
@@ -23,8 +22,8 @@ public class Key extends Tiles {
    */
   @Override
   boolean interact(Player p) {
-    //p.addItem(this);
-    active=false;
+    p.addItem(this.toString());
+    setActive(false);
     return isAccessible;
   }
 

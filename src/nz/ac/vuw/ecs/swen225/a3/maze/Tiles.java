@@ -2,16 +2,15 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
 
 public abstract class Tiles {
   boolean isAccessible;
+  private boolean isActive;
 
   public boolean isActive() {
     return isActive;
   }
 
-  public void setActive(boolean active) {
+   void setActive(boolean active) {
     isActive = active;
   }
-
-  boolean isActive;
 
   /**
    * Checks if the current tile is accessible.
@@ -25,7 +24,7 @@ public abstract class Tiles {
    * Sets the boolean isAccessible based on the parameter.
    * @param accessible boolean to set isAccessible to.
    */
-  public void setAccessible(boolean accessible) {
+   void setAccessible(boolean accessible) {
     isAccessible = accessible;
   }
 

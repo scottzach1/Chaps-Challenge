@@ -28,9 +28,9 @@ public class ExitLock extends Tiles {
    */
   @Override
   boolean interact(Player p) {
-   // if (totalTreasures==p.treasures){
-      //todo make a free tile
-    //}
+   if (totalTreasures==p.getTreasures()){
+      setActive(false);
+    }
     return isAccessible;
   }
 }

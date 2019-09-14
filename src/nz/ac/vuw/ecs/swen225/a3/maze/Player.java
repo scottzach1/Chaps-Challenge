@@ -5,6 +5,7 @@ import java.util.HashMap;
 public class Player {
   private Tiles location;
   private HashMap<String,Integer> inventory = new HashMap<>();
+  private int treasures=0;
 
   /**
    * Create player.
@@ -19,7 +20,7 @@ public class Player {
    * @param item String description of item required
    * @return true if player holds item, false otherwise
    */
-  public boolean getItem(String item){
+   boolean getItem(String item){
     if(inventory.get(item) != null && inventory.get(item) > 0){
       inventory.put(item,inventory.get(item)-1);
       return true;
@@ -33,7 +34,7 @@ public class Player {
    * Add item to players inventory.
    * @param item String description of item added
    */
-  public void addItem(String item) {
+  void addItem(String item) {
     if(inventory.get(item) == null){
       inventory.put(item,1);
     }
@@ -50,4 +51,7 @@ public class Player {
     return location;
   }
 
+   int getTreasures() { return treasures; }
+
+  public void addTreasure(){treasures++;}
 }
