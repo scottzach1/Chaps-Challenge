@@ -61,7 +61,7 @@ public class AssetManager {
   }
 
   public static ImageIcon getScaledImage(String fname) {
-    return baseImageIcons.get(fname);
+    return scaledImageIcons.get(fname);
   }
 
   /**

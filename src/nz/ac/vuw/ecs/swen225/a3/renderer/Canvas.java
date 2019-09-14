@@ -51,11 +51,14 @@ public class Canvas extends JPanel implements ComponentListener {
     Board board = new Board();
 
     components.clear();
+    removeAll();
+
     components.addAll(board.getStream()
         .map(t -> AssetManager.getScaledImage(t.getImageUrl()))
         .map(JLabel::new).collect(Collectors.toList()));
 
     revalidateComponents();
+    repaint();
   }
 
   private void revalidateComponents() {
@@ -83,7 +86,7 @@ public class Canvas extends JPanel implements ComponentListener {
   @Override
   public void componentResized(ComponentEvent e) {
 
-    cellSize = getWidth() / VIEW_SIZE;
+    cellSize = Math.min(getWidth(), getHeight()) / VIEW_SIZE;
     AssetManager.scaleIcons(cellSize);
 
     renderABoard();

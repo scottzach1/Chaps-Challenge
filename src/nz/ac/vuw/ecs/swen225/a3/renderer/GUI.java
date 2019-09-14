@@ -143,7 +143,7 @@ public class GUI extends JFrame implements ComponentListener {
 
   /**
    * Overridden but not utilized.
-   * @param e
+   * @param e event.
    */
   @Override
   public void componentShown(ComponentEvent e) {
@@ -152,7 +152,7 @@ public class GUI extends JFrame implements ComponentListener {
 
   /**
    * Overridden but not utilized.
-   * @param e
+   * @param e event.
    */
   @Override
   public void componentHidden(ComponentEvent e) {
