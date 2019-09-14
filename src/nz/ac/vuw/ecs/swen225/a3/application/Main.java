@@ -1,5 +1,7 @@
 package nz.ac.vuw.ecs.swen225.a3.application;
 
+import nz.ac.vuw.ecs.swen225.a3.maze.Board;
+
 /**
  * Chip and Chap.
  * Chap’s challenge is a creative clone of the (first level of the)
@@ -15,5 +17,6 @@ public class Main {
   public static void main(String[] args) {
     System.out.println("Todo: Make game.");
     String game = "made";
+    new Board();
   }
 }
