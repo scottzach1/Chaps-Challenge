@@ -51,7 +51,11 @@ public class Player {
     return location;
   }
 
-   int getTreasures() { return treasures; }
+  public void setLocation(Tiles location) {
+    this.location = location;
+  }
+
+  int getTreasures() { return treasures; }
 
   public void addTreasure(){treasures++;}
 }
