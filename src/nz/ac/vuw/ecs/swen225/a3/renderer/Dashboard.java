@@ -92,25 +92,11 @@ public class Dashboard extends JPanel implements ComponentListener {
     constraints.gridwidth = 1;
     constraints.gridy = 6;
 
-    constraints.gridx = 0;
-    add(chipsBag.get(0), constraints);
-    constraints.gridx = 1;
-    add(chipsBag.get(1), constraints);
-    constraints.gridx = 2;
-    add(chipsBag.get(2), constraints);
-    constraints.gridx = 3;
-    add(chipsBag.get(3), constraints);
-
-    constraints.gridy = 7;
-
-    constraints.gridx = 0;
-    add(chipsBag.get(4), constraints);
-    constraints.gridx = 1;
-    add(chipsBag.get(5), constraints);
-    constraints.gridx = 2;
-    add(chipsBag.get(6), constraints);
-    constraints.gridx = 3;
-    add(chipsBag.get(7), constraints);
+    for (int i = 0; i < chipsBag.size(); i++){
+      int row = i / 4;
+      int col = i % 4;
+      
+    }
 
     revalidate();
   }
