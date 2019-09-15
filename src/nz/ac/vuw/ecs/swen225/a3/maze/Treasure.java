@@ -8,6 +8,7 @@ public class Treasure extends Tiles {
    * Sets the isAccessible field to true.
    */
    Treasure() {
+    super(Type.Treasure);
     isAccessible = true;
     imageUrl = "assets/treasure.png";
     defaultImageUrl = "assets/free.png";

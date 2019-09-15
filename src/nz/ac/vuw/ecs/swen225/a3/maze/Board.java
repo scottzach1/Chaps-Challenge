@@ -118,10 +118,10 @@ public class Board {
     }
 
     // Count number of treasures
-    int treasureCount =  (int)allTiles.stream().filter(p -> p.toString().equals("Treasure")).count();
+    int treasureCount =  (int)allTiles.stream().filter(p -> p.getType() == Tiles.Type.Treasure).count();
 
     // Set all exit locks to require correct number of treasures
-    allTiles.stream().filter(p -> p.toString().equals("ExitLock")).map(c -> (ExitLock)c).forEach(s -> s.setTotalTreasures(treasureCount));
+    allTiles.stream().filter(p -> p.getType() == Tiles.Type.ExitLock).map(c -> (ExitLock)c).forEach(s -> s.setTotalTreasures(treasureCount));
   }
 
   /**

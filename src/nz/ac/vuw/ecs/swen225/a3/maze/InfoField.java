@@ -10,6 +10,7 @@ public class InfoField extends Tiles {
    * Sets the information contained in the tile.
    */
    InfoField(String info) {
+     super(Type.InfoFeild);
     isAccessible = true;
     this.info = info;
     imageUrl = "assets/info_field.png";

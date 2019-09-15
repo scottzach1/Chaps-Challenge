@@ -8,6 +8,7 @@ public class ExitLock extends Tiles {
    * Sets the isAccessible to true.
    */
   public ExitLock() {
+    super(Type.ExitLock);
     isAccessible = false;
     imageUrl = "assets/exit_lock.png";
     defaultImageUrl = "assets/free.png";

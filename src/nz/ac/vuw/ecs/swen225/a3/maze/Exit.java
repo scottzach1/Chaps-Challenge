@@ -7,6 +7,7 @@ public class Exit extends Tiles {
    * Sets the isAccessible to true.
    */
    Exit() {
+     super(Type.Exit);
     isAccessible = true;
     imageUrl = "assets/exit.png";
     defaultImageUrl = "assets/free.png";
