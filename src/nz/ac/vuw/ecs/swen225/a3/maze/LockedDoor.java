@@ -14,7 +14,7 @@ public class LockedDoor extends Tiles {
     isAccessible = false;
     this.colour = colour;
     setActive(true);
-    imageUrl = "assets/locked_door.png";
+    imageUrl = "assets/locked_door_" + colour + ".png";
   }
 
   /**

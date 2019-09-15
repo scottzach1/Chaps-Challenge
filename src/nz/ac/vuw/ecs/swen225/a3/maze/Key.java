@@ -13,7 +13,7 @@ public class Key extends Tiles {
     isAccessible = true;
     this.colour = colour;
     setActive(true);
-    imageUrl = "assets/key.png";
+    imageUrl = "assets/key_" + colour + ".png";
   }
 
   /**
