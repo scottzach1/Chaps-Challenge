@@ -86,8 +86,6 @@ public class Canvas extends JPanel implements ComponentListener {
    * DOES NOT REPAINT.
    */
   private void revalidateComponents() {
-
-    System.out.println("Components" + components.size());
     constraints = new GridBagConstraints();
     if (components.size() > 0) {
       constraints.gridy = 0;

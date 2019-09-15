@@ -45,7 +45,8 @@ public class AssetManager {
   }
 
   /**
-   * Finds asset
+   * Loads asset from filename.
+   * @param fname filename.
    */
   public static void loadAsset(String fname) {
     fname = ASSET_PATH + fname;
