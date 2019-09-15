@@ -22,7 +22,7 @@ public class Key extends Tiles {
    * @return if the interaction is valid
    */
   @Override
-  boolean interact(Player p) {
+  public boolean interact(Player p) {
     p.addItem(this.toString());
     setActive(false);
     return isAccessible;

@@ -41,7 +41,7 @@ public abstract class Tiles {
    * Checks if the current tile is accessible.
    * @return if it is accessible
    */
-  boolean getIsAccessible() {
+  public boolean getIsAccessible() {
     return isAccessible;
   }
 
@@ -96,6 +96,6 @@ public abstract class Tiles {
    *  @param p The player
    * @return if the interaction is valid
    */
-  abstract boolean interact(Player p);
+  public abstract boolean interact(Player p);
 
 }

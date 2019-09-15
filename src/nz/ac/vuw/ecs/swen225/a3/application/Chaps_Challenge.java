@@ -36,24 +36,26 @@ public class Chaps_Challenge {
   }
 
 public void move(Tiles.Direction direction){
-
   Tiles currentLocation =  player.getLocation();
+  Tiles nextLocation=null;
   switch (direction){
     case Up:
-      player.setLocation(currentLocation.getUp());
+      nextLocation=currentLocation.getUp();
       break;
     case Down:
-      player.setLocation(currentLocation.getDown());
+      nextLocation=currentLocation.getDown();
       break;
     case Left:
-      player.setLocation(currentLocation.getLeft());
+      nextLocation=currentLocation.getLeft();
       break;
     case Right:
-      player.setLocation(currentLocation.getRight());
+      nextLocation=currentLocation.getRight();
       break;
   }
-
-
+  if (!nextLocation.interact(player)){
+    return; //invalid move
+  }
+  player.setLocation(nextLocation);
 }
 
 public void restartGame(){}

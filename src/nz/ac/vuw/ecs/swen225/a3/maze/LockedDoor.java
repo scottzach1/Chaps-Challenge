@@ -32,7 +32,7 @@ public class LockedDoor extends Tiles {
    * @return if the interaction is valid
    */
   @Override
-  boolean interact(Player p) {
+  public boolean interact(Player p) {
     if (p.getItem(colour+" Key")){
       setActive(false);
 

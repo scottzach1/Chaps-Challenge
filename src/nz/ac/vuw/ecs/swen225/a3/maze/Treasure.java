@@ -28,7 +28,7 @@ public class Treasure extends Tiles {
    * @return if the interaction is valid
    */
   @Override
-  boolean interact(Player p) {
+  public boolean interact(Player p) {
 
     setActive(false);
     return isAccessible;

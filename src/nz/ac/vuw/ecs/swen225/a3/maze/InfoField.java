@@ -32,7 +32,7 @@ public class InfoField extends Tiles {
    * @return if the interaction is valid
    */
   @Override
-  boolean interact(Player p) {
+  public boolean interact(Player p) {
   //TODO change print to a popup
     System.out.println(info);
     return isAccessible;  }
