@@ -29,7 +29,7 @@ public class Chaps_Challenge {
     }
     catch(Board.PlayerNotFoundException e){
       System.out.println("Error, player not found in level description");
-      throw new Error();
+      throw new Error("Player not found");
     }
   }
 
