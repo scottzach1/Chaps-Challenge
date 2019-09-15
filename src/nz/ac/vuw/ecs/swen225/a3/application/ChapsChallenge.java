@@ -20,11 +20,11 @@ public class ChapsChallenge {
   private Board board;
   private Player player;
 
-  long startTime;
-  long elapsedTime;
-  long totalTime = 100; //100 seconds, todo change with levels
+  private long totalTime = 100; //100 seconds, todo change with levels
+  private long startTime;
+  private long timeLeft = totalTime;
 
-
+  private boolean gamePaused=false;
   /**
    * Create main game application.
    */
@@ -39,7 +39,6 @@ public class ChapsChallenge {
     }
 
     startTime = System.currentTimeMillis();
-
   }
 
   /**
@@ -50,6 +49,8 @@ public class ChapsChallenge {
    * @param direction the direction to move in.
    */
   public void move(Tiles.Direction direction) {
+    if (gamePaused) return;
+
     Tiles currentLocation = player.getLocation();
     Tiles nextLocation = null;
     switch (direction) {
@@ -75,10 +76,19 @@ public class ChapsChallenge {
   public void restartGame() {
   }
 
+  /**
+   * Pauses the game.
+   */
   public void pauseGame() {
+    gamePaused=true;
   }
 
+  /**
+   * Resumes the game.
+   */
   public void resumeGame() {
+    gamePaused=false;
+    startTime=System.currentTimeMillis();
   }
 
   /**
@@ -87,8 +97,15 @@ public class ChapsChallenge {
    * @return the time left to play
    */
   public int timeLeft() {
-    elapsedTime = System.currentTimeMillis() - startTime;
-    return (int) (totalTime - TimeUnit.MILLISECONDS.toSeconds(elapsedTime));
+    if (gamePaused) {
+      return (int) timeLeft;
+    }
+    long elapsedTime = System.currentTimeMillis() - startTime;
+    timeLeft -= TimeUnit.MILLISECONDS.toSeconds(elapsedTime);
+
+    startTime=System.currentTimeMillis();
+
+    return (int) timeLeft;
   }
 
   public void loadGame() {
