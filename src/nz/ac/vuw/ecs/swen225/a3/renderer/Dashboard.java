@@ -116,8 +116,8 @@ public class Dashboard extends JPanel implements ComponentListener {
     for (int i = 0; i < 8; i++) {
       JLabel j = chapsBag.get(i);
       j.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.BLACK));
+      j.setIcon(AssetManager.getScaledImage("assets/free.png"));
       j.setPreferredSize(new Dimension(getWidth() / 4, getHeight() / (3 * 2)));
-      j.setText("ICON HERE");
 
       bottomPanelConstraints.gridx = (i % 4);
       bottomPanelConstraints.gridy = (i / 4);
