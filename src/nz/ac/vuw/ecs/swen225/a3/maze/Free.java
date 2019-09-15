@@ -6,20 +6,22 @@ public class Free extends Tiles {
    * Constructor.
    * Sets the isAccessible to true.
    */
-   Free() {
+  Free() {
+    super(Type.Free);
     isAccessible = true;
     imageUrl = "assets/free.png";
+    defaultImageUrl = "assets/free.png";
   }
 
   /**
    * Standard toString method.
+   *
    * @return the name of the tile
    */
   @Override
   public String toString() {
     return "Free";
   }
-
 
 
   /**
@@ -29,7 +31,7 @@ public class Free extends Tiles {
    * @return if the interaction is valid
    */
   @Override
-  boolean interact(Player p) {
+  public boolean interact(Player p) {
     return false;
   }
 }

@@ -1,6 +1,6 @@
 package nz.ac.vuw.ecs.swen225.a3.renderer;
 
-import nz.ac.vuw.ecs.swen225.a3.maze.Board;
+import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
 
 import javax.swing.*;
@@ -24,8 +24,11 @@ public class Canvas extends JPanel implements ComponentListener {
   private GridBagConstraints constraints = new GridBagConstraints();
   private ArrayList<Component> components = new ArrayList<>();
 
+  private ChapsChallenge application;
+
   /**
    * Gets cell size.
+   *
    * @return cell size.
    */
   public static int getCellSize() {
@@ -35,8 +38,9 @@ public class Canvas extends JPanel implements ComponentListener {
   /**
    * Constructor: Initializes local variable then renders the board.
    */
-  public Canvas() {
+  public Canvas(ChapsChallenge app) {
 
+    application = app;
     setPreferredSize(new Dimension(GUI.canvasWidth, GUI.screenHeight));
     cellSize = Math.min(getWidth(), getHeight()) / VIEW_SIZE;
 
@@ -47,24 +51,23 @@ public class Canvas extends JPanel implements ComponentListener {
 
     setLayout(new GridBagLayout());
 
-    renderABoard();
+    renderBoard();
   }
 
   /**
    * Creates a board then renders it.
-   *
+   * <p>
    * NOTE: This is just a test method and not intended
    * in final product.
+   * Renders the board stored in application on the  canvas.
    */
-  private void renderABoard() {
+  private void renderBoard() {
     // Clear components.
     components.clear();
     removeAll();
 
-    // Create board and add all components.
-    Board board = new Board();
-
-    components.addAll(board.getStream()
+    // Retrieve tiles and add all components.
+    components.addAll(application.getTilesToRender()
         .map(t -> AssetManager.getScaledImage(t.getImageUrl()))
         .map(JLabel::new).collect(Collectors.toList()));
 
@@ -77,7 +80,7 @@ public class Canvas extends JPanel implements ComponentListener {
   /**
    * Revalidate's components on GridBagLayout to
    * VIEW_SIZE x VIEW_SIZE.
-   *
+   * <p>
    * DOES NOT REPAINT.
    */
   private void revalidateComponents() {
@@ -100,6 +103,7 @@ public class Canvas extends JPanel implements ComponentListener {
   /**
    * Recalculates cell size and repaints
    * when resized.
+   *
    * @param e event.
    */
   @Override
@@ -107,12 +111,13 @@ public class Canvas extends JPanel implements ComponentListener {
     cellSize = Math.min(getWidth(), getHeight()) / VIEW_SIZE;
     AssetManager.scaleIcons(cellSize);
 
-    renderABoard();
+    renderBoard();
     repaint();
   }
 
   /**
    * Overridden but not utilized.
+   *
    * @param e event.
    */
   @Override
@@ -122,6 +127,7 @@ public class Canvas extends JPanel implements ComponentListener {
 
   /**
    * Overridden but not utilized.
+   *
    * @param e event.
    */
   @Override
@@ -131,6 +137,7 @@ public class Canvas extends JPanel implements ComponentListener {
 
   /**
    * Overridden but not utilized.
+   *
    * @param e event.
    */
   @Override

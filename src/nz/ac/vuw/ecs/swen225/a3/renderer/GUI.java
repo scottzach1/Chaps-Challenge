@@ -1,5 +1,6 @@
 package nz.ac.vuw.ecs.swen225.a3.renderer;
 
+import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
 
 import javax.swing.*;
@@ -25,19 +26,20 @@ public class GUI extends JFrame implements ComponentListener {
   static int canvasWidth = (screenDimension.width * 2) / 3;
   static int dashboardWidth = (screenDimension.width) / 3;
 
-  // Main component fields.
+  // ChapsChallenge component fields.
   private Canvas canvas;
   private Dashboard dashboard;
   private JMenuBar menuBar;
-
+  private ChapsChallenge application;
+  
   // Layout object
   GridBagConstraints constraints = new GridBagConstraints();
-
   /**
    * Constructor: Creates a new JFrame and sets preferred sizes.
    * Creates and adds all relevant GUI components then redraws.
    */
-  public GUI() {
+  public GUI(ChapsChallenge chaps_challenge) {
+    application = chaps_challenge;
     //Create & init the frame.
     setPreferredSize(screenDimension.getSize());
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -48,15 +50,8 @@ public class GUI extends JFrame implements ComponentListener {
 
     addComponentListener(this);
 
-    // Load Assets
-    try {
-      AssetManager.loadAssets();
-    } catch (IOException e) {
-      System.out.println("Failed to load assets " + e);
-    }
-
     // Add components.
-    canvas = new Canvas();
+    canvas = new Canvas(application);
     dashboard = new Dashboard();
     menuBar = new MenuOptions();
 
@@ -76,7 +71,7 @@ public class GUI extends JFrame implements ComponentListener {
    * @param args (ignored).
    */
   public static void main(String[] args) {
-    GUI gui = new GUI();
+    //GUI gui = new GUI();
     System.out.printf("Screen width %d, height %d\n", canvasWidth, screenHeight);
     System.out.printf("Dashboard width %d, height %d\n", dashboardWidth, screenHeight);
   }
@@ -121,6 +116,7 @@ public class GUI extends JFrame implements ComponentListener {
   /**
    * Resize dimensions and redraw window on
    * screen resize.
+   *
    * @param e event.
    */
   @Override
@@ -138,6 +134,7 @@ public class GUI extends JFrame implements ComponentListener {
 
   /**
    * Overridden but not utilized.
+   *
    * @param e event.
    */
   @Override
@@ -147,6 +144,7 @@ public class GUI extends JFrame implements ComponentListener {
 
   /**
    * Overridden but not utilized.
+   *
    * @param e event.
    */
   @Override
@@ -156,6 +154,7 @@ public class GUI extends JFrame implements ComponentListener {
 
   /**
    * Overridden but not utilized.
+   *
    * @param e event.
    */
   @Override

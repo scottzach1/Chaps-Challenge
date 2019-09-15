@@ -8,13 +8,15 @@ public class Treasure extends Tiles {
    * Sets the isAccessible field to true.
    */
    Treasure() {
+    super(Type.Treasure);
     isAccessible = true;
-    setActive(true);
     imageUrl = "assets/treasure.png";
+    defaultImageUrl = "assets/free.png";
   }
 
   /**
    * Standard toString method.
+   *
    * @return the name of the tile
    */
   @Override
@@ -24,13 +26,13 @@ public class Treasure extends Tiles {
 
   /**
    * Checks if the interaction between a character and a tile is valid.
+   *
    * @param p The player
    * @return if the interaction is valid
    */
   @Override
-  boolean interact(Player p) {
-
-    setActive(false);
+  public boolean interact(Player p) {
+    imageUrl = defaultImageUrl;
     return isAccessible;
   }
 }

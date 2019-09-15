@@ -10,13 +10,16 @@ public class InfoField extends Tiles {
    * Sets the information contained in the tile.
    */
    InfoField(String info) {
+     super(Type.InfoFeild);
     isAccessible = true;
     this.info = info;
     imageUrl = "assets/info_field.png";
+    defaultImageUrl = "assets/info_field.png";
   }
 
   /**
    * Standard toString method.
+   *
    * @return the name of the tile
    */
   @Override
@@ -32,8 +35,9 @@ public class InfoField extends Tiles {
    * @return if the interaction is valid
    */
   @Override
-  boolean interact(Player p) {
-  //TODO change print to a popup
+  public boolean interact(Player p) {
+    //TODO change print to a popup
     System.out.println(info);
-    return isAccessible;  }
+    return isAccessible;
+  }
 }
