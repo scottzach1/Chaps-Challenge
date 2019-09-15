@@ -15,10 +15,10 @@ public class Board {
   private int boardSize = 20;
   private Tiles[][] tiles = new Tiles[boardSize][boardSize];
   private static String level1 =
-      "_|KBlue|DBlue|_|_|_|_|_|_|_|?|T|_|_|_|_|_|_|_|_|"
-          + "_|_|_|_|_|_|_|_|_|_|_|_|C|_|_|_|_|_|_|_|"
+      "ExitLock|KBlue|DBlue|_|_|_|_|_|_|_|?|T|_|_|_|_|_|_|_|_|"
+          + "_|_|_|_|_|_|_|_|_|_|_|ExitLock|C|_|_|_|_|_|_|_|"
           + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-          + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+          + "_|_|_|T|T|T|T|_|_|_|_|_|_|_|_|_|_|_|_|_|"
           + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
           + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
           + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
@@ -81,10 +81,15 @@ public class Board {
         case "Exit":
           addTile(index/20,index%20,new Exit());
           break;
+        case "ExitLock":
+          addTile(index/20,index%20,new ExitLock());
+          break;
         case "C":
           if(foundChap) throw new MultiplePlayersFoundException();
           foundChap = true;
-          addTile(index/20,index%20,new Chap());
+          Free tile = new Free();
+          tile.imageUrl = "assets/chap.png";
+          addTile(index/20,index%20,tile);
           break;
         default:
           // Must be a colored key or door
@@ -105,6 +110,18 @@ public class Board {
       index++;
     }
 
+    List<Tiles> allTiles = new ArrayList<>();
+    for(int row = 0; row < boardSize; row++){
+      for (int col = 0; col < boardSize; col++){
+        allTiles.add(tiles[row][col]);
+      }
+    }
+
+    // Count number of treasures
+    int treasureCount =  (int)allTiles.stream().filter(p -> p.toString().equals("Treasure")).count();
+
+    // Set all exit locks to require correct number of treasures
+    allTiles.stream().filter(p -> p.toString().equals("ExitLock")).map(c -> (ExitLock)c).forEach(s -> s.setTotalTreasures(treasureCount));
   }
 
   /**
@@ -164,7 +181,7 @@ public class Board {
   public Tiles getPlayerLocation() throws PlayerNotFoundException {
     for(int r = 0; r < boardSize; r++){
       for(int c = 0; c < boardSize; c++){
-        if(tiles[r][c] instanceof Chap){
+        if(tiles[r][c].getImageUrl().equals("assets/chap.png")){
           return tiles[r][c];
         }
       }

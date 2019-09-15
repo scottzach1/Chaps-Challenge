@@ -9,6 +9,7 @@ public class Free extends Tiles {
    Free() {
     isAccessible = true;
     imageUrl = "assets/free.png";
+    defaultImageUrl = "assets/free.png";
   }
 
   /**

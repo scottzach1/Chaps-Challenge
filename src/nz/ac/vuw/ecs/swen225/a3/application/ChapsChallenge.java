@@ -1,13 +1,11 @@
 package nz.ac.vuw.ecs.swen225.a3.application;
 
-import com.sun.javaws.exceptions.ErrorCodeResponseException;
 import nz.ac.vuw.ecs.swen225.a3.maze.Board;
 import nz.ac.vuw.ecs.swen225.a3.maze.Player;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tiles;
 import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
 import nz.ac.vuw.ecs.swen225.a3.renderer.GUI;
 
-import java.lang.invoke.SwitchPoint;
 import java.util.stream.Stream;
 
 /**
@@ -15,7 +13,7 @@ import java.util.stream.Stream;
  * Chap’s challenge is a creative clone of the (first level of the)
  * 1989 Atari game Chips Challenge. To learn more about Chip’s Challenge.
  */
-public class Chaps_Challenge {
+public class ChapsChallenge {
 
   private Board board;
   private Player player;
@@ -23,7 +21,7 @@ public class Chaps_Challenge {
   /**
    * Create main game application.
    */
-  private Chaps_Challenge(){
+  private ChapsChallenge(){
     board = new Board();
     new JsonReadWrite(board);
     try {
@@ -35,7 +33,13 @@ public class Chaps_Challenge {
     }
   }
 
-public void move(Tiles.Direction direction){
+  /**
+   * Moves the player in the direction specified.
+   * Checks if the tile is able to be moved onto by interacting with it.
+   * If valid, it sets the location of the player to the new tile.
+   * @param direction the direction to move in.
+   */
+  public void move(Tiles.Direction direction){
   Tiles currentLocation =  player.getLocation();
   Tiles nextLocation=null;
   switch (direction){
@@ -78,12 +82,12 @@ public void saveGame(){}
 }
 
   /**
-   * Chaps_Challenge invocation point for running the game.
+   * ChapsChallenge invocation point for running the game.
    *
    * @param args main arguments
    */
   public static void main(String[] args) {
-    Chaps_Challenge game = new Chaps_Challenge();
+    ChapsChallenge game = new ChapsChallenge();
     new GUI(game);
   }
 }

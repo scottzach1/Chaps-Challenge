@@ -9,6 +9,7 @@ public class Exit extends Tiles {
    Exit() {
     isAccessible = true;
     imageUrl = "assets/exit.png";
+    defaultImageUrl = "assets/free.png";
   }
 
   /**

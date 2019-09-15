@@ -1,7 +1,6 @@
 package nz.ac.vuw.ecs.swen225.a3.renderer;
 
-import nz.ac.vuw.ecs.swen225.a3.application.Chaps_Challenge;
-import nz.ac.vuw.ecs.swen225.a3.maze.Board;
+import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
 
 import javax.swing.*;
@@ -25,7 +24,7 @@ public class Canvas extends JPanel implements ComponentListener {
   private GridBagConstraints constraints = new GridBagConstraints();
   private ArrayList<Component> components = new ArrayList<>();
 
-  private Chaps_Challenge application;
+  private ChapsChallenge application;
 
   /**
    * Gets cell size.
@@ -38,7 +37,7 @@ public class Canvas extends JPanel implements ComponentListener {
   /**
    * Constructor: Initializes local variable then renders the board.
    */
-  public Canvas(Chaps_Challenge app) {
+  public Canvas(ChapsChallenge app) {
 
     application = app;
     setPreferredSize(new Dimension(GUI.canvasWidth, GUI.screenHeight));

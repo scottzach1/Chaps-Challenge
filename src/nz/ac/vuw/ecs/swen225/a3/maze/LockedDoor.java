@@ -13,8 +13,8 @@ public class LockedDoor extends Tiles {
    LockedDoor(String colour) {
     isAccessible = false;
     this.colour = colour;
-    setActive(true);
     imageUrl = "assets/locked_door_" + colour + ".png";
+    defaultImageUrl = "assets/free.png";
   }
 
   /**
@@ -34,9 +34,8 @@ public class LockedDoor extends Tiles {
   @Override
   public boolean interact(Player p) {
     if (p.getItem(colour+" Key")){
-      setActive(false);
-
       setAccessible(true);
+      imageUrl = defaultImageUrl;
     }
     return isAccessible;
   }

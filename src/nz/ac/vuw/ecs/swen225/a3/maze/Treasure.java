@@ -9,8 +9,8 @@ public class Treasure extends Tiles {
    */
    Treasure() {
     isAccessible = true;
-    setActive(true);
     imageUrl = "assets/treasure.png";
+    defaultImageUrl = "assets/free.png";
   }
 
   /**
@@ -29,8 +29,7 @@ public class Treasure extends Tiles {
    */
   @Override
   public boolean interact(Player p) {
-
-    setActive(false);
+    imageUrl = defaultImageUrl;
     return isAccessible;
   }
 }
