@@ -10,7 +10,8 @@ public class Key extends Tiles {
    *
    * @param colour the colour of the key.
    */
-  Key(String colour) {
+   Key(String colour) {
+     super(Type.Key);
     isAccessible = true;
     this.colour = colour;
     imageUrl = "assets/key_" + colour + ".png";

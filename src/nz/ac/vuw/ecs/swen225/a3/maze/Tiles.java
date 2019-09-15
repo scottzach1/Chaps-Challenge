@@ -1,8 +1,23 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
 public abstract class Tiles {
+
+  public enum Type{
+    Free, Treasure, Exit, ExitLock, InfoFeild, Key, LockedDoor, Wall
+  }
+
   boolean isAccessible;
   private int row;
+  private int col;
+  private Type type;
+  String imageUrl;
+  String defaultImageUrl;
+
+  public Tiles(Type t){
+    type = t;
+  }
+
+  public Tiles(){};
 
   public int getRow() {
     return row;
@@ -20,7 +35,7 @@ public abstract class Tiles {
     this.col = col;
   }
 
-  private int col;
+  public Type getType(){return type;}
 
   public String getImageUrl() {
     return imageUrl;
@@ -29,9 +44,6 @@ public abstract class Tiles {
   public String getDefaultImageUrl() {
     return defaultImageUrl;
   }
-
-  String imageUrl;
-  String defaultImageUrl;
 
 
   /**

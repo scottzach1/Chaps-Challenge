@@ -3,7 +3,6 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
-
 import nz.ac.vuw.ecs.swen225.a3.renderer.Canvas;
 
 
@@ -120,7 +119,7 @@ public class Board {
     int treasureCount = (int) allTiles.stream().filter(p -> p.toString().equals("Treasure")).count();
 
     // Set all exit locks to require correct number of treasures
-    allTiles.stream().filter(p -> p.toString().equals("ExitLock")).map(c -> (ExitLock) c).forEach(s -> s.setTotalTreasures(treasureCount));
+    allTiles.stream().filter(p -> p.getType() == Tiles.Type.ExitLock).map(c -> (ExitLock)c).forEach(s -> s.setTotalTreasures(treasureCount));
   }
 
   /**

@@ -7,6 +7,7 @@ public class Free extends Tiles {
    * Sets the isAccessible to true.
    */
   Free() {
+    super(Type.Free);
     isAccessible = true;
     imageUrl = "assets/free.png";
     defaultImageUrl = "assets/free.png";

@@ -6,8 +6,9 @@ public class Wall extends Tiles {
    * Constructor.
    * Sets the isAccessible field to false.
    */
-  Wall() {
-    isAccessible = false;
+   Wall() {
+     super(Type.Wall);
+     isAccessible = false;
     imageUrl = "assets/wall.png";
     defaultImageUrl = "assets/wall.png";
   }

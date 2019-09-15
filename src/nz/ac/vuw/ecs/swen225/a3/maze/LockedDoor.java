@@ -12,6 +12,7 @@ public class LockedDoor extends Tiles {
    * @param colour the colour of the door.
    */
   LockedDoor(String colour) {
+    super(Type.LockedDoor);
     isAccessible = false;
     this.colour = colour;
     imageUrl = "assets/locked_door_" + colour + ".png";
