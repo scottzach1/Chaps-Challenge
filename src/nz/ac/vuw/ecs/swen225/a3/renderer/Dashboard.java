@@ -7,24 +7,29 @@ import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Dashboard extends JPanel implements ComponentListener {
 
 
+  private final int GRID_WIDTH = 4, GRID_HEIGHT = 8;
+  private final JLabel [] BLANKS;
+  private JLabel [] chipsBag;
   GridBagConstraints constraints = new GridBagConstraints();
 
   public Dashboard() {
+    chipsBag = new JLabel[8];
+    BLANKS = new JLabel[8];
+    setBlanks();
+
     setPreferredSize(new Dimension(GUI.dashboardWidth, GUI.screenHeight));
 
     // TODO: Remove me.
     setBackground(Color.MAGENTA);
 
     addComponentListener(this);
-
-
     setLayout(new GridBagLayout());
-
-
     renderComponents();
   }
 
@@ -39,7 +44,7 @@ public class Dashboard extends JPanel implements ComponentListener {
 
     // Box sizes using the aforementioned padding
     int boxWidth = getWidth() - paddingOfBox;
-    int boxHeight = (getHeight() / 7) - paddingOfBox;
+    int boxHeight = (getHeight() / GRID_HEIGHT) - paddingOfBox;
 
     // Create the alignment for the custom text
     // - CENTER Aligned
@@ -52,10 +57,42 @@ public class Dashboard extends JPanel implements ComponentListener {
     SimpleAttributeSet rightAlign = new SimpleAttributeSet();
     StyleConstants.setAlignment(rightAlign, StyleConstants.ALIGN_RIGHT);
 
-    CustomTextPane level = new CustomTextPane("HERE", boxWidth, boxHeight, rightAlign, Color.black, Color.green, true);
-    add(level, constraints);
+    CustomTextPane level = new CustomTextPane("LEVEL", boxWidth, boxHeight, centerAlign, null, Color.black, false);
+    CustomTextPane levelNum = new CustomTextPane("1", boxWidth, boxHeight, rightAlign, Color.black, Color.green, true);
+    CustomTextPane time = new CustomTextPane("TIME", boxWidth, boxHeight, centerAlign, null, Color.black, false);
+    CustomTextPane timeNum = new CustomTextPane("100", boxWidth, boxHeight, rightAlign, Color.black, Color.green, true);
+    CustomTextPane chipsLeft = new CustomTextPane("CHIPS LEFT", boxWidth, boxHeight, centerAlign, null, Color.black, false);
+    CustomTextPane chipsLeftNum = new CustomTextPane("11", boxWidth, boxHeight, rightAlign, Color.black, Color.green, true);
+
 
     revalidate();
+  }
+
+
+  public void fillChipsBag(ArrayList<String> contents){
+    if (contents == null) {
+      chipsBag = Arrays.copyOf(BLANKS, BLANKS.length);
+      return;
+    }
+
+    for (int i = 0; i < chipsBag.length; i++){
+      try {
+        JLabel content = new JLabel();
+
+      } catch (Exception e){
+        chipsBag[i] = BLANKS[i];
+      }
+    }
+
+
+  }
+
+  private void setBlanks(){
+    for (int i = 0; i < BLANKS.length; i++){
+      JLabel blank = new JLabel();
+      blank.setIcon(new ImageIcon("assets/free.png"));
+      BLANKS[i] = blank;
+    }
   }
 
   @Override
@@ -107,16 +144,18 @@ public class Dashboard extends JPanel implements ComponentListener {
       setForeground(foreground);
 
       // - If the border boolean parsed in is true, make one
-      if (border)
+      if (border) {
         setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, foreground));
-        // - Else remove any presets
-      else
+      }
+      // - Else remove any presets
+      else {
         setBorder(null);
+      }
 
       // - Set the the size of the box to what is given
       setPreferredSize(new Dimension(width, height));
       // Create a default font for the box making the text fit snug
-      setFont(new Font("Ariel", Font.BOLD, Math.min(width * 2 / 6, height * 2 / 3)));
+      setFont(new Font("Ariel", Font.BOLD, Math.min(width * 2 / GRID_HEIGHT, height * 2 / (GRID_HEIGHT / 2))));
 
       // Try Align Text
       if (textAlignment != null) {
