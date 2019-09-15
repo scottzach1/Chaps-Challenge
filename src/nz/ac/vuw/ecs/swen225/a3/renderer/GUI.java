@@ -49,13 +49,6 @@ public class GUI extends JFrame implements ComponentListener {
 
     addComponentListener(this);
 
-    // Load Assets
-    try {
-      AssetManager.loadAssets();
-    } catch (IOException e) {
-      System.out.println("Failed to load assets " + e);
-    }
-
     // Add components.
     canvas = new Canvas(application);
     dashboard = new Dashboard();
