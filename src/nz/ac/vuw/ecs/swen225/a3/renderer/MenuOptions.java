@@ -20,15 +20,65 @@ public class MenuOptions extends JMenuBar {
 
     // Create the file menu
     JMenu file = new JMenu("File");
-
-    JMenuItem closeItem = new JMenuItem("Close");
+    
+    // Create the quit button
+    JMenuItem closeItem = new JMenuItem("Quit");
     closeItem.addActionListener(arg0 -> System.exit(0));
     file.add(closeItem);
+    
+    // Create the save button
+    JMenuItem saveItem = new JMenuItem("Save");
+    saveItem.addActionListener(arg0 -> saveGame());
+    file.add(saveItem);
+    
+    //create the load button
+    JMenuItem loadItem = new JMenuItem("Load");
+    loadItem.addActionListener(arg0 -> loadGame());
+    file.add(loadItem);
+    
+    // Create the game menu
+    JMenu game = new JMenu("Game");
+    
+    // Create the previous level button
+    JMenuItem previousItem = new JMenuItem("Previous Level");
+    previousItem.addActionListener(arg0 -> previousLevel());
+    game.add(previousItem);
+    
+    // Create the Pause button
+    JMenuItem pauseItem = new JMenuItem("Pause");
+    pauseItem.addActionListener(arg0 -> pauseGame());
+    game.add(pauseItem);
 
     // Add components
     add(file);
-
-    // TODO: Remove me.
-    setBackground(Color.CYAN);
+    add(game);
+  }
+    
+  /**
+   * Save game method.
+   */
+  public void saveGame() {
+    
+  }
+  
+  /**
+   * Load game method.
+   */
+  public void loadGame() {
+    
+  }
+  
+  /**
+   * Previous level method.
+   */
+  public void previousLevel() {
+    
+  }
+  
+  /**
+   * Pause game method.
+   */
+  public void pauseGame() {
+    
   }
 }
