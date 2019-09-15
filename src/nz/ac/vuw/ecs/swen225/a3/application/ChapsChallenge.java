@@ -174,31 +174,47 @@ public class ChapsChallenge implements KeyListener {
     // Add the key pressed to the current list of pressed keys
     activeKeys.add(e.getKeyCode());
     // CTRL + X
-    if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_X))
+    if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_X) && activeKeys.size() == 2)
       gui.exitGame();
     // CTRL + S
-    if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_S)){
+    if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_S) && activeKeys.size() == 2){
       saveGame();
       gui.exitGame();
     }
-
+    // CTRL + R
+    if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_R) && activeKeys.size() == 2){
+      // TODO: Resume a saved game
+    }
+    // CTRL + P
+    if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_P) && activeKeys.size() == 2){
+      // TODO: Start a new game at the last UNFINISHED level
+    }
+    // CTRL + 1
+    if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_1) && activeKeys.size() == 2){
+      // TODO: Start a new game from LEVEL 1
+    }
     // SPACE
-    if (activeKeys.contains(KeyEvent.VK_SPACE))
+    if (activeKeys.contains(KeyEvent.VK_SPACE) && activeKeys.size() == 1)
       pauseGame();
+    // ESC
+    if (activeKeys.contains(KeyEvent.VK_ESCAPE) && activeKeys.size() == 1){
+      resumeGame();
+    }
+
     /*
     PLAYER CONTROLS
      */
     // Move Up
-    if (activeKeys.contains(KeyEvent.VK_UP) || activeKeys.contains(KeyEvent.VK_W))
+    if ((activeKeys.contains(KeyEvent.VK_UP) || activeKeys.contains(KeyEvent.VK_W)) && activeKeys.size() == 1)
       move(Tiles.Direction.Up);
     // Move Down
-    if (activeKeys.contains(KeyEvent.VK_DOWN) || activeKeys.contains(KeyEvent.VK_S))
+    if ((activeKeys.contains(KeyEvent.VK_DOWN) || activeKeys.contains(KeyEvent.VK_S)) && activeKeys.size() == 1)
       move(Tiles.Direction.Down);
     // Move Left
-    if (activeKeys.contains(KeyEvent.VK_LEFT) || activeKeys.contains(KeyEvent.VK_A))
+    if ((activeKeys.contains(KeyEvent.VK_LEFT) || activeKeys.contains(KeyEvent.VK_A)) && activeKeys.size() == 1)
       move(Tiles.Direction.Left);
     // Move Right
-    if (activeKeys.contains(KeyEvent.VK_RIGHT) || activeKeys.contains(KeyEvent.VK_D))
+    if ((activeKeys.contains(KeyEvent.VK_RIGHT) || activeKeys.contains(KeyEvent.VK_D)) && activeKeys.size() == 1)
       move(Tiles.Direction.Right);
   }
 
