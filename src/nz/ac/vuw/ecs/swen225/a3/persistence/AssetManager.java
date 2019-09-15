@@ -18,6 +18,7 @@ import java.util.Map;
 public class AssetManager {
 
   public static final String ASSET_PATH = "assets/";
+  private static boolean loaded = false;
 
   /**
    * Private static fields to store important GUI data.
@@ -58,6 +59,12 @@ public class AssetManager {
 
     baseImageIcons.put(fname, imageIcon);
     scaledImageIcons.put(fname, imageIcon);
+
+    // Load unknown asset if first run.
+    if (!loaded) {
+      loaded = true;
+      loadAsset("unknown.png");
+    }
   }
 
   /**
