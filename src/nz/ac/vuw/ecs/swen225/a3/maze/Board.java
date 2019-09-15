@@ -86,7 +86,7 @@ public class Board {
           if (foundChap) throw new MultiplePlayersFoundException();
           foundChap = true;
           Free tile = new Free();
-          tile.imageUrl = "assets/chap.png";
+          tile.imageUrl = "assets/chap_front.png";
           addTile(index / 20, index % 20, tile);
           break;
         default:
@@ -182,7 +182,7 @@ public class Board {
   public Tiles getPlayerLocation() throws PlayerNotFoundException {
     for (int r = 0; r < boardSize; r++) {
       for (int c = 0; c < boardSize; c++) {
-        if (tiles[r][c].getImageUrl().equals("assets/chap.png")) {
+        if (tiles[r][c].getImageUrl().equals("assets/chap_front.png")) {
           return tiles[r][c];
         }
       }
