@@ -3,9 +3,11 @@ package nz.ac.vuw.ecs.swen225.a3.application;
 import nz.ac.vuw.ecs.swen225.a3.maze.Board;
 import nz.ac.vuw.ecs.swen225.a3.maze.Player;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tiles;
+import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
 import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
 import nz.ac.vuw.ecs.swen225.a3.renderer.GUI;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
@@ -29,6 +31,15 @@ public class ChapsChallenge {
    * Create main game application.
    */
   private ChapsChallenge() {
+    // Load the assets.
+    try {
+      AssetManager.loadAssets();
+    } catch (IOException e) {
+      System.out.println("Unable to load assets from assets/ directory.");
+      throw new Error("Assets not found");
+    }
+
+    // Load the board.
     board = new Board();
     new JsonReadWrite(board);
     try {
