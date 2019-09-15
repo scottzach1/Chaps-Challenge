@@ -1,5 +1,6 @@
 package nz.ac.vuw.ecs.swen225.a3.renderer;
 
+import nz.ac.vuw.ecs.swen225.a3.application.Chaps_Challenge;
 import nz.ac.vuw.ecs.swen225.a3.maze.Board;
 import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
 
@@ -24,6 +25,8 @@ public class Canvas extends JPanel implements ComponentListener {
   private GridBagConstraints constraints = new GridBagConstraints();
   private ArrayList<Component> components = new ArrayList<>();
 
+  private Chaps_Challenge application;
+
   /**
    * Gets cell size.
    * @return cell size.
@@ -35,8 +38,9 @@ public class Canvas extends JPanel implements ComponentListener {
   /**
    * Constructor: Initializes local variable then renders the board.
    */
-  public Canvas() {
+  public Canvas(Chaps_Challenge app) {
 
+    application = app;
     setPreferredSize(new Dimension(GUI.canvasWidth, GUI.screenHeight));
     cellSize = Math.min(getWidth(), getHeight()) / VIEW_SIZE;
 
@@ -61,10 +65,8 @@ public class Canvas extends JPanel implements ComponentListener {
     components.clear();
     removeAll();
 
-    // Create board and add all components.
-    Board board = new Board();
-
-    components.addAll(board.getStream()
+    // Retrieve tiles and add all components.
+    components.addAll(application.getTilesToRender()
         .map(t -> AssetManager.getScaledImage(t.getImageUrl()))
         .map(JLabel::new).collect(Collectors.toList()));
 
