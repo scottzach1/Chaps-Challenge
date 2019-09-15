@@ -64,4 +64,8 @@ public class Player {
   public void addTreasure() {
     treasures++;
   }
+
+  public HashMap<String, Integer> getInventory() {
+    return inventory;
+  }
 }
