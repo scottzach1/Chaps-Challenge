@@ -30,11 +30,11 @@ public class AssetManager {
    */
   public static void loadAssets() throws IOException {
     // Load files from assets/ into baseImageIcons.
-    Files.walk(Paths.get("assets\\"))
+    Files.walk(Paths.get("assets/"))
         .filter(Files::isRegularFile)
         .map(Path::toString)
         .filter(f -> f.endsWith(".png"))
-        .map(f -> f.replace("\\", "/"))
+        //.map(f -> f.replace("\\", "/"))
         .forEach(f -> {
           ImageIcon imageIcon = new ImageIcon(f);
           baseImageIcons.put(f, imageIcon);
