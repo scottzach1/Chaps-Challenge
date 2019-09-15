@@ -4,6 +4,7 @@ import com.sun.javaws.exceptions.ErrorCodeResponseException;
 import nz.ac.vuw.ecs.swen225.a3.maze.Board;
 import nz.ac.vuw.ecs.swen225.a3.maze.Player;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tiles;
+import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
 import nz.ac.vuw.ecs.swen225.a3.renderer.GUI;
 
 import java.lang.invoke.SwitchPoint;
@@ -24,6 +25,7 @@ public class Chaps_Challenge {
    */
   private Chaps_Challenge(){
     board = new Board();
+    new JsonReadWrite(board);
     try {
       player = new Player(board.getPlayerLocation());
     }
