@@ -50,16 +50,13 @@ public class Canvas extends JPanel implements ComponentListener {
 
     setLayout(new GridBagLayout());
 
-    renderABoard();
+    renderBoard();
   }
 
   /**
-   * Creates a board then renders it.
-   *
-   * NOTE: This is just a test method and not intended
-   * in final product.
+   * Renders the board stored in application on the  canvas.
    */
-  private void renderABoard() {
+  private void renderBoard() {
     // Clear components.
     components.clear();
     removeAll();
@@ -108,7 +105,7 @@ public class Canvas extends JPanel implements ComponentListener {
     cellSize = Math.min(getWidth(), getHeight()) / VIEW_SIZE;
     AssetManager.scaleIcons(cellSize);
 
-    renderABoard();
+    renderBoard();
     repaint();
   }
 
