@@ -1,5 +1,8 @@
 package nz.ac.vuw.ecs.swen225.a3.renderer;
 
+import nz.ac.vuw.ecs.swen225.a3.maze.Board;
+import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
+
 import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -8,20 +11,19 @@ import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class Dashboard extends JPanel implements ComponentListener {
 
 
   private final int GRID_WIDTH = 4, GRID_HEIGHT = 8;
-  private final JLabel[] BLANKS;
-  private JLabel[] chipsBag;
+  private final JLabel BLANK;
+  private ArrayList<JLabel> chipsBag;
   GridBagConstraints constraints = new GridBagConstraints();
 
   public Dashboard() {
-    chipsBag = new JLabel[8];
-    BLANKS = new JLabel[8];
-    setBlanks();
+    chipsBag = new ArrayList<>();
+    BLANK = setBlank();
 
     setPreferredSize(new Dimension(GUI.dashboardWidth, GUI.screenHeight));
 
@@ -34,7 +36,6 @@ public class Dashboard extends JPanel implements ComponentListener {
   }
 
   private void renderComponents() {
-
 
 
     /*
@@ -66,80 +67,80 @@ public class Dashboard extends JPanel implements ComponentListener {
     CustomTextPane chipsLeft = new CustomTextPane("CHIPS LEFT", boxWidth, boxHeight, centerAlign, null, Color.black, false);
     CustomTextPane chipsLeftNum = new CustomTextPane("11", boxWidth, boxHeight, rightAlign, Color.black, Color.green, true);
 
-
+    constraints.fill = GridBagConstraints.BOTH;
     constraints.weightx = 1;
-
-    
+    constraints.weighty = 1;
     constraints.gridx = 1;
-    constraints.weighty = 5;
     constraints.gridwidth = GRID_WIDTH / 2;
 
+    // Add the three title and their numeric values
     constraints.gridy = 0;
-    constraints.anchor = GridBagConstraints.PAGE_END;
     add(level, constraints);
-
     constraints.gridy = 1;
-    constraints.anchor = GridBagConstraints.PAGE_START;
     add(levelNum, constraints);
-
     constraints.gridy = 2;
-    constraints.anchor = GridBagConstraints.PAGE_END;
     add(time, constraints);
-
     constraints.gridy = 3;
-    constraints.anchor = GridBagConstraints.PAGE_START;
     add(timeNum, constraints);
-
     constraints.gridy = 4;
-    constraints.anchor = GridBagConstraints.PAGE_END;
     add(chipsLeft, constraints);
-
     constraints.gridy = 5;
-    constraints.anchor = GridBagConstraints.PAGE_START;
     add(chipsLeftNum, constraints);
 
-
-    constraints.anchor = GridBagConstraints.PAGE_END;
-    constraints.weighty = 1;
+    // Add 8 spaces for chips bag contents
+    constraints.fill = GridBagConstraints.NONE;
     constraints.gridwidth = 1;
-    int size = Math.min((getWidth() / GRID_WIDTH) - paddingOfBox, (getHeight() / GRID_HEIGHT) - paddingOfBox);
-    for (int col = 0; col < 4; col++){
-      JLabel content = chipsBag[col];
-      content.setPreferredSize(new Dimension(size, size));
-      constraints.gridx = col;
-      constraints.gridy = 6;
-      add(content, constraints);
-    }
+    constraints.gridy = 6;
 
+    constraints.gridx = 0;
+    add(chipsBag.get(0), constraints);
+    constraints.gridx = 1;
+    add(chipsBag.get(1), constraints);
+    constraints.gridx = 2;
+    add(chipsBag.get(2), constraints);
+    constraints.gridx = 3;
+    add(chipsBag.get(3), constraints);
+
+    constraints.gridy = 7;
+
+    constraints.gridx = 0;
+    add(chipsBag.get(4), constraints);
+    constraints.gridx = 1;
+    add(chipsBag.get(5), constraints);
+    constraints.gridx = 2;
+    add(chipsBag.get(6), constraints);
+    constraints.gridx = 3;
+    add(chipsBag.get(7), constraints);
 
     revalidate();
   }
 
 
+  /**
+   * Given an arraylist of strings (asset names), their png will be added to
+   * the content panel on the dashboard.
+   *
+   * @param contents - A list of items in chips bag
+   */
   public void fillChipsBag(ArrayList<String> contents) {
-    if (contents == null) {
-      chipsBag = Arrays.copyOf(BLANKS, BLANKS.length);
-      return;
-    }
-
-    for (int i = 0; i < chipsBag.length; i++) {
+    for (int i = 0; i < 8; i++) {
       try {
         JLabel content = new JLabel();
         content.setIcon(new ImageIcon("assets/" + contents.get(i) + ".png"));
-        chipsBag[i] = content;
+        chipsBag.set(i, content);
       } catch (Exception e) {
-        chipsBag[i] = BLANKS[i];
+        chipsBag.set(i, BLANK);
       }
     }
   }
 
-  private void setBlanks() {
-    for (int i = 0; i < BLANKS.length; i++) {
-      JLabel blank = new JLabel();
-      blank.setIcon(new ImageIcon("assets/free.png"));
-      BLANKS[i] = blank;
-      chipsBag[i] = blank;
-    }
+  /**
+   * Creates a list of blank JPanels in the case that "fillChipsBag" fails or is passed null.
+   */
+  private JLabel setBlank() {
+    JLabel blank = new JLabel();
+    blank.setIcon(new ImageIcon("assets/free.png"));
+    return blank;
   }
 
   @Override
@@ -199,8 +200,6 @@ public class Dashboard extends JPanel implements ComponentListener {
         setBorder(null);
       }
 
-      // - Set the the size of the box to what is given
-      setPreferredSize(new Dimension(width, height));
       // Create a default font for the box making the text fit snug
       setFont(new Font("Ariel", Font.BOLD, Math.min(width * 2 / GRID_HEIGHT, height * 2 / (GRID_HEIGHT / 2))));
 
