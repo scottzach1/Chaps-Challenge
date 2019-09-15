@@ -14,8 +14,8 @@ public class Dashboard extends JPanel implements ComponentListener {
 
 
   private final int GRID_WIDTH = 4, GRID_HEIGHT = 8;
-  private final JLabel [] BLANKS;
-  private JLabel [] chipsBag;
+  private final JLabel[] BLANKS;
+  private JLabel[] chipsBag;
   GridBagConstraints constraints = new GridBagConstraints();
 
   public Dashboard() {
@@ -34,6 +34,8 @@ public class Dashboard extends JPanel implements ComponentListener {
   }
 
   private void renderComponents() {
+
+
 
     /*
     CREATE THE CONSTANTS FOR THE CUSTOM TEXT PANES
@@ -65,33 +67,78 @@ public class Dashboard extends JPanel implements ComponentListener {
     CustomTextPane chipsLeftNum = new CustomTextPane("11", boxWidth, boxHeight, rightAlign, Color.black, Color.green, true);
 
 
+    constraints.weightx = 1;
+
+    
+    constraints.gridx = 1;
+    constraints.weighty = 5;
+    constraints.gridwidth = GRID_WIDTH / 2;
+
+    constraints.gridy = 0;
+    constraints.anchor = GridBagConstraints.PAGE_END;
+    add(level, constraints);
+
+    constraints.gridy = 1;
+    constraints.anchor = GridBagConstraints.PAGE_START;
+    add(levelNum, constraints);
+
+    constraints.gridy = 2;
+    constraints.anchor = GridBagConstraints.PAGE_END;
+    add(time, constraints);
+
+    constraints.gridy = 3;
+    constraints.anchor = GridBagConstraints.PAGE_START;
+    add(timeNum, constraints);
+
+    constraints.gridy = 4;
+    constraints.anchor = GridBagConstraints.PAGE_END;
+    add(chipsLeft, constraints);
+
+    constraints.gridy = 5;
+    constraints.anchor = GridBagConstraints.PAGE_START;
+    add(chipsLeftNum, constraints);
+
+
+    constraints.anchor = GridBagConstraints.PAGE_END;
+    constraints.weighty = 1;
+    constraints.gridwidth = 1;
+    int size = Math.min((getWidth() / GRID_WIDTH) - paddingOfBox, (getHeight() / GRID_HEIGHT) - paddingOfBox);
+    for (int col = 0; col < 4; col++){
+      JLabel content = chipsBag[col];
+      content.setPreferredSize(new Dimension(size, size));
+      constraints.gridx = col;
+      constraints.gridy = 6;
+      add(content, constraints);
+    }
+
+
     revalidate();
   }
 
 
-  public void fillChipsBag(ArrayList<String> contents){
+  public void fillChipsBag(ArrayList<String> contents) {
     if (contents == null) {
       chipsBag = Arrays.copyOf(BLANKS, BLANKS.length);
       return;
     }
 
-    for (int i = 0; i < chipsBag.length; i++){
+    for (int i = 0; i < chipsBag.length; i++) {
       try {
         JLabel content = new JLabel();
-
-      } catch (Exception e){
+        content.setIcon(new ImageIcon("assets/" + contents.get(i) + ".png"));
+        chipsBag[i] = content;
+      } catch (Exception e) {
         chipsBag[i] = BLANKS[i];
       }
     }
-
-
   }
 
-  private void setBlanks(){
-    for (int i = 0; i < BLANKS.length; i++){
+  private void setBlanks() {
+    for (int i = 0; i < BLANKS.length; i++) {
       JLabel blank = new JLabel();
       blank.setIcon(new ImageIcon("assets/free.png"));
       BLANKS[i] = blank;
+      chipsBag[i] = blank;
     }
   }
 
