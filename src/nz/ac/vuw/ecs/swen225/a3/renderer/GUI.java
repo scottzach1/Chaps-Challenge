@@ -1,13 +1,11 @@
 package nz.ac.vuw.ecs.swen225.a3.renderer;
 
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
-import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.io.IOException;
 
 /**
  * GUI class extends JFrame and is responsible with
@@ -31,9 +29,11 @@ public class GUI extends JFrame implements ComponentListener {
   private Dashboard dashboard;
   private JMenuBar menuBar;
   private ChapsChallenge application;
-  
+
+
   // Layout object
   GridBagConstraints constraints = new GridBagConstraints();
+
   /**
    * Constructor: Creates a new JFrame and sets preferred sizes.
    * Creates and adds all relevant GUI components then redraws.
@@ -59,7 +59,6 @@ public class GUI extends JFrame implements ComponentListener {
     // Set GridBag
     setLayout(new GridBagLayout());
     addLayoutComponents();
-
 
     // Render.
     redraw();
@@ -89,6 +88,34 @@ public class GUI extends JFrame implements ComponentListener {
     add(dashboard, constraints);
 
     pack();
+  }
+
+  /**
+   * exitGame:
+   * - Invokes a pop up menu to confirm the player wants to exit the game.
+   *
+   * @return boolean - whether to exit or not
+   */
+  public void exitGame() {
+
+    // Button options
+    String[] options = {"Yes please", "Opps, wrong button"};
+
+    // Create and display the JOptionPane
+    int choice = JOptionPane.showOptionDialog(null,
+        "Would you like to exit the game?\n",
+        "QUIT?",
+        JOptionPane.YES_NO_OPTION,
+        JOptionPane.QUESTION_MESSAGE,
+        null,
+        options,
+        options[0]);
+
+    // (True) = Exit Game, (False) = Don't Exit Game
+    if (choice == JOptionPane.CLOSED_OPTION || choice == 1) {
+      return;
+    }
+    System.exit(0);
   }
 
   /**
@@ -150,4 +177,5 @@ public class GUI extends JFrame implements ComponentListener {
   public void componentHidden(ComponentEvent e) {
 
   }
+
 }
