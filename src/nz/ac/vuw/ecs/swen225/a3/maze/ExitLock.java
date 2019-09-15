@@ -7,10 +7,10 @@ public class ExitLock extends Tiles {
    * Constructor.
    * Sets the isAccessible to true.
    */
-  public ExitLock(int treasures) {
+  public ExitLock() {
     isAccessible = false;
-    totalTreasures=treasures;
     imageUrl = "assets/exit_lock.png";
+    defaultImageUrl = "assets/free.png";
   }
 
   /**
@@ -22,15 +22,21 @@ public class ExitLock extends Tiles {
     return "ExitLock";
   }
 
+
+  public void setTotalTreasures(int t){
+    totalTreasures = t;
+  }
+
   /**
    * Checks if the interaction between a character and a tile is valid.
    * @param p The player
    * @return if the interaction is valid
    */
+
   @Override
   boolean interact(Player p) {
    if (totalTreasures==p.getTreasures()){
-      setActive(false);
+     imageUrl = defaultImageUrl;
     }
     return isAccessible;
   }

@@ -12,8 +12,8 @@ public class Key extends Tiles {
    Key(String colour) {
     isAccessible = true;
     this.colour = colour;
-    setActive(true);
     imageUrl = "assets/key_" + colour + ".png";
+    defaultImageUrl = "assets/free.png";
   }
 
   /**
@@ -24,7 +24,7 @@ public class Key extends Tiles {
   @Override
   boolean interact(Player p) {
     p.addItem(this.toString());
-    setActive(false);
+    imageUrl = defaultImageUrl;
     return isAccessible;
   }
 

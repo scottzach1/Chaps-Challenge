@@ -13,6 +13,7 @@ public class InfoField extends Tiles {
     isAccessible = true;
     this.info = info;
     imageUrl = "assets/info_field.png";
+    defaultImageUrl = "assets/info_field.png";
   }
 
   /**

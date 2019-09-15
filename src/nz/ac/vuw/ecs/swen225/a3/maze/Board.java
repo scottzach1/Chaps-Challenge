@@ -81,10 +81,15 @@ public class Board {
         case "Exit":
           addTile(index/20,index%20,new Exit());
           break;
+        case "ExitLock":
+          addTile(index/20,index%20,new ExitLock());
+          break;
         case "C":
           if(foundChap) throw new MultiplePlayersFoundException();
           foundChap = true;
-          addTile(index/20,index%20,new Chap());
+          Free tile = new Free();
+          tile.imageUrl = "assets/chap.png";
+          addTile(index/20,index%20,tile);
           break;
         default:
           // Must be a colored key or door
@@ -105,6 +110,12 @@ public class Board {
       index++;
     }
 
+    List<Tiles> allTiles = new ArrayList<>();
+    for(int row = 0; row < boardSize; row++){
+      for (int col = 0; col < boardSize; col++){
+        
+      }
+    }
   }
 
   /**
@@ -164,7 +175,7 @@ public class Board {
   public Tiles getPlayerLocation() throws PlayerNotFoundException {
     for(int r = 0; r < boardSize; r++){
       for(int c = 0; c < boardSize; c++){
-        if(tiles[r][c] instanceof Chap){
+        if(tiles[r][c].getImageUrl().equals("assets/chap.png")){
           return tiles[r][c];
         }
       }

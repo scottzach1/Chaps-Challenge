@@ -2,7 +2,6 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
 
 public abstract class Tiles {
   boolean isAccessible;
-  private boolean isActive;
   private int row;
 
   public int getRow() {
@@ -27,15 +26,11 @@ public abstract class Tiles {
     return imageUrl;
   }
 
+  public String getDefaultImageUrl(){return defaultImageUrl;}
+
   String imageUrl;
+  String defaultImageUrl;
 
-  public boolean isActive() {
-    return isActive;
-  }
-
-   void setActive(boolean active) {
-    isActive = active;
-  }
 
   /**
    * Checks if the current tile is accessible.
@@ -97,5 +92,13 @@ public abstract class Tiles {
    * @return if the interaction is valid
    */
   abstract boolean interact(Player p);
+
+  public void setTileOccupied(){
+    imageUrl = "assets/chap.png";
+  }
+
+  public void setTileUnoccupied(){
+    imageUrl = defaultImageUrl;
+  }
 
 }
