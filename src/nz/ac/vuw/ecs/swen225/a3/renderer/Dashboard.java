@@ -1,8 +1,6 @@
 package nz.ac.vuw.ecs.swen225.a3.renderer;
 
-import com.sun.imageio.plugins.gif.GIFImageReader;
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
-import nz.ac.vuw.ecs.swen225.a3.maze.Board;
 import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
 
 import javax.swing.*;
@@ -13,33 +11,33 @@ import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 public class Dashboard extends JPanel implements ComponentListener {
 
 
   private final int GRID_WIDTH = 4, GRID_HEIGHT = 8;
-  private final JLabel BLANK;
-  private ArrayList<JLabel> chipsBag;
+  private ArrayList<JLabel> chapsBag;
   private ChapsChallenge chapsChallenge;
-  GridBagConstraints constraints = new GridBagConstraints();
+  GridBagConstraints constraints;
 
   public Dashboard(ChapsChallenge aChapsChallenge) {
     chapsChallenge = aChapsChallenge;
-    chipsBag = new ArrayList<>();
-    BLANK = setBlank();
 
     setPreferredSize(new Dimension(GUI.dashboardWidth, GUI.screenHeight));
 
     // TODO: Remove me.
-    setBackground(Color.MAGENTA);
+    setBackground(Color.LIGHT_GRAY);
 
     addComponentListener(this);
+
     setLayout(new GridBagLayout());
     renderComponents();
   }
 
   private void renderComponents() {
+    // reset the GridBagConstraints
+    constraints = new GridBagConstraints();
+
     /*
     CREATE THE CONSTANTS FOR THE CUSTOM TEXT PANES
      */
@@ -71,55 +69,70 @@ public class Dashboard extends JPanel implements ComponentListener {
     fillChipsBag();
 
 
-    // Add the three title and their numeric values to the top panel
+    /*
+    CREATES THE TOP PANEL WITH THE THREE TITLES
+     */
     JPanel topPanel = new JPanel();
     topPanel.setLayout(new GridBagLayout());
     topPanel.setBackground(null);
+    topPanel.setPreferredSize(new Dimension(getWidth() / 2, getHeight() * 2 / 3));
     GridBagConstraints topPanelConstraints = new GridBagConstraints();
 
     topPanelConstraints.fill = GridBagConstraints.BOTH;
     topPanelConstraints.weightx = 1;
     topPanelConstraints.weighty = 1;
-    topPanelConstraints.gridx = 0;
 
     topPanelConstraints.gridy = 0;
+    topPanelConstraints.anchor = GridBagConstraints.PAGE_END;
     topPanel.add(level, topPanelConstraints);
     topPanelConstraints.gridy = 1;
+    topPanelConstraints.anchor = GridBagConstraints.PAGE_START;
     topPanel.add(levelNum, topPanelConstraints);
     topPanelConstraints.gridy = 2;
+    topPanelConstraints.anchor = GridBagConstraints.PAGE_END;
     topPanel.add(time, topPanelConstraints);
     topPanelConstraints.gridy = 3;
+    topPanelConstraints.anchor = GridBagConstraints.PAGE_START;
     topPanel.add(timeNum, topPanelConstraints);
     topPanelConstraints.gridy = 4;
+    topPanelConstraints.anchor = GridBagConstraints.PAGE_END;
     topPanel.add(chipsLeft, topPanelConstraints);
     topPanelConstraints.gridy = 5;
+    topPanelConstraints.anchor = GridBagConstraints.PAGE_START;
     topPanel.add(chipsLeftNum, topPanelConstraints);
 
-    // Add 8 spaces for chips bag contents
+    /*
+    CREATES THE BOTTOM PANEL WITH ALL OF CHAPS ITEMS
+     */
     JPanel bottomPanel = new JPanel();
     bottomPanel.setLayout(new GridBagLayout());
     bottomPanel.setBackground(null);
+    bottomPanel.setPreferredSize(new Dimension(getWidth(), getHeight() / 3));
     GridBagConstraints bottomPanelConstraints = new GridBagConstraints();
-    bottomPanelConstraints.gridwidth = 1;
-    bottomPanelConstraints.weighty = 1;
-    bottomPanelConstraints.gridy = 6;
 
-    for (int i = 0; i < chipsBag.size(); i++){
-      int row = i / 4 + 6;
-      int col = i % 4;
+    bottomPanelConstraints.fill = GridBagConstraints.BOTH;
+    bottomPanelConstraints.gridx = 0;
 
-      bottomPanelConstraints.gridx = col;
-      bottomPanelConstraints.gridy = row;
+    for (int i = 0; i < 8; i++) {
+      JLabel j = chapsBag.get(i);
+      j.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.BLACK));
+      j.setPreferredSize(new Dimension(getWidth() / 4, getHeight() / (3 * 2)));
+      j.setText("ICON HERE");
 
-      bottomPanel.add(chipsBag.get(i), bottomPanelConstraints);
+      bottomPanelConstraints.gridx = (i % 4);
+      bottomPanelConstraints.gridy = (i / 4);
+
+
+      bottomPanel.add(j, bottomPanelConstraints);
     }
 
+
     constraints.weighty = 2;
-    constraints.fill = GridBagConstraints.BOTH;
-    constraints.gridy =0;
+    constraints.gridy = 0;
     add(topPanel, constraints);
+    constraints.weighty = 1;
     constraints.gridy = 1;
-   add(bottomPanel, constraints);
+    add(bottomPanel, constraints);
 
     revalidate();
   }
@@ -130,24 +143,15 @@ public class Dashboard extends JPanel implements ComponentListener {
    * the content panel on the dashboard.
    */
   public void fillChipsBag() {
-    chipsBag.clear();
+    chapsBag = new ArrayList<>();
     for (int i = 0; i < 8; i++) {
       try {
         JLabel content = new JLabel(AssetManager.getScaledImage(chapsChallenge.getPlayerInventory().get(i)));
-        chipsBag.set(i, content);
+        chapsBag.set(i, content);
       } catch (Exception e) {
-        chipsBag.add(BLANK);
+        chapsBag.add(new JLabel(AssetManager.getScaledImage("assets/free.png")));
       }
     }
-  }
-
-  /**
-   * Creates a list of blank JPanels in the case that "fillChipsBag" fails or is passed null.
-   */
-  private JLabel setBlank() {
-    JLabel blank = new JLabel();
-    blank.setIcon(new ImageIcon("assets/unknown.png"));
-    return blank;
   }
 
   @Override
