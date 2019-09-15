@@ -3,13 +3,14 @@ package nz.ac.vuw.ecs.swen225.a3.application;
 import nz.ac.vuw.ecs.swen225.a3.maze.Board;
 import nz.ac.vuw.ecs.swen225.a3.maze.Player;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tiles;
-import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
 import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
 import nz.ac.vuw.ecs.swen225.a3.renderer.GUI;
 
-import java.io.IOException;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
@@ -19,9 +20,10 @@ import java.util.stream.Stream;
  * Chap’s challenge is a creative clone of the (first level of the)
  * 1989 Atari game Chips Challenge. To learn more about Chip’s Challenge.
  */
-public class ChapsChallenge {
+public class ChapsChallenge implements KeyListener {
 
   private Board board;
+  private GUI gui;
   private Player player;
 
   private long totalTime = 100; //100 seconds, todo change with levels
@@ -29,18 +31,13 @@ public class ChapsChallenge {
   private long timeLeft = totalTime;
 
   private boolean gamePaused=false;
+
+  // HashSet of actively pressed keys
+  HashSet<Integer> activeKeys;
   /**
    * Create main game application.
    */
   private ChapsChallenge() {
-    // Load the assets.
-//    try {
-//      AssetManager.loadAssets();
-//    } catch (IOException e) {
-//      System.out.println("Unable to load assets from assets/ directory.");
-//      throw new Error("Assets not found");
-//    }
-
     // Load the board.
     board = new Board();
     new JsonReadWrite(board);
@@ -50,8 +47,13 @@ public class ChapsChallenge {
       System.out.println("Error, player not found in level description");
       throw new Error("Player not found");
     }
-
     startTime = System.currentTimeMillis();
+
+    // Create new set for hosting keys currently pressed
+    activeKeys = new HashSet<>();
+    // Creates a GUI and gives it a keyListener
+    gui = new GUI(this);
+    gui.addKeyListener(this);
   }
 
   /**
@@ -151,6 +153,62 @@ public class ChapsChallenge {
     return board.getStream(player.getLocation());
   }
 
+
+
+  /**
+   * Overridden but not utilized.
+   *
+   * @param e event.
+   */
+  @Override
+  public void keyTyped(KeyEvent e) {/* UNUSED */}
+
+  /**
+   * Handles events occuring after a key is pressed.
+   * First adding it to the list of keys pressed, then dealing with all
+   * active keys in the 'activeKeys' set.
+   * @param e - The key pressed
+   */
+  @Override
+  public void keyPressed(KeyEvent e) {
+    // Add the key pressed to the current list of pressed keys
+    activeKeys.add(e.getKeyCode());
+    // CTRL + X
+    if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_X))
+      gui.exitGame();
+    // CTRL + S
+    if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_S)){
+      saveGame();
+      gui.exitGame();
+    }
+
+    // SPACE
+    if (activeKeys.contains(KeyEvent.VK_SPACE))
+      pauseGame();
+    /*
+    PLAYER CONTROLS
+     */
+    // Move Up
+    if (activeKeys.contains(KeyEvent.VK_UP) || activeKeys.contains(KeyEvent.VK_W))
+      move(Tiles.Direction.Up);
+    // Move Down
+    if (activeKeys.contains(KeyEvent.VK_DOWN) || activeKeys.contains(KeyEvent.VK_S))
+      move(Tiles.Direction.Down);
+    // Move Left
+    if (activeKeys.contains(KeyEvent.VK_LEFT) || activeKeys.contains(KeyEvent.VK_A))
+      move(Tiles.Direction.Left);
+    // Move Right
+    if (activeKeys.contains(KeyEvent.VK_RIGHT) || activeKeys.contains(KeyEvent.VK_D))
+      move(Tiles.Direction.Right);
+  }
+
+  /**
+   * Removes any key released from the set of activeKeys.
+   * @param e - The key released
+   */
+  @Override
+  public void keyReleased(KeyEvent e) {activeKeys.remove(e.getKeyCode());}
+
   /**
    * ChapsChallenge invocation point for running the game.
    *
@@ -158,6 +216,5 @@ public class ChapsChallenge {
    */
   public static void main(String[] args) {
     ChapsChallenge game = new ChapsChallenge();
-    new GUI(game);
   }
 }
