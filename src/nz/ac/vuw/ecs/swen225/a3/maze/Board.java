@@ -1,10 +1,10 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
-import nz.ac.vuw.ecs.swen225.a3.renderer.Canvas;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
+import nz.ac.vuw.ecs.swen225.a3.renderer.Canvas;
+
 
 /**
  * Board class.
@@ -97,10 +97,16 @@ public class Board {
     for (int row = 0; row < boardSize; row++) {
       for (int col = 0; col < boardSize; col++) {
         Tiles t = tiles[row][col];
-        t.adjacent[Tiles.Direction.Left.ordinal()] = col != 0 ? tiles[row][col - 1] : null;
-        t.adjacent[Tiles.Direction.Right.ordinal()] = col != boardSize - 1 ? tiles[row][col + 1] : null;
-        t.adjacent[Tiles.Direction.Up.ordinal()] = row != 0 ? tiles[row - 1][col] : null;
-        t.adjacent[Tiles.Direction.Down.ordinal()] = row != boardSize - 1 ? tiles[row + 1][col] : null;
+        
+        //Separate ordinal in different line to stop line limit > 100 characters.
+        int leftOrdinal = Tiles.Direction.Left.ordinal();
+        t.adjacent[leftOrdinal] = col != 0 ? tiles[row][col - 1] : null;
+        int rightOrdinal = Tiles.Direction.Right.ordinal();
+        t.adjacent[rightOrdinal] = col != boardSize - 1 ? tiles[row][col + 1] : null;
+        int upOrdinal = Tiles.Direction.Up.ordinal();
+        t.adjacent[upOrdinal] = row != 0 ? tiles[row - 1][col] : null;
+        int downOrdinal = Tiles.Direction.Right.ordinal();
+        t.adjacent[downOrdinal] = row != boardSize - 1 ? tiles[row + 1][col] : null;
       }
     }
   }
