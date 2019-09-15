@@ -3,6 +3,25 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
 public abstract class Tiles {
   boolean isAccessible;
   private boolean isActive;
+  private int row;
+
+  public int getRow() {
+    return row;
+  }
+
+  public void setRow(int row) {
+    this.row = row;
+  }
+
+  public int getCol() {
+    return col;
+  }
+
+  public void setCol(int col) {
+    this.col = col;
+  }
+
+  private int col;
 
   public String getImageUrl() {
     return imageUrl;

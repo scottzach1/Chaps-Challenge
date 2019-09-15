@@ -15,7 +15,7 @@ public class Board {
   private int boardSize = 20;
   private Tiles[][] tiles = new Tiles[boardSize][boardSize];
   private static String level1 =
-      "_|KBlue|DBlue|_|_|_|_|_|_|_|?|T|C|_|_|_|_|_|_|_|"
+      "_|KBlue|DBlue|_|_|_|_|_|_|_|?|T|_|_|_|_|_|_|_|_|"
           + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
           + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
           + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
@@ -24,7 +24,7 @@ public class Board {
           + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
           + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
           + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-          + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+          + "_|C|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
           + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
           + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
           + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
@@ -56,22 +56,22 @@ public class Board {
     for (String v : values) {
       switch (v) {
         case "_":
-          tiles[index / boardSize][index % boardSize] = new Free();
+          addTile(index/20,index%20,new Free());
           break;
         case "#":
-          tiles[index / boardSize][index % boardSize] = new Wall();
+          addTile(index/20,index%20,new Wall());
           break;
         case "T":
-          tiles[index / boardSize][index % boardSize] = new Treasure();
+          addTile(index/20,index%20,new Treasure());
           break;
         case "?":
-          tiles[index / boardSize][index % boardSize] = new InfoField("Test");
+          addTile(index/20,index%20,new InfoField("Test"));
           break;
         case "Exit":
-          tiles[index / boardSize][index % boardSize] = new Exit();
+          addTile(index/20,index%20,new Exit());
           break;
         case "C":
-          tiles[index / boardSize][index % boardSize] = new Chap();
+          addTile(index/20,index%20,new Chap());
           break;
         default:
           // Must be a colored key or door
@@ -80,14 +80,26 @@ public class Board {
 
           // Create colored key or door
           if (itemType.equals("K")) {
-            tiles[index / boardSize][index % boardSize] = new Key(colour);
+            addTile(index/20,index%20,new Key(colour));
           } else {
-            tiles[index / boardSize][index % boardSize] = new LockedDoor(colour);
+            addTile(index/20,index%20,new LockedDoor(colour));
           }
       }
       index++;
     }
 
+  }
+
+  /**
+   * Add tile to 2d array and store row and column.
+   * @param row Row index
+   * @param col Col index
+   * @param t Tile to add
+   */
+  private void addTile(int row, int col, Tiles t){
+    t.setRow(row);
+    t.setCol(col);
+    tiles[row][col] = t;
   }
 
   /**
@@ -106,18 +118,41 @@ public class Board {
   }
 
   /**
-   * Gets stream of all Cells, currently top left 9x9 cells.
-   * From left to right, top to bottom.
+   * Gets stream of View_Size x View_Size cells focused on player.
    * @return Stream of all cells, left to right, top to bottom.
    */
-  public Stream<Tiles> getStream() {
+  public Stream<Tiles> getStream(Tiles t) {
     List<Tiles> tilesList = new ArrayList<>();
-    for (int r = 0; r != Canvas.VIEW_SIZE; ++r) {
-      for (int c = 0; c != Canvas.VIEW_SIZE; ++c) {
-        tilesList.add(tiles[r][c]);
+    for (int r = t.getRow()-Canvas.VIEW_SIZE/2; r <= t.getRow()+Canvas.VIEW_SIZE/2; ++r) {
+      for (int c = t.getCol()-Canvas.VIEW_SIZE/2; c <= t.getCol()+Canvas.VIEW_SIZE/2; ++c) {
+        if(r < 0 || c < 0) tilesList.add(new Wall());
+        else tilesList.add(tiles[r][c]);
       }
     }
     return tilesList.stream();
   }
 
+  /**
+   * Get player location from board description.
+   * Searches board for instance of Chap
+   * @return Tile player found on
+   * @throws PlayerNotFoundException when no chap present
+   */
+  public Tiles getPlayerLocation() throws PlayerNotFoundException {
+    for(int r = 0; r < boardSize; r++){
+      for(int c = 0; c < boardSize; c++){
+        if(tiles[r][c] instanceof Chap){
+          return tiles[r][c];
+        }
+      }
+    }
+    throw new PlayerNotFoundException();
+  }
+
+  /**
+   * Exception thrown when no chap is present in level description.
+   */
+  public class PlayerNotFoundException extends Exception{
+
+  }
 }

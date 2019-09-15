@@ -31,11 +31,14 @@ public class GUI extends JFrame implements ComponentListener {
   private Dashboard dashboard;
   private JMenuBar menuBar;
 
+  private Chaps_Challenge application;
+
   /**
    * Constructor: Creates a new JFrame and sets preferred sizes.
    * Creates and adds all relevant GUI components then redraws.
    */
   public GUI(Chaps_Challenge chaps_challenge) {
+    application = chaps_challenge;
     //Create & init the frame.
     setPreferredSize(screenDimension.getSize());
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -54,7 +57,7 @@ public class GUI extends JFrame implements ComponentListener {
     }
 
     // Add components.
-    canvas = new Canvas();
+    canvas = new Canvas(application);
     dashboard = new Dashboard();
     menuBar = new MenuOptions();
     addLayoutComponents();
