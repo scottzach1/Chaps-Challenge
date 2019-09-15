@@ -52,7 +52,7 @@ public class GUI extends JFrame implements ComponentListener {
 
     // Add components.
     canvas = new Canvas(application);
-    dashboard = new Dashboard();
+    dashboard = new Dashboard(chaps_challenge);
     menuBar = new MenuOptions();
 
 

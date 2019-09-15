@@ -1,5 +1,6 @@
 package nz.ac.vuw.ecs.swen225.a3.renderer;
 
+import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 import nz.ac.vuw.ecs.swen225.a3.maze.Board;
 import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
 
@@ -19,9 +20,11 @@ public class Dashboard extends JPanel implements ComponentListener {
   private final int GRID_WIDTH = 4, GRID_HEIGHT = 8;
   private final JLabel BLANK;
   private ArrayList<JLabel> chipsBag;
+  private ChapsChallenge chapsChallenge;
   GridBagConstraints constraints = new GridBagConstraints();
 
-  public Dashboard() {
+  public Dashboard(ChapsChallenge aChapsChallenge) {
+    chapsChallenge = aChapsChallenge;
     chipsBag = new ArrayList<>();
     BLANK = setBlank();
 
@@ -95,7 +98,7 @@ public class Dashboard extends JPanel implements ComponentListener {
     for (int i = 0; i < chipsBag.size(); i++){
       int row = i / 4;
       int col = i % 4;
-      
+
     }
 
     revalidate();
