@@ -15,10 +15,10 @@ public class Board {
   private int boardSize = 20;
   private Tiles[][] tiles = new Tiles[boardSize][boardSize];
   private static String level1 =
-      "_|KBlue|DBlue|_|_|_|_|_|_|_|?|T|_|_|_|_|_|_|_|_|"
-          + "_|_|_|_|_|_|_|_|_|_|_|_|C|_|_|_|_|_|_|_|"
+      "ExitLock|KBlue|DBlue|_|_|_|_|_|_|_|?|T|_|_|_|_|_|_|_|_|"
+          + "_|_|_|_|_|_|_|_|_|_|_|ExitLock|C|_|_|_|_|_|_|_|"
           + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-          + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+          + "_|_|_|T|T|T|T|_|_|_|_|_|_|_|_|_|_|_|_|_|"
           + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
           + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
           + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
@@ -113,9 +113,15 @@ public class Board {
     List<Tiles> allTiles = new ArrayList<>();
     for(int row = 0; row < boardSize; row++){
       for (int col = 0; col < boardSize; col++){
-        
+        allTiles.add(tiles[row][col]);
       }
     }
+
+    // Count number of treasures
+    int treasureCount =  (int)allTiles.stream().filter(p -> p.toString().equals("Treasure")).count();
+
+    // Set all exit locks to require correct number of treasures
+    allTiles.stream().filter(p -> p.toString().equals("ExitLock")).map(c -> (ExitLock)c).forEach(s -> s.setTotalTreasures(treasureCount));
   }
 
   /**
