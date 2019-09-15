@@ -41,7 +41,17 @@ public class Board {
    * Constructor.
    */
   public Board() {
-    parseBoard(level1);
+    try {
+      parseBoard(level1);
+    }
+    catch(ParsingException p){
+      System.out.println(p.getMessage());
+      throw new Error(p.getMessage());
+    }
+    catch(MultiplePlayersFoundException m){
+      System.out.println(m.getMessage());
+      throw new Error(m.getMessage());
+    }
     setupAdjacency();
   }
 
@@ -50,7 +60,8 @@ public class Board {
    *
    * @param level String representation of board
    */
-  private void parseBoard(String level) {
+  private void parseBoard(String level) throws MultiplePlayersFoundException, ParsingException {
+    boolean foundChap = false;
     String[] values = level.split("\\|");
     int index = 0;
     for (String v : values) {
@@ -71,11 +82,17 @@ public class Board {
           addTile(index/20,index%20,new Exit());
           break;
         case "C":
+          if(foundChap) throw new MultiplePlayersFoundException();
+          foundChap = true;
           addTile(index/20,index%20,new Chap());
           break;
         default:
           // Must be a colored key or door
           String itemType = v.substring(0, 1);
+
+          // Check for invalid token
+          if(!(itemType.equals("K") || itemType.equals("D"))) throw new ParsingException();
+
           String colour = v.substring(1);
 
           // Create colored key or door
@@ -153,6 +170,29 @@ public class Board {
    * Exception thrown when no chap is present in level description.
    */
   public class PlayerNotFoundException extends Exception{
+    @Override
+    public String getMessage(){
+      return "No Chap in string description of level";
+    }
+  }
 
+  /**
+   * Exception thrown when multiple chaps present in level description.
+   */
+  public class MultiplePlayersFoundException extends Exception{
+    @Override
+    public String getMessage(){
+      return "Multiple Chaps in string description of level";
+    }
+  }
+
+  /**
+   * Exception thrown when invalid token found in level description.
+   */
+  public class ParsingException extends Exception{
+    @Override
+    public String getMessage(){
+      return "Invalid token in string description of level";
+    }
   }
 }
