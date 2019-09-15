@@ -53,7 +53,6 @@ public class ChapsChallenge implements KeyListener {
     activeKeys = new HashSet<>();
     // Creates a GUI and gives it a keyListener
     gui = new GUI(this);
-    gui.addKeyListener(this);
   }
 
   /**
