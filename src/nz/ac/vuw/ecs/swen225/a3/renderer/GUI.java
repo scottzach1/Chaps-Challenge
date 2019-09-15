@@ -66,17 +66,6 @@ public class GUI extends JFrame implements ComponentListener {
   }
 
   /**
-   * Testing invocation point to check GUI.
-   *
-   * @param args (ignored).
-   */
-  public static void main(String[] args) {
-    //GUI gui = new GUI();
-    System.out.printf("Screen width %d, height %d\n", canvasWidth, screenHeight);
-    System.out.printf("Dashboard width %d, height %d\n", dashboardWidth, screenHeight);
-  }
-
-  /**
    * Sets up GridBagLayout with all screen components.
    */
   public void addLayoutComponents() {

@@ -98,19 +98,4 @@ public class AssetManager {
     }
     return scaledIcon;
   }
-
-  /**
-   * Invocation point for testing asset manager can read files from
-   * assets directory correctly.
-   *
-   * @param args ignored.
-   */
-  public static void main(String[] args) {
-    try {
-      AssetManager.loadAssets();
-    } catch (IOException e) {
-      System.out.println("Unable to read files from folder: " + e);
-    }
-    System.out.println("Read " + baseImageIcons.size() + " .png's from: " + ASSET_PATH);
-  }
 }
