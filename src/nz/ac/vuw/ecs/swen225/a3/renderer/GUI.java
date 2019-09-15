@@ -95,7 +95,6 @@ public class GUI extends JFrame implements ComponentListener {
   }
 
   public void pauseGame() {
-    System.out.println("Pausing");
     pauseAction.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null));
   }
 

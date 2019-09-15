@@ -196,7 +196,6 @@ public class ChapsChallenge implements KeyListener {
     }
     // SPACE
     if (activeKeys.contains(KeyEvent.VK_SPACE) && activeKeys.size() == 1)
-      System.out.println("Got here");
       pauseGame();
     // ESC
     if (activeKeys.contains(KeyEvent.VK_ESCAPE) && activeKeys.size() == 1){

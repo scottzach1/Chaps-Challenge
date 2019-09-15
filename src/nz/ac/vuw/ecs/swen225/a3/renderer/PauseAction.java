@@ -17,19 +17,22 @@ class PauseAction extends AbstractAction {
   private PauseMenu pauseMenu = new PauseMenu();  // jpanel shown in JDialog
   private GUI gui;
 
+  /**
+   * Creates a pause action and stores GUI for convenience.
+   * @param name action name.
+   * @param gui main JFrame.
+   */
   public PauseAction(String name, GUI gui) {
     super(name);
     this.gui = gui;
   }
 
+  /**
+   * Action invoked, load pause menu.
+   * @param e event.
+   */
   @Override
   public void actionPerformed(ActionEvent e) {
-    // comp is our JButton
-    Component comp = (Component) e.getSource();
-    if (comp == null) {
-      return;
-    }
-
     // create our glass pane
     JPanel glassPane = new JPanel() {
       @Override
@@ -53,11 +56,10 @@ class PauseAction extends AbstractAction {
     dialog.getContentPane().add(pauseMenu);  // add its JPanel to it
     dialog.setUndecorated(true); // Keep position relative to game.
     dialog.pack(); // size it
-    dialog.setLocationRelativeTo((Window) gui); // ** Center it over the JFrame **
+    dialog.setLocationRelativeTo(gui); // ** Center it over the JFrame **
     dialog.setVisible(true);  // display it, pausing the GUI below it
 
     // at this point the dialog is no longer visible, so get rid of glass pane
     glassPane.setVisible(false);
-
   }
 }

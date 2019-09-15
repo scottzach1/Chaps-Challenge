@@ -11,14 +11,14 @@ import java.awt.event.ActionEvent;
  * Full Credit: https://stackoverflow.com/a/45778122/9621945
  */
 class PauseMenu extends JPanel {
-  private static final Color BG = new Color(123, 63, 0);
+  private static final Color BG = new Color(67, 65, 66);
 
   /**
    * Constructor: Populates JPanel with JLabels as buttons.
    */
   public PauseMenu() {
     JLabel pausedLabel = new JLabel("PAUSED");
-    pausedLabel.setForeground(Color.ORANGE);
+    pausedLabel.setForeground(Color.WHITE);
     JPanel pausedPanel = new JPanel();
     pausedPanel.setOpaque(false);
     pausedPanel.add(pausedLabel);
