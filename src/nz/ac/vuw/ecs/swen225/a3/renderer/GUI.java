@@ -125,6 +125,7 @@ public class GUI extends JFrame implements ComponentListener {
   /**
    * Resize dimensions and redraw window on
    * screen resize.
+   *
    * @param e event.
    */
   @Override
@@ -142,6 +143,7 @@ public class GUI extends JFrame implements ComponentListener {
 
   /**
    * Overridden but not utilized.
+   *
    * @param e event.
    */
   @Override
@@ -151,6 +153,7 @@ public class GUI extends JFrame implements ComponentListener {
 
   /**
    * Overridden but not utilized.
+   *
    * @param e event.
    */
   @Override
@@ -160,6 +163,7 @@ public class GUI extends JFrame implements ComponentListener {
 
   /**
    * Overridden but not utilized.
+   *
    * @param e event.
    */
   @Override

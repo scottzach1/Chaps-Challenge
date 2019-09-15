@@ -6,7 +6,7 @@ public class Exit extends Tiles {
    * Constructor.
    * Sets the isAccessible to true.
    */
-   Exit() {
+  Exit() {
     isAccessible = true;
     imageUrl = "assets/exit.png";
     defaultImageUrl = "assets/free.png";
@@ -14,6 +14,7 @@ public class Exit extends Tiles {
 
   /**
    * Standard toString method.
+   *
    * @return the name of the tile
    */
   @Override
@@ -23,6 +24,7 @@ public class Exit extends Tiles {
 
   /**
    * Checks if the interaction between a character and a tile is valid.
+   *
    * @param p The player
    * @return if the interaction is valid
    */

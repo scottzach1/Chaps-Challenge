@@ -44,6 +44,7 @@ public class AssetManager {
 
   /**
    * Rescales icons to new size.
+   *
    * @param newCellSize Cell size.
    */
   public static void scaleIcons(int newCellSize) {
@@ -59,6 +60,7 @@ public class AssetManager {
 
   /**
    * Gets an ImageIcon and the last scaled size.
+   *
    * @param fname file path.
    * @return ImageIcon.
    */

@@ -6,7 +6,7 @@ public class Wall extends Tiles {
    * Constructor.
    * Sets the isAccessible field to false.
    */
-   Wall() {
+  Wall() {
     isAccessible = false;
     imageUrl = "assets/wall.png";
     defaultImageUrl = "assets/wall.png";
@@ -25,6 +25,7 @@ public class Wall extends Tiles {
 
   /**
    * Standard toString method.
+   *
    * @return the name of the tile
    */
   @Override

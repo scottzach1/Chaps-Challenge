@@ -6,7 +6,7 @@ public class Free extends Tiles {
    * Constructor.
    * Sets the isAccessible to true.
    */
-   Free() {
+  Free() {
     isAccessible = true;
     imageUrl = "assets/free.png";
     defaultImageUrl = "assets/free.png";
@@ -14,13 +14,13 @@ public class Free extends Tiles {
 
   /**
    * Standard toString method.
+   *
    * @return the name of the tile
    */
   @Override
   public String toString() {
     return "Free";
   }
-
 
 
   /**

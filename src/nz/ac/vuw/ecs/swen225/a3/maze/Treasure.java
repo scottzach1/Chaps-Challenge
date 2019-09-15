@@ -7,7 +7,7 @@ public class Treasure extends Tiles {
    * Constructor.
    * Sets the isAccessible field to true.
    */
-   Treasure() {
+  Treasure() {
     isAccessible = true;
     imageUrl = "assets/treasure.png";
     defaultImageUrl = "assets/free.png";
@@ -15,6 +15,7 @@ public class Treasure extends Tiles {
 
   /**
    * Standard toString method.
+   *
    * @return the name of the tile
    */
   @Override
@@ -24,6 +25,7 @@ public class Treasure extends Tiles {
 
   /**
    * Checks if the interaction between a character and a tile is valid.
+   *
    * @param p The player
    * @return if the interaction is valid
    */

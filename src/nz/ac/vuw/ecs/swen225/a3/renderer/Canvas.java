@@ -28,6 +28,7 @@ public class Canvas extends JPanel implements ComponentListener {
 
   /**
    * Gets cell size.
+   *
    * @return cell size.
    */
   public static int getCellSize() {
@@ -55,7 +56,7 @@ public class Canvas extends JPanel implements ComponentListener {
 
   /**
    * Creates a board then renders it.
-   *
+   * <p>
    * NOTE: This is just a test method and not intended
    * in final product.
    */
@@ -78,7 +79,7 @@ public class Canvas extends JPanel implements ComponentListener {
   /**
    * Revalidate's components on GridBagLayout to
    * VIEW_SIZE x VIEW_SIZE.
-   *
+   * <p>
    * DOES NOT REPAINT.
    */
   private void revalidateComponents() {
@@ -101,6 +102,7 @@ public class Canvas extends JPanel implements ComponentListener {
   /**
    * Recalculates cell size and repaints
    * when resized.
+   *
    * @param e event.
    */
   @Override
@@ -114,6 +116,7 @@ public class Canvas extends JPanel implements ComponentListener {
 
   /**
    * Overridden but not utilized.
+   *
    * @param e event.
    */
   @Override
@@ -123,6 +126,7 @@ public class Canvas extends JPanel implements ComponentListener {
 
   /**
    * Overridden but not utilized.
+   *
    * @param e event.
    */
   @Override
@@ -132,6 +136,7 @@ public class Canvas extends JPanel implements ComponentListener {
 
   /**
    * Overridden but not utilized.
+   *
    * @param e event.
    */
   @Override

@@ -15,6 +15,7 @@ public class ExitLock extends Tiles {
 
   /**
    * Standard toString method.
+   *
    * @return the name of the tile
    */
   @Override
@@ -23,20 +24,21 @@ public class ExitLock extends Tiles {
   }
 
 
-  public void setTotalTreasures(int t){
+  public void setTotalTreasures(int t) {
     totalTreasures = t;
   }
 
   /**
    * Checks if the interaction between a character and a tile is valid.
+   *
    * @param p The player
    * @return if the interaction is valid
    */
 
   @Override
   public boolean interact(Player p) {
-   if (totalTreasures==p.getTreasures()){
-     imageUrl = defaultImageUrl;
+    if (totalTreasures == p.getTreasures()) {
+      imageUrl = defaultImageUrl;
     }
     return isAccessible;
   }

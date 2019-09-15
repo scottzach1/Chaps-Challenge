@@ -26,7 +26,9 @@ public abstract class Tiles {
     return imageUrl;
   }
 
-  public String getDefaultImageUrl(){return defaultImageUrl;}
+  public String getDefaultImageUrl() {
+    return defaultImageUrl;
+  }
 
   String imageUrl;
   String defaultImageUrl;
@@ -34,6 +36,7 @@ public abstract class Tiles {
 
   /**
    * Checks if the current tile is accessible.
+   *
    * @return if it is accessible
    */
   public boolean getIsAccessible() {
@@ -42,44 +45,49 @@ public abstract class Tiles {
 
   /**
    * Sets the boolean isAccessible based on the parameter.
+   *
    * @param accessible boolean to set isAccessible to.
    */
-   void setAccessible(boolean accessible) {
+  void setAccessible(boolean accessible) {
     isAccessible = accessible;
   }
 
-  public enum Direction{
-    Left,Right,Up,Down
+  public enum Direction {
+    Left, Right, Up, Down
   }
 
   Tiles[] adjacent = new Tiles[4];
-  
+
   /**
    * Gets the tile to the left.
+   *
    * @return left of tile.
    */
   public Tiles getLeft() {
     return adjacent[Direction.Left.ordinal()];
   }
-  
+
   /**
    * Gets the tile to the right.
+   *
    * @return right of tile.
    */
   public Tiles getRight() {
     return adjacent[Direction.Right.ordinal()];
   }
-  
+
   /**
    * Gets the tile above.
+   *
    * @return up of tile.
    */
   public Tiles getUp() {
     return adjacent[Direction.Up.ordinal()];
   }
-  
+
   /**
    * Gets the tile below.
+   *
    * @return down of tile.
    */
   public Tiles getDown() {
@@ -88,16 +96,17 @@ public abstract class Tiles {
 
   /**
    * Checks if the interaction between a character and a tile is valid.
-   *  @param p The player
+   *
+   * @param p The player
    * @return if the interaction is valid
    */
   public abstract boolean interact(Player p);
 
-  public void setTileOccupied(){
+  public void setTileOccupied() {
     imageUrl = "assets/chap.png";
   }
 
-  public void setTileUnoccupied(){
+  public void setTileUnoccupied() {
     imageUrl = defaultImageUrl;
   }
 
