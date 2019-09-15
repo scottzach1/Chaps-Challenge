@@ -35,7 +35,7 @@ public class ExitLock extends Tiles {
    */
 
   @Override
-  boolean interact(Player p) {
+  public boolean interact(Player p) {
    if (totalTreasures==p.getTreasures()){
      imageUrl = defaultImageUrl;
     }

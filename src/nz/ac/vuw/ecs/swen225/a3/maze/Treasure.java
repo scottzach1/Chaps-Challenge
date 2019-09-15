@@ -29,8 +29,8 @@ public class Treasure extends Tiles {
    * @return if the interaction is valid
    */
   @Override
-  boolean interact(Player p) {
+  public boolean interact(Player p) {
     imageUrl = defaultImageUrl;
-    return true;
+    return isAccessible;
   }
 }

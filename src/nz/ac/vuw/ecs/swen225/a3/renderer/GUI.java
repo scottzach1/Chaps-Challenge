@@ -1,6 +1,6 @@
 package nz.ac.vuw.ecs.swen225.a3.renderer;
 
-import nz.ac.vuw.ecs.swen225.a3.application.Chaps_Challenge;
+import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
 
 import javax.swing.*;
@@ -26,18 +26,18 @@ public class GUI extends JFrame implements ComponentListener {
   static int canvasWidth = (screenDimension.width * 2) / 3;
   static int dashboardWidth = (screenDimension.width) / 3;
 
-  // Chaps_Challenge component fields.
+  // ChapsChallenge component fields.
   private Canvas canvas;
   private Dashboard dashboard;
   private JMenuBar menuBar;
 
-  private Chaps_Challenge application;
+  private ChapsChallenge application;
 
   /**
    * Constructor: Creates a new JFrame and sets preferred sizes.
    * Creates and adds all relevant GUI components then redraws.
    */
-  public GUI(Chaps_Challenge chaps_challenge) {
+  public GUI(ChapsChallenge chaps_challenge) {
     application = chaps_challenge;
     //Create & init the frame.
     setPreferredSize(screenDimension.getSize());
