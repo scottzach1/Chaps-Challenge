@@ -30,6 +30,9 @@ public class GUI extends JFrame implements ComponentListener {
   private Dashboard dashboard;
   private JMenuBar menuBar;
 
+  // Layout object
+  GridBagConstraints constraints = new GridBagConstraints();
+
   /**
    * Constructor: Creates a new JFrame and sets preferred sizes.
    * Creates and adds all relevant GUI components then redraws.
@@ -56,7 +59,12 @@ public class GUI extends JFrame implements ComponentListener {
     canvas = new Canvas();
     dashboard = new Dashboard();
     menuBar = new MenuOptions();
+
+
+    // Set GridBag
+    setLayout(new GridBagLayout());
     addLayoutComponents();
+
 
     // Render.
     redraw();
@@ -79,29 +87,21 @@ public class GUI extends JFrame implements ComponentListener {
   public void addLayoutComponents() {
     // Add MenuBar.
     setJMenuBar(menuBar);
-
-    // Set GridBag
-    setLayout(new GridBagLayout());
-    GridBagConstraints constraints = new GridBagConstraints();
+    constraints.fill = GridBagConstraints.BOTH;
 
     // Set Layout
     int padding = Math.min(screenHeight, canvasWidth) / 11;
 
     // Set Canvas.
     constraints.insets = new Insets(padding, padding, padding, padding / 2);
-    constraints.weightx = 1;
-    constraints.weighty = 1;
-
-    constraints.fill = GridBagConstraints.BOTH;
+    constraints.weightx = 2;
+    constraints.weighty = 2;
     add(canvas, constraints);
 
     // Set Dashboard.
     constraints.insets = new Insets(padding, padding / 2, padding, padding);
-
     constraints.weightx = 1;
     constraints.weighty = 1;
-
-    constraints.fill = GridBagConstraints.BOTH;
     add(dashboard, constraints);
 
     pack();

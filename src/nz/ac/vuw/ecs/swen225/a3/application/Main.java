@@ -9,6 +9,14 @@ import nz.ac.vuw.ecs.swen225.a3.maze.Board;
  */
 public class Main {
 
+  // The three components of the dashboard
+  private static int level, time, chipsLeft;
+
+  // Getters of the three dashboard components
+  public static int getLevel(){ return level;}
+  public static int getTime() {return time;}
+  public static int getChipsLeft(){return chipsLeft;}
+
   /**
    * Main invocation point for running the game.
    *
