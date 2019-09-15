@@ -1,5 +1,7 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
+import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
+
 public class Wall extends Tiles {
 
   /**
@@ -9,8 +11,11 @@ public class Wall extends Tiles {
    Wall() {
      super(Type.Wall);
      isAccessible = false;
-    imageUrl = "assets/wall.png";
-    defaultImageUrl = "assets/wall.png";
+    imageUrl = "wall.png";
+    defaultImageUrl = "wall.png";
+
+     AssetManager.loadAsset(imageUrl);
+     AssetManager.loadAsset(defaultImageUrl);
   }
 
 

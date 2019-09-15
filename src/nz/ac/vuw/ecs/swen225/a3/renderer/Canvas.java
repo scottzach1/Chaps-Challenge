@@ -44,14 +44,16 @@ public class Canvas extends JPanel implements ComponentListener {
     setPreferredSize(new Dimension(GUI.canvasWidth, GUI.screenHeight));
     cellSize = Math.min(getWidth(), getHeight()) / VIEW_SIZE;
 
-    addComponentListener(this);
-
     // TODO: Remove me.
     setBackground(Color.red);
 
     setLayout(new GridBagLayout());
 
+
     renderBoard();
+
+    addComponentListener(this);
+
   }
 
   /**
@@ -84,6 +86,8 @@ public class Canvas extends JPanel implements ComponentListener {
    * DOES NOT REPAINT.
    */
   private void revalidateComponents() {
+
+    System.out.println("Components" + components.size());
     constraints = new GridBagConstraints();
     if (components.size() > 0) {
       constraints.gridy = 0;

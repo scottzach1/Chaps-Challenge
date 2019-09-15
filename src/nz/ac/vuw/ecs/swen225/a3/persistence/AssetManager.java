@@ -17,6 +17,8 @@ import java.util.Map;
  */
 public class AssetManager {
 
+  public static final String ASSET_PATH = "assets/";
+
   /**
    * Private static fields to store important GUI data.
    */
@@ -30,16 +32,31 @@ public class AssetManager {
    */
   public static void loadAssets() throws IOException {
     // Load files from assets/ into baseImageIcons.
-    Files.walk(Paths.get("assets/"))
+    Files.walk(Paths.get("assets\\"))
         .filter(Files::isRegularFile)
         .map(Path::toString)
         .filter(f -> f.endsWith(".png"))
-        //.map(f -> f.replace("\\", "/"))
+        .map(f -> f.replace("\\", "/"))
         .forEach(f -> {
           ImageIcon imageIcon = new ImageIcon(f);
           baseImageIcons.put(f, imageIcon);
           scaledImageIcons.put(f, imageIcon);
         });
+  }
+
+  /**
+   * Finds asset
+   */
+  public static void loadAsset(String fname) {
+    fname = ASSET_PATH + fname;
+    if (baseImageIcons.containsKey(fname)) return;
+
+    ImageIcon imageIcon = new ImageIcon(fname);
+    if (imageIcon.getIconWidth() <= 0 || imageIcon.getIconHeight() <= 0)
+      imageIcon = new ImageIcon(ASSET_PATH + "unknown.png");
+
+    baseImageIcons.put(fname, imageIcon);
+    scaledImageIcons.put(fname, imageIcon);
   }
 
   /**
@@ -65,9 +82,11 @@ public class AssetManager {
    * @return ImageIcon.
    */
   public static ImageIcon getScaledImage(String fname) {
+    fname = ASSET_PATH + fname;
+
     ImageIcon scaledIcon = scaledImageIcons.get(fname);
     if (scaledIcon == null) {
-      scaledIcon = scaledImageIcons.get("assets/unknown.png");
+      scaledIcon = scaledImageIcons.get(ASSET_PATH + "unknown.png");
     }
     return scaledIcon;
   }
@@ -84,6 +103,6 @@ public class AssetManager {
     } catch (IOException e) {
       System.out.println("Unable to read files from folder: " + e);
     }
-    System.out.println("Read " + baseImageIcons.size() + " .png's from assets/ .");
+    System.out.println("Read " + baseImageIcons.size() + " .png's from: " + ASSET_PATH);
   }
 }

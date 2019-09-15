@@ -1,5 +1,7 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
+import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
+
 public class Exit extends Tiles {
 
   /**
@@ -9,8 +11,11 @@ public class Exit extends Tiles {
   Exit() {
     super(Type.Exit);
     isAccessible = true;
-    imageUrl = "assets/exit.png";
-    defaultImageUrl = "assets/free.png";
+    imageUrl = "exit.png";
+    defaultImageUrl = "free.png";
+
+    AssetManager.loadAsset(imageUrl);
+    AssetManager.loadAsset(defaultImageUrl);
   }
 
   /**

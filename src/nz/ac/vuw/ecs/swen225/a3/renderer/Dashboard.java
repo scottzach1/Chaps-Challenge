@@ -116,7 +116,7 @@ public class Dashboard extends JPanel implements ComponentListener {
     for (int i = 0; i < 8; i++) {
       JLabel j = chapsBag.get(i);
       j.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.BLACK));
-      j.setIcon(AssetManager.getScaledImage("assets/free.png"));
+      j.setIcon(AssetManager.getScaledImage("free.png"));
       j.setPreferredSize(new Dimension(getWidth() / 4, getHeight() / (3 * 2)));
 
       bottomPanelConstraints.gridx = (i % 4);
@@ -149,7 +149,7 @@ public class Dashboard extends JPanel implements ComponentListener {
         JLabel content = new JLabel(AssetManager.getScaledImage(chapsChallenge.getPlayerInventory().get(i)));
         chapsBag.set(i, content);
       } catch (Exception e) {
-        chapsBag.add(new JLabel(AssetManager.getScaledImage("assets/free.png")));
+        chapsBag.add(new JLabel(AssetManager.getScaledImage("free.png")));
       }
     }
   }

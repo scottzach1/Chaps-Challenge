@@ -1,5 +1,7 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
+import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
+
 public class InfoField extends Tiles {
 
   private String info;
@@ -13,8 +15,11 @@ public class InfoField extends Tiles {
      super(Type.InfoFeild);
     isAccessible = true;
     this.info = info;
-    imageUrl = "assets/info_field.png";
-    defaultImageUrl = "assets/info_field.png";
+    imageUrl = "info_field.png";
+    defaultImageUrl = "info_field.png";
+
+     AssetManager.loadAsset(imageUrl);
+     AssetManager.loadAsset(defaultImageUrl);
   }
 
   /**

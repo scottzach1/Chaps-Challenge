@@ -34,12 +34,12 @@ public class ChapsChallenge {
    */
   private ChapsChallenge() {
     // Load the assets.
-    try {
-      AssetManager.loadAssets();
-    } catch (IOException e) {
-      System.out.println("Unable to load assets from assets/ directory.");
-      throw new Error("Assets not found");
-    }
+//    try {
+//      AssetManager.loadAssets();
+//    } catch (IOException e) {
+//      System.out.println("Unable to load assets from assets/ directory.");
+//      throw new Error("Assets not found");
+//    }
 
     // Load the board.
     board = new Board();

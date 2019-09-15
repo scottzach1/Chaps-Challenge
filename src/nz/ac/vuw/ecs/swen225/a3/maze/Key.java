@@ -1,5 +1,7 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
+import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
+
 public class Key extends Tiles {
   private String colour;
 
@@ -14,8 +16,11 @@ public class Key extends Tiles {
      super(Type.Key);
     isAccessible = true;
     this.colour = colour;
-    imageUrl = "assets/key_" + colour + ".png";
-    defaultImageUrl = "assets/free.png";
+    imageUrl = "key_" + colour + ".png";
+    defaultImageUrl = "free.png";
+
+     AssetManager.loadAsset(imageUrl);
+     AssetManager.loadAsset(defaultImageUrl);
   }
 
   /**

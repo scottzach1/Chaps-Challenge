@@ -3,6 +3,8 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
+
+import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
 import nz.ac.vuw.ecs.swen225.a3.renderer.Canvas;
 
 
@@ -86,7 +88,11 @@ public class Board {
           if (foundChap) throw new MultiplePlayersFoundException();
           foundChap = true;
           Free tile = new Free();
-          tile.imageUrl = "assets/chap_front.png";
+
+          // FIXME: This might not be the best place.
+          tile.imageUrl = "chap_front.png";
+          AssetManager.loadAsset(tile.imageUrl);
+
           addTile(index / 20, index % 20, tile);
           break;
         default:
@@ -182,7 +188,7 @@ public class Board {
   public Tiles getPlayerLocation() throws PlayerNotFoundException {
     for (int r = 0; r < boardSize; r++) {
       for (int c = 0; c < boardSize; c++) {
-        if (tiles[r][c].getImageUrl().equals("assets/chap_front.png")) {
+        if (tiles[r][c].getImageUrl().equals("chap_front.png")) {
           return tiles[r][c];
         }
       }

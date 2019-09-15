@@ -1,5 +1,7 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
+import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
+
 public class LockedDoor extends Tiles {
   private String colour;
 
@@ -15,8 +17,11 @@ public class LockedDoor extends Tiles {
     super(Type.LockedDoor);
     isAccessible = false;
     this.colour = colour;
-    imageUrl = "assets/locked_door_" + colour + ".png";
-    defaultImageUrl = "assets/free.png";
+    imageUrl = "locked_door_" + colour + ".png";
+    defaultImageUrl = "free.png";
+
+    AssetManager.loadAsset(imageUrl);
+    AssetManager.loadAsset(defaultImageUrl);
   }
 
   /**

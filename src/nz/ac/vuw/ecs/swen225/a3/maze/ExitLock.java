@@ -1,5 +1,7 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
+import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
+
 public class ExitLock extends Tiles {
   private int totalTreasures;// amount of treasures that still need to be collected
 
@@ -10,8 +12,11 @@ public class ExitLock extends Tiles {
   public ExitLock() {
     super(Type.ExitLock);
     isAccessible = false;
-    imageUrl = "assets/exit_lock.png";
-    defaultImageUrl = "assets/free.png";
+    imageUrl = "exit_lock.png";
+    defaultImageUrl = "free.png";
+
+    AssetManager.loadAsset(imageUrl);
+    AssetManager.loadAsset(defaultImageUrl);
   }
 
   /**

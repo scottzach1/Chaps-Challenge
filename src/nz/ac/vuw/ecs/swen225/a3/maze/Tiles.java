@@ -1,5 +1,7 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
+import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
+
 public abstract class Tiles {
 
   public enum Type{
@@ -115,7 +117,9 @@ public abstract class Tiles {
   public abstract boolean interact(Player p);
 
   public void setTileOccupied() {
-    imageUrl = "assets/chap.png";
+    // FIXME: This might not be the best place.
+    imageUrl = "chap.png";
+    AssetManager.loadAsset(imageUrl);
   }
 
   public void setTileUnoccupied() {

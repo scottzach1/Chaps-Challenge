@@ -1,5 +1,7 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
+import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
+
 public class Treasure extends Tiles {
 
 
@@ -10,9 +12,12 @@ public class Treasure extends Tiles {
    Treasure() {
     super(Type.Treasure);
     isAccessible = true;
-    imageUrl = "assets/treasure.png";
-    defaultImageUrl = "assets/free.png";
-  }
+    imageUrl = "treasure.png";
+     defaultImageUrl = "free.png";
+
+     AssetManager.loadAsset(imageUrl);
+     AssetManager.loadAsset(defaultImageUrl);
+   }
 
   /**
    * Standard toString method.
