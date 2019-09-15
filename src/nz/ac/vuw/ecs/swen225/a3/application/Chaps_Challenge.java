@@ -22,7 +22,7 @@ public class Chaps_Challenge {
   /**
    * Create main game application.
    */
-  public Chaps_Challenge(){
+  private Chaps_Challenge(){
     board = new Board();
     try {
       player = new Player(board.getPlayerLocation());
@@ -35,14 +35,19 @@ public class Chaps_Challenge {
 
 public void move(Tiles.Direction direction){
 
+  Tiles currentLocation =  player.getLocation();
   switch (direction){
     case Up:
+      player.setLocation(currentLocation.getUp());
       break;
     case Down:
+      player.setLocation(currentLocation.getDown());
       break;
     case Left:
+      player.setLocation(currentLocation.getLeft());
       break;
     case Right:
+      player.setLocation(currentLocation.getRight());
       break;
   }
 
