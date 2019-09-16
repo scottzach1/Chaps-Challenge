@@ -15,7 +15,7 @@ import java.awt.event.ActionEvent;
 class PauseAction extends AbstractAction {
 
   private static final int ALPHA = 175; // how much see-thru. 0 to 255
-  private static final Color GP_BG = new Color(0, 0, 0, ALPHA);
+  private static final Color OVERLAY_COLOUR = new Color(0, 0, 0, ALPHA);
   private PauseMenu pauseMenu;
   private GUI gui;
 
@@ -47,7 +47,7 @@ class PauseAction extends AbstractAction {
       }
     };
     glassPane.setOpaque(false);
-    glassPane.setBackground(GP_BG);
+    glassPane.setBackground(OVERLAY_COLOUR);
 
 
     // set our glass pane
