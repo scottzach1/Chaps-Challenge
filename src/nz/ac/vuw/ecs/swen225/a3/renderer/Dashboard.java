@@ -63,7 +63,7 @@ public class Dashboard extends JPanel implements ComponentListener {
     int paddingOfBox = Math.min(getWidth() / 10, getHeight() / 60);
 
     // Box sizes using the aforementioned padding
-    int boxWidth = getWidth() - paddingOfBox;
+    int boxWidth = (getWidth() / GRID_WIDTH) - paddingOfBox;
     int boxHeight = (getHeight() / GRID_HEIGHT) - paddingOfBox;
 
     // Create the alignment for the custom text
@@ -94,7 +94,7 @@ public class Dashboard extends JPanel implements ComponentListener {
     JPanel topPanel = new JPanel();
     topPanel.setLayout(new GridBagLayout());
     topPanel.setBackground(null);
-    topPanel.setPreferredSize(new Dimension(getWidth() / 2, getHeight() * 2 / 3));
+    topPanel.setPreferredSize(new Dimension((getWidth() / 2) - (paddingOfBox / 2), (getHeight() * 2 / 3) - paddingOfBox));
 
     // Create a new GridBagLayout for the top panel
     GridBagConstraints topPanelConstraints = new GridBagConstraints();
@@ -138,7 +138,7 @@ public class Dashboard extends JPanel implements ComponentListener {
     JPanel bottomPanel = new JPanel();
     bottomPanel.setLayout(new GridBagLayout());
     bottomPanel.setBackground(null);
-    bottomPanel.setPreferredSize(new Dimension(getWidth(), getHeight() / 3));
+    bottomPanel.setPreferredSize(new Dimension(getWidth() - paddingOfBox, (getHeight() / 3) - paddingOfBox));
 
     // Create a new GridBagLayout for the bottom panel
     GridBagConstraints bottomPanelConstraints = new GridBagConstraints();
@@ -265,7 +265,7 @@ public class Dashboard extends JPanel implements ComponentListener {
       }
 
       // Create a default font for the box making the text fit snug
-      setFont(new Font("Ariel", Font.BOLD, Math.min(width * 2 / GRID_HEIGHT, height * 2 / (GRID_HEIGHT / 2))));
+      setFont(new Font("Ariel", Font.BOLD, Math.min(width / 2, height / 2)));
 
       // Try Align Text
       if (textAlignment != null) {
