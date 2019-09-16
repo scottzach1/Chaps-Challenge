@@ -24,7 +24,7 @@ class PauseAction extends AbstractAction {
    * @param name action name.
    * @param gui main JFrame.
    */
-  public PauseAction(String name, GUI gui, ChapsChallenge application) {
+  PauseAction(String name, GUI gui, ChapsChallenge application) {
     super(name);
     this.gui = gui;
     this.pauseMenu = new PauseMenu(application);  // JPanel shown in JDialog

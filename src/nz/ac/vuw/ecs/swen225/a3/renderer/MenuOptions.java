@@ -9,17 +9,13 @@ import java.awt.*;
  * MenuOptions extends JMenuBar and is responsible for hosting the
  * options in the menu bar at the top of the GUI.
  */
-public class MenuOptions extends JMenuBar {
-
-  private ChapsChallenge application;
+class MenuOptions extends JMenuBar {
 
   /**
    * Constructor: Creates MenuBar and adds all game relevant
    * components.
    */
-  public MenuOptions(ChapsChallenge application) {
-    this.application = application;
-
+  MenuOptions(ChapsChallenge application) {
     // Set the Size of the Control panel
     setPreferredSize(new Dimension(GUI.screenWidth, GUI.MENU_HEIGHT));
     setFont(new Font("Serif", Font.BOLD, 18));

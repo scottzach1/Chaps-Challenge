@@ -16,10 +16,12 @@ public class GUI extends JFrame implements ComponentListener {
   // Nothing important
   private static final long serialVersionUID = 1L;
 
+  // Colour Space.
+  static final Color BACKGROUND_COLOUR = new Color(67, 104, 101);
 
-  // Dimension of the frame, based on screen size
+  // Dimension of the frame, based on screen size.
   private static Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
-  public static final int MENU_HEIGHT = screenDimension.height / 30;
+  static final int MENU_HEIGHT = screenDimension.height / 30;
   static int screenWidth = screenDimension.width;
   static int screenHeight = screenDimension.height - MENU_HEIGHT;
   static int canvasWidth = (screenDimension.width * 2) / 3;
@@ -32,7 +34,7 @@ public class GUI extends JFrame implements ComponentListener {
   private ChapsChallenge application;
 
   // Layout object
-  GridBagConstraints constraints = new GridBagConstraints();
+  private GridBagConstraints constraints = new GridBagConstraints();
 
   /**
    * Constructor: Creates a new JFrame and sets preferred sizes.
@@ -49,6 +51,7 @@ public class GUI extends JFrame implements ComponentListener {
     setMinimumSize(new Dimension(screenDimension.width / 5, screenDimension.height / 5));
     setVisible(true);
     setFocusable(true);
+    getContentPane().setBackground(BACKGROUND_COLOUR);
 
     addComponentListener(this);
 
@@ -70,7 +73,7 @@ public class GUI extends JFrame implements ComponentListener {
   /**
    * Sets up GridBagLayout with all screen components.
    */
-  public void addLayoutComponents() {
+  private void addLayoutComponents() {
     // Add MenuBar.
     setJMenuBar(menuBar);
     constraints.fill = GridBagConstraints.BOTH;
@@ -94,8 +97,8 @@ public class GUI extends JFrame implements ComponentListener {
   }
 
   /**
-   * Handles GUI actions related to pausing and
-   * notifies the application of the change.
+   * Handles GUI actions related to pausing
+   * the game.
    */
   public void pauseGame() {
     new PauseAction("Pause", this, application)
@@ -103,23 +106,24 @@ public class GUI extends JFrame implements ComponentListener {
   }
 
   /**
-   * Handles GUI actions related to resuming.
+   * Handles GUI actions related to resuming
+   * the game.
    */
   public void resumeGame() {
     // TODO: This needs to be implemented.
   }
 
   /**
-   * Handles GUI actions related to saving and
-   * notifies the application of the change.
+   * Handles GUI actions related to saving
+   * the game.
    */
   public void saveGame() {
     // TODO: This needs to be implemented.
   }
 
   /**
-   * Handles GUI actions related to loading and
-   * notifies the application of the change.
+   * Handles GUI actions related to loading
+   * the game.
    */
   public void loadGame() {
     // TODO: This needs to be implemented.
@@ -127,24 +131,25 @@ public class GUI extends JFrame implements ComponentListener {
 
   /**
    * Handles GUI actions related to resetting to
-   * previous level and notifies the application
-   * the of change.
+   * previous level.
    */
   public void previousLevel() {
     // TODO: THis needs to be implemented.
   }
 
+  /**
+   * Handles GUI actions related to restarting the
+   * game.
+   */
   public void restartGame() {
     // TODO: This needs to be implemented.
   }
 
   /**
-   * exitGame:
-   * - Invokes a pop up menu to confirm the player wants to exit the game.
-   *
-   * @return boolean - whether to exit or not
+   * Handles GUI actions related to exiting the game.
+   * Invokes a pop up menu to confirm the player wants to exit the game.
    */
-  public void exitGame() {
+  public boolean exitGame() {
 
     // Button options
     String[] options = {"Yes please", "Opps, wrong button"};
@@ -160,10 +165,7 @@ public class GUI extends JFrame implements ComponentListener {
         options[0]);
 
     // (True) = Exit Game, (False) = Don't Exit Game
-    if (choice == JOptionPane.CLOSED_OPTION || choice == 1) {
-      return;
-    }
-    System.exit(0);
+    return choice != JOptionPane.CLOSED_OPTION && choice != 1;
   }
 
   /**
@@ -171,7 +173,7 @@ public class GUI extends JFrame implements ComponentListener {
    * * Revalidates.
    * * Repaints.
    */
-  public void redraw() {
+  private void redraw() {
     revalidate();
     repaint();
   }

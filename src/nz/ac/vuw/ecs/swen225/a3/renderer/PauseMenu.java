@@ -18,7 +18,7 @@ class PauseMenu extends JPanel {
   /**
    * Constructor: Populates JPanel with JLabels as buttons.
    */
-  public PauseMenu(ChapsChallenge application) {
+  PauseMenu(ChapsChallenge application) {
     JLabel pausedLabel = new JLabel("PAUSED");
     pausedLabel.setForeground(Color.WHITE);
     JPanel pausedPanel = new JPanel();
@@ -75,7 +75,7 @@ class PauseMenu extends JPanel {
    * CloseDialog is an action to make the dialog no longer visible.
    */
   private static class CloseDialog extends AbstractAction {
-    public CloseDialog(String name, ChapsChallenge application) {
+    CloseDialog(String name, ChapsChallenge application) {
       super(name);
     }
 

@@ -144,6 +144,7 @@ public class ChapsChallenge implements KeyListener {
    */
   public void restartGame() {
     // TODO: Restart Game
+    gui.restartGame();
     System.out.println("Game restarted.");
   }
 
@@ -160,8 +161,8 @@ public class ChapsChallenge implements KeyListener {
    * Exits the game.
    */
   public void exitGame() {
-    System.out.println("Game quit.");
-    System.exit(0);
+    if (gui.exitGame())
+      System.exit(0);
   }
 
   /**

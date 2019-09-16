@@ -17,6 +17,10 @@ import java.util.ArrayList;
  */
 public class Dashboard extends JPanel implements ComponentListener {
 
+  // Colour Space.
+  static final Color TEXT_COLOUR = new Color(0,0,0);
+  static final Color ACCENT_COLOUR = new Color(0, 255, 0);
+  static final Color BACKGROUND_COLOUR = new Color(192, 192, 192);
 
   /*
   DASHBOARD FIELDS
@@ -24,20 +28,18 @@ public class Dashboard extends JPanel implements ComponentListener {
   private final int GRID_WIDTH = 4, GRID_HEIGHT = 8;
   private ArrayList<JLabel> chapsBag;
   private ChapsChallenge chapsChallenge;
-  GridBagConstraints constraints;
 
   /**
    * The Dashboard constructor.
    * sets preferred Size, background color, layout, adds a components listener and a key listener
    * @param aChapsChallenge - The parent ChapsChallenge object the GUI to create this DashBoard
    */
-  public Dashboard(ChapsChallenge aChapsChallenge) {
+  Dashboard(ChapsChallenge aChapsChallenge) {
     chapsChallenge = aChapsChallenge;
 
     setPreferredSize(new Dimension(GUI.dashboardWidth, GUI.screenHeight));
 
-    // TODO: Remove me.
-    setBackground(Color.LIGHT_GRAY);
+    setBackground(BACKGROUND_COLOUR);
 
     addComponentListener(this);
 
@@ -51,7 +53,7 @@ public class Dashboard extends JPanel implements ComponentListener {
    */
   private void renderComponents() {
     // reset the GridBagConstraints
-    constraints = new GridBagConstraints();
+    GridBagConstraints constraints = new GridBagConstraints();
 
     /*
     CREATE THE CONSTANTS FOR THE CUSTOM TEXT PANES
@@ -73,17 +75,17 @@ public class Dashboard extends JPanel implements ComponentListener {
     StyleConstants.setAlignment(rightAlign, StyleConstants.ALIGN_RIGHT);
 
     // CustomTextPane of the center aligned level text
-    CustomTextPane level = new CustomTextPane("LEVEL", boxWidth, boxHeight, centerAlign, null, Color.black, false);
+    CustomTextPane level = new CustomTextPane("LEVEL", boxWidth, boxHeight, centerAlign, null, TEXT_COLOUR, false);
     // CustomTextPane of the right aligned level value
-    CustomTextPane levelNum = new CustomTextPane("1", boxWidth, boxHeight, rightAlign, Color.black, Color.green, true);
+    CustomTextPane levelNum = new CustomTextPane("1", boxWidth, boxHeight, rightAlign, TEXT_COLOUR, ACCENT_COLOUR, true);
     // CustomTextPane of the center aligned time text
-    CustomTextPane time = new CustomTextPane("TIME", boxWidth, boxHeight, centerAlign, null, Color.black, false);
+    CustomTextPane time = new CustomTextPane("TIME", boxWidth, boxHeight, centerAlign, null, TEXT_COLOUR,false);
     // CustomTextPane of the right aligned time value
-    CustomTextPane timeNum = new CustomTextPane(chapsChallenge.timeLeft() + "", boxWidth, boxHeight, rightAlign, Color.black, Color.green, true);
+    CustomTextPane timeNum = new CustomTextPane(chapsChallenge.timeLeft() + "", boxWidth, boxHeight, rightAlign, TEXT_COLOUR, ACCENT_COLOUR, true);
     // CustomTextPane of the center aligned chipsLeft text
-    CustomTextPane chipsLeft = new CustomTextPane("CHIPS LEFT", boxWidth, boxHeight, centerAlign, null, Color.black, false);
+    CustomTextPane chipsLeft = new CustomTextPane("CHIPS LEFT", boxWidth, boxHeight, centerAlign, null, TEXT_COLOUR, false);
     // CustomTextPane of the right aligned chipsLeft value
-    CustomTextPane chipsLeftNum = new CustomTextPane(chapsChallenge.getPlayerInventory().size() + "", boxWidth, boxHeight, rightAlign, Color.black, Color.green, true);
+    CustomTextPane chipsLeftNum = new CustomTextPane(chapsChallenge.getPlayerInventory().size() + "", boxWidth, boxHeight, rightAlign, TEXT_COLOUR, ACCENT_COLOUR, true);
 
     /*
     CREATES THE TOP PANEL WITH THE THREE TITLES (LEVEL, TIME, CHIPSLEFT)
@@ -177,7 +179,7 @@ public class Dashboard extends JPanel implements ComponentListener {
    * Given an arraylist of strings (asset names), their png will be added to
    * the content panel on the dashboard.
    */
-  public void fillChapsBag() {
+  private void fillChapsBag() {
     chapsBag = new ArrayList<>();
     for (int i = 0; i < 8; i++) {
       try {
@@ -243,7 +245,7 @@ public class Dashboard extends JPanel implements ComponentListener {
      * @param foreground    - Color of the foreground
      * @param border        - If true: Add a matte border of foreground color, if false, no border
      */
-    public CustomTextPane(String text, int width, int height, SimpleAttributeSet textAlignment, Color background, Color foreground, boolean border) {
+    private CustomTextPane(String text, int width, int height, SimpleAttributeSet textAlignment, Color background, Color foreground, boolean border) {
 
       // Basic setup:
       // - Not editable
