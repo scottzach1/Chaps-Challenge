@@ -8,17 +8,15 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import java.awt.*;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.util.ArrayList;
 
 /**
  * The side object of the GUI that displays the level, time, chipsLeft.
  */
-public class Dashboard extends JPanel implements ComponentListener {
+public class Dashboard extends JPanel {
 
   // Colour Space.
-  static final Color TEXT_COLOUR = new Color(0,0,0);
+  static final Color TEXT_COLOUR = new Color(0, 0, 0);
   static final Color ACCENT_COLOUR = new Color(0, 255, 0);
   static final Color BACKGROUND_COLOUR = new Color(192, 192, 192);
 
@@ -32,26 +30,25 @@ public class Dashboard extends JPanel implements ComponentListener {
   /**
    * The Dashboard constructor.
    * sets preferred Size, background color, layout, adds a components listener and a key listener
+   *
    * @param aChapsChallenge - The parent ChapsChallenge object the GUI to create this DashBoard
    */
   Dashboard(ChapsChallenge aChapsChallenge) {
     chapsChallenge = aChapsChallenge;
 
-    setPreferredSize(new Dimension(GUI.dashboardWidth, GUI.screenHeight));
+    setPreferredSize(new Dimension(GUI.dashboardWidth, DashboardHolder.dashboardHeight));
 
     setBackground(BACKGROUND_COLOUR);
 
-    addComponentListener(this);
-
     setLayout(new GridBagLayout());
-    renderComponents();
   }
 
   /**
    * Renders the components of the dashboard.
    * This consists of two JPanels and their related parts.
    */
-  private void renderComponents() {
+  protected void renderComponents() {
+    removeAll();
     // reset the GridBagConstraints
     GridBagConstraints constraints = new GridBagConstraints();
 
@@ -79,7 +76,7 @@ public class Dashboard extends JPanel implements ComponentListener {
     // CustomTextPane of the right aligned level value
     CustomTextPane levelNum = new CustomTextPane("1", boxWidth, boxHeight, rightAlign, TEXT_COLOUR, ACCENT_COLOUR, true);
     // CustomTextPane of the center aligned time text
-    CustomTextPane time = new CustomTextPane("TIME", boxWidth, boxHeight, centerAlign, null, TEXT_COLOUR,false);
+    CustomTextPane time = new CustomTextPane("TIME", boxWidth, boxHeight, centerAlign, null, TEXT_COLOUR, false);
     // CustomTextPane of the right aligned time value
     CustomTextPane timeNum = new CustomTextPane(chapsChallenge.timeLeft() + "", boxWidth, boxHeight, rightAlign, TEXT_COLOUR, ACCENT_COLOUR, true);
     // CustomTextPane of the center aligned chipsLeft text
@@ -192,44 +189,6 @@ public class Dashboard extends JPanel implements ComponentListener {
   }
 
   /**
-   * Removes all components and then re-renders them all in.
-   * @param e
-   */
-  @Override
-  public void componentResized(ComponentEvent e) {
-    removeAll();
-    renderComponents();
-  }
-
-  /**
-   * UNUSED overriden method
-   * @param e - ComponentEvent
-   */
-  @Override
-  public void componentMoved(ComponentEvent e) {
-
-  }
-
-  /**
-   * UNUSED overriden method
-   * @param e - ComponentEvent
-   */
-  @Override
-  public void componentShown(ComponentEvent e) {
-
-  }
-
-  /**
-   * UNUSED overriden method
-   * @param e - ComponentEvent
-   */
-  @Override
-  public void componentHidden(ComponentEvent e) {
-
-  }
-
-
-  /**
    * Private class to create multiple custom text panes for the DashBoard.
    */
   private class CustomTextPane extends JTextPane {
@@ -255,17 +214,18 @@ public class Dashboard extends JPanel implements ComponentListener {
       // - Set the foreground color to the parsed in color
       setForeground(foreground);
 
+      // Create a default font for the box making the text fit snug
+      setFont(new Font("Ariel", Font.BOLD, Math.min(width / 2, height / 2)));
+
       // - If the border boolean parsed in is true, make one
       if (border) {
-        setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, foreground));
+        setBorder(BorderFactory.createMatteBorder(getFont().getSize() / 10, getFont().getSize()  / 10,
+            getFont().getSize() / 10,  getFont().getSize() / 10, foreground));
       }
       // - Else remove any presets
       else {
         setBorder(null);
       }
-
-      // Create a default font for the box making the text fit snug
-      setFont(new Font("Ariel", Font.BOLD, Math.min(width / 2, height / 2)));
 
       // Try Align Text
       if (textAlignment != null) {

@@ -30,6 +30,7 @@ public class GUI extends JFrame implements ComponentListener {
   // ChapsChallenge component fields.
   private Canvas canvas;
   private Dashboard dashboard;
+  private DashboardHolder dashboardHolder;
   private JMenuBar menuBar;
   private ChapsChallenge application;
 
@@ -58,6 +59,7 @@ public class GUI extends JFrame implements ComponentListener {
     // Add components.
     canvas = new Canvas(application);
     dashboard = new Dashboard(chaps_challenge);
+    dashboardHolder = new DashboardHolder(dashboard);
     menuBar = new MenuOptions(chaps_challenge);
 
 
@@ -65,6 +67,8 @@ public class GUI extends JFrame implements ComponentListener {
     setLayout(new GridBagLayout());
     addLayoutComponents();
     addKeyListener(application);
+    setFocusable(true);
+    setFocusableWindowState(true);
 
     // Render.
     redraw();
@@ -91,7 +95,7 @@ public class GUI extends JFrame implements ComponentListener {
     constraints.insets = new Insets(padding, padding / 2, padding, padding);
     constraints.weightx = 1;
     constraints.weighty = 1;
-    add(dashboard, constraints);
+    add(dashboardHolder, constraints);
 
     pack();
   }
