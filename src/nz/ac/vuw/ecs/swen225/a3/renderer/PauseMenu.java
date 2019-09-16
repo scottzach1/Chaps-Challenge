@@ -32,7 +32,7 @@ class PauseMenu extends JPanel {
     add(pausedPanel);
 
     // Add Resume button.
-    add(new JButton(new CloseDialog("RESUME", application) {
+    add(new JButton(new CloseDialog("RESUME") {
       /**
        * Closes menu and resumes game.
        * @param e event e.
@@ -45,7 +45,7 @@ class PauseMenu extends JPanel {
     }));
 
     // Add Restart button.
-    add(new JButton(new CloseDialog("RESTART", application) {
+    add(new JButton(new CloseDialog("RESTART") {
       /**
        * Closes menu and restarts game.
        * @param e event e.
@@ -58,7 +58,7 @@ class PauseMenu extends JPanel {
     }));
 
     // Add Exit button.
-    add(new JButton(new CloseDialog("QUIT", application) {
+    add(new JButton(new CloseDialog("QUIT") {
       /**
        * Quits game.
        * @param e event e.
@@ -75,7 +75,7 @@ class PauseMenu extends JPanel {
    * CloseDialog is an action to make the dialog no longer visible.
    */
   private static class CloseDialog extends AbstractAction {
-    CloseDialog(String name, ChapsChallenge application) {
+    CloseDialog(String name) {
       super(name);
     }
 
