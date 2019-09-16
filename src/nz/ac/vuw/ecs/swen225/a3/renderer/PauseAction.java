@@ -14,7 +14,7 @@ class PauseAction extends AbstractAction {
 
   private static final int ALPHA = 175; // how much see-thru. 0 to 255
   private static final Color GP_BG = new Color(0, 0, 0, ALPHA);
-  private PauseMenu pauseMenu = new PauseMenu();  // jpanel shown in JDialog
+  private PauseMenu pauseMenu;
   private GUI gui;
 
   /**
@@ -25,6 +25,7 @@ class PauseAction extends AbstractAction {
   public PauseAction(String name, GUI gui) {
     super(name);
     this.gui = gui;
+    this.pauseMenu = new PauseMenu(gui);  // JPanel shown in JDialog
   }
 
   /**

@@ -98,6 +98,10 @@ public class GUI extends JFrame implements ComponentListener {
     pauseAction.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null));
   }
 
+  public void resumeGame() {
+    application.resumeGame();
+  }
+
   /**
    * exitGame:
    * - Invokes a pop up menu to confirm the player wants to exit the game.

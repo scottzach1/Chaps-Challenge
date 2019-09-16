@@ -16,7 +16,7 @@ class PauseMenu extends JPanel {
   /**
    * Constructor: Populates JPanel with JLabels as buttons.
    */
-  public PauseMenu() {
+  public PauseMenu(GUI gui) {
     JLabel pausedLabel = new JLabel("PAUSED");
     pausedLabel.setForeground(Color.WHITE);
     JPanel pausedPanel = new JPanel();
@@ -28,24 +28,53 @@ class PauseMenu extends JPanel {
     setBorder(BorderFactory.createEmptyBorder(eb, eb, eb, eb));
     setLayout(new GridLayout(0, 1, 10, 10));
     add(pausedPanel);
-    add(new JButton(new CloseDialog("RESUME")));
-    add(new JButton(new CloseDialog("RESTART")));
-    add(new JButton(new CloseDialog("EXIT TO MAP")));
+
+    // Add Resume button.
+    add(new JButton(new CloseDialog("RESUME", gui) {
+      /**
+       * Closes menu and resumes game.
+       * @param e event e.
+       */
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        super.actionPerformed(e);
+        gui.resumeGame();
+      }
+    }));
+
+    // Add Restart button.
+    add(new JButton(new CloseDialog("RESTART", gui) {
+      // TODO: Add restart functionality when present.
+    }));
+
+    // Add Exit button.
+    add(new JButton(new CloseDialog("QUIT", gui) {
+      /**
+       * Quits game.
+       * @param e event e.
+       */
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        System.exit(0);
+      }
+    }));
   }
 
   /**
    * CloseDialog is an action to make the dialog no longer visible.
    */
-  private class CloseDialog extends AbstractAction {
-    public CloseDialog(String name) {
+  private static class CloseDialog extends AbstractAction {
+    GUI gui;
+
+    public CloseDialog(String name, GUI gui) {
       super(name);
+      this.gui = gui;
     }
 
     /**
-     * Action performed.
+     * Closes dialogue on GUI.
      * @param e event e.
      */
-    @Override
     public void actionPerformed(ActionEvent e) {
       Component comp = (Component) e.getSource();
       Window win = SwingUtilities.getWindowAncestor(comp);
