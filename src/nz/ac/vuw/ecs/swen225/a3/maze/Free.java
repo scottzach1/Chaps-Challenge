@@ -37,6 +37,6 @@ public class Free extends Tiles {
    */
   @Override
   public boolean interact(Player p) {
-    return false;
+    return isAccessible;
   }
 }
