@@ -88,22 +88,6 @@ public class ChapsChallenge implements KeyListener {
   }
 
   /**
-   * Pauses the game.
-   */
-  public void pauseGame() {
-    gamePaused=true;
-    gui.pauseGame();
-  }
-
-  /**
-   * Resumes the game.
-   */
-  public void resumeGame() {
-    gamePaused=false;
-    startTime=System.currentTimeMillis();
-  }
-
-  /**
    * Checks the amount of time that has elapsed since the start of the game.
    * Subtracts this from the total time available.
    * @return the time left to play
@@ -120,13 +104,64 @@ public class ChapsChallenge implements KeyListener {
     return (int) timeLeft;
   }
 
+  /**
+   * Pauses the game.
+   */
+  public void pauseGame() {
+    gamePaused=true;
+    gui.pauseGame();
+  }
+
+  /**
+   * Resumes the game.
+   */
+  public void resumeGame() {
+    gamePaused=false;
+    startTime=System.currentTimeMillis();
+    gui.resumeGame();
+  }
+
+  /**
+   * Loads the game.
+   */
   public void loadGame() {
+    // TODO: Load Game
+    gui.loadGame();
+    System.out.println("Game loaded.");
   }
 
+  /**
+   * Saves the game.
+   */
   public void saveGame() {
+    // TODO: Save Game
+    gui.saveGame();
+    System.out.println("Game saved.");
   }
 
+  /**
+   * Restarts the game.
+   */
   public void restartGame() {
+    // TODO: Restart Game
+    System.out.println("Game restarted.");
+  }
+
+  /**
+   * Sets the game to the previous level.
+   */
+  public void previousLevel() {
+    // TODO: Previous Level
+    gui.previousLevel();
+    System.out.println("Game set to previous level.");
+  }
+
+  /**
+   * Exits the game.
+   */
+  public void exitGame() {
+    System.out.println("Game quit.");
+    System.exit(0);
   }
 
   /**
@@ -194,8 +229,10 @@ public class ChapsChallenge implements KeyListener {
       // TODO: Start a new game from LEVEL 1
     }
     // SPACE
-    if (activeKeys.contains(KeyEvent.VK_SPACE) && activeKeys.size() == 1)
-      pauseGame();
+    if (activeKeys.contains(KeyEvent.VK_SPACE) && activeKeys.size() == 1) {
+      if (gamePaused) resumeGame();
+      else pauseGame();
+    }
     // ESC
     if (activeKeys.contains(KeyEvent.VK_ESCAPE) && activeKeys.size() == 1){
       resumeGame();

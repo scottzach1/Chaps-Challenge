@@ -1,5 +1,7 @@
 package nz.ac.vuw.ecs.swen225.a3.renderer;
 
+import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -16,7 +18,7 @@ class PauseMenu extends JPanel {
   /**
    * Constructor: Populates JPanel with JLabels as buttons.
    */
-  public PauseMenu(GUI gui) {
+  public PauseMenu(ChapsChallenge application) {
     JLabel pausedLabel = new JLabel("PAUSED");
     pausedLabel.setForeground(Color.WHITE);
     JPanel pausedPanel = new JPanel();
@@ -30,7 +32,7 @@ class PauseMenu extends JPanel {
     add(pausedPanel);
 
     // Add Resume button.
-    add(new JButton(new CloseDialog("RESUME", gui) {
+    add(new JButton(new CloseDialog("RESUME", application) {
       /**
        * Closes menu and resumes game.
        * @param e event e.
@@ -38,24 +40,33 @@ class PauseMenu extends JPanel {
       @Override
       public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        gui.resumeGame();
+        application.resumeGame();
       }
     }));
 
     // Add Restart button.
-    add(new JButton(new CloseDialog("RESTART", gui) {
-      // TODO: Add restart functionality when present.
+    add(new JButton(new CloseDialog("RESTART", application) {
+      /**
+       * Closes menu and restarts game.
+       * @param e event e.
+       */
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        super.actionPerformed(e);
+        application.restartGame();
+      }
     }));
 
     // Add Exit button.
-    add(new JButton(new CloseDialog("QUIT", gui) {
+    add(new JButton(new CloseDialog("QUIT", application) {
       /**
        * Quits game.
        * @param e event e.
        */
       @Override
       public void actionPerformed(ActionEvent e) {
-        System.exit(0);
+        super.actionPerformed(e);
+        application.exitGame();
       }
     }));
   }
@@ -64,11 +75,8 @@ class PauseMenu extends JPanel {
    * CloseDialog is an action to make the dialog no longer visible.
    */
   private static class CloseDialog extends AbstractAction {
-    GUI gui;
-
-    public CloseDialog(String name, GUI gui) {
+    public CloseDialog(String name, ChapsChallenge application) {
       super(name);
-      this.gui = gui;
     }
 
     /**

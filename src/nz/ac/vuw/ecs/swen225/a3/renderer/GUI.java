@@ -34,15 +34,13 @@ public class GUI extends JFrame implements ComponentListener {
   // Layout object
   GridBagConstraints constraints = new GridBagConstraints();
 
-  // Pause action
-  PauseAction pauseAction = new PauseAction("Pause", this);
-
   /**
    * Constructor: Creates a new JFrame and sets preferred sizes.
    * Creates and adds all relevant GUI components then redraws.
    */
   public GUI(ChapsChallenge chaps_challenge) {
     application = chaps_challenge;
+
     //Create & init the frame.
     setPreferredSize(screenDimension.getSize());
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -57,7 +55,7 @@ public class GUI extends JFrame implements ComponentListener {
     // Add components.
     canvas = new Canvas(application);
     dashboard = new Dashboard(chaps_challenge);
-    menuBar = new MenuOptions();
+    menuBar = new MenuOptions(chaps_challenge);
 
 
     // Set GridBag
@@ -95,12 +93,49 @@ public class GUI extends JFrame implements ComponentListener {
     pack();
   }
 
+  /**
+   * Handles GUI actions related to pausing and
+   * notifies the application of the change.
+   */
   public void pauseGame() {
-    pauseAction.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null));
+    new PauseAction("Pause", this, application)
+        .actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null));
   }
 
+  /**
+   * Handles GUI actions related to resuming.
+   */
   public void resumeGame() {
-    application.resumeGame();
+    // TODO: This needs to be implemented.
+  }
+
+  /**
+   * Handles GUI actions related to saving and
+   * notifies the application of the change.
+   */
+  public void saveGame() {
+    // TODO: This needs to be implemented.
+  }
+
+  /**
+   * Handles GUI actions related to loading and
+   * notifies the application of the change.
+   */
+  public void loadGame() {
+    // TODO: This needs to be implemented.
+  }
+
+  /**
+   * Handles GUI actions related to resetting to
+   * previous level and notifies the application
+   * the of change.
+   */
+  public void previousLevel() {
+    // TODO: THis needs to be implemented.
+  }
+
+  public void restartGame() {
+    // TODO: This needs to be implemented.
   }
 
   /**

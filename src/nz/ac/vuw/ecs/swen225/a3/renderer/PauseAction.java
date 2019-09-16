@@ -1,5 +1,7 @@
 package nz.ac.vuw.ecs.swen225.a3.renderer;
 
+import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -22,10 +24,10 @@ class PauseAction extends AbstractAction {
    * @param name action name.
    * @param gui main JFrame.
    */
-  public PauseAction(String name, GUI gui) {
+  public PauseAction(String name, GUI gui, ChapsChallenge application) {
     super(name);
     this.gui = gui;
-    this.pauseMenu = new PauseMenu(gui);  // JPanel shown in JDialog
+    this.pauseMenu = new PauseMenu(application);  // JPanel shown in JDialog
   }
 
   /**
@@ -55,7 +57,7 @@ class PauseAction extends AbstractAction {
     // create a *modal* JDialog
     JDialog dialog = new JDialog(gui, "", Dialog.ModalityType.APPLICATION_MODAL);
     dialog.getContentPane().add(pauseMenu);  // add its JPanel to it
-    dialog.setUndecorated(true); // Keep position relative to game.
+    dialog.setUndecorated(true) ; // Keep position relative to game.
     dialog.pack(); // size it
     dialog.setLocationRelativeTo(gui); // ** Center it over the JFrame **
     dialog.setVisible(true);  // display it, pausing the GUI below it

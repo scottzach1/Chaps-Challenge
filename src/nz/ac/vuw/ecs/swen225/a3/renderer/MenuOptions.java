@@ -1,5 +1,7 @@
 package nz.ac.vuw.ecs.swen225.a3.renderer;
 
+import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -9,76 +11,52 @@ import java.awt.*;
  */
 public class MenuOptions extends JMenuBar {
 
+  private ChapsChallenge application;
+
   /**
    * Constructor: Creates MenuBar and adds all game relevant
    * components.
    */
-  public MenuOptions() {
+  public MenuOptions(ChapsChallenge application) {
+    this.application = application;
+
     // Set the Size of the Control panel
     setPreferredSize(new Dimension(GUI.screenWidth, GUI.MENU_HEIGHT));
     setFont(new Font("Serif", Font.BOLD, 18));
 
     // Create the file menu
     JMenu file = new JMenu("File");
-    
+
     // Create the quit button
     JMenuItem closeItem = new JMenuItem("Quit");
     closeItem.addActionListener(arg0 -> System.exit(0));
     file.add(closeItem);
-    
+
     // Create the save button
     JMenuItem saveItem = new JMenuItem("Save");
-    saveItem.addActionListener(arg0 -> saveGame());
+    saveItem.addActionListener(arg0 -> application.saveGame());
     file.add(saveItem);
-    
+
     //create the load button
     JMenuItem loadItem = new JMenuItem("Load");
-    loadItem.addActionListener(arg0 -> loadGame());
+    loadItem.addActionListener(arg0 -> application.loadGame());
     file.add(loadItem);
-    
+
     // Create the game menu
     JMenu game = new JMenu("Game");
-    
+
     // Create the previous level button
     JMenuItem previousItem = new JMenuItem("Previous Level");
-    previousItem.addActionListener(arg0 -> previousLevel());
+    previousItem.addActionListener(arg0 -> application.previousLevel());
     game.add(previousItem);
-    
+
     // Create the Pause button
     JMenuItem pauseItem = new JMenuItem("Pause");
-    pauseItem.addActionListener(arg0 -> pauseGame());
+    pauseItem.addActionListener(arg0 -> application.pauseGame());
     game.add(pauseItem);
 
     // Add components
     add(file);
     add(game);
-  }
-    
-  /**
-   * Save game method.
-   */
-  public void saveGame() {
-    
-  }
-  
-  /**
-   * Load game method.
-   */
-  public void loadGame() {
-    
-  }
-  
-  /**
-   * Previous level method.
-   */
-  public void previousLevel() {
-    
-  }
-  
-  /**
-   * Pause game method.
-   */
-  public void pauseGame() {
-    
   }
 }
