@@ -63,6 +63,7 @@ public class GUI extends JFrame implements ComponentListener {
     // Set GridBag
     setLayout(new GridBagLayout());
     addLayoutComponents();
+    addKeyListener(application);
 
     // Render.
     redraw();
