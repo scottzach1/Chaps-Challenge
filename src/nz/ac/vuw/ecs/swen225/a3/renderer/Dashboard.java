@@ -39,7 +39,6 @@ public class Dashboard extends JPanel implements ComponentListener {
     // TODO: Remove me.
     setBackground(Color.LIGHT_GRAY);
 
-    addKeyListener(chapsChallenge);
     addComponentListener(this);
 
     setLayout(new GridBagLayout());
