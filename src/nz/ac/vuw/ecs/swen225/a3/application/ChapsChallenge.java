@@ -53,6 +53,7 @@ public class ChapsChallenge implements KeyListener {
     activeKeys = new HashSet<>();
     // Creates a GUI and gives it a keyListener
     gui = new GUI(this);
+    gui.addKeyListener(this);
   }
 
   /**
@@ -92,6 +93,7 @@ public class ChapsChallenge implements KeyListener {
    */
   public void pauseGame() {
     gamePaused=true;
+    gui.pauseGame();
   }
 
   /**

@@ -4,6 +4,7 @@ import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
@@ -30,9 +31,11 @@ public class GUI extends JFrame implements ComponentListener {
   private JMenuBar menuBar;
   private ChapsChallenge application;
 
-
   // Layout object
   GridBagConstraints constraints = new GridBagConstraints();
+
+  // Pause action
+  PauseAction pauseAction = new PauseAction("Pause", this);
 
   /**
    * Constructor: Creates a new JFrame and sets preferred sizes.
@@ -47,6 +50,7 @@ public class GUI extends JFrame implements ComponentListener {
     setResizable(true);
     setMinimumSize(new Dimension(screenDimension.width / 5, screenDimension.height / 5));
     setVisible(true);
+    setFocusable(true);
 
     addComponentListener(this);
 
@@ -88,6 +92,14 @@ public class GUI extends JFrame implements ComponentListener {
     add(dashboard, constraints);
 
     pack();
+  }
+
+  public void pauseGame() {
+    pauseAction.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null));
+  }
+
+  public void resumeGame() {
+    application.resumeGame();
   }
 
   /**
