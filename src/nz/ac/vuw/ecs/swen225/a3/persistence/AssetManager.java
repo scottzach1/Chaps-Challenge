@@ -72,7 +72,7 @@ public class AssetManager {
    *
    * @param newCellSize Cell size.
    */
-  public static void scaleIcons(int newCellSize) {
+  public static void scaleImages(int newCellSize) {
     if (cellSize == newCellSize) return;
     cellSize = newCellSize;
     for (String key : baseImageIcons.keySet()) {
@@ -84,7 +84,7 @@ public class AssetManager {
   }
 
   /**
-   * Gets an ImageIcon and the last scaled size.
+   * Gets an ImageIcon at the last scaled size.
    *
    * @param fname file path.
    * @return ImageIcon.
@@ -97,5 +97,29 @@ public class AssetManager {
       scaledIcon = scaledImageIcons.get(ASSET_PATH + "unknown.png");
     }
     return scaledIcon;
+  }
+
+  /**
+   * Gets an ImageIcon at the specified size.
+   *
+   * @param fname file path.
+   * @return ImageIcon.
+   */
+  public static ImageIcon getScaledImageInstance(String fname, int newCellSize) {
+    fname = ASSET_PATH + fname;
+
+    ImageIcon baseIcon = baseImageIcons.get(fname);
+    if (baseIcon == null) {
+      baseIcon = baseImageIcons.get(ASSET_PATH + "unknown.png");
+    }
+
+    try {
+      baseIcon = new ImageIcon(baseIcon.getImage()
+          .getScaledInstance(newCellSize, newCellSize, Image.SCALE_SMOOTH));
+    } catch (IllegalArgumentException e) {
+      baseIcon = scaledImageIcons.get(fname);
+    }
+
+    return baseIcon;
   }
 }

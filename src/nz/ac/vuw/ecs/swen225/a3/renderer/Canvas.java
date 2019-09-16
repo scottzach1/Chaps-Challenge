@@ -111,7 +111,7 @@ public class Canvas extends JPanel implements ComponentListener {
   @Override
   public void componentResized(ComponentEvent e) {
     cellSize = Math.min(getWidth(), getHeight()) / VIEW_SIZE;
-    AssetManager.scaleIcons(cellSize);
+    AssetManager.scaleImages(cellSize);
 
     renderBoard();
     repaint();
