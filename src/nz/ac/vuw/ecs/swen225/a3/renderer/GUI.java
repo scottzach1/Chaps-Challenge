@@ -1,18 +1,22 @@
 package nz.ac.vuw.ecs.swen225.a3.renderer;
 
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
+import nz.ac.vuw.ecs.swen225.a3.maze.Tiles;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.HashSet;
 
 /**
  * GUI class extends JFrame and is responsible with
  * maintain the Graphical Interface.
  */
-public class GUI extends JFrame implements ComponentListener {
+public class GUI extends JFrame implements ComponentListener, KeyListener {
   // Nothing important
   private static final long serialVersionUID = 1L;
 
@@ -37,12 +41,17 @@ public class GUI extends JFrame implements ComponentListener {
   // Layout object
   private GridBagConstraints constraints = new GridBagConstraints();
 
+  // HashSet of actively pressed keys
+  HashSet<Integer> activeKeys;
+
   /**
    * Constructor: Creates a new JFrame and sets preferred sizes.
    * Creates and adds all relevant GUI components then redraws.
    */
   public GUI(ChapsChallenge chaps_challenge) {
     application = chaps_challenge;
+    // Create new set for hosting keys currently pressed
+    activeKeys = new HashSet<>();
 
     //Create & init the frame.
     setPreferredSize(screenDimension.getSize());
@@ -58,15 +67,14 @@ public class GUI extends JFrame implements ComponentListener {
 
     // Add components.
     canvas = new Canvas(application);
-    dashboard = new Dashboard(chaps_challenge);
-    dashboardHolder = new DashboardHolder(dashboard);
-    menuBar = new MenuOptions(chaps_challenge);
+    dashboardHolder = new DashboardHolder(application);
+    menuBar = new MenuOptions(application);
 
 
     // Set GridBag
     setLayout(new GridBagLayout());
     addLayoutComponents();
-    addKeyListener(application);
+    addKeyListener(this);
     setFocusable(true);
     setFocusableWindowState(true);
 
@@ -178,6 +186,16 @@ public class GUI extends JFrame implements ComponentListener {
    * * Repaints.
    */
   private void redraw() {
+    screenDimension = getSize();
+
+    screenWidth = screenDimension.width;
+    screenHeight = screenDimension.height - MENU_HEIGHT;
+    canvasWidth = (screenDimension.width * 2) / 3;
+    dashboardWidth = (screenDimension.width) / 3;
+
+    canvas.renderBoard();
+    dashboardHolder.renderDashboard();
+
     revalidate();
     repaint();
   }
@@ -191,15 +209,7 @@ public class GUI extends JFrame implements ComponentListener {
    */
   @Override
   public void componentResized(ComponentEvent e) {
-    screenDimension = getSize();
-
-    screenWidth = screenDimension.width;
-    screenHeight = screenDimension.height - MENU_HEIGHT;
-    canvasWidth = (screenDimension.width * 2) / 3;
-    dashboardWidth = (screenDimension.width) / 3;
-
-    revalidate();
-    repaint();
+    redraw();
   }
 
   /**
@@ -232,4 +242,78 @@ public class GUI extends JFrame implements ComponentListener {
 
   }
 
+  /**
+   * Overridden but not utilized.
+   *
+   * @param e event.
+   */
+  @Override
+  public void keyTyped(KeyEvent e) {/* UNUSED */}
+
+  /**
+   * Handles events occuring after a key is pressed.
+   * First adding it to the list of keys pressed, then dealing with all
+   * active keys in the 'activeKeys' set.
+   * @param e - The key pressed
+   */
+  @Override
+  public void keyPressed(KeyEvent e) {
+    // Add the key pressed to the current list of pressed keys
+    activeKeys.add(e.getKeyCode());
+    // CTRL + X
+    if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_X) && activeKeys.size() == 2)
+      exitGame();
+    // CTRL + S
+    if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_S) && activeKeys.size() == 2){
+      saveGame();
+      exitGame();
+    }
+    // CTRL + R
+    if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_R) && activeKeys.size() == 2){
+      // TODO: Resume a saved game
+    }
+    // CTRL + P
+    if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_P) && activeKeys.size() == 2){
+      // TODO: Start a new game at the last UNFINISHED level
+    }
+    // CTRL + 1
+    if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_1) && activeKeys.size() == 2){
+      // TODO: Start a new game from LEVEL 1
+    }
+    // SPACE
+    if (activeKeys.contains(KeyEvent.VK_SPACE) && activeKeys.size() == 1) {
+      if (application.isGamePaused()) resumeGame();
+      else pauseGame();
+    }
+    // ESC
+    if (activeKeys.contains(KeyEvent.VK_ESCAPE) && activeKeys.size() == 1){
+      resumeGame();
+    }
+
+    /*
+    PLAYER CONTROLS
+     */
+    // Move Up
+    if ((activeKeys.contains(KeyEvent.VK_UP) || activeKeys.contains(KeyEvent.VK_W)) && activeKeys.size() == 1)
+      application.move(Tiles.Direction.Up);
+    // Move Down
+    if ((activeKeys.contains(KeyEvent.VK_DOWN) || activeKeys.contains(KeyEvent.VK_S)) && activeKeys.size() == 1)
+      application.move(Tiles.Direction.Down);
+    // Move Left
+    if ((activeKeys.contains(KeyEvent.VK_LEFT) || activeKeys.contains(KeyEvent.VK_A)) && activeKeys.size() == 1)
+      application.move(Tiles.Direction.Left);
+    // Move Right
+    if ((activeKeys.contains(KeyEvent.VK_RIGHT) || activeKeys.contains(KeyEvent.VK_D)) && activeKeys.size() == 1)
+      application.move(Tiles.Direction.Right);
+
+
+    redraw();
+  }
+
+  /**
+   * Removes any key released from the set of activeKeys.
+   * @param e - The key released
+   */
+  @Override
+  public void keyReleased(KeyEvent e) {activeKeys.remove(e.getKeyCode());}
 }

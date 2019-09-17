@@ -1,5 +1,6 @@
 package nz.ac.vuw.ecs.swen225.a3.renderer;
 
+import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
 
 import javax.swing.*;
@@ -14,8 +15,8 @@ public class DashboardHolder extends JPanel implements ComponentListener {
 
   public static int dashboardHeight;
 
-  public DashboardHolder(Dashboard aDashboard){
-    dashboard = aDashboard;
+  public DashboardHolder(ChapsChallenge chapsChallenge){
+    dashboard = new Dashboard(chapsChallenge);
 
     setBackground(null);
     setForeground(null);

@@ -48,7 +48,6 @@ public class Dashboard extends JPanel {
    * This consists of two JPanels and their related parts.
    */
   protected void renderComponents() {
-
     removeAll();
     // reset the GridBagConstraints
     GridBagConstraints constraints = new GridBagConstraints();
