@@ -193,8 +193,10 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     canvasWidth = (screenDimension.width * 2) / 3;
     dashboardWidth = (screenDimension.width) / 3;
 
-    canvas.renderBoard();
-    dashboardHolder.renderDashboard();
+    if (canvas != null && dashboardHolder != null) {
+      canvas.renderBoard();
+      dashboardHolder.renderDashboard();
+    }
 
     revalidate();
     repaint();
