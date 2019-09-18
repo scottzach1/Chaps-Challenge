@@ -38,6 +38,7 @@ public class Treasure extends Tiles {
   @Override
   public boolean interact(Player p) {
     imageUrl = defaultImageUrl;
+    p.addTreasure();
     return isAccessible;
   }
 }
