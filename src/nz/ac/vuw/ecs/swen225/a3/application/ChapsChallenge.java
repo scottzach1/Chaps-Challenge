@@ -81,9 +81,11 @@ public class ChapsChallenge implements KeyListener {
         nextLocation = currentLocation.getRight();
         break;
     }
-    if (!nextLocation.interact(player)) {
+    if (nextLocation == null || !nextLocation.interact(player)) {
       return; //invalid move
     }
+    currentLocation.setTileUnoccupied();
+    nextLocation.setTileOccupied();
     player.setLocation(nextLocation);
   }
 
@@ -254,6 +256,7 @@ public class ChapsChallenge implements KeyListener {
     // Move Right
     if ((activeKeys.contains(KeyEvent.VK_RIGHT) || activeKeys.contains(KeyEvent.VK_D)) && activeKeys.size() == 1)
       move(Tiles.Direction.Right);
+
   }
 
   /**

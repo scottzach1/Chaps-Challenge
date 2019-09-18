@@ -151,13 +151,13 @@ public class Board {
 
         //Separate ordinal in different line to stop line limit > 100 characters.
         int leftOrdinal = Tiles.Direction.Left.ordinal();
-        t.adjacent[leftOrdinal] = col != 0 ? tiles[row][col - 1] : null;
+        t.adjacent.add(leftOrdinal,col != 0 ? tiles[row][col - 1] : new Wall());
         int rightOrdinal = Tiles.Direction.Right.ordinal();
-        t.adjacent[rightOrdinal] = col != boardSize - 1 ? tiles[row][col + 1] : null;
+        t.adjacent.add(rightOrdinal,col != boardSize-1 ? tiles[row][col + 1] : new Wall());
         int upOrdinal = Tiles.Direction.Up.ordinal();
-        t.adjacent[upOrdinal] = row != 0 ? tiles[row - 1][col] : null;
+        t.adjacent.add(upOrdinal,row != 0 ? tiles[row-1][col ] : new Wall());
         int downOrdinal = Tiles.Direction.Right.ordinal();
-        t.adjacent[downOrdinal] = row != boardSize - 1 ? tiles[row + 1][col] : null;
+        t.adjacent.add(downOrdinal,row != boardSize-1 ? tiles[row+1][col] : new Wall());
       }
     }
   }

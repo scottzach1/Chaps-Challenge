@@ -2,6 +2,9 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
 
 import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class Tiles {
 
   public enum Type{
@@ -70,7 +73,7 @@ public abstract class Tiles {
     Left, Right, Up, Down
   }
 
-  Tiles[] adjacent = new Tiles[4];
+  List<Tiles> adjacent = new ArrayList<>();
 
   /**
    * Gets the tile to the left.
@@ -78,7 +81,7 @@ public abstract class Tiles {
    * @return left of tile.
    */
   public Tiles getLeft() {
-    return adjacent[Direction.Left.ordinal()];
+    return adjacent.get(Direction.Left.ordinal());
   }
 
   /**
@@ -87,8 +90,9 @@ public abstract class Tiles {
    * @return right of tile.
    */
   public Tiles getRight() {
-    return adjacent[Direction.Right.ordinal()];
+    return adjacent.get(Direction.Right.ordinal());
   }
+
 
   /**
    * Gets the tile above.
@@ -96,7 +100,7 @@ public abstract class Tiles {
    * @return up of tile.
    */
   public Tiles getUp() {
-    return adjacent[Direction.Up.ordinal()];
+    return adjacent.get(Direction.Up.ordinal());
   }
 
   /**
@@ -105,7 +109,7 @@ public abstract class Tiles {
    * @return down of tile.
    */
   public Tiles getDown() {
-    return adjacent[Direction.Down.ordinal()];
+    return adjacent.get(Direction.Down.ordinal());
   }
 
   /**
@@ -118,7 +122,7 @@ public abstract class Tiles {
 
   public void setTileOccupied() {
     // FIXME: This might not be the best place.
-    imageUrl = "chap.png";
+    imageUrl = "chap_front.png";
     AssetManager.loadAsset(imageUrl);
   }
 
