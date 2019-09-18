@@ -57,7 +57,7 @@ public class Player {
     this.location = location;
   }
 
-  int getTreasures() {
+  public int getTreasures() {
     return treasures;
   }
 

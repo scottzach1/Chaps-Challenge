@@ -183,6 +183,14 @@ public class ChapsChallenge {
   }
 
   /**
+   * Return number of treasures player has retrieved.
+   * @return Number of treasures
+   */
+  public int getTreasures(){
+    return player != null ? player.getTreasures() : 0;
+  }
+
+  /**
    * Get tiles around player to render on screen.
    *
    * @return Stream of tiles to be drawn
