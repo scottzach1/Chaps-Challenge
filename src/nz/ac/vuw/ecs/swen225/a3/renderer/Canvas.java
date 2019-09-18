@@ -35,8 +35,6 @@ public class Canvas extends JPanel implements ComponentListener {
     setLayout(new GridBagLayout());
     setBackground(GUI.BACKGROUND_COLOUR);
 
-    renderBoard();
-
     addComponentListener(this);
   }
 
@@ -47,7 +45,7 @@ public class Canvas extends JPanel implements ComponentListener {
    * in final product.
    * Renders the board stored in application on the  canvas.
    */
-  private void renderBoard() {
+  public void renderBoard() {
     // Clear components.
     components.clear();
     removeAll();
