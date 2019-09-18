@@ -156,7 +156,7 @@ public class Board {
         t.adjacent.add(rightOrdinal,col != boardSize-1 ? tiles[row][col + 1] : new Wall());
         int upOrdinal = Tiles.Direction.Up.ordinal();
         t.adjacent.add(upOrdinal,row != 0 ? tiles[row-1][col ] : new Wall());
-        int downOrdinal = Tiles.Direction.Right.ordinal();
+        int downOrdinal = Tiles.Direction.Down.ordinal();
         t.adjacent.add(downOrdinal,row != boardSize-1 ? tiles[row+1][col] : new Wall());
       }
     }
@@ -171,7 +171,7 @@ public class Board {
     List<Tiles> tilesList = new ArrayList<>();
     for (int r = t.getRow() - Canvas.VIEW_SIZE / 2; r <= t.getRow() + Canvas.VIEW_SIZE / 2; ++r) {
       for (int c = t.getCol() - Canvas.VIEW_SIZE / 2; c <= t.getCol() + Canvas.VIEW_SIZE / 2; ++c) {
-        if (r < 0 || c < 0) tilesList.add(new Wall());
+        if (r < 0 || c < 0 || r >= boardSize || c >= boardSize) tilesList.add(new Wall());
         else tilesList.add(tiles[r][c]);
       }
     }
