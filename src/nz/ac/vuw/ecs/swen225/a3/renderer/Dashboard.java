@@ -20,6 +20,9 @@ public class Dashboard extends JPanel {
   static final Color ACCENT_COLOUR = new Color(0, 255, 0);
   static final Color BACKGROUND_COLOUR = new Color(192, 192, 192);
 
+
+  private ArrayList<Component> components;
+
   /*
   DASHBOARD FIELDS
    */
@@ -44,10 +47,11 @@ public class Dashboard extends JPanel {
   }
 
   /**
-   * Renders the components of the dashboard.
+   * Adds the components of the dashboard.
    * This consists of two JPanels and their related parts.
    */
-  protected void renderComponents() {
+  protected void addComponents() {
+    components = new ArrayList<>();
     removeAll();
     // reset the GridBagConstraints
     GridBagConstraints constraints = new GridBagConstraints();
@@ -163,8 +167,12 @@ public class Dashboard extends JPanel {
     constraints.weighty = 1;
     constraints.gridy = 1;
     add(bottomPanel, constraints);
+  }
 
+
+  public void renderComponents(){
     revalidate();
+    repaint();
   }
 
 

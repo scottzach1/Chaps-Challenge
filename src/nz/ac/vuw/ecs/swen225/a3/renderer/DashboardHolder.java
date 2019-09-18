@@ -25,6 +25,7 @@ public class DashboardHolder extends JPanel implements ComponentListener {
 
     addComponentListener(this);
 
+    dashboard.addComponents();
     renderDashboard();
   }
 
@@ -38,11 +39,13 @@ public class DashboardHolder extends JPanel implements ComponentListener {
     gbc.weighty = 1;
     add(dashboard, gbc);
     dashboard.renderComponents();
+    revalidate();
   }
 
   @Override
   public void componentResized(ComponentEvent e) {
     removeAll();
+    dashboard.addComponents();
     renderDashboard();
     revalidate();
   }
