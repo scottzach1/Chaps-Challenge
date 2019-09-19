@@ -43,6 +43,9 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
   // HashSet of actively pressed keys
   HashSet<Integer> activeKeys;
 
+  // Current move
+  String lastMove;
+
   /**
    * Constructor: Creates a new JFrame and sets preferred sizes.
    * Creates and adds all relevant GUI components then redraws.
@@ -52,6 +55,8 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     // Create new set for hosting keys currently pressed
     activeKeys = new HashSet<>();
 
+    lastMove = "";
+
     //Create & init the frame.
     setPreferredSize(screenDimension.getSize());
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -60,6 +65,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     setMinimumSize(new Dimension(screenDimension.width / 5, screenDimension.height / 5));
     setVisible(true);
     setFocusable(true);
+    setFocusableWindowState(true);
     getContentPane().setBackground(BACKGROUND_COLOUR);
 
     addComponentListener(this);
@@ -261,6 +267,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
    */
   @Override
   public void keyPressed(KeyEvent e) {
+
     // Add the key pressed to the current list of pressed keys
     activeKeys.add(e.getKeyCode());
     // CTRL + X
@@ -285,38 +292,43 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     }
     // SPACE
     if (activeKeys.contains(KeyEvent.VK_SPACE) && activeKeys.size() == 1) {
-      if (application.isGamePaused()) resumeGame();
-      else pauseGame();
+      if (application.isGamePaused()) application.resumeGame();
+      else application.pauseGame();
+      activeKeys.clear();
     }
     // ESC
     if (activeKeys.contains(KeyEvent.VK_ESCAPE) && activeKeys.size() == 1){
       resumeGame();
+      activeKeys.clear();
     }
 
     /*
     PLAYER CONTROLS
      */
     // Move Up
-    if ((activeKeys.contains(KeyEvent.VK_UP) || activeKeys.contains(KeyEvent.VK_W)) && activeKeys.size() == 1) {
+    if ((activeKeys.contains(KeyEvent.VK_UP) || activeKeys.contains(KeyEvent.VK_W)) && activeKeys.size() == 1 && !lastMove.equals("UP")) {
       application.move(Tiles.Direction.Up);
+      lastMove = "UP";
       updateBoard();
     }
     // Move Down
-    if ((activeKeys.contains(KeyEvent.VK_DOWN) || activeKeys.contains(KeyEvent.VK_S)) && activeKeys.size() == 1) {
+    if ((activeKeys.contains(KeyEvent.VK_DOWN) || activeKeys.contains(KeyEvent.VK_S)) && activeKeys.size() == 1  && !lastMove.equals("DOWN")) {
       application.move(Tiles.Direction.Down);
+      lastMove = "DOWN";
       updateBoard();
     }
     // Move Left
-    if ((activeKeys.contains(KeyEvent.VK_LEFT) || activeKeys.contains(KeyEvent.VK_A)) && activeKeys.size() == 1) {
+    if ((activeKeys.contains(KeyEvent.VK_LEFT) || activeKeys.contains(KeyEvent.VK_A)) && activeKeys.size() == 1 && !lastMove.equals("LEFT")) {
       application.move(Tiles.Direction.Left);
+      lastMove = "LEFT";
       updateBoard();
     }
     // Move Right
-    if ((activeKeys.contains(KeyEvent.VK_RIGHT) || activeKeys.contains(KeyEvent.VK_D)) && activeKeys.size() == 1) {
+    if ((activeKeys.contains(KeyEvent.VK_RIGHT) || activeKeys.contains(KeyEvent.VK_D)) && activeKeys.size() == 1  && !lastMove.equals("RIGHT")) {
       application.move(Tiles.Direction.Right);
+      lastMove = "RIGHT";
       updateBoard();
     }
-
 
     redraw();
   }
@@ -326,5 +338,5 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
    * @param e - The key released
    */
   @Override
-  public void keyReleased(KeyEvent e) {activeKeys.remove(e.getKeyCode());}
+  public void keyReleased(KeyEvent e) {activeKeys.remove(e.getKeyCode()); lastMove = "";}
 }

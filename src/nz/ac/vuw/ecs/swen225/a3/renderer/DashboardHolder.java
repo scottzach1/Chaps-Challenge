@@ -28,7 +28,7 @@ public class DashboardHolder extends JPanel implements ComponentListener {
 
   public void renderDashboard(){
     removeAll();
-    dashboardHeight = AssetManager.getScaledImage("assets/free.png").getIconHeight() * Canvas.VIEW_SIZE;
+    dashboardHeight = AssetManager.getScaledImage("free.png").getIconHeight() * Canvas.VIEW_SIZE;
 
     gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.HORIZONTAL;

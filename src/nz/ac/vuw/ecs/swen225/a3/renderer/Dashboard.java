@@ -49,6 +49,7 @@ public class Dashboard extends JPanel {
    */
   Dashboard(ChapsChallenge aChapsChallenge) {
     chapsChallenge = aChapsChallenge;
+    chapsBag = new ArrayList<>();
 
     setPreferredSize(new Dimension(GUI.dashboardWidth, DashboardHolder.dashboardHeight));
 
@@ -138,6 +139,8 @@ public class Dashboard extends JPanel {
       // Place this object in the list on a 4 * 2 grid
       bottomPanelConstraints.gridx = (i % 4);
       bottomPanelConstraints.gridy = (i / 4);
+      bottomPanelConstraints.weightx = 1;
+      bottomPanelConstraints.weighty = 1;
 
       // Add the panel
       if (chapsBag.get(i) != null)
@@ -193,7 +196,9 @@ public class Dashboard extends JPanel {
         content.setPreferredSize(new Dimension(getWidth() / 4, getHeight() / (3 * 2)));
         chapsBag.add(content);
       } catch (Exception e) {
-        chapsBag.add(new JLabel(AssetManager.getScaledImage("free.png")));
+        JLabel content = new JLabel(AssetManager.getScaledImage("free.png"));
+        content.setPreferredSize(new Dimension(getWidth() / 4, getHeight() / (3 * 2)));
+        chapsBag.add(content);
       }
     }
   }
