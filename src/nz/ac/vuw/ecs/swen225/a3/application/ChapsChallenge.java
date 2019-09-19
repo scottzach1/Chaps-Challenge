@@ -45,6 +45,9 @@ public class ChapsChallenge {
 
     // Creates a GUI and gives it a keyListener
     gui = new GUI(this);
+
+    // Start the running loop
+    runningThread();
   }
 
   /**
@@ -112,6 +115,7 @@ public class ChapsChallenge {
   public void resumeGame() {
     gamePaused=false;
     startTime=System.currentTimeMillis();
+    runningThread();
     gui.resumeGame();
   }
 
@@ -157,6 +161,27 @@ public class ChapsChallenge {
   public void exitGame() {
     if (gui.exitGame())
       System.exit(0);
+  }
+
+  /**
+   *
+   */
+  public void runningThread(){
+    Runnable runnable = new Runnable() {
+      @Override
+      public void run() {
+        while (!gamePaused) {
+          gui.updateDashboard();
+          try {
+            Thread.sleep(1000);
+          } catch (InterruptedException e) {
+            // TODO: TIMED OUT
+          }
+        }
+      }
+    };
+    Thread thread = new Thread(runnable);
+    thread.start();
   }
 
   /**

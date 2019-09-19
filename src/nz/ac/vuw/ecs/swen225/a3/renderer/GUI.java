@@ -33,7 +33,6 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
 
   // ChapsChallenge component fields.
   private Canvas canvas;
-  private Dashboard dashboard;
   private DashboardHolder dashboardHolder;
   private JMenuBar menuBar;
   private ChapsChallenge application;
@@ -77,9 +76,6 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     addKeyListener(this);
     setFocusable(true);
     setFocusableWindowState(true);
-
-    // Render.
-    redraw();
   }
 
   /**
@@ -180,24 +176,22 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     return choice != JOptionPane.CLOSED_OPTION && choice != 1;
   }
 
+  public void updateBoard(){
+    canvas.renderBoard();
+    redraw();
+  }
+
+  public void updateDashboard(){
+    dashboardHolder.renderDashboard();
+    redraw();
+  }
+
   /**
    * Redraws the GUI JFrame.
    * * Revalidates.
    * * Repaints.
    */
   private void redraw() {
-    screenDimension = getSize();
-
-    screenWidth = screenDimension.width;
-    screenHeight = screenDimension.height - MENU_HEIGHT;
-    canvasWidth = (screenDimension.width * 2) / 3;
-    dashboardWidth = (screenDimension.width) / 3;
-
-    if (canvas != null && dashboardHolder != null) {
-      canvas.renderBoard();
-      dashboardHolder.renderDashboard();
-    }
-
     revalidate();
     repaint();
   }
@@ -211,6 +205,13 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
    */
   @Override
   public void componentResized(ComponentEvent e) {
+    screenDimension = getSize();
+
+    screenWidth = screenDimension.width;
+    screenHeight = screenDimension.height - MENU_HEIGHT;
+    canvasWidth = (screenDimension.width * 2) / 3;
+    dashboardWidth = (screenDimension.width) / 3;
+
     redraw();
   }
 
@@ -296,17 +297,25 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     PLAYER CONTROLS
      */
     // Move Up
-    if ((activeKeys.contains(KeyEvent.VK_UP) || activeKeys.contains(KeyEvent.VK_W)) && activeKeys.size() == 1)
+    if ((activeKeys.contains(KeyEvent.VK_UP) || activeKeys.contains(KeyEvent.VK_W)) && activeKeys.size() == 1) {
       application.move(Tiles.Direction.Up);
+      updateBoard();
+    }
     // Move Down
-    if ((activeKeys.contains(KeyEvent.VK_DOWN) || activeKeys.contains(KeyEvent.VK_S)) && activeKeys.size() == 1)
+    if ((activeKeys.contains(KeyEvent.VK_DOWN) || activeKeys.contains(KeyEvent.VK_S)) && activeKeys.size() == 1) {
       application.move(Tiles.Direction.Down);
+      updateBoard();
+    }
     // Move Left
-    if ((activeKeys.contains(KeyEvent.VK_LEFT) || activeKeys.contains(KeyEvent.VK_A)) && activeKeys.size() == 1)
+    if ((activeKeys.contains(KeyEvent.VK_LEFT) || activeKeys.contains(KeyEvent.VK_A)) && activeKeys.size() == 1) {
       application.move(Tiles.Direction.Left);
+      updateBoard();
+    }
     // Move Right
-    if ((activeKeys.contains(KeyEvent.VK_RIGHT) || activeKeys.contains(KeyEvent.VK_D)) && activeKeys.size() == 1)
+    if ((activeKeys.contains(KeyEvent.VK_RIGHT) || activeKeys.contains(KeyEvent.VK_D)) && activeKeys.size() == 1) {
       application.move(Tiles.Direction.Right);
+      updateBoard();
+    }
 
 
     redraw();

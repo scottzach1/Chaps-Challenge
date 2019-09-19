@@ -24,12 +24,10 @@ public class DashboardHolder extends JPanel implements ComponentListener {
     setLayout(new GridBagLayout());
 
     addComponentListener(this);
-
-    dashboard.addComponents();
-    renderDashboard();
   }
 
   public void renderDashboard(){
+    removeAll();
     dashboardHeight = AssetManager.getScaledImage("assets/free.png").getIconHeight() * Canvas.VIEW_SIZE;
 
     gbc = new GridBagConstraints();
@@ -37,15 +35,16 @@ public class DashboardHolder extends JPanel implements ComponentListener {
     gbc.ipady = dashboardHeight;
     gbc.weightx = 1;
     gbc.weighty = 1;
+    dashboard.refreshDashboardComponents();
     add(dashboard, gbc);
-    dashboard.renderComponents();
     revalidate();
   }
 
   @Override
   public void componentResized(ComponentEvent e) {
     removeAll();
-    dashboard.addComponents();
+    dashboard.createDashboardComponents();
+    dashboard.renderDashboardComponents();
     renderDashboard();
     revalidate();
   }
