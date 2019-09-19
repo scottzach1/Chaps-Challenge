@@ -27,7 +27,10 @@ public class ChapsChallenge {
   private long startTime;
   private long timeLeft = totalTime;
 
-  private boolean gamePaused=false;
+  private boolean gamePaused = false;
+
+  private Thread thread;
+
   /**
    * Create main game application.
    */
@@ -45,6 +48,9 @@ public class ChapsChallenge {
 
     // Creates a GUI and gives it a keyListener
     gui = new GUI(this);
+
+    // Start the running loop
+    runningThread();
   }
 
   /**
@@ -84,6 +90,7 @@ public class ChapsChallenge {
   /**
    * Checks the amount of time that has elapsed since the start of the game.
    * Subtracts this from the total time available.
+   *
    * @return the time left to play
    */
   public int timeLeft() {
@@ -93,7 +100,7 @@ public class ChapsChallenge {
     long elapsedTime = System.currentTimeMillis() - startTime;
     timeLeft -= TimeUnit.MILLISECONDS.toSeconds(elapsedTime);
 
-    startTime=System.currentTimeMillis();
+    startTime = System.currentTimeMillis();
 
     return (int) timeLeft;
   }
@@ -102,7 +109,7 @@ public class ChapsChallenge {
    * Pauses the game.
    */
   public void pauseGame() {
-    gamePaused=true;
+    gamePaused = true;
     gui.pauseGame();
   }
 
@@ -110,8 +117,9 @@ public class ChapsChallenge {
    * Resumes the game.
    */
   public void resumeGame() {
-    gamePaused=false;
-    startTime=System.currentTimeMillis();
+    gamePaused = false;
+    runningThread();
+    startTime = System.currentTimeMillis();
     gui.resumeGame();
   }
 
@@ -159,24 +167,58 @@ public class ChapsChallenge {
       System.exit(0);
   }
 
+  public void timeOut() {
+    // TODO: Implement a time out in GUI and call here
+  }
+
+  /**
+   * Running thread opens a new thread (double threaded) and
+   * runs a timer, updating the dashboard every second
+   */
+  public void runningThread() {
+    Runnable runnable = new Runnable() {
+      @Override
+      public void run() {
+        while (true) {
+          if (!gamePaused) {
+            gui.updateDashboard();
+            try {
+              if (timeLeft > 0)
+                Thread.sleep(1000);
+              else
+                throw new InterruptedException("TIMED OUT");
+            } catch (InterruptedException e) {
+              timeOut();
+              return;
+            }
+          }
+        }
+      }
+    };
+    thread = new Thread(runnable);
+    thread.start();
+  }
+
   /**
    * Gets the gamePaused boolean.
+   *
    * @return - True if game is paused
    */
-  public boolean isGamePaused(){
+  public boolean isGamePaused() {
     return gamePaused;
   }
 
   /**
    * Returns a list of strings containing the players inventory.
    * Strings in format item - number_of_items.
+   *
    * @return the list of items.
    */
-  public List<String> getPlayerInventory(){
-    List <String> toReturn = new ArrayList<>();
+  public List<String> getPlayerInventory() {
+    List<String> toReturn = new ArrayList<>();
     HashMap<String, Integer> inventory = player.getInventory();
-    for (String key : inventory.keySet()){
-      String s = key+" - "+inventory.get(key);
+    for (String key : inventory.keySet()) {
+      String s = key + " - " + inventory.get(key);
       toReturn.add(s);
     }
     return toReturn;
@@ -184,9 +226,10 @@ public class ChapsChallenge {
 
   /**
    * Return number of treasures player has retrieved.
+   *
    * @return Number of treasures
    */
-  public int getTreasures(){
+  public int getTreasures() {
     return player != null ? player.getTreasures() : 0;
   }
 
@@ -198,7 +241,6 @@ public class ChapsChallenge {
   public Stream<Tiles> getTilesToRender() {
     return board.getStream(player.getLocation());
   }
-
 
 
   /**

@@ -15,17 +15,28 @@ import java.util.ArrayList;
  */
 public class Dashboard extends JPanel {
 
+  /*
+  DASHBOARD FIELDS
+   */
+
   // Colour Space.
   static final Color TEXT_COLOUR = new Color(0, 0, 0);
   static final Color ACCENT_COLOUR = new Color(0, 255, 0);
   static final Color BACKGROUND_COLOUR = new Color(192, 192, 192);
 
 
-  private ArrayList<Component> components;
+  private ArrayList<Component> chapsBagComponents;
 
-  /*
-  DASHBOARD FIELDS
-   */
+
+  // Padding around boarders of boxes
+  int paddingOfBox;
+
+  // Create the alignment for the custom text
+  private SimpleAttributeSet centerAlign, rightAlign;
+
+  // CustomTextPane constants
+  CustomTextPane level, levelNum, time, timeNum, chipsLeft, chipsLeftNum;
+
   private final int GRID_WIDTH = 4, GRID_HEIGHT = 8;
   private ArrayList<JLabel> chapsBag;
   private ChapsChallenge chapsChallenge;
@@ -38,51 +49,31 @@ public class Dashboard extends JPanel {
    */
   Dashboard(ChapsChallenge aChapsChallenge) {
     chapsChallenge = aChapsChallenge;
+    chapsBag = new ArrayList<>();
 
     setPreferredSize(new Dimension(GUI.dashboardWidth, DashboardHolder.dashboardHeight));
 
     setBackground(BACKGROUND_COLOUR);
 
     setLayout(new GridBagLayout());
+
+    paddingOfBox = Math.min(getWidth() / 10, getHeight() / 60);
+
+    centerAlign = new SimpleAttributeSet();
+    StyleConstants.setAlignment(centerAlign, StyleConstants.ALIGN_CENTER);
+    rightAlign = new SimpleAttributeSet();
+    StyleConstants.setAlignment(rightAlign, StyleConstants.ALIGN_RIGHT);
+    createDashboardComponents();
   }
 
   /**
    * Adds the components of the dashboard.
    * This consists of two JPanels and their related parts.
    */
-  protected void addComponents() {
-    components = new ArrayList<>();
+  protected void renderDashboardComponents() {
     removeAll();
     // reset the GridBagConstraints
     GridBagConstraints constraints = new GridBagConstraints();
-
-    /*
-    CREATE THE CONSTANTS FOR THE CUSTOM TEXT PANES
-     */
-
-    // Create the padding around the borders such that preferred sizes are not flush against the sides of the dash border
-    int paddingOfBox = Math.min(getWidth() / 10, getHeight() / 60);
-
-    // Create the alignment for the custom text
-    // - CENTER Aligned
-    SimpleAttributeSet centerAlign = new SimpleAttributeSet();
-    StyleConstants.setAlignment(centerAlign, StyleConstants.ALIGN_CENTER);
-    // - RIGHT Aligned
-    SimpleAttributeSet rightAlign = new SimpleAttributeSet();
-    StyleConstants.setAlignment(rightAlign, StyleConstants.ALIGN_RIGHT);
-
-    // CustomTextPane of the center aligned level text
-    CustomTextPane level = new CustomTextPane("LEVEL", centerAlign, null, TEXT_COLOUR, false);
-    // CustomTextPane of the right aligned level value
-    CustomTextPane levelNum = new CustomTextPane("1", rightAlign, TEXT_COLOUR, ACCENT_COLOUR, true);
-    // CustomTextPane of the center aligned time text
-    CustomTextPane time = new CustomTextPane("TIME", centerAlign, null, TEXT_COLOUR, false);
-    // CustomTextPane of the right aligned time value
-    CustomTextPane timeNum = new CustomTextPane(chapsChallenge.timeLeft() + "", rightAlign, TEXT_COLOUR, ACCENT_COLOUR, true);
-    // CustomTextPane of the center aligned chipsLeft text
-    CustomTextPane chipsLeft = new CustomTextPane("CHIPS LEFT", centerAlign, null, TEXT_COLOUR, false);
-    // CustomTextPane of the right aligned chipsLeft value
-    CustomTextPane chipsLeftNum = new CustomTextPane(chapsChallenge.getPlayerInventory().size() + "", rightAlign, TEXT_COLOUR, ACCENT_COLOUR, true);
 
     /*
     CREATES THE TOP PANEL WITH THE THREE TITLES (LEVEL, TIME, CHIPSLEFT)
@@ -129,8 +120,7 @@ public class Dashboard extends JPanel {
     /*
     CREATES THE BOTTOM PANEL WITH ALL OF CHAPS ITEMS
      */
-    // Fills chips bag with contents analysed in the ChapsChallenge object
-    fillChapsBag();
+
     // Create the bottom JPanel and set all relevant settings
     JPanel bottomPanel = new JPanel();
     bottomPanel.setLayout(new GridBagLayout());
@@ -146,16 +136,15 @@ public class Dashboard extends JPanel {
 
     // Cycle through 8 blocks to create a new Label for each bag item
     for (int i = 0; i < 8; i++) {
-      // Get the blank or content from chaps bag, and set it's preferred size
-      JLabel j = chapsBag.get(i);
-      j.setPreferredSize(new Dimension(getWidth() / 4, getHeight() / (3 * 2)));
-
       // Place this object in the list on a 4 * 2 grid
       bottomPanelConstraints.gridx = (i % 4);
       bottomPanelConstraints.gridy = (i / 4);
+      bottomPanelConstraints.weightx = 1;
+      bottomPanelConstraints.weighty = 1;
 
       // Add the panel
-      bottomPanel.add(j, bottomPanelConstraints);
+      if (chapsBag.get(i) != null)
+        bottomPanel.add(chapsBag.get(i), bottomPanelConstraints);
     }
 
 
@@ -169,36 +158,67 @@ public class Dashboard extends JPanel {
     add(bottomPanel, constraints);
   }
 
+  public void createDashboardComponents() {
+    // Create the level text. Center aligned
+    level = new CustomTextPane("LEVEL", centerAlign, null, TEXT_COLOUR, false);
+    // Create the level number text. Right aligned
+    levelNum = new CustomTextPane("1", rightAlign, TEXT_COLOUR, ACCENT_COLOUR, true);
+    // Create the time text. Center aligned
+    time = new CustomTextPane("TIME", centerAlign, null, TEXT_COLOUR, false);
+    // Create the tie number text. Right aligned
+    timeNum = new CustomTextPane(chapsChallenge.timeLeft() + "", rightAlign, TEXT_COLOUR, ACCENT_COLOUR, true);
+    // Create the chipsLeft text. Center aligned
+    chipsLeft = new CustomTextPane("CHIPS LEFT", centerAlign, null, TEXT_COLOUR, false);
+    // Create the chipsLeft number text. Right aligned
+    chipsLeftNum = new CustomTextPane(chapsChallenge.getTreasures() + "", rightAlign, TEXT_COLOUR, ACCENT_COLOUR, true);
 
-  public void renderComponents(){
-    revalidate();
-    repaint();
+    // Refresh chapsbag
+    fillChapsBag();
   }
 
 
-  /**
-   * Given an arraylist of strings (asset names), their png will be added to
-   * the content panel on the dashboard.
-   */
-  private void fillChapsBag() {
+  public void refreshDashboardComponents(){
+    // TODO: chaps challenge needs to have a function to get the level num
+    levelNum.setText("1");
+    timeNum.setText(chapsChallenge.timeLeft() + "");
+    chipsLeftNum.setText(chapsChallenge.getTreasures() + "");
+
+    // Refresh Chaps bag
+    fillChapsBag();
+  }
+
+  private void fillChapsBag(){
+    // Cycle through 8 blocks to create a new Label for each bag item
     chapsBag = new ArrayList<>();
     for (int i = 0; i < 8; i++) {
       try {
         JLabel content = new JLabel(AssetManager.getScaledImage(chapsChallenge.getPlayerInventory().get(i)));
-        chapsBag.set(i, content);
+        content.setPreferredSize(new Dimension(getWidth() / 4, getHeight() / (3 * 2)));
+        chapsBag.add(content);
       } catch (Exception e) {
-        chapsBag.add(new JLabel(AssetManager.getScaledImage("free.png")));
+        JLabel content = new JLabel(AssetManager.getScaledImage("free.png"));
+        content.setPreferredSize(new Dimension(getWidth() / 4, getHeight() / (3 * 2)));
+        chapsBag.add(content);
       }
     }
   }
 
-  private Dimension getTextBoxDimension(){
+  /**
+   * @return
+   */
+  private Dimension getTextBoxDimension() {
     // Box sizes using the aforementioned padding
     int boxWidth = (getWidth() / GRID_WIDTH);
     int boxHeight = (getHeight() / GRID_HEIGHT);
     return new Dimension(boxWidth, boxHeight);
   }
 
+  /**
+   * @param metrics
+   * @param font
+   * @param text
+   * @return
+   */
   private Dimension getFontSize(FontMetrics metrics, Font font, String text) {
     // get the height of a line of text in this font and render context
     int hgt = metrics.getHeight();
@@ -209,6 +229,13 @@ public class Dashboard extends JPanel {
     return size;
   }
 
+  /**
+   * @param component
+   * @param componentSize
+   * @param oldFont
+   * @param text
+   * @return
+   */
   private Font findFont(Component component, Dimension componentSize, Font oldFont, String text) {
     //search up to 100
     Font savedFont = oldFont;
