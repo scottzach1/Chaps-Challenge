@@ -43,7 +43,6 @@ public class Exit extends Tiles {
    */
   @Override
   public boolean interact(Player p) {
-    //todo continue to next level/end of game screen
     return isAccessible;
   }
 

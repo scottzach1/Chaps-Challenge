@@ -1,6 +1,7 @@
 package nz.ac.vuw.ecs.swen225.a3.application;
 
 import nz.ac.vuw.ecs.swen225.a3.maze.Board;
+import nz.ac.vuw.ecs.swen225.a3.maze.Exit;
 import nz.ac.vuw.ecs.swen225.a3.maze.Player;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tiles;
 import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
@@ -26,14 +27,6 @@ public class ChapsChallenge {
 
   private long totalTime = 100; //100 seconds, todo change with levels
   private long startTime;
-
-  /**
-   * Get time remaining.
-   * @return long time in seconds
-   */
-  public long getTimeLeft() {
-    return timeLeft;
-  }
 
   private long timeLeft = totalTime;
 
@@ -89,6 +82,11 @@ public class ChapsChallenge {
     currentLocation.setTileUnoccupied();
     nextLocation.setTileOccupied();
     player.setLocation(nextLocation);
+
+    if (player.getLocation().getType() == Tiles.Type.Exit){
+      board.setNextLevel();
+      player = new Player(board.getPlayerLocation());
+    }
   }
 
   /**
@@ -274,6 +272,14 @@ public class ChapsChallenge {
     return player;
   }
 
+
+  /**
+   * Get time remaining.
+   * @return long time in seconds
+   */
+  public long getTimeLeft() {
+    return timeLeft;
+  }
 
   /**
    * ChapsChallenge invocation point for running the game.

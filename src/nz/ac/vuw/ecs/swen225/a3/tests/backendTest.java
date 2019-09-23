@@ -513,4 +513,13 @@ class backendTest {
     //todo Front end fix this
   }
 
+  /**
+   * Check going to the next level works.
+   */
+  @Test
+  void nextLevel(){
+    ChapsChallenge chapsChallenge = new ChapsChallenge();
+    chapsChallenge.getBoard().setNextLevel();
+    //todo not finished, currently buggy
+  }
 }
