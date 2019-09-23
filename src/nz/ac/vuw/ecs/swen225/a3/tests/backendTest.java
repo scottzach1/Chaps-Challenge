@@ -130,6 +130,43 @@ class backendTest {
   }
 
   /**
+   * Creates an invalid board with invalid characters
+   * Should throw an error.
+   */
+  @Test
+  void overrideInvalid3(){
+    ChapsChallenge chapsChallenge = new ChapsChallenge();
+    String level =
+        "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|{|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|>|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|W|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|Q|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|";
+
+    boolean failed=false;
+    try {
+      chapsChallenge.setLevel(level);
+    }catch (Error e) {
+      failed=true;
+    }
+    assertTrue(failed);
+  }
+  /**
    * Checks that chap can move correctly.
    */
   @Test
@@ -414,12 +451,65 @@ class backendTest {
   }
 
   /**
+   * Restarts the game.
+   */
+  @Test
+  void restartGame(){
+    ChapsChallenge chapsChallenge = new ChapsChallenge();
+    chapsChallenge.restartGame();
+    //todo assert something here
+  }
+
+  /**
+   * Saves the game.
+   */
+  @Test
+  void saveGame(){
+    ChapsChallenge chapsChallenge = new ChapsChallenge();
+    chapsChallenge.saveGame();
+    //todo assert something here
+  }
+
+  /**
+   * Loads the game
+   */
+  @Test
+  void loadGame(){
+    ChapsChallenge chapsChallenge = new ChapsChallenge();
+    chapsChallenge.loadGame();
+    //todo assert something here
+  }
+
+
+  /**
+   * Checks timeout feature
+   */
+  @Test
+  void checkTimeout(){
+    ChapsChallenge chapsChallenge = new ChapsChallenge();
+    chapsChallenge.timeOut();
+    //todo assert something here
+  }
+
+  /**
+   * Goes to the previous level
+   */
+  @Test
+  void prevLevel(){
+    ChapsChallenge chapsChallenge = new ChapsChallenge();
+    chapsChallenge.previousLevel();
+    //todo assert something here
+  }
+
+  /**
    * Pauses the game.
    * Un-pauses the game.
    * Timer should be the same.
    */
   @Test
   void pauseGame(){
+    ChapsChallenge chapsChallenge = new ChapsChallenge();
+    assertFalse(chapsChallenge.isGamePaused());
     //todo Front end fix this
   }
 

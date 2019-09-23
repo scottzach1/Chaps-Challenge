@@ -38,12 +38,7 @@ public class ChapsChallenge {
     // Load the board.
     board = new Board();
     new JsonReadWrite(board);
-    try {
-      player = new Player(board.getPlayerLocation());
-    } catch (Board.PlayerNotFoundException e) {
-      System.out.println("Error, player not found in level description");
-      throw new Error("Player not found");
-    }
+    player = new Player(board.getPlayerLocation());
     startTime = System.currentTimeMillis();
 
     // Creates a GUI and gives it a keyListener
@@ -167,7 +162,7 @@ public class ChapsChallenge {
       System.exit(0);
   }
 
-  private void timeOut() {
+  public void timeOut() {
     // TODO: Implement a time out in GUI and call here
   }
 
@@ -231,6 +226,15 @@ public class ChapsChallenge {
   }
 
   /**
+   * Return total number of treasures in the level
+   *
+   * @return Total number of treasures
+   */
+  public int getTotalTreasures() {
+    return  board.getTreasureCount();
+  }
+
+  /**
    * Get tiles around player to render on screen.
    *
    * @return Stream of tiles to be drawn
@@ -245,12 +249,7 @@ public class ChapsChallenge {
    */
   public void setLevel(String level){
     board.setLevel(level);
-    try {
-      player = new Player(board.getPlayerLocation());
-    } catch (Board.PlayerNotFoundException e) {
-      System.out.println("Error, player not found in level description");
-      throw new Error("Player not found");
-    }
+    player = new Player(board.getPlayerLocation());
   }
 
   public Board getBoard() {

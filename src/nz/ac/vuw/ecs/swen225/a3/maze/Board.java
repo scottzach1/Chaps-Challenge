@@ -40,7 +40,7 @@ public class Board {
           + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|";
 
   private String level = level1;
-
+  private int treasureCount=0;
   /**
    * Constructor.
    */
@@ -146,7 +146,7 @@ public class Board {
     }
 
     // Count number of treasures
-    int treasureCount = (int) allTiles.stream().filter(p -> p.toString().equals("Treasure")).count();
+    treasureCount = (int) allTiles.stream().filter(p -> p.toString().equals("Treasure")).count();
 
     // Set all exit locks to require correct number of treasures
     allTiles.stream().filter(p -> p.getType() == Tiles.Type.ExitLock).map(c -> (ExitLock)c).forEach(s -> s.setTotalTreasures(treasureCount));
@@ -209,7 +209,7 @@ public class Board {
    * @return Tile player found on
    * @throws PlayerNotFoundException when no chap present
    */
-  public Tiles getPlayerLocation() throws PlayerNotFoundException {
+  public Tiles getPlayerLocation() {
     for (int r = 0; r < boardSize; r++) {
       for (int c = 0; c < boardSize; c++) {
         if (tiles[r][c].getImageUrl().equals("chap_front.png")) {
@@ -217,7 +217,11 @@ public class Board {
         }
       }
     }
-    throw new PlayerNotFoundException();
+   return null;
+  }
+
+  public int getTreasureCount() {
+    return treasureCount;
   }
 
   /**
