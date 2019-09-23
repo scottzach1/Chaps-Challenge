@@ -34,6 +34,8 @@ public class AssetManager {
   }
 
   /**
+   * NOTE: THIS ONLY WORKS ON WINDOWS.
+   * TO UTILISE ON MAC REPLACE "assets\\" WITH "assets/".
    * Finds all files in the assets/ directory.
    * If unable to read files in the directory an IOException will be thrown.
    */
@@ -96,6 +98,21 @@ public class AssetManager {
    * @return ImageIcon.
    */
   public static ImageIcon getScaledImage(String fname) {
+    fname = assetPath + fname;
+
+    ImageIcon scaledIcon = scaledImageIcons.get(fname);
+    if (scaledIcon == null) {
+      scaledIcon = scaledImageIcons.get(assetPath + "unknown.png");
+    }
+    return scaledIcon;
+  }
+
+  /**
+   * Gets an ImageIcon at the last scaled size,
+   * with a number overlay.
+   */
+  public static ImageIcon getNumberedScaledImage(String fname) {
+    // TODO: Make it add the number overlay.
     fname = assetPath + fname;
 
     ImageIcon scaledIcon = scaledImageIcons.get(fname);
