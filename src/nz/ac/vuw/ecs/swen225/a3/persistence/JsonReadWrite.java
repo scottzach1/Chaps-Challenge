@@ -20,7 +20,9 @@ public class JsonReadWrite {
    * @param game Instance of Chaps Challenge
    */
   public static void saveGameState(ChapsChallenge game){
-    String jsonString = "";
+    String jsonGame = "";
+    String jsonBoard = "";
+    String jsonPlayer = "";
 
     // Dump game info
     JsonObjectBuilder builder =  Json.createObjectBuilder()
@@ -29,7 +31,7 @@ public class JsonReadWrite {
     // Compose game section
     try(Writer writer = new StringWriter()) {
       Json.createWriter(writer).write(builder.build());
-      jsonString = writer.toString();
+      jsonGame = writer.toString();
     }
     catch(IOException e){
       throw new Error("Failed to parse game");
@@ -50,7 +52,7 @@ public class JsonReadWrite {
     // Compose board section
     try(Writer writer = new StringWriter()) {
       Json.createWriter(writer).write(builder.build());
-      jsonString += "," + writer.toString();
+      jsonBoard = writer.toString();
     }
     catch(IOException e){
       throw new Error("Failed to parse Board");
@@ -72,21 +74,28 @@ public class JsonReadWrite {
     // Compose player section
     try(Writer writer = new StringWriter()) {
       Json.createWriter(writer).write(builder.build());
-      jsonString += "," + writer.toString();
+      jsonPlayer = writer.toString();
     }
     catch(IOException e){
       throw new Error("Failed to parse Player");
     }
 
     try {
-      BufferedWriter writer = new BufferedWriter(new FileWriter("save.txt"));
-      writer.write(jsonString);
+      BufferedWriter writer = new BufferedWriter(new FileWriter("saveGame.txt"));
+      writer.write(jsonGame);
+      writer.close();
+      writer = new BufferedWriter(new FileWriter("saveBoard.txt"));
+      writer.write(jsonBoard);
+      writer.close();
+      writer = new BufferedWriter(new FileWriter("savePlayer.txt"));
+      writer.write(jsonPlayer);
       writer.close();
     }
     catch(IOException e){}
   }
 
-  public ChapsChallenge loadGameState(String fileName){
+  public ChapsChallenge loadGameState(String saveGame, String saveBoard, String savePlayer){
+
     return null;
   }
 
