@@ -15,7 +15,7 @@ class testAssets {
 
   /**
    * Checks whether a particular asset is loaded correctly.
-   * @param fname
+   * @param fname of file.
    */
   public void checkAsset(String fname) {
 

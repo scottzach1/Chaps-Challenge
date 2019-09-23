@@ -1,7 +1,5 @@
 package nz.ac.vuw.ecs.swen225.a3.persistence;
 
-import nz.ac.vuw.ecs.swen225.a3.renderer.Canvas;
-
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
