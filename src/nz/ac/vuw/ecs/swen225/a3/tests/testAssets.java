@@ -11,13 +11,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * JUnit Tests: Checks all assets are loaded correctly.
  */
-class assetTest {
+class testAssets {
 
   /**
    * Checks whether a particular asset is loaded correctly.
-   * @param fname asset to check
+   * @param fname
    */
-   void checkAsset(String fname) {
+  public void checkAsset(String fname) {
 
     AssetManager.loadAsset(fname);
 

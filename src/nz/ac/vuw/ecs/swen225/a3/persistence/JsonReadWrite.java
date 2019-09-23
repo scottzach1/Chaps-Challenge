@@ -14,7 +14,7 @@ public class JsonReadWrite {
    * @param b = the board.
    */
   public JsonReadWrite(Board b) {
-    //System.out.println("Todo: Output board information into JSON file.");
+    System.out.println("Todo: Output board information into JSON file.");
   }
 
   public void saveToFile(int saveNum){
