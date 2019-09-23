@@ -26,6 +26,15 @@ public class ChapsChallenge {
 
   private long totalTime = 100; //100 seconds, todo change with levels
   private long startTime;
+
+  /**
+   * Get time remaining.
+   * @return long time in seconds
+   */
+  public long getTimeLeft() {
+    return timeLeft;
+  }
+
   private long timeLeft = totalTime;
 
   private boolean gamePaused = false;

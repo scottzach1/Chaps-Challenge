@@ -6,9 +6,7 @@ import nz.ac.vuw.ecs.swen225.a3.maze.Player;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tiles;
 
 import javax.json.*;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
+import java.io.*;
 
 
 /**.
@@ -17,8 +15,25 @@ import java.io.Writer;
  */
 public class JsonReadWrite {
 
+  /**
+   * Json dump game state (TimeLeft, Board state and player state) to file "save.txt".
+   * @param game Instance of Chaps Challenge
+   */
   public static void saveGameState(ChapsChallenge game){
     String jsonString = "";
+
+    // Dump game info
+    JsonObjectBuilder builder =  Json.createObjectBuilder()
+        .add("timeLeft",game.getTimeLeft());
+
+    // Compose game section
+    try(Writer writer = new StringWriter()) {
+      Json.createWriter(writer).write(builder.build());
+      jsonString = writer.toString();
+    }
+    catch(IOException e){
+      throw new Error("Failed to parse game");
+    }
 
     // Json dump board
     Board board = game.getBoard();
@@ -28,14 +43,14 @@ public class JsonReadWrite {
     for(Tiles t : board.getAllTiles()){
       arrayBuilder.add(t.getJson());
     }
-    JsonObjectBuilder builder =  Json.createObjectBuilder()
+    builder =  Json.createObjectBuilder()
         .add("boardSize",board.getBoardSize())
         .add("allTiles",arrayBuilder);
 
     // Compose board section
     try(Writer writer = new StringWriter()) {
       Json.createWriter(writer).write(builder.build());
-      jsonString = writer.toString();
+      jsonString += "," + writer.toString();
     }
     catch(IOException e){
       throw new Error("Failed to parse Board");
@@ -43,10 +58,36 @@ public class JsonReadWrite {
 
     // Json Dump Player
     Player player = game.getPlayer();
-      builder = Json.createObjectBuilder()
-        .add("location",player.getLocation().getJson())
-        .add("inventory",arrayBuilder)
-        .add("treasures",player.getTreasures());
+    arrayBuilder = Json.createArrayBuilder();
+
+    // Array of tiles
+    for(String i : player.getInventory()){
+      arrayBuilder.add(i);
+    }
+    builder = Json.createObjectBuilder()
+      .add("location",player.getLocation().getJson())
+      .add("inventory",arrayBuilder)
+      .add("treasures",player.getTreasures());
+
+    // Compose player section
+    try(Writer writer = new StringWriter()) {
+      Json.createWriter(writer).write(builder.build());
+      jsonString += "," + writer.toString();
+    }
+    catch(IOException e){
+      throw new Error("Failed to parse Player");
+    }
+
+    try {
+      BufferedWriter writer = new BufferedWriter(new FileWriter("save.txt"));
+      writer.write(jsonString);
+      writer.close();
+    }
+    catch(IOException e){}
+  }
+
+  public ChapsChallenge loadGameState(String fileName){
+    return null;
   }
 
 }
