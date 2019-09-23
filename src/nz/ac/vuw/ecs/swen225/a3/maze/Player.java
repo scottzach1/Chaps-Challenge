@@ -1,10 +1,12 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Player {
   private Tiles location;
-  private HashMap<String, Integer> inventory = new HashMap<>();
+  private List<String> inventory = new ArrayList<String>();
   private int treasures = 0;
 
   /**
@@ -23,12 +25,7 @@ public class Player {
    * @return true if player holds item, false otherwise
    */
   boolean getItem(String item) {
-    if (inventory.get(item) != null && inventory.get(item) > 0) {
-      inventory.put(item, inventory.get(item) - 1);
-      return true;
-    } else {
-      return false;
-    }
+    return inventory.contains(item);
   }
 
   /**
@@ -37,11 +34,7 @@ public class Player {
    * @param item String description of item added
    */
   void addItem(String item) {
-    if (inventory.get(item) == null) {
-      inventory.put(item, 1);
-    } else {
-      inventory.put(item, inventory.get(item) + 1);
-    }
+    inventory.add(item);
   }
 
   /**
@@ -65,7 +58,7 @@ public class Player {
     treasures++;
   }
 
-  public HashMap<String, Integer> getInventory() {
+  public List<String> getInventory() {
     return inventory;
   }
 }

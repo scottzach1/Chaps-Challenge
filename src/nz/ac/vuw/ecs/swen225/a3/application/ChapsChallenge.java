@@ -210,18 +210,11 @@ public class ChapsChallenge {
 
   /**
    * Returns a list of strings containing the players inventory.
-   * Strings in format item - number_of_items.
    *
    * @return the list of items.
    */
   public List<String> getPlayerInventory() {
-    List<String> toReturn = new ArrayList<>();
-    HashMap<String, Integer> inventory = player.getInventory();
-    for (String key : inventory.keySet()) {
-      String s = key + " - " + inventory.get(key);
-      toReturn.add(s);
-    }
-    return toReturn;
+    return player.getInventory();
   }
 
   /**
@@ -249,6 +242,14 @@ public class ChapsChallenge {
    */
   public Board getBoard(){
     return board;
+  }
+
+  /**
+   * Get Player object.
+   * @return player object
+   */
+  public Player getPlayer(){
+    return player;
   }
 
 
