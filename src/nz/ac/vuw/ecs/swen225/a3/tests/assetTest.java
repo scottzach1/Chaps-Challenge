@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * JUnit Tests: Checks all assets are loaded correctly.
  */
-class testAssets {
+class assetTest {
 
   /**
    * Checks whether a particular asset is loaded correctly.
