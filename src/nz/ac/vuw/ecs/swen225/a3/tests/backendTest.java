@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class backendTest {
 
-
   /**
    * The default chaps challenge should start at level 1;
    * which is also the default for a new board.
