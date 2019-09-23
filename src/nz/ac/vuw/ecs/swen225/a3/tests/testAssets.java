@@ -15,7 +15,7 @@ class testAssets {
 
   /**
    * Checks whether a particular asset is loaded correctly.
-   * @param fname
+   * @param fname of file.
    */
   public void checkAsset(String fname) {
 
@@ -23,7 +23,7 @@ class testAssets {
 
     ImageIcon imageIcon = AssetManager.getScaledImage(fname);
 
-    assertEquals(AssetManager.ASSET_PATH + fname, imageIcon.getDescription());
+    assertEquals(AssetManager.assetPath + fname, imageIcon.getDescription());
 
     assertTrue(imageIcon.getIconWidth() >= 0);
     assertTrue(imageIcon.getIconHeight() >= 0);
