@@ -194,15 +194,16 @@ public class Dashboard extends JPanel {
     // Cycle through 8 blocks to create a new Label for each bag item
     chapsBag = new HashMap<>();
     chapsBagImages = new ArrayList<>();
+    ArrayList<String> items = new ArrayList<>(chapsChallenge.getPlayerInventory());
 
     // Find all duplicates
-    for (int i = 0; i < chapsChallenge.getTreasures(); i++) {
-      System.out.println(chapsChallenge.getPlayerInventory());
+    for (int i = 0; i < items.size(); i++) {
+      System.out.println(items);
       // Add a new item to the bag
-      if (!chapsBag.containsKey(chapsChallenge.getPlayerInventory().get(i)))
-        chapsBag.put(chapsChallenge.getPlayerInventory().get(i), 1);
+      if (!chapsBag.containsKey(items.get(i)))
+        chapsBag.put(items.get(i), 1);
       else
-        chapsBag.put(chapsChallenge.getPlayerInventory().get(i), chapsBag.get(chapsChallenge.getPlayerInventory().get(i)) + 1);
+        chapsBag.put(items.get(i), chapsBag.get(items.get(i)) + 1);
     }
 
     // Add all the items combined with their image overlay of how many
