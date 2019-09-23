@@ -83,10 +83,20 @@ public class ChapsChallenge {
     nextLocation.setTileOccupied();
     player.setLocation(nextLocation);
 
+    checkFields();
+
+  }
+
+  private void checkFields(){
     if (player.getLocation().getType() == Tiles.Type.Exit){
       board.setNextLevel();
       player = new Player(board.getPlayerLocation());
     }
+
+    if (player.getLocation().getType() == Tiles.Type.InfoField){
+      //gui.displayInfoTile(player.getLocation());
+    }
+
   }
 
   /**
