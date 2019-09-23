@@ -34,7 +34,7 @@ public class ChapsChallenge {
   /**
    * Create main game application.
    */
-  private ChapsChallenge() {
+  public ChapsChallenge() {
     // Load the board.
     board = new Board();
     new JsonReadWrite(board);
@@ -167,7 +167,7 @@ public class ChapsChallenge {
       System.exit(0);
   }
 
-  public void timeOut() {
+  private void timeOut() {
     // TODO: Implement a time out in GUI and call here
   }
 
@@ -175,22 +175,19 @@ public class ChapsChallenge {
    * Running thread opens a new thread (double threaded) and
    * runs a timer, updating the dashboard every second
    */
-  public void runningThread() {
-    Runnable runnable = new Runnable() {
-      @Override
-      public void run() {
-        while (true) {
-          if (!gamePaused) {
-            gui.updateDashboard();
-            try {
-              if (timeLeft > 0)
-                Thread.sleep(1000);
-              else
-                throw new InterruptedException("TIMED OUT");
-            } catch (InterruptedException e) {
-              timeOut();
-              return;
-            }
+  private void runningThread() {
+    Runnable runnable = () -> {
+      while (true) {
+        if (!gamePaused) {
+          gui.updateDashboard();
+          try {
+            if (timeLeft > 0)
+              Thread.sleep(1000);
+            else
+              throw new InterruptedException("TIMED OUT");
+          } catch (InterruptedException e) {
+            timeOut();
+            return;
           }
         }
       }
@@ -242,6 +239,27 @@ public class ChapsChallenge {
     return board.getStream(player.getLocation());
   }
 
+  /**
+   * Sets the board to the string, changes the level.
+   * @param level the level to change to.
+   */
+  public void setLevel(String level){
+    board.setLevel(level);
+    try {
+      player = new Player(board.getPlayerLocation());
+    } catch (Board.PlayerNotFoundException e) {
+      System.out.println("Error, player not found in level description");
+      throw new Error("Player not found");
+    }
+  }
+
+  public Board getBoard() {
+    return board;
+  }
+
+  public Player getPlayer() {
+    return player;
+  }
 
   /**
    * ChapsChallenge invocation point for running the game.
