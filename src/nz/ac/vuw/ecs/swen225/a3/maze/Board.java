@@ -16,6 +16,7 @@ import nz.ac.vuw.ecs.swen225.a3.renderer.Canvas;
 public class Board {
 
   private int boardSize = 20;
+  private List<Tiles> allTiles;
   private Tiles[][] tiles = new Tiles[boardSize][boardSize];
   private static String level1 =
       "ExitLock|KBlue|DBlue|_|_|_|_|_|_|_|?|T|_|_|_|_|_|_|_|_|"
@@ -140,7 +141,7 @@ public class Board {
       throw new PlayerNotFoundException();
     }
 
-    List<Tiles> allTiles = new ArrayList<>();
+    allTiles = new ArrayList<>();
     for (int row = 0; row < boardSize; row++) {
       allTiles.addAll(Arrays.asList(tiles[row]).subList(0, boardSize));
     }
@@ -222,6 +223,22 @@ public class Board {
 
   public int getTreasureCount() {
     return treasureCount;
+  }
+
+  /**
+   * Get allTiles list.
+   * @return list of allTiles in board or null if not filled
+   */
+  public List<Tiles> getAllTiles(){
+    return allTiles;
+  }
+
+  /**
+   * Return boardSize.
+   * @return integer board size.
+   */
+  public int getBoardSize(){
+    return boardSize;
   }
 
   /**
