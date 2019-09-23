@@ -15,7 +15,7 @@ import java.util.List;
 public abstract class Tiles {
 
   public enum Type{
-    Free, Treasure, Exit, ExitLock, InfoFeild, Key, LockedDoor, Wall
+    Free, Treasure, Exit, ExitLock, InfoField, Key, LockedDoor, Wall
   }
 
   boolean isAccessible;

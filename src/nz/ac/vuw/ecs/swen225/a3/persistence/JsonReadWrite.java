@@ -24,18 +24,6 @@ public class JsonReadWrite {
     String jsonBoard = "";
     String jsonPlayer = "";
 
-    // Dump game info
-    JsonObjectBuilder builder =  Json.createObjectBuilder()
-        .add("timeLeft",game.getTimeLeft());
-
-    // Compose game section
-    try(Writer writer = new StringWriter()) {
-      Json.createWriter(writer).write(builder.build());
-      jsonGame = writer.toString();
-    }
-    catch(IOException e){
-      throw new Error("Failed to parse game");
-    }
 
     // Json dump board
     Board board = game.getBoard();
@@ -45,7 +33,7 @@ public class JsonReadWrite {
     for(Tiles t : board.getAllTiles()){
       arrayBuilder.add(t.getJson());
     }
-    builder =  Json.createObjectBuilder()
+    JsonObjectBuilder builder =  Json.createObjectBuilder()
         .add("boardSize",board.getBoardSize())
         .add("allTiles",arrayBuilder);
 
@@ -80,15 +68,24 @@ public class JsonReadWrite {
       throw new Error("Failed to parse Player");
     }
 
+    // Dump game info
+    builder =  Json.createObjectBuilder()
+        .add("timeLeft",game.getTimeLeft())
+        .add("board",jsonBoard)
+        .add("player",jsonPlayer);
+
+    // Compose game section
+    try(Writer writer = new StringWriter()) {
+      Json.createWriter(writer).write(builder.build());
+      jsonGame = writer.toString();
+    }
+    catch(IOException e){
+      throw new Error("Failed to parse game");
+    }
+
     try {
       BufferedWriter writer = new BufferedWriter(new FileWriter("saveGame.txt"));
       writer.write(jsonGame);
-      writer.close();
-      writer = new BufferedWriter(new FileWriter("saveBoard.txt"));
-      writer.write(jsonBoard);
-      writer.close();
-      writer = new BufferedWriter(new FileWriter("savePlayer.txt"));
-      writer.write(jsonPlayer);
       writer.close();
     }
     catch(IOException e){}
