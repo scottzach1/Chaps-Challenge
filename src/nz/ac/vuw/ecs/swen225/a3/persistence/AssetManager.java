@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class AssetManager {
 
-  public static final String ASSET_PATH = "assets/";
+  public static String assetPath = "assets/";
   private static boolean loaded = false;
 
   /**
@@ -24,6 +24,14 @@ public class AssetManager {
   private static Map<String, ImageIcon> baseImageIcons = new HashMap<>();
   private static Map<String, ImageIcon> scaledImageIcons = new HashMap<>();
   private static int cellSize = 10;
+
+  /**
+   * Sets the path to look for assets.
+   * @param path path to load assets.
+   */
+  public static void setAssetPath(String path) {
+    assetPath = path;
+  }
 
   /**
    * Finds all files in the assets/ directory.
@@ -48,12 +56,12 @@ public class AssetManager {
    * @param fname filename.
    */
   public static void loadAsset(String fname) {
-    fname = ASSET_PATH + fname;
+    fname = assetPath + fname;
     if (baseImageIcons.containsKey(fname)) return;
 
     ImageIcon imageIcon = new ImageIcon(fname);
     if (imageIcon.getIconWidth() <= 0 || imageIcon.getIconHeight() <= 0)
-      imageIcon = new ImageIcon(ASSET_PATH + "unknown.png");
+      imageIcon = new ImageIcon(assetPath + "unknown.png");
 
     baseImageIcons.put(fname, imageIcon);
     scaledImageIcons.put(fname, imageIcon);
@@ -88,11 +96,11 @@ public class AssetManager {
    * @return ImageIcon.
    */
   public static ImageIcon getScaledImage(String fname) {
-    fname = ASSET_PATH + fname;
+    fname = assetPath + fname;
 
     ImageIcon scaledIcon = scaledImageIcons.get(fname);
     if (scaledIcon == null) {
-      scaledIcon = scaledImageIcons.get(ASSET_PATH + "unknown.png");
+      scaledIcon = scaledImageIcons.get(assetPath + "unknown.png");
     }
     return scaledIcon;
   }
@@ -104,11 +112,11 @@ public class AssetManager {
    * @return ImageIcon.
    */
   public static ImageIcon getScaledImageInstance(String fname, int newCellSize) {
-    fname = ASSET_PATH + fname;
+    fname = assetPath + fname;
 
     ImageIcon baseIcon = baseImageIcons.get(fname);
     if (baseIcon == null) {
-      baseIcon = baseImageIcons.get(ASSET_PATH + "unknown.png");
+      baseIcon = baseImageIcons.get(assetPath + "unknown.png");
     }
 
     try {
