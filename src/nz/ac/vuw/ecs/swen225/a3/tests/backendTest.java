@@ -248,7 +248,7 @@ class backendTest {
     chapsChallenge.setLevel(level);
     chapsChallenge.move(Tiles.Direction.Up);
 
-    assertTrue(chapsChallenge.getPlayer().getInventory().get("Blue Key")>0);
+    assertTrue(    chapsChallenge.getPlayer().getInventory().contains("Blue Key"));
   }
 
   /**
