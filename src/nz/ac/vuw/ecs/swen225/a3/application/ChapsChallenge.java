@@ -47,12 +47,7 @@ public class ChapsChallenge {
   public ChapsChallenge() {
     // Load the board.
     board = new Board();
-    try {
-      player = new Player(board.getPlayerLocation());
-    } catch (Board.PlayerNotFoundException e) {
-      System.out.println("Error, player not found in level description");
-      throw new Error("Player not found");
-    }
+    player = new Player(board.getPlayerLocation());
     startTime = System.currentTimeMillis();
 
     // Creates a GUI and gives it a keyListener
