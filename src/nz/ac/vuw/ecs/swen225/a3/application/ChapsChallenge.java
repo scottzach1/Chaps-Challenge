@@ -91,6 +91,7 @@ public class ChapsChallenge {
     if (player.getLocation().getType() == Tiles.Type.Exit){
       board.setNextLevel();
       player = new Player(board.getPlayerLocation());
+      timeLeft=totalTime;
     }
 
     if (player.getLocation().getType() == Tiles.Type.InfoField){
