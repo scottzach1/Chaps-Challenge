@@ -12,13 +12,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * JUnit Tests: Checks all assets are loaded correctly.
  */
-class testAssets {
+class assetTest {
 
   /**
    * Checks whether a particular asset is loaded correctly.
    * @param fname
    */
   public void checkAsset(String fname) {
+    AssetManager.clearAssets();
     AssetManager.loadAsset(fname);
 
     ImageIcon imageIcon = AssetManager.getScaledImage(fname);

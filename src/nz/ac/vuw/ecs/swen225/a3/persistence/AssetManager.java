@@ -26,6 +26,14 @@ public class AssetManager {
   private static int cellSize = 10;
 
   /**
+   * Clears all assets stored by the asset manager.
+   */
+  public static void clearAssets() {
+    baseImageIcons.clear();
+    scaledImageIcons.clear();
+  }
+
+  /**
    * Sets the path to look for assets.
    * @param path path to load assets.
    */
