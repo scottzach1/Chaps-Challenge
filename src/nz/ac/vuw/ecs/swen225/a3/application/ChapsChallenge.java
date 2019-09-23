@@ -29,7 +29,7 @@ public class ChapsChallenge {
 
   private boolean gamePaused = false;
 
-  private Thread thread; 
+  private Thread thread;
 
   /**
    * Create main game application.
