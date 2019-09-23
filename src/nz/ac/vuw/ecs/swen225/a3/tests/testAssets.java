@@ -19,6 +19,7 @@ class testAssets {
    * @param fname
    */
   public void checkAsset(String fname) {
+    AssetManager.clearAssets();
     AssetManager.loadAsset(fname);
 
     ImageIcon imageIcon = AssetManager.getScaledImage(fname);

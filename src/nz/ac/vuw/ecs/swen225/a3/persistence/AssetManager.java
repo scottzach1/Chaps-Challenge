@@ -28,6 +28,14 @@ public class AssetManager {
   private static int cellSize = 10;
 
   /**
+   * Clears all assets stored by the asset manager.
+   */
+  public static void clearAssets() {
+    baseImageIcons.clear();
+    scaledImageIcons.clear();
+  }
+
+  /**
    * Finds all files in the assets/ directory.
    * If unable to read files in the directory an IOException will be thrown.
    */
