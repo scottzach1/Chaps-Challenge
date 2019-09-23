@@ -1,12 +1,12 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
+import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
+import nz.ac.vuw.ecs.swen225.a3.renderer.Canvas;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
-
-import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
-import nz.ac.vuw.ecs.swen225.a3.renderer.Canvas;
 
 
 /**
@@ -126,7 +126,7 @@ public class Board {
           // Check for invalid token
           if (!(itemType.equals("K") || itemType.equals("D"))) throw new ParsingException();
 
-          String colour = v.substring(1);
+          String colour = v.substring(1).toLowerCase();
 
           // Create colored key or door
           if (itemType.equals("K")) {
