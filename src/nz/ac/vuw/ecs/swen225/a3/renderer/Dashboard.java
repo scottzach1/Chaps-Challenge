@@ -9,6 +9,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * The side object of the GUI that displays the level, time, chipsLeft.
@@ -24,10 +25,6 @@ public class Dashboard extends JPanel {
   static final Color ACCENT_COLOUR = new Color(0, 255, 0);
   static final Color BACKGROUND_COLOUR = new Color(192, 192, 192);
 
-
-  private ArrayList<Component> chapsBagComponents;
-
-
   // Padding around boarders of boxes
   int paddingOfBox;
 
@@ -38,7 +35,8 @@ public class Dashboard extends JPanel {
   CustomTextPane level, levelNum, time, timeNum, chipsLeft, chipsLeftNum;
 
   private final int GRID_WIDTH = 4, GRID_HEIGHT = 8;
-  private ArrayList<JLabel> chapsBag;
+  private HashMap<String, Integer> chapsBag;
+  private ArrayList<JLabel> chapsBagImages;
   private ChapsChallenge chapsChallenge;
 
   /**
@@ -49,7 +47,8 @@ public class Dashboard extends JPanel {
    */
   Dashboard(ChapsChallenge aChapsChallenge) {
     chapsChallenge = aChapsChallenge;
-    chapsBag = new ArrayList<>();
+    chapsBag = new HashMap<>();
+    chapsBagImages = new ArrayList<>();
 
     setPreferredSize(new Dimension(GUI.dashboardWidth, DashboardHolder.dashboardHeight));
 
@@ -143,8 +142,8 @@ public class Dashboard extends JPanel {
       bottomPanelConstraints.weighty = 1;
 
       // Add the panel
-      if (chapsBag.get(i) != null)
-        bottomPanel.add(chapsBag.get(i), bottomPanelConstraints);
+      if (chapsBagImages.get(i) != null)
+        bottomPanel.add(chapsBagImages.get(i), bottomPanelConstraints);
     }
 
 
@@ -177,7 +176,7 @@ public class Dashboard extends JPanel {
   }
 
 
-  public void refreshDashboardComponents(){
+  public void refreshDashboardComponents() {
     // TODO: chaps challenge needs to have a function to get the level num
     levelNum.setText("1");
     timeNum.setText(chapsChallenge.timeLeft() + "");
@@ -187,20 +186,57 @@ public class Dashboard extends JPanel {
     fillChapsBag();
   }
 
-  private void fillChapsBag(){
+  private void fillChapsBag() {
     // Cycle through 8 blocks to create a new Label for each bag item
-    chapsBag = new ArrayList<>();
-    for (int i = 0; i < 8; i++) {
-      try {
-        JLabel content = new JLabel(AssetManager.getScaledImage(chapsChallenge.getPlayerInventory().get(i)));
-        content.setPreferredSize(new Dimension(getWidth() / 4, getHeight() / (3 * 2)));
-        chapsBag.add(content);
-      } catch (Exception e) {
-        JLabel content = new JLabel(AssetManager.getScaledImage("free.png"));
-        content.setPreferredSize(new Dimension(getWidth() / 4, getHeight() / (3 * 2)));
-        chapsBag.add(content);
-      }
+    chapsBag = new HashMap<>();
+    ArrayList<String> items = new ArrayList<>(chapsChallenge.getPlayerInventory());
+
+
+    // If chaps bag is empty, set it up with blank JLabels
+    if (chapsBagImages.size() == 0) {
+      fillChapsBagWithBlanks();
+      return;
     }
+
+    // Find all duplicates
+    for (int i = 0; i < items.size(); i++) {
+      // Add a new item to the bag
+      if (!chapsBag.containsKey(items.get(i)))
+        chapsBag.put(items.get(i), 1);
+      else
+        chapsBag.put(items.get(i), chapsBag.get(items.get(i)) + 1);
+    }
+
+    // Add all the items combined with their image overlay of how many
+    int i = 0;
+    for (String s : chapsBag.keySet()) {
+      JLabel item = chapsBagImages.get(i);
+      item.setPreferredSize(new Dimension(getWidth() / 4, getHeight() / (6 * 2)));
+
+
+      // See if the parsed item exists
+      item.setIcon(AssetManager.getNumberedScaledImage(s + ".png", chapsBag.get(s)));
+      i++;
+
+
+    }
+
+    // Fill the rest
+    for (int j = items.size(); j < 8; j++) {
+      JLabel item = chapsBagImages.get(i);
+      item.setIcon(AssetManager.getScaledImage("free.png"));
+    }
+  }
+
+
+  private void fillChapsBagWithBlanks() {
+    chapsBagImages = new ArrayList<>();
+    if (getWidth() > 0)
+      for (int i = 0; i < 8; i++) {
+        JLabel item = new JLabel(AssetManager.getScaledImage("free.png"));
+        item.setPreferredSize(new Dimension(getWidth() / 4, getHeight() / (6 * 2)));
+        chapsBagImages.add(item);
+      }
   }
 
   /**
@@ -298,7 +334,6 @@ public class Dashboard extends JPanel {
         }
         // If the right alignment fails, just insert it
         catch (Exception e) {
-          System.out.println(e);
           setText(text);
         }
       } else {

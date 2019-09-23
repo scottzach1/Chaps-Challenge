@@ -49,7 +49,7 @@ public class LockedDoor extends Tiles {
    */
   @Override
   public boolean interact(Player p) {
-    if (p.getItem(colour + " Key")) {
+    if (p.getItem("key_" + colour)) {
       setAccessible(true);
       imageUrl = defaultImageUrl;
     }

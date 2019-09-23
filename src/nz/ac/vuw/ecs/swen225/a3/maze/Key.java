@@ -69,6 +69,6 @@ public class Key extends Tiles {
    */
   @Override
   public String toString() {
-    return colour + " Key";
+    return "key_" + colour;
   }
 }

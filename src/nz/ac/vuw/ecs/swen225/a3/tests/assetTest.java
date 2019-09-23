@@ -24,7 +24,7 @@ class assetTest {
 
     ImageIcon imageIcon = AssetManager.getScaledImage(fname);
 
-    assertEquals(AssetManager.ASSET_PATH + fname, imageIcon.getDescription());
+    assertEquals(AssetManager.assetPath + fname, imageIcon.getDescription());
 
     assertTrue(imageIcon.getIconWidth() >= 0);
     assertTrue(imageIcon.getIconHeight() >= 0);
