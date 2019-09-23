@@ -6,6 +6,15 @@ import java.util.List;
 
 public class Player {
   private Tiles location;
+
+  public void setInventory(List<String> inventory) {
+    this.inventory = inventory;
+  }
+
+  public void setTreasures(int treasures) {
+    this.treasures = treasures;
+  }
+
   private List<String> inventory = new ArrayList<String>();
   private int treasures = 0;
 

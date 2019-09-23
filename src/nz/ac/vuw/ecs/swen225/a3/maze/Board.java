@@ -16,6 +16,15 @@ import nz.ac.vuw.ecs.swen225.a3.renderer.Canvas;
 public class Board {
 
   private int boardSize = 20;
+
+  public void setBoardSize(int boardSize) {
+    this.boardSize = boardSize;
+  }
+
+  public void setAllTiles(List<Tiles> allTiles) {
+    this.allTiles = allTiles;
+  }
+
   private List<Tiles> allTiles;
   private Tiles[][] tiles = new Tiles[boardSize][boardSize];
   private static String level1 =
@@ -91,22 +100,22 @@ public class Board {
     for (String v : values) {
       switch (v) {
         case "_":
-          addTile(index / 20, index % 20, new Free());
+          setTile(index / 20, index % 20, new Free());
           break;
         case "#":
-          addTile(index / 20, index % 20, new Wall());
+          setTile(index / 20, index % 20, new Wall());
           break;
         case "T":
-          addTile(index / 20, index % 20, new Treasure());
+          setTile(index / 20, index % 20, new Treasure());
           break;
         case "?":
-          addTile(index / 20, index % 20, new InfoField("Test"));
+          setTile(index / 20, index % 20, new InfoField("Test"));
           break;
         case "Exit":
-          addTile(index / 20, index % 20, new Exit());
+          setTile(index / 20, index % 20, new Exit());
           break;
         case "ExitLock":
-          addTile(index / 20, index % 20, new ExitLock());
+          setTile(index / 20, index % 20, new ExitLock());
           break;
         case "C":
           if (foundChap) throw new MultiplePlayersFoundException();
@@ -117,7 +126,7 @@ public class Board {
           tile.imageUrl = "chap_front.png";
           AssetManager.loadAsset(tile.imageUrl);
 
-          addTile(index / 20, index % 20, tile);
+          setTile(index / 20, index % 20, tile);
           break;
         default:
           // Must be a colored key or door
@@ -130,9 +139,9 @@ public class Board {
 
           // Create colored key or door
           if (itemType.equals("K")) {
-            addTile(index / 20, index % 20, new Key(colour));
+            setTile(index / 20, index % 20, new Key(colour));
           } else {
-            addTile(index / 20, index % 20, new LockedDoor(colour));
+            setTile(index / 20, index % 20, new LockedDoor(colour));
           }
       }
       index++;
@@ -160,7 +169,7 @@ public class Board {
    * @param col Col index
    * @param t   Tile to add
    */
-  private void addTile(int row, int col, Tiles t) {
+  public void setTile(int row, int col, Tiles t) {
     t.setRow(row);
     t.setCol(col);
     tiles[row][col] = t;
@@ -169,7 +178,7 @@ public class Board {
   /**
    * Add neighboring tiles to board tiles.
    */
-  private void setupAdjacency() {
+  public void setupAdjacency() {
     for (int row = 0; row < boardSize; row++) {
       for (int col = 0; col < boardSize; col++) {
         Tiles t = tiles[row][col];
@@ -222,6 +231,12 @@ public class Board {
 
   public int getTreasureCount() {
     return treasureCount;
+  }
+
+  public Tiles getTile(int row,int col) {
+    if (row >= boardSize || col >= boardSize) return null;
+    if (row < 0 || col < 0) return null;
+    return tiles[row][col];
   }
 
   /**

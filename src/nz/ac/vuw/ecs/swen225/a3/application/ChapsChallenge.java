@@ -22,6 +22,11 @@ public class ChapsChallenge {
 
   private Board board;
   private GUI gui;
+
+  public void setPlayer(Player player) {
+    this.player = player;
+  }
+
   private Player player;
 
   private long totalTime = 100; //100 seconds, todo change with levels
@@ -33,6 +38,14 @@ public class ChapsChallenge {
    */
   public long getTimeLeft() {
     return timeLeft;
+  }
+
+  public void setBoard(Board board) {
+    this.board = board;
+  }
+
+  public void setTimeLeft(long timeLeft) {
+    this.timeLeft = timeLeft;
   }
 
   private long timeLeft = totalTime;
@@ -57,6 +70,7 @@ public class ChapsChallenge {
     runningThread();
   }
 
+
   /**
    * Moves the player in the direction specified.
    * Checks if the tile is able to be moved onto by interacting with it.
@@ -66,7 +80,7 @@ public class ChapsChallenge {
    */
   public void move(Tiles.Direction direction) {
     if (gamePaused) return;
-
+    System.out.println(player.getTreasures());
     Tiles currentLocation = player.getLocation();
     Tiles nextLocation = null;
     switch (direction) {
@@ -272,6 +286,11 @@ public class ChapsChallenge {
    */
   public Player getPlayer(){
     return player;
+  }
+
+  public void resetGUI(){
+    gui.dispose();
+    gui = new GUI(this);
   }
 
 
