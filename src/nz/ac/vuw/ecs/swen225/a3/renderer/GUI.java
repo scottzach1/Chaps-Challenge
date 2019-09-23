@@ -188,6 +188,14 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     redraw();
   }
 
+  /**
+   * Recalculates the size of components on the Canvas.
+   */
+  public void rescaleAssets() {
+    canvas.componentResized(null);
+    updateBoard();
+  }
+
   public void updateDashboard(){
     dashboardHolder.renderDashboard();
     redraw();
