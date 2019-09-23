@@ -207,7 +207,6 @@ public class Board {
    * Searches board for instance of Chap
    *
    * @return Tile player found on
-   * @throws PlayerNotFoundException when no chap present
    */
   public Tiles getPlayerLocation() {
     for (int r = 0; r < boardSize; r++) {
