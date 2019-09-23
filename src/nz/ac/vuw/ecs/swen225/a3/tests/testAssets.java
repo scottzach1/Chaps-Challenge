@@ -1,5 +1,6 @@
 package nz.ac.vuw.ecs.swen225.a3.tests;
 
+import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
 import org.junit.jupiter.api.Test;
 
@@ -15,10 +16,9 @@ class testAssets {
 
   /**
    * Checks whether a particular asset is loaded correctly.
-   * @param fname of file.
+   * @param fname
    */
   public void checkAsset(String fname) {
-
     AssetManager.loadAsset(fname);
 
     ImageIcon imageIcon = AssetManager.getScaledImage(fname);

@@ -1,6 +1,7 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -15,6 +16,7 @@ import nz.ac.vuw.ecs.swen225.a3.renderer.Canvas;
 public class Board {
 
   private int boardSize = 20;
+  private List<Tiles> allTiles;
   private Tiles[][] tiles = new Tiles[boardSize][boardSize];
   private static String level1 =
       "ExitLock|KBlue|DBlue|_|_|_|_|_|_|_|?|T|_|_|_|_|_|_|_|_|"
@@ -38,7 +40,8 @@ public class Board {
           + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
           + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|";
 
-
+  private String level = level1;
+  private int treasureCount=0;
   /**
    * Constructor.
    */
@@ -51,6 +54,27 @@ public class Board {
     } catch (MultiplePlayersFoundException m) {
       System.out.println(m.getMessage());
       throw new Error(m.getMessage());
+    }catch(PlayerNotFoundException pnf){
+      System.out.println(pnf.getMessage());
+      throw new Error(pnf.getMessage());
+    }
+    setupAdjacency();
+  }
+
+  public void setLevel(String level){
+    this.level=level;
+
+    try {
+      parseBoard(this.level);
+    } catch (ParsingException p) {
+      System.out.println(p.getMessage());
+      throw new Error(p.getMessage());
+    } catch (MultiplePlayersFoundException m) {
+      System.out.println(m.getMessage());
+      throw new Error(m.getMessage());
+    } catch(PlayerNotFoundException pnf){
+      System.out.println(pnf.getMessage());
+      throw new Error(pnf.getMessage());
     }
     setupAdjacency();
   }
@@ -60,7 +84,7 @@ public class Board {
    *
    * @param level String representation of board
    */
-  private void parseBoard(String level) throws MultiplePlayersFoundException, ParsingException {
+  private void parseBoard(String level) throws MultiplePlayersFoundException, ParsingException, PlayerNotFoundException {
     boolean foundChap = false;
     String[] values = level.split("\\|");
     int index = 0;
@@ -113,16 +137,17 @@ public class Board {
       }
       index++;
     }
+    if (!foundChap){
+      throw new PlayerNotFoundException();
+    }
 
-    List<Tiles> allTiles = new ArrayList<>();
+    allTiles = new ArrayList<>();
     for (int row = 0; row < boardSize; row++) {
-      for (int col = 0; col < boardSize; col++) {
-        allTiles.add(tiles[row][col]);
-      }
+      allTiles.addAll(Arrays.asList(tiles[row]).subList(0, boardSize));
     }
 
     // Count number of treasures
-    int treasureCount = (int) allTiles.stream().filter(p -> p.toString().equals("Treasure")).count();
+    treasureCount = (int) allTiles.stream().filter(p -> p.toString().equals("Treasure")).count();
 
     // Set all exit locks to require correct number of treasures
     allTiles.stream().filter(p -> p.getType() == Tiles.Type.ExitLock).map(c -> (ExitLock)c).forEach(s -> s.setTotalTreasures(treasureCount));
@@ -183,9 +208,8 @@ public class Board {
    * Searches board for instance of Chap
    *
    * @return Tile player found on
-   * @throws PlayerNotFoundException when no chap present
    */
-  public Tiles getPlayerLocation() throws PlayerNotFoundException {
+  public Tiles getPlayerLocation() {
     for (int r = 0; r < boardSize; r++) {
       for (int c = 0; c < boardSize; c++) {
         if (tiles[r][c].getImageUrl().equals("chap_front.png")) {
@@ -193,7 +217,27 @@ public class Board {
         }
       }
     }
-    throw new PlayerNotFoundException();
+   return null;
+  }
+
+  public int getTreasureCount() {
+    return treasureCount;
+  }
+
+  /**
+   * Get allTiles list.
+   * @return list of allTiles in board or null if not filled
+   */
+  public List<Tiles> getAllTiles(){
+    return allTiles;
+  }
+
+  /**
+   * Return boardSize.
+   * @return integer board size.
+   */
+  public int getBoardSize(){
+    return boardSize;
   }
 
   /**
@@ -224,5 +268,10 @@ public class Board {
     public String getMessage() {
       return "Invalid token in string description of level";
     }
+  }
+
+  @Override
+  public String toString() {
+    return level;
   }
 }

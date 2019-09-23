@@ -6,6 +6,7 @@ import nz.ac.vuw.ecs.swen225.a3.maze.Tiles;
 import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
 import nz.ac.vuw.ecs.swen225.a3.renderer.GUI;
 
+import javax.json.JsonObjectBuilder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +26,15 @@ public class ChapsChallenge {
 
   private long totalTime = 100; //100 seconds, todo change with levels
   private long startTime;
+
+  /**
+   * Get time remaining.
+   * @return long time in seconds
+   */
+  public long getTimeLeft() {
+    return timeLeft;
+  }
+
   private long timeLeft = totalTime;
 
   private boolean gamePaused = false;
@@ -34,16 +44,10 @@ public class ChapsChallenge {
   /**
    * Create main game application.
    */
-  private ChapsChallenge() {
+  public ChapsChallenge() {
     // Load the board.
     board = new Board();
-    new JsonReadWrite(board);
-    try {
-      player = new Player(board.getPlayerLocation());
-    } catch (Board.PlayerNotFoundException e) {
-      System.out.println("Error, player not found in level description");
-      throw new Error("Player not found");
-    }
+    player = new Player(board.getPlayerLocation());
     startTime = System.currentTimeMillis();
 
     // Creates a GUI and gives it a keyListener
@@ -210,18 +214,11 @@ public class ChapsChallenge {
 
   /**
    * Returns a list of strings containing the players inventory.
-   * Strings in format item - number_of_items.
    *
    * @return the list of items.
    */
   public List<String> getPlayerInventory() {
-    List<String> toReturn = new ArrayList<>();
-    HashMap<String, Integer> inventory = player.getInventory();
-    for (String key : inventory.keySet()) {
-      String s = key + " - " + inventory.get(key);
-      toReturn.add(s);
-    }
-    return toReturn;
+    return player.getInventory();
   }
 
   /**
@@ -234,12 +231,47 @@ public class ChapsChallenge {
   }
 
   /**
+   * Return total number of treasures in the level
+   *
+   * @return Total number of treasures
+   */
+  public int getTotalTreasures() {
+    return  board.getTreasureCount();
+  }
+
+  /**
    * Get tiles around player to render on screen.
    *
    * @return Stream of tiles to be drawn
    */
   public Stream<Tiles> getTilesToRender() {
     return board.getStream(player.getLocation());
+  }
+
+  /**
+   * Sets the board to the string, changes the level.
+   * @param level the level to change to.
+   */
+  public void setLevel(String level){
+    board.setLevel(level);
+    player = new Player(board.getPlayerLocation());
+  }
+
+  /**
+   * Get board object.
+   *
+   * @return Board object
+   */
+  public Board getBoard(){
+    return board;
+  }
+
+  /**
+   * Get Player object.
+   * @return player object
+   */
+  public Player getPlayer(){
+    return player;
   }
 
 

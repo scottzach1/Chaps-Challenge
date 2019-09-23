@@ -2,13 +2,20 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
 
 import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
 
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+import javax.json.stream.JsonParsingException;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Tiles {
 
   public enum Type{
-    Free, Treasure, Exit, ExitLock, InfoFeild, Key, LockedDoor, Wall
+    Free, Treasure, Exit, ExitLock, InfoField, Key, LockedDoor, Wall
   }
 
   boolean isAccessible;
@@ -125,6 +132,12 @@ public abstract class Tiles {
     imageUrl = "chap_front.png";
     AssetManager.loadAsset(imageUrl);
   }
+
+  /**
+   * Return json representation of this tile.
+   * @return Json string of tile properties.
+   */
+  public abstract String getJson();
 
   public void setTileUnoccupied() {
     imageUrl = defaultImageUrl;
