@@ -340,6 +340,5 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
    */
   @Override
   public void keyReleased(KeyEvent e) {activeKeys.remove(e.getKeyCode()); lastMove = "";
-    JsonReadWrite.saveGameState(application);
   }
 }

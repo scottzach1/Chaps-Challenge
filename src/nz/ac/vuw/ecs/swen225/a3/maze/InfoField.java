@@ -45,4 +45,9 @@ public class InfoField extends Tiles {
     System.out.println(info);
     return isAccessible;
   }
+
+  @Override
+  public String getJson() {
+    return null;
+  }
 }

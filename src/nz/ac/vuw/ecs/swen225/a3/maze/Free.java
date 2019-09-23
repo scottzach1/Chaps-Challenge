@@ -39,4 +39,9 @@ public class Free extends Tiles {
   public boolean interact(Player p) {
     return isAccessible;
   }
+
+  @Override
+  public String getJson() {
+    return null;
+  }
 }

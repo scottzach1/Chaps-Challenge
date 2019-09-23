@@ -39,4 +39,9 @@ public class Exit extends Tiles {
     //todo continue to next level/end of game screen
     return isAccessible;
   }
+
+  @Override
+  public String getJson() {
+    return null;
+  }
 }

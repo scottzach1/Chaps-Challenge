@@ -41,4 +41,9 @@ public class Treasure extends Tiles {
     p.addTreasure();
     return isAccessible;
   }
+
+  @Override
+  public String getJson() {
+    return null;
+  }
 }

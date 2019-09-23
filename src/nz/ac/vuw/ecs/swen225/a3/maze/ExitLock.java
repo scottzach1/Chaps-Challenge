@@ -49,4 +49,9 @@ public class ExitLock extends Tiles {
     }
     return isAccessible;
   }
+
+  @Override
+  public String getJson() {
+    return null;
+  }
 }

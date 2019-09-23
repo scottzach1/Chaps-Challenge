@@ -29,6 +29,11 @@ public class Wall extends Tiles {
     return isAccessible;
   }
 
+  @Override
+  public String getJson() {
+    return null;
+  }
+
   /**
    * Standard toString method.
    *

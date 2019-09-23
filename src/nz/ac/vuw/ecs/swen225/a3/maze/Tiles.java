@@ -137,27 +137,7 @@ public abstract class Tiles {
    * Return json representation of this tile.
    * @return Json string of tile properties.
    */
-  public String getJson(){
-    JsonObjectBuilder objectBuilder = Json.createObjectBuilder()
-        .add("type", type.toString())
-        .add("isAccessible",isAccessible)
-        .add("row",row)
-        .add("col",col)
-        .add("imageUrl",imageUrl)
-        .add("defaultImageUrl",defaultImageUrl);
-
-    JsonObject jsonObject = objectBuilder.build();
-
-    String jsonString = "";
-    try(Writer writer = new StringWriter()) {
-      Json.createWriter(writer).write(jsonObject);
-      jsonString = writer.toString();
-    }
-    catch(IOException e){
-      throw new Error("Failed to parse Tile");
-    }
-    return jsonString;
-  }
+  public abstract String getJson();
 
   public void setTileUnoccupied() {
     imageUrl = defaultImageUrl;
