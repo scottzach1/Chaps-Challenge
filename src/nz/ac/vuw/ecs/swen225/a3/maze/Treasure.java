@@ -11,7 +11,7 @@ import java.io.Writer;
 
 public class Treasure extends Tiles {
 
-
+  public boolean collected = false;
   /**
    * Constructor.
    * Sets the isAccessible field to true.
@@ -44,8 +44,11 @@ public class Treasure extends Tiles {
    */
   @Override
   public boolean interact(Player p) {
-    imageUrl = defaultImageUrl;
-    p.addTreasure();
+    if(!collected){
+      imageUrl = defaultImageUrl;
+      p.addTreasure();
+      collected = true;
+    }
     return isAccessible;
   }
 
