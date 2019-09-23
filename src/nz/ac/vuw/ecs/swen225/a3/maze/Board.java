@@ -1,6 +1,7 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -38,6 +39,7 @@ public class Board {
           + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
           + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|";
 
+  private String level = level1;
 
   /**
    * Constructor.
@@ -51,6 +53,27 @@ public class Board {
     } catch (MultiplePlayersFoundException m) {
       System.out.println(m.getMessage());
       throw new Error(m.getMessage());
+    }catch(PlayerNotFoundException pnf){
+      System.out.println(pnf.getMessage());
+      throw new Error(pnf.getMessage());
+    }
+    setupAdjacency();
+  }
+
+  public void setLevel(String level){
+    this.level=level;
+
+    try {
+      parseBoard(this.level);
+    } catch (ParsingException p) {
+      System.out.println(p.getMessage());
+      throw new Error(p.getMessage());
+    } catch (MultiplePlayersFoundException m) {
+      System.out.println(m.getMessage());
+      throw new Error(m.getMessage());
+    } catch(PlayerNotFoundException pnf){
+      System.out.println(pnf.getMessage());
+      throw new Error(pnf.getMessage());
     }
     setupAdjacency();
   }
@@ -60,7 +83,7 @@ public class Board {
    *
    * @param level String representation of board
    */
-  private void parseBoard(String level) throws MultiplePlayersFoundException, ParsingException {
+  private void parseBoard(String level) throws MultiplePlayersFoundException, ParsingException, PlayerNotFoundException {
     boolean foundChap = false;
     String[] values = level.split("\\|");
     int index = 0;
@@ -113,12 +136,13 @@ public class Board {
       }
       index++;
     }
+    if (!foundChap){
+       throw new PlayerNotFoundException();
+    }
 
     List<Tiles> allTiles = new ArrayList<>();
     for (int row = 0; row < boardSize; row++) {
-      for (int col = 0; col < boardSize; col++) {
-        allTiles.add(tiles[row][col]);
-      }
+      allTiles.addAll(Arrays.asList(tiles[row]).subList(0, boardSize));
     }
 
     // Count number of treasures
@@ -224,5 +248,10 @@ public class Board {
     public String getMessage() {
       return "Invalid token in string description of level";
     }
+  }
+
+  @Override
+  public String toString() {
+   return level;
   }
 }
