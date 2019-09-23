@@ -217,8 +217,6 @@ public class Dashboard extends JPanel {
       // See if the parsed item exists
       item.setIcon(AssetManager.getNumberedScaledImage(s + ".png", chapsBag.get(s)));
       i++;
-
-
     }
 
     // Fill the rest

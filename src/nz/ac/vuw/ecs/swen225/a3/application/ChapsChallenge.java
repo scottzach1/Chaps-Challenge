@@ -1,15 +1,10 @@
 package nz.ac.vuw.ecs.swen225.a3.application;
 
 import nz.ac.vuw.ecs.swen225.a3.maze.Board;
-import nz.ac.vuw.ecs.swen225.a3.maze.Exit;
 import nz.ac.vuw.ecs.swen225.a3.maze.Player;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tiles;
-import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
 import nz.ac.vuw.ecs.swen225.a3.renderer.GUI;
 
-import javax.json.JsonObjectBuilder;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
@@ -90,6 +85,7 @@ public class ChapsChallenge {
   private void checkFields(){
     if (player.getLocation().getType() == Tiles.Type.Exit){
       board.setNextLevel();
+      gui.rescaleAssets();
       player = new Player(board.getPlayerLocation());
     }
 
