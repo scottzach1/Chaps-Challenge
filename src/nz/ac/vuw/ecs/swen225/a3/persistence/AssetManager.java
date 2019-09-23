@@ -110,8 +110,12 @@ public class AssetManager {
   /**
    * Gets an ImageIcon at the last scaled size,
    * with a number overlay.
+   *
+   * @param fname file path.
+   * @param number to overlay.
+   * @return ImageIcon.
    */
-  public static ImageIcon getNumberedScaledImage(String fname) {
+  public static ImageIcon getNumberedScaledImage(String fname, int number) {
     // TODO: Make it add the number overlay.
     fname = assetPath + fname;
 
