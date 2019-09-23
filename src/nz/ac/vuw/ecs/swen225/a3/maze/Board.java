@@ -15,6 +15,7 @@ import nz.ac.vuw.ecs.swen225.a3.renderer.Canvas;
 public class Board {
 
   private int boardSize = 20;
+  private List<Tiles> allTiles;
   private Tiles[][] tiles = new Tiles[boardSize][boardSize];
   private static String level1 =
       "ExitLock|KBlue|DBlue|_|_|_|_|_|_|_|?|T|_|_|_|_|_|_|_|_|"
@@ -114,7 +115,7 @@ public class Board {
       index++;
     }
 
-    List<Tiles> allTiles = new ArrayList<>();
+    allTiles = new ArrayList<>();
     for (int row = 0; row < boardSize; row++) {
       for (int col = 0; col < boardSize; col++) {
         allTiles.add(tiles[row][col]);
@@ -194,6 +195,22 @@ public class Board {
       }
     }
     throw new PlayerNotFoundException();
+  }
+
+  /**
+   * Get allTiles list.
+   * @return list of allTiles in board or null if not filled
+   */
+  public List<Tiles> getAllTiles(){
+    return allTiles;
+  }
+
+  /**
+   * Return boardSize.
+   * @return integer board size.
+   */
+  public int getBoardSize(){
+    return boardSize;
   }
 
   /**

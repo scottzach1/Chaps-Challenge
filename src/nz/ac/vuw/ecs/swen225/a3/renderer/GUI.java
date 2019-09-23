@@ -2,6 +2,7 @@ package nz.ac.vuw.ecs.swen225.a3.renderer;
 
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tiles;
+import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
 
 import javax.swing.*;
 import java.awt.*;
@@ -338,5 +339,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
    * @param e - The key released
    */
   @Override
-  public void keyReleased(KeyEvent e) {activeKeys.remove(e.getKeyCode()); lastMove = "";}
+  public void keyReleased(KeyEvent e) {activeKeys.remove(e.getKeyCode()); lastMove = "";
+    JsonReadWrite.saveGameState(application);
+  }
 }

@@ -6,6 +6,7 @@ import nz.ac.vuw.ecs.swen225.a3.maze.Tiles;
 import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
 import nz.ac.vuw.ecs.swen225.a3.renderer.GUI;
 
+import javax.json.JsonObjectBuilder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,7 +38,6 @@ public class ChapsChallenge {
   private ChapsChallenge() {
     // Load the board.
     board = new Board();
-    new JsonReadWrite(board);
     try {
       player = new Player(board.getPlayerLocation());
     } catch (Board.PlayerNotFoundException e) {
@@ -240,6 +240,15 @@ public class ChapsChallenge {
    */
   public Stream<Tiles> getTilesToRender() {
     return board.getStream(player.getLocation());
+  }
+
+  /**
+   * Get board object.
+   *
+   * @return Board object
+   */
+  public Board getBoard(){
+    return board;
   }
 
 
