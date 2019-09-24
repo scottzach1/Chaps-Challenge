@@ -23,10 +23,24 @@ public class ChapsChallenge {
 
   private Board board;
   private GUI gui;
+
+  public void setPlayer(Player player) {
+    this.player = player;
+  }
+
   private Player player;
 
   private long totalTime = 100; //100 seconds, todo change with levels
   private long startTime;
+
+
+  public void setBoard(Board board) {
+    this.board = board;
+  }
+
+  public void setTimeLeft(long timeLeft) {
+    this.timeLeft = timeLeft;
+  }
 
   private long timeLeft = totalTime;
 
@@ -49,6 +63,7 @@ public class ChapsChallenge {
     // Start the running loop
     runningThread();
   }
+
 
   /**
    * Moves the player in the direction specified.
@@ -139,7 +154,7 @@ public class ChapsChallenge {
    * Loads the game.
    */
   public void loadGame() {
-    // TODO: Load Game
+    JsonReadWrite.loadGameState("saveGame.txt");
     gui.loadGame();
     System.out.println("Game loaded.");
   }
@@ -148,7 +163,7 @@ public class ChapsChallenge {
    * Saves the game.
    */
   public void saveGame() {
-    // TODO: Save Game
+    JsonReadWrite.saveGameState(this);
     gui.saveGame();
     System.out.println("Game saved.");
   }
@@ -281,7 +296,6 @@ public class ChapsChallenge {
   public Player getPlayer(){
     return player;
   }
-
 
   /**
    * Get time remaining.

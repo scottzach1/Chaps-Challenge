@@ -5,6 +5,7 @@ import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+import javax.json.JsonReader;
 import javax.json.stream.JsonParsingException;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -139,8 +140,14 @@ public abstract class Tiles {
    */
   public abstract String getJson();
 
+  /**
+   * Set tile properties from json.
+   */
+  public abstract Tiles setTileFromJson(JsonReader json);
+
   public void setTileUnoccupied() {
     imageUrl = defaultImageUrl;
+    AssetManager.loadAsset(defaultImageUrl);
   }
 
 }

@@ -5,6 +5,7 @@ import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+import javax.json.JsonReader;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -19,7 +20,7 @@ public class Key extends Tiles {
    *
    * @param colour the colour of the key.
    */
-   Key(String colour) {
+  public Key(String colour) {
      super(Type.Key);
     isAccessible = true;
     this.colour = colour;
@@ -60,6 +61,18 @@ public class Key extends Tiles {
       Json.createWriter(writer).write(jsonObject);
       return writer.toString();
     }catch(IOException e) {throw new Error("Error parsing " + this.toString() + " to json");}
+  }
+
+  @Override
+  public Tiles setTileFromJson(JsonReader json) {
+    JsonObject tile = json.readObject();
+    isAccessible = tile.getBoolean("isAccessible");
+    setRow(tile.getInt("row"));
+    setCol(tile.getInt("col"));
+    imageUrl = tile.getString("imageUrl");
+    defaultImageUrl = tile.getString("defaultImageUrl");
+    colour = tile.getString("colour");
+    return this;
   }
 
   /**
