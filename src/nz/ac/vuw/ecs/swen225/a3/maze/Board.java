@@ -52,8 +52,6 @@ public class Board {
   }
 
   public void setLevel(String level){
-    allLevels.add(level);
-    this.currentLevel=allLevels.size()-1;
     try {
       parseBoard(allLevels.get(currentLevel));
     } catch (ParsingException p) {
