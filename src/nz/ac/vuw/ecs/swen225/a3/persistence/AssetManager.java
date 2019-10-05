@@ -47,7 +47,7 @@ public class AssetManager {
    * Finds all files in the assets/ directory.
    * If unable to read files in the directory an IOException will be thrown.
    */
-  public static void loadAssets() throws IOException {
+  private static void loadAssets() throws IOException {
     // Load files from assets/ into baseImageIcons.
     Files.walk(Paths.get("assets\\"))
         .filter(Files::isRegularFile)
@@ -66,21 +66,27 @@ public class AssetManager {
    * @param fname filename.
    */
   public static void loadAsset(String fname) {
-    fname = assetPath + fname;
-    if (baseImageIcons.containsKey(fname)) return;
-
-    ImageIcon imageIcon = new ImageIcon(fname);
-    if (imageIcon.getIconWidth() <= 0 || imageIcon.getIconHeight() <= 0)
-      imageIcon = new ImageIcon(assetPath + "unknown.png");
-
-    baseImageIcons.put(fname, imageIcon);
-    scaledImageIcons.put(fname, imageIcon);
-
     // Load unknown asset if first run.
     if (!loaded) {
       loaded = true;
       loadAsset("unknown.png");
     }
+
+    fname = assetPath + fname;
+    if (baseImageIcons.containsKey(fname)) return;
+
+    // Load base image.
+    ImageIcon baseIcon = new ImageIcon(fname);
+    if (baseIcon.getIconWidth() <= 0 || baseIcon.getIconHeight() <= 0)
+      baseIcon = new ImageIcon(assetPath + "unknown.png");
+
+    // Load scaled image.
+    ImageIcon scaledIcon = new ImageIcon(
+        baseIcon.getImage().
+            getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH));
+
+    baseImageIcons.put(fname, baseIcon);
+    scaledImageIcons.put(fname, scaledIcon);
   }
 
   /**
@@ -89,7 +95,6 @@ public class AssetManager {
    * @param newCellSize Cell size.
    */
   public static void scaleImages(int newCellSize) {
-    if (cellSize == newCellSize) return;
     cellSize = newCellSize;
     for (String key : baseImageIcons.keySet()) {
       Image baseImage = baseImageIcons.get(key).getImage();
@@ -107,11 +112,12 @@ public class AssetManager {
    */
   public static ImageIcon getScaledImage(String fname) {
     fname = assetPath + fname;
-
+    
     ImageIcon scaledIcon = scaledImageIcons.get(fname);
     if (scaledIcon == null) {
       scaledIcon = scaledImageIcons.get(assetPath + "unknown.png");
     }
+
     return scaledIcon;
   }
 
