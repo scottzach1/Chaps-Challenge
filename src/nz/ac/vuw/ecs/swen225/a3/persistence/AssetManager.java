@@ -1,5 +1,7 @@
 package nz.ac.vuw.ecs.swen225.a3.persistence;
 
+import nz.ac.vuw.ecs.swen225.a3.renderer.CombinedImageIcon;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
@@ -112,7 +114,7 @@ public class AssetManager {
    */
   public static ImageIcon getScaledImage(String fname) {
     fname = assetPath + fname;
-    
+
     ImageIcon scaledIcon = scaledImageIcons.get(fname);
     if (scaledIcon == null) {
       scaledIcon = scaledImageIcons.get(assetPath + "unknown.png");
@@ -125,19 +127,33 @@ public class AssetManager {
    * Gets an ImageIcon at the last scaled size,
    * with a number overlay.
    *
+   * Number will be clipped from [1,9].
+   *
    * @param fname file path.
-   * @param number to overlay.
+   * @param number to overlay from [1,9].
    * @return ImageIcon.
    */
   public static ImageIcon getNumberedScaledImage(String fname, int number) {
-    // TODO: Make it add the number overlay.
+    number = Math.max(number, 9);
+    number = Math.min(number, 1);
+    loadAsset(number + ".png");
+
+    String nname = assetPath + number + ".png";
     fname = assetPath + fname;
 
-    ImageIcon scaledIcon = scaledImageIcons.get(fname);
-    if (scaledIcon == null) {
-      scaledIcon = scaledImageIcons.get(assetPath + "unknown.png");
+    // Use unknown asset for base icon if failed to load.
+    ImageIcon baseIcon = scaledImageIcons.get(fname);
+    if (baseIcon == null) {
+      baseIcon = scaledImageIcons.get(assetPath + "unknown.png");
     }
-    return scaledIcon;
+
+    // Use unknown asset for number icon if failed to load.
+    ImageIcon numberIcon = scaledImageIcons.get(nname);
+    if (numberIcon == null) {
+      numberIcon = scaledImageIcons.get(assetPath + "unknown.png");
+    }
+
+    return new CombinedImageIcon(baseIcon, numberIcon);
   }
 
   /**
