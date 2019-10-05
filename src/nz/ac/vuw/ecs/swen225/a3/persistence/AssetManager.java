@@ -4,10 +4,6 @@ import nz.ac.vuw.ecs.swen225.a3.renderer.CombinedImageIcon;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,30 +40,10 @@ public class AssetManager {
   }
 
   /**
-   * NOTE: THIS ONLY WORKS ON WINDOWS.
-   * TO UTILISE ON MAC REPLACE "assets\\" WITH "assets/".
-   * Finds all files in the assets/ directory.
-   * If unable to read files in the directory an IOException will be thrown.
-   */
-  private static void loadAssets() throws IOException {
-    // Load files from assets/ into baseImageIcons.
-    Files.walk(Paths.get("assets\\"))
-        .filter(Files::isRegularFile)
-        .map(Path::toString)
-        .filter(f -> f.endsWith(".png"))
-        .map(f -> f.replace("\\", "/"))
-        .forEach(f -> {
-          ImageIcon imageIcon = new ImageIcon(f);
-          baseImageIcons.put(f, imageIcon);
-          scaledImageIcons.put(f, imageIcon);
-        });
-  }
-
-  /**
    * Loads asset from filename.
    * @param fname filename.
    */
-  public static void loadAsset(String fname) {
+  private static void loadAsset(String fname) {
     // Load unknown asset if first run.
     if (!loaded) {
       loaded = true;
@@ -79,8 +55,9 @@ public class AssetManager {
 
     // Load base image.
     ImageIcon baseIcon = new ImageIcon(fname);
-    if (baseIcon.getIconWidth() <= 0 || baseIcon.getIconHeight() <= 0)
+    if (baseIcon.getIconWidth() <= 0 || baseIcon.getIconHeight() <= 0) {
       baseIcon = new ImageIcon(assetPath + "unknown.png");
+    }
 
     // Load scaled image.
     ImageIcon scaledIcon = new ImageIcon(
@@ -113,14 +90,9 @@ public class AssetManager {
    * @return ImageIcon.
    */
   public static ImageIcon getScaledImage(String fname) {
-    fname = assetPath + fname;
+    loadAsset(fname); // Check asset exists.
 
-    ImageIcon scaledIcon = scaledImageIcons.get(fname);
-    if (scaledIcon == null) {
-      scaledIcon = scaledImageIcons.get(assetPath + "unknown.png");
-    }
-
-    return scaledIcon;
+    return scaledImageIcons.get(assetPath + fname);
   }
 
   /**
@@ -134,25 +106,21 @@ public class AssetManager {
    * @return ImageIcon.
    */
   public static ImageIcon getNumberedScaledImage(String fname, int number) {
+    String nname = number + ".png";
+
+    // Number clipping.
     number = Math.max(number, 9);
     number = Math.min(number, 1);
-    loadAsset(number + ".png");
 
-    String nname = assetPath + number + ".png";
-    fname = assetPath + fname;
+    // Check assets exist.
+    loadAsset(fname);
+    loadAsset(nname);
 
-    // Use unknown asset for base icon if failed to load.
-    ImageIcon baseIcon = scaledImageIcons.get(fname);
-    if (baseIcon == null) {
-      baseIcon = scaledImageIcons.get(assetPath + "unknown.png");
-    }
+    // Get icons.
+    ImageIcon baseIcon = scaledImageIcons.get(assetPath + fname);
+    ImageIcon numberIcon = scaledImageIcons.get(assetPath + nname);
 
-    // Use unknown asset for number icon if failed to load.
-    ImageIcon numberIcon = scaledImageIcons.get(nname);
-    if (numberIcon == null) {
-      numberIcon = scaledImageIcons.get(assetPath + "unknown.png");
-    }
-
+    // Return overlaid image.
     return new CombinedImageIcon(baseIcon, numberIcon);
   }
 
@@ -163,19 +131,14 @@ public class AssetManager {
    * @return ImageIcon.
    */
   public static ImageIcon getScaledImageInstance(String fname, int newCellSize) {
-    fname = assetPath + fname;
+    loadAsset(fname);
 
-    ImageIcon baseIcon = baseImageIcons.get(fname);
-    if (baseIcon == null) {
-      baseIcon = baseImageIcons.get(assetPath + "unknown.png");
-    }
+    // Get base image
+    ImageIcon baseIcon = baseImageIcons.get(assetPath + fname);
 
-    try {
-      baseIcon = new ImageIcon(baseIcon.getImage()
-          .getScaledInstance(newCellSize, newCellSize, Image.SCALE_SMOOTH));
-    } catch (IllegalArgumentException e) {
-      baseIcon = scaledImageIcons.get(fname);
-    }
+    // Scale new image
+    baseIcon = new ImageIcon(baseIcon.getImage()
+        .getScaledInstance(newCellSize, newCellSize, Image.SCALE_SMOOTH));
 
     return baseIcon;
   }

@@ -103,7 +103,6 @@ public class Board {
 
           // FIXME: This might not be the best place.
           tile.imageUrl = "chap_front.png";
-          AssetManager.loadAsset(tile.imageUrl);
 
           setTile(index / 20, index % 20, tile);
           break;

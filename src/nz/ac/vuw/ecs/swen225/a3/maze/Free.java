@@ -21,9 +21,6 @@ public class Free extends Tiles {
     isAccessible = true;
     imageUrl = "free.png";
     defaultImageUrl = "free.png";
-
-    AssetManager.loadAsset(imageUrl);
-    AssetManager.loadAsset(defaultImageUrl);
   }
 
   /**

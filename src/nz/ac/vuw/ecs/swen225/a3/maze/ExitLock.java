@@ -22,9 +22,6 @@ public class ExitLock extends Tiles {
     isAccessible = false;
     imageUrl = "exit_lock.png";
     defaultImageUrl = "free.png";
-
-    AssetManager.loadAsset(imageUrl);
-    AssetManager.loadAsset(defaultImageUrl);
   }
 
   /**

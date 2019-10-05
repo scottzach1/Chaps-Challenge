@@ -25,9 +25,6 @@ public class InfoField extends Tiles {
     this.info = info;
     imageUrl = "info_field.png";
     defaultImageUrl = "info_field.png";
-
-     AssetManager.loadAsset(imageUrl);
-     AssetManager.loadAsset(defaultImageUrl);
   }
 
   /**

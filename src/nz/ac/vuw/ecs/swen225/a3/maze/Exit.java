@@ -21,9 +21,6 @@ public class Exit extends Tiles {
     isAccessible = true;
     imageUrl = "exit.png";
     defaultImageUrl = "free.png";
-
-    AssetManager.loadAsset(imageUrl);
-    AssetManager.loadAsset(defaultImageUrl);
   }
 
   /**

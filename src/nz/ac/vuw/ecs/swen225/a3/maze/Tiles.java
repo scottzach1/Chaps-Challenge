@@ -129,9 +129,7 @@ public abstract class Tiles {
   public abstract boolean interact(Player p);
 
   public void setTileOccupied() {
-    // FIXME: This might not be the best place.
     imageUrl = "chap_front.png";
-    AssetManager.loadAsset(imageUrl);
   }
 
   /**
@@ -147,7 +145,6 @@ public abstract class Tiles {
 
   public void setTileUnoccupied() {
     imageUrl = defaultImageUrl;
-    AssetManager.loadAsset(defaultImageUrl);
   }
 
 }

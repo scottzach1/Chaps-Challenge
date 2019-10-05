@@ -26,9 +26,6 @@ public class Key extends Tiles {
     this.colour = colour;
     imageUrl = "key_" + colour + ".png";
     defaultImageUrl = "free.png";
-
-     AssetManager.loadAsset(imageUrl);
-     AssetManager.loadAsset(defaultImageUrl);
   }
 
   /**

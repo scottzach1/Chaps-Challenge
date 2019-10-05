@@ -27,9 +27,6 @@ public class LockedDoor extends Tiles {
     this.colour = colour;
     imageUrl = "locked_door_" + colour + ".png";
     defaultImageUrl = "free.png";
-
-    AssetManager.loadAsset(imageUrl);
-    AssetManager.loadAsset(defaultImageUrl);
   }
 
   /**

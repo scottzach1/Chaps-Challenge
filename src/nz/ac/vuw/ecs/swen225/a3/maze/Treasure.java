@@ -22,9 +22,6 @@ public class Treasure extends Tiles {
     isAccessible = true;
     imageUrl = "treasure.png";
      defaultImageUrl = "free.png";
-
-     AssetManager.loadAsset(imageUrl);
-     AssetManager.loadAsset(defaultImageUrl);
    }
 
   /**

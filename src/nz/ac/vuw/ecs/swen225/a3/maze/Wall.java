@@ -21,9 +21,6 @@ public class Wall extends Tiles {
      isAccessible = false;
     imageUrl = "wall.png";
     defaultImageUrl = "wall.png";
-
-     AssetManager.loadAsset(imageUrl);
-     AssetManager.loadAsset(defaultImageUrl);
   }
 
 
