@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public class AssetManager {
 
-  public static String assetPath = "assets/";
+  private static String assetPath = "assets/";
   private static boolean loaded = false;
 
   /**
@@ -55,14 +55,17 @@ public class AssetManager {
 
     // Load base image.
     ImageIcon baseIcon = new ImageIcon(assetPath + fname);
+    baseIcon.setDescription(fname);
     if (baseIcon.getIconWidth() <= 0 || baseIcon.getIconHeight() <= 0) {
       baseIcon = new ImageIcon(assetPath + "unknown.png");
+      baseIcon.setDescription("unknown.png");
     }
 
     // Load scaled image.
     ImageIcon scaledIcon = new ImageIcon(
         baseIcon.getImage().
             getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH));
+    scaledIcon.setDescription(baseIcon.getDescription());
 
     baseImageIcons.put(fname, baseIcon);
     scaledImageIcons.put(fname, scaledIcon);
@@ -76,9 +79,10 @@ public class AssetManager {
   public static void scaleImages(int newCellSize) {
     cellSize = newCellSize;
     for (String key : baseImageIcons.keySet()) {
-      Image baseImage = baseImageIcons.get(key).getImage();
-      ImageIcon scaledIcon = new ImageIcon(
-          baseImage.getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH));
+      ImageIcon baseImage = baseImageIcons.get(key);
+      ImageIcon scaledIcon = new ImageIcon(baseImage.getImage()
+          .getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH));
+      scaledIcon.setDescription(baseImage.getDescription());
       scaledImageIcons.put(key, scaledIcon);
     }
   }
@@ -106,11 +110,8 @@ public class AssetManager {
    * @return ImageIcon.
    */
   public static ImageIcon getNumberedScaledImage(String fname, int number) {
-    String nname = number + ".png";
-
     // Number clipping.
-    number = Math.max(number, 9);
-    number = Math.min(number, 1);
+    String nname = ((number < 10 && number > 0) ? number : "NaN") + ".png";
 
     // Check assets exist.
     loadAsset(fname);
@@ -121,7 +122,9 @@ public class AssetManager {
     ImageIcon numberIcon = scaledImageIcons.get(nname);
 
     // Return overlaid image.
-    return new CombinedImageIcon(baseIcon, numberIcon);
+    ImageIcon combinedIcon = new CombinedImageIcon(baseIcon, numberIcon);
+    combinedIcon.setDescription(fname + "_" + nname);
+    return combinedIcon;
   }
 
   /**
@@ -135,11 +138,13 @@ public class AssetManager {
 
     // Get base image
     ImageIcon baseIcon = baseImageIcons.get(fname);
+    String desc = baseIcon.getDescription();
 
     // Scale new image
     baseIcon = new ImageIcon(baseIcon.getImage()
         .getScaledInstance(newCellSize, newCellSize, Image.SCALE_SMOOTH));
 
+    baseIcon.setDescription(desc);
     return baseIcon;
   }
 }
