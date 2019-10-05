@@ -29,6 +29,7 @@ public class AssetManager {
   public static void clearAssets() {
     baseImageIcons.clear();
     scaledImageIcons.clear();
+    loaded = false;
   }
 
   /**
@@ -50,11 +51,10 @@ public class AssetManager {
       loadAsset("unknown.png");
     }
 
-    fname = assetPath + fname;
     if (baseImageIcons.containsKey(fname)) return;
 
     // Load base image.
-    ImageIcon baseIcon = new ImageIcon(fname);
+    ImageIcon baseIcon = new ImageIcon(assetPath + fname);
     if (baseIcon.getIconWidth() <= 0 || baseIcon.getIconHeight() <= 0) {
       baseIcon = new ImageIcon(assetPath + "unknown.png");
     }
@@ -92,7 +92,7 @@ public class AssetManager {
   public static ImageIcon getScaledImage(String fname) {
     loadAsset(fname); // Check asset exists.
 
-    return scaledImageIcons.get(assetPath + fname);
+    return scaledImageIcons.get(fname);
   }
 
   /**
@@ -117,8 +117,8 @@ public class AssetManager {
     loadAsset(nname);
 
     // Get icons.
-    ImageIcon baseIcon = scaledImageIcons.get(assetPath + fname);
-    ImageIcon numberIcon = scaledImageIcons.get(assetPath + nname);
+    ImageIcon baseIcon = scaledImageIcons.get(fname);
+    ImageIcon numberIcon = scaledImageIcons.get(nname);
 
     // Return overlaid image.
     return new CombinedImageIcon(baseIcon, numberIcon);
@@ -134,7 +134,7 @@ public class AssetManager {
     loadAsset(fname);
 
     // Get base image
-    ImageIcon baseIcon = baseImageIcons.get(assetPath + fname);
+    ImageIcon baseIcon = baseImageIcons.get(fname);
 
     // Scale new image
     baseIcon = new ImageIcon(baseIcon.getImage()
