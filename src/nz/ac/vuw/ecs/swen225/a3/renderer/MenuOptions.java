@@ -75,6 +75,26 @@ class MenuOptions extends JMenuBar {
     JMenuItem step = new JMenuItem("Step Recording");
     step.addActionListener(arg0 -> RecordAndPlay.step(application));
 
+    // Create replay speed dropdown
+    JMenu playbackSpeed = new JMenu("Playback speed");
+
+    JMenuItem tenth = new JMenuItem("0.1s");
+    tenth.addActionListener(arg0 -> RecordAndPlay.setDelay(100));
+
+    JMenuItem fifth = new JMenuItem("0.2s");
+    fifth.addActionListener(arg0 -> RecordAndPlay.setDelay(200));
+
+    JMenuItem half = new JMenuItem("0.5s");
+    half.addActionListener(arg0 -> RecordAndPlay.setDelay(500));
+
+    JMenuItem one = new JMenuItem("1s");
+    one.addActionListener(arg0 -> RecordAndPlay.setDelay(1000));
+
+    playbackSpeed.add(tenth);
+    playbackSpeed.add(fifth);
+    playbackSpeed.add(half);
+    playbackSpeed.add(one);
+
     // Create playback button
     JMenuItem playback = new JMenuItem("Playback Recording");
     playback.addActionListener(arg0 -> RecordAndPlay.run(application));
@@ -84,6 +104,7 @@ class MenuOptions extends JMenuBar {
     add(game);
     add(recording);
     add(step);
+    add(playbackSpeed);
     add(playback);
   }
 }

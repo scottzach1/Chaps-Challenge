@@ -17,8 +17,8 @@ public class RecordAndPlay {
   private static String gameState;
   private static boolean isRecording;
 
-  public void setDelay(long delay) {
-    this.delay = delay;
+  public static void setDelay(long d) {
+    delay = d;
   }
 
   private static long delay = 200;
