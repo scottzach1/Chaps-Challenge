@@ -193,11 +193,13 @@ public class ChapsChallenge {
    */
   public void restartGame() {
     board.setCurrentLevel(0);
+    player = new Player(board.getPlayerLocation());
     gui.restartGame();
   }
 
   /**
    * Sets the game to the previous level.
+   * If there is no previous level, level 1 is restarted.
    */
   public void previousLevel() {
     int current = board.getCurrentLevel();
@@ -208,15 +210,14 @@ public class ChapsChallenge {
       board.setCurrentLevel(0);
     }
 
-    gui.previousLevel();
     player = new Player(board.getPlayerLocation());
+    gui.previousLevel();
 
   }
 
   public void restartLevel(){
     int current = board.getCurrentLevel();
-      board.setCurrentLevel(current);
-
+    board.setCurrentLevel(current);
     player = new Player(board.getPlayerLocation());
   }
 
