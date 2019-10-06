@@ -47,7 +47,6 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
   HashSet<Integer> activeKeys;
   String direction = "";
 
-  private Dimension oldSize;
 
   /**
    * Constructor: Creates a new JFrame and sets preferred sizes.
@@ -85,10 +84,6 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     setFocusable(true);
     setFocusableWindowState(true);
 
-    revalidate();
-    repaint();
-
-    oldSize = getSize();
   }
 
   /**
@@ -222,17 +217,14 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
   @Override
   public void componentResized(ComponentEvent e) {
     screenDimension = getSize();
-
     screenWidth = screenDimension.width;
     screenHeight = screenDimension.height - MENU_HEIGHT;
     canvasWidth = (screenDimension.width * 2) / 3;
     dashboardWidth = (screenDimension.width) / 3;
 
-    if ((canvas != null && dashboardHolder != null)) {
-      if(canvas.ready && dashboardHolder.ready) {
+    if (canvas != null && dashboardHolder != null) {
         canvas.resize();
         dashboardHolder.resize();
-      }
     }
     revalidate();
     redraw();
@@ -370,6 +362,10 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
 
 
     direction = "";
+  }
+
+  public boolean dashBoardIsReady(){
+    return dashboardHolder.getWidth() >= dashboardWidth;
   }
 
 

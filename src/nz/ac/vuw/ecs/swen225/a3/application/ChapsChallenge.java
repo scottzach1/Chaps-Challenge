@@ -8,6 +8,7 @@ import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
 import nz.ac.vuw.ecs.swen225.a3.persistence.RecordAndPlay;
 import nz.ac.vuw.ecs.swen225.a3.renderer.GUI;
 
+import java.awt.event.ComponentEvent;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
@@ -245,16 +246,18 @@ public class ChapsChallenge {
 
       @Override
       public void run() {
-
+        // Waits the thread long enough for everything to load
         try{
-          Thread.sleep(100);
+          Thread.sleep(400);
         } catch (Exception e){}
+
+        gui.componentResized(new ComponentEvent(gui, 1));
 
         // While the time has not run out
         while (true) {
+
           // Only run while the game is not paused
           if (!gamePaused) {
-
             // Attempt to sleep the thread if there is time left
             try {
               if (timeLeft > 0) {

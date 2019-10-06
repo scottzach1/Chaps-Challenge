@@ -20,14 +20,12 @@ public class Canvas extends JPanel {
 
   private ChapsChallenge application;
 
-  public boolean ready;
 
   /**
    * Constructor: Creates and initializes canvas to the correct size
    * Then renders the board.
    */
   Canvas(ChapsChallenge app) {
-    ready = false;
     application = app;
     setPreferredSize(new Dimension(GUI.canvasWidth, GUI.screenHeight));
 
@@ -49,7 +47,6 @@ public class Canvas extends JPanel {
       }
     }
     refreshComponents();
-    ready = true;
   }
 
   /**
