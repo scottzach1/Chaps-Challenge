@@ -56,6 +56,15 @@ public class Player {
   }
 
   /**
+   * Removes item from players inventory.
+   *
+   * @param item String description of item removed
+   */
+  void removeItem(String item) {
+    inventory.remove(item);
+  }
+
+  /**
    * Get tile player is occupying.
    *
    * @return Tile
@@ -66,6 +75,7 @@ public class Player {
 
   /**
    * Sets the location of the player.
+   *
    * @param location the location to set to.
    */
   public void setLocation(Tile location) {
@@ -74,6 +84,7 @@ public class Player {
 
   /**
    * Gets the number of treasures.
+   *
    * @return treasures.
    */
   public int getTreasures() {
@@ -89,6 +100,7 @@ public class Player {
 
   /**
    * Gets the players inventory.
+   *
    * @return the current inventory.
    */
   public List<String> getInventory() {

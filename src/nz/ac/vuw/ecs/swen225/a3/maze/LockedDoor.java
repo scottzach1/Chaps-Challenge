@@ -38,6 +38,7 @@ public class LockedDoor extends Tile {
     if (p.getItem("key_" + colour)) {
       isAccessible = true;
       imageUrl = defaultImageUrl;
+      p.removeItem("key_" + colour);
     }
     return isAccessible;
   }
