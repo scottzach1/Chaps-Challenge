@@ -15,7 +15,6 @@ public class Water extends Tile {
 
     imageUrl = "water.png";
     defaultImageUrl = "water.png";
-
   }
 
   /**

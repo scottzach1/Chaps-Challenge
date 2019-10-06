@@ -15,6 +15,7 @@ public class Flippers extends Tile {
     isAccessible = true;
     imageUrl = "flippers.png";
     defaultImageUrl = "free.png";
+
   }
 
   /**

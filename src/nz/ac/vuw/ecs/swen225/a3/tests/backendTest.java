@@ -247,7 +247,6 @@ class backendTest {
 
     chapsChallenge.setCustomLevel(level);
     chapsChallenge.move(Tile.Direction.Up);
-    System.out.println(chapsChallenge.getPlayer().getInventory());
     assertTrue(   chapsChallenge.getPlayer().getInventory().contains("key_blue"));
   }
 
@@ -451,6 +450,82 @@ class backendTest {
 
     assertEquals(current+1, chapsChallenge.getBoard().getCurrentLevel());
 
+  }
+
+
+  /**
+   * Tests that you cannot stand on water without flippers
+   */
+  @Test
+  void invalidWater() {
+    ChapsChallenge chapsChallenge = new ChapsChallenge();
+    String level =
+        "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|W|W|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|W|W|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|W|W|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|C|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|";
+
+    chapsChallenge.setCustomLevel(level);
+
+    Tile start = chapsChallenge.getPlayer().getLocation();
+    chapsChallenge.move(Tile.Direction.Up);
+    chapsChallenge.move(Tile.Direction.Up);
+
+    assertEquals(start, chapsChallenge.getPlayer().getLocation());
+  }
+
+
+  /**
+   * Tests that you can stand on water with flippers
+   */
+  @Test
+  void validWater() {
+    ChapsChallenge chapsChallenge = new ChapsChallenge();
+    String level =
+        "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|W|W|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|W|W|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|F|W|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|C|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|";
+
+    chapsChallenge.setCustomLevel(level);
+
+    chapsChallenge.move(Tile.Direction.Up);
+    Tile start = chapsChallenge.getPlayer().getLocation();
+    chapsChallenge.move(Tile.Direction.Up);
+
+    assertEquals(start.getUp(), chapsChallenge.getPlayer().getLocation());
   }
 
   /**
