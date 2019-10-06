@@ -17,6 +17,7 @@ public class RecordAndPlay {
   private static String saveName;
   private static List<Tile.Direction> moves = new ArrayList();
   private static String gameState;
+  private static boolean isRunning;
 
   /**
    * Create new recording saved in file with name s
@@ -24,6 +25,7 @@ public class RecordAndPlay {
    */
   public static void newSave(ChapsChallenge g, String s){
     saveName = s;
+    isRunning = true;
     moves.clear();
     gameState = JsonReadWrite.getGameState(g);
   }
@@ -33,7 +35,7 @@ public class RecordAndPlay {
    */
   public static void addAction(Tile.Direction direction){
     // Check a recording is active
-    if(saveName != null){
+    if(isRunning){
       moves.add(direction);
     }
   }
@@ -42,7 +44,7 @@ public class RecordAndPlay {
    * Save action history to file
    */
   public static void saveGame(){
-    if(saveName != null){
+    if(isRunning){
       JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
 
       // Array of tiles
@@ -68,7 +70,17 @@ public class RecordAndPlay {
       catch(IOException e){
         throw new Error("Failed to save moves");
       }
+
+      isRunning = false;
     }
+  }
+
+  /**
+   * Get if recording is active
+   * @return isRunning
+   */
+  public static boolean getIsRunning(){
+    return isRunning;
   }
 
 }

@@ -1,6 +1,7 @@
 package nz.ac.vuw.ecs.swen225.a3.renderer;
 
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
+import nz.ac.vuw.ecs.swen225.a3.persistence.RecordAndPlay;
 
 import javax.swing.*;
 import java.awt.*;
@@ -51,8 +52,23 @@ class MenuOptions extends JMenuBar {
     pauseItem.addActionListener(arg0 -> application.pauseGame());
     game.add(pauseItem);
 
+    //Create Recording dropdown
+    // Create the game menu
+    JMenu recording = new JMenu("Recording");
+
+    // Create the previous level button
+    JMenuItem startRecording = new JMenuItem("Start Recording");
+    startRecording.addActionListener(arg0 -> RecordAndPlay.newSave(application,"record.txt"));
+    recording.add(startRecording);
+
+    // Create the Pause button
+    JMenuItem saveRecording = new JMenuItem("Save Recording");
+    saveRecording.addActionListener(arg0 -> RecordAndPlay.saveGame());
+    recording.add(saveRecording);
+
     // Add components
     add(file);
     add(game);
+    add(recording);
   }
 }

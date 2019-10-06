@@ -4,6 +4,7 @@ import nz.ac.vuw.ecs.swen225.a3.maze.Board;
 import nz.ac.vuw.ecs.swen225.a3.maze.Player;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
 import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
+import nz.ac.vuw.ecs.swen225.a3.persistence.RecordAndPlay;
 import nz.ac.vuw.ecs.swen225.a3.renderer.GUI;
 
 import java.util.List;
@@ -95,6 +96,10 @@ public class ChapsChallenge {
     player.setLocation(nextLocation);
 
     checkFields();
+
+    if(RecordAndPlay.getIsRunning()){
+      RecordAndPlay.addAction(direction);
+    }
 
   }
 
