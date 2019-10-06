@@ -49,7 +49,7 @@ class backendTest {
         + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
         + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|";
 
-    chapsChallenge.setLevel(level);
+    chapsChallenge.setCustomLevel(level);
     assertEquals(chapsChallenge.getBoard().toString(), level);
   }
 
@@ -84,7 +84,7 @@ class backendTest {
 
      boolean failed=false;
      try {
-       chapsChallenge.setLevel(level);
+       chapsChallenge.setCustomLevel(level);
      }catch (Error e) {
        failed=true;
      }
@@ -122,7 +122,7 @@ class backendTest {
 
     boolean failed=false;
     try {
-      chapsChallenge.setLevel(level);
+      chapsChallenge.setCustomLevel(level);
     }catch (Error e) {
       failed=true;
     }
@@ -160,7 +160,7 @@ class backendTest {
 
     boolean failed=false;
     try {
-      chapsChallenge.setLevel(level);
+      chapsChallenge.setCustomLevel(level);
     }catch (Error e) {
       failed=true;
     }
@@ -194,7 +194,7 @@ class backendTest {
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|";
 
-      chapsChallenge.setLevel(level);
+      chapsChallenge.setCustomLevel(level);
 
       Tile start = chapsChallenge.getPlayer().getLocation();
       chapsChallenge.move(Tile.Direction.Up);
@@ -245,7 +245,7 @@ class backendTest {
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|";
 
-    chapsChallenge.setLevel(level);
+    chapsChallenge.setCustomLevel(level);
     chapsChallenge.move(Tile.Direction.Up);
     System.out.println(chapsChallenge.getPlayer().getInventory());
     assertTrue(   chapsChallenge.getPlayer().getInventory().contains("key_blue"));
@@ -279,7 +279,7 @@ class backendTest {
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|";
 
-    chapsChallenge.setLevel(level);
+    chapsChallenge.setCustomLevel(level);
     chapsChallenge.move(Tile.Direction.Up);
 
     Tile start = chapsChallenge.getPlayer().getLocation();
@@ -316,7 +316,7 @@ class backendTest {
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|";
 
-    chapsChallenge.setLevel(level);
+    chapsChallenge.setCustomLevel(level);
 
     Tile start = chapsChallenge.getPlayer().getLocation();
     chapsChallenge.move(Tile.Direction.Up);
@@ -353,7 +353,7 @@ class backendTest {
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|";
 
-    chapsChallenge.setLevel(level);
+    chapsChallenge.setCustomLevel(level);
     chapsChallenge.move(Tile.Direction.Up);
 
     Tile start = chapsChallenge.getPlayer().getLocation();
@@ -390,7 +390,7 @@ class backendTest {
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|";
 
-    chapsChallenge.setLevel(level);
+    chapsChallenge.setCustomLevel(level);
 
     Tile start = chapsChallenge.getPlayer().getLocation();
     chapsChallenge.move(Tile.Direction.Up);
@@ -433,7 +433,7 @@ class backendTest {
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|";
 
-    chapsChallenge.setLevel(level);
+    chapsChallenge.setCustomLevel(level);
 
     chapsChallenge.move(Tile.Direction.Up);
     chapsChallenge.move(Tile.Direction.Up);

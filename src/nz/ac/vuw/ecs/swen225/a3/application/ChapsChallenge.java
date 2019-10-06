@@ -285,7 +285,7 @@ public class ChapsChallenge {
    * Sets the board to the string, changes the level.
    * @param level the level to change to.
    */
-  public void setLevel(String level){
+  public void setCustomLevel(String level){
     board.setLevel(level);
     player = new Player(board.getPlayerLocation());
   }
