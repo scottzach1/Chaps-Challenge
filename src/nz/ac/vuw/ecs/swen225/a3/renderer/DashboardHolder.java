@@ -15,18 +15,22 @@ public class DashboardHolder extends JPanel {
 
   public static int dashboardHeight;
 
+  public boolean ready;
+
   public DashboardHolder(ChapsChallenge chapsChallenge){
+    ready = false;
     dashboard = new Dashboard(chapsChallenge);
 
     setBackground(null);
     setForeground(null);
     setBorder(null);
     setLayout(new GridBagLayout());
+    renderDashboard();
 
+    ready = true;
   }
 
   public void renderDashboard(){
-//    System.out.println("DASHBOARDHOLDER RENDER");
     removeAll();
     dashboardHeight = AssetManager.getScaledImage("free.png").getIconHeight() * Canvas.VIEW_SIZE;
 
@@ -38,10 +42,10 @@ public class DashboardHolder extends JPanel {
     dashboard.refreshDashboardComponents();
     add(dashboard, gbc);
     revalidate();
+    repaint();
   }
 
   public void resize() {
-//    System.out.println("DASHBOARD RESIZE");
     removeAll();
     dashboard.createDashboardComponents();
     dashboard.renderDashboardComponents();

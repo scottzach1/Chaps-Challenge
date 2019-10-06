@@ -5,9 +5,8 @@ import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -17,27 +16,40 @@ public class Canvas extends JPanel {
 
   public final static int VIEW_SIZE = 9;
 
-  private ArrayList<Component> components = new ArrayList<>();
+  private ArrayList<JLabel> components = new ArrayList<>();
 
   private ChapsChallenge application;
+
+  public boolean ready;
 
   /**
    * Constructor: Creates and initializes canvas to the correct size
    * Then renders the board.
    */
   Canvas(ChapsChallenge app) {
-
+    ready = false;
     application = app;
     setPreferredSize(new Dimension(GUI.canvasWidth, GUI.screenHeight));
 
     setLayout(new GridBagLayout());
     setBackground(GUI.BACKGROUND_COLOUR);
 
-    renderCanvas();
+    createCanvasComponents();
+
   }
 
-  public void createCanvasComponents(){
-
+  public void createCanvasComponents() {
+    removeAll();
+    components.clear();
+    for (int row = 0; row < VIEW_SIZE; row++) {
+      for (int col = 0; col < VIEW_SIZE; col++) {
+        JLabel item = new JLabel();
+        item.setIcon(AssetManager.getScaledImage("free.png"));
+        components.add(item);
+      }
+    }
+    refreshComponents();
+    ready = true;
   }
 
   /**
@@ -47,19 +59,19 @@ public class Canvas extends JPanel {
    * in final product.
    * Renders the board stored in application on the  canvas.
    */
-  public void renderCanvas() {
-//    System.out.println("CANVAS RENDER");
-    // Clear components.
-    components.clear();
-    removeAll();
+  public void refreshComponents() {
 
     // Retrieve tiles and add all components.
-    components.addAll(application.getTilesToRender()
-        .map(t -> AssetManager.getScaledImage(t.getCombinedUrl()))
-        .map(JLabel::new)
-        .collect(Collectors.toList()));
+    // Convert the Stream to List
+    AtomicInteger i = new AtomicInteger();
+    application.getTilesToRender().collect(Collectors.toList()).forEach(T -> {
+      try {
+        components.get(i.get()).setIcon(AssetManager.getScaledImage(T.getCombinedUrl()));
+        i.getAndIncrement();
+      } catch (Exception e){
+      }
+    });
 
-    revalidateComponents();
   }
 
 
@@ -69,8 +81,12 @@ public class Canvas extends JPanel {
    * <p>
    * DOES NOT REPAINT.
    */
-  public void revalidateComponents() {
-//    System.out.println("CANVAS REVALIDATE");
+  public void renderCanvasComponents() {
+
+    if(getWidth() <= 0)
+      return;
+
+    removeAll();
     GridBagConstraints constraints = new GridBagConstraints();
     if (components.size() > 0) {
       constraints.gridy = 0;
@@ -89,11 +105,14 @@ public class Canvas extends JPanel {
   }
 
 
-  public void resize(){
-//    System.out.println("CANVAS RESIZE");
+  public void resize() {
     int cellSize = Math.min(getWidth(), getHeight()) / VIEW_SIZE;
     AssetManager.scaleImages(cellSize);
-    renderCanvas();
-    revalidateComponents();
+    createCanvasComponents();
+    refreshComponents();
+    renderCanvasComponents();
+
+    revalidate();
+    repaint();
   }
 }

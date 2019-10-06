@@ -3,6 +3,7 @@ package nz.ac.vuw.ecs.swen225.a3.renderer;
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
 import nz.ac.vuw.ecs.swen225.a3.persistence.RecordAndPlay;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,6 +21,7 @@ import java.util.HashSet;
 public class GUI extends JFrame implements ComponentListener, KeyListener {
   // Nothing important
   private static final long serialVersionUID = 1L;
+
 
   // Colour Space.
   static final Color BACKGROUND_COLOUR = new Color(67, 104, 101);
@@ -45,6 +47,8 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
   HashSet<Integer> activeKeys;
   String direction = "";
 
+  private Dimension oldSize;
+
   /**
    * Constructor: Creates a new JFrame and sets preferred sizes.
    * Creates and adds all relevant GUI components then redraws.
@@ -65,6 +69,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     setFocusableWindowState(true);
     getContentPane().setBackground(BACKGROUND_COLOUR);
 
+
     addComponentListener(this);
 
     // Add components.
@@ -80,8 +85,10 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     setFocusable(true);
     setFocusableWindowState(true);
 
-    canvas.resize();
-    dashboardHolder.resize();
+    revalidate();
+    repaint();
+
+    oldSize = getSize();
   }
 
   /**
@@ -185,16 +192,14 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
 
 
   public void updateBoard() {
-//    System.out.println("UPDATE BOARD");
-    runMove();
-    canvas.renderCanvas();
-    redraw();
+      runMove();
+      canvas.refreshComponents();
+      redraw();
   }
 
   public void updateDashboard() {
-//    System.out.println("UPDATE DASH");
-    dashboardHolder.renderDashboard();
-    redraw();
+      dashboardHolder.renderDashboard();
+      redraw();
   }
 
   /**
@@ -216,7 +221,6 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
    */
   @Override
   public void componentResized(ComponentEvent e) {
-//    System.out.println("GUI RESIZE");
     screenDimension = getSize();
 
     screenWidth = screenDimension.width;
@@ -224,11 +228,11 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     canvasWidth = (screenDimension.width * 2) / 3;
     dashboardWidth = (screenDimension.width) / 3;
 
-    if (canvas != null && dashboardHolder != null) {
-      canvas.resize();
-      dashboardHolder.resize();
-      updateBoard();
-      updateDashboard();
+    if ((canvas != null && dashboardHolder != null)) {
+      if(canvas.ready && dashboardHolder.ready) {
+        canvas.resize();
+        dashboardHolder.resize();
+      }
     }
     revalidate();
     redraw();

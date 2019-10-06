@@ -51,12 +51,8 @@ public class Dashboard extends JPanel {
     chapsBagImages = new ArrayList<>();
 
     setPreferredSize(new Dimension(GUI.dashboardWidth, DashboardHolder.dashboardHeight));
-
-    setBackground(BACKGROUND_COLOUR);
-
     setLayout(new GridBagLayout());
-
-    paddingOfBox = Math.min(getWidth() / 10, getHeight() / 60);
+    setBackground(BACKGROUND_COLOUR);
 
     centerAlign = new SimpleAttributeSet();
     StyleConstants.setAlignment(centerAlign, StyleConstants.ALIGN_CENTER);
@@ -72,7 +68,8 @@ public class Dashboard extends JPanel {
    * be redone
    */
   public void createDashboardComponents() {
-//    System.out.println("DASHBOARD CREATE");
+
+    paddingOfBox = Math.min(GUI.dashboardWidth / 10, getHeight() / 60);
     // Create the level text. Center aligned
     level = new CustomTextPane("LEVEL", centerAlign, null, TEXT_COLOUR, false);
     // Create the level number text. Right aligned
@@ -95,10 +92,11 @@ public class Dashboard extends JPanel {
    * This consists of two JPanels and their related parts.
    */
   protected void renderDashboardComponents() {
-//    System.out.println("DASHBOARD RENDER");
-    if (getWidth() <= 0)
+    if (GUI.dashboardWidth <= 0) {
       return;
+    }
 
+    System.out.println("HERE");
     removeAll();
     // reset the GridBagConstraints
     GridBagConstraints constraints = new GridBagConstraints();
@@ -110,7 +108,7 @@ public class Dashboard extends JPanel {
     JPanel topPanel = new JPanel();
     topPanel.setLayout(new GridBagLayout());
     topPanel.setBackground(null);
-    topPanel.setPreferredSize(new Dimension((getWidth() / 2) - (paddingOfBox / 2), (getHeight() * 2 / 3) - paddingOfBox));
+    topPanel.setPreferredSize(new Dimension((GUI.dashboardWidth / 2) - (paddingOfBox / 2), (getHeight() * 2 / 3) - paddingOfBox));
 
     // Create a new GridBagLayout for the top panel
     GridBagConstraints topPanelConstraints = new GridBagConstraints();
@@ -153,7 +151,7 @@ public class Dashboard extends JPanel {
     JPanel bottomPanel = new JPanel();
     bottomPanel.setLayout(new GridBagLayout());
     bottomPanel.setBackground(null);
-    bottomPanel.setPreferredSize(new Dimension(getWidth() - paddingOfBox, (getHeight() / 3) - paddingOfBox));
+    bottomPanel.setPreferredSize(new Dimension(GUI.dashboardWidth - paddingOfBox, (getHeight() / 3) - paddingOfBox));
 
     // Create a new GridBagLayout for the bottom panel
     GridBagConstraints bottomPanelConstraints = new GridBagConstraints();
@@ -184,13 +182,15 @@ public class Dashboard extends JPanel {
     constraints.weighty = 1;
     constraints.gridy = 1;
     add(bottomPanel, constraints);
+
+    revalidate();
+    repaint();
   }
 
   /**
    * Updates the components text within the dashboard
    */
   public void refreshDashboardComponents() {
-//    System.out.println("DASHBOARD REFRESH");
     // If the components don't exist then ignore the command
     // Usually a resizing error will refresh the components before they're instantiated
     if (levelNum == null || timeNum == null || chipsLeftNum == null)
@@ -202,6 +202,9 @@ public class Dashboard extends JPanel {
 
     // Refresh Chaps bag
     fillChapsBag();
+
+    revalidate();
+    repaint();
   }
 
   /**
@@ -256,10 +259,10 @@ public class Dashboard extends JPanel {
    */
   private void fillChapsBagWithBlanks() {
     chapsBagImages = new ArrayList<>();
-    if (getWidth() > 0)
+    if (GUI.dashboardWidth > 0)
       for (int i = 0; i < 8; i++) {
         JLabel item = new JLabel(AssetManager.getScaledImage("free.png"));
-        item.setPreferredSize(new Dimension(getWidth() / 4, getHeight() / (6 * 2)));
+        item.setPreferredSize(new Dimension(GUI.dashboardWidth / 4, getHeight() / (6 * 2)));
         chapsBagImages.add(item);
       }
   }
@@ -289,6 +292,8 @@ public class Dashboard extends JPanel {
       setForeground(foreground);
       // - Set the font, using a below method to find the font size
       setFont(findFont(this, new Font("Arial", Font.BOLD, 20), text));
+      System.out.println("HERE: " + getFont().getSize());
+
 
       // - If the border boolean parsed in is true, make one
       if (border) {
@@ -328,8 +333,9 @@ public class Dashboard extends JPanel {
      */
     private Font findFont(Component component, Font oldFont, String text) {
       // Get the size of the area the text can take up
-      int boxWidth = (Dashboard.this.getWidth() / GRID_WIDTH);
-      int boxHeight = (Dashboard.this.getHeight() / GRID_HEIGHT);
+      System.out.println(GUI.dashboardWidth + " " + GUI.screenHeight);
+      int boxWidth = ((GUI.dashboardWidth - paddingOfBox) / GRID_WIDTH);
+      int boxHeight = ((GUI.screenHeight - paddingOfBox) / GRID_HEIGHT);
       Dimension componentSize = new Dimension(boxWidth, boxHeight);
 
       // The default size and text if no size is found to fit

@@ -245,12 +245,15 @@ public class ChapsChallenge {
 
       @Override
       public void run() {
+
+        try{
+          Thread.sleep(100);
+        } catch (Exception e){}
+
         // While the time has not run out
         while (true) {
           // Only run while the game is not paused
           if (!gamePaused) {
-            // Tick counter cycles (0, 1)
-            i = (i + 1) % fps;
 
             // Attempt to sleep the thread if there is time left
             try {
@@ -261,11 +264,14 @@ public class ChapsChallenge {
                   gui.updateDashboard();
                   mobManager.advanceByOneTick();
                 }
-                // Update the board every 1/4 second
+                // Update the board every 1/fps second
                 gui.updateBoard();
 
                 // Restricts the frame rate to 30 fps
                 Thread.sleep(1000/fps);
+
+                // Tick counter cycles (0, 1)
+                i = (i + 1) % fps;
               }
               else
                 throw new InterruptedException("TIMED OUT");
