@@ -1,11 +1,9 @@
 package nz.ac.vuw.ecs.swen225.a3.persistence;
 
+import nz.ac.vuw.ecs.swen225.a3.renderer.CombinedImageIcon;
+
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,7 +13,7 @@ import java.util.Map;
  */
 public class AssetManager {
 
-  public static String assetPath = "assets/";
+  private static String assetPath = "assets/";
   private static boolean loaded = false;
 
   /**
@@ -31,6 +29,7 @@ public class AssetManager {
   public static void clearAssets() {
     baseImageIcons.clear();
     scaledImageIcons.clear();
+    loaded = false;
   }
 
   /**
@@ -42,45 +41,34 @@ public class AssetManager {
   }
 
   /**
-   * NOTE: THIS ONLY WORKS ON WINDOWS.
-   * TO UTILISE ON MAC REPLACE "assets\\" WITH "assets/".
-   * Finds all files in the assets/ directory.
-   * If unable to read files in the directory an IOException will be thrown.
-   */
-  public static void loadAssets() throws IOException {
-    // Load files from assets/ into baseImageIcons.
-    Files.walk(Paths.get("assets\\"))
-        .filter(Files::isRegularFile)
-        .map(Path::toString)
-        .filter(f -> f.endsWith(".png"))
-        .map(f -> f.replace("\\", "/"))
-        .forEach(f -> {
-          ImageIcon imageIcon = new ImageIcon(f);
-          baseImageIcons.put(f, imageIcon);
-          scaledImageIcons.put(f, imageIcon);
-        });
-  }
-
-  /**
    * Loads asset from filename.
    * @param fname filename.
    */
-  public static void loadAsset(String fname) {
-    fname = assetPath + fname;
-    if (baseImageIcons.containsKey(fname)) return;
-
-    ImageIcon imageIcon = new ImageIcon(fname);
-    if (imageIcon.getIconWidth() <= 0 || imageIcon.getIconHeight() <= 0)
-      imageIcon = new ImageIcon(assetPath + "unknown.png");
-
-    baseImageIcons.put(fname, imageIcon);
-    scaledImageIcons.put(fname, imageIcon);
-
+  private static void loadAsset(String fname) {
     // Load unknown asset if first run.
     if (!loaded) {
       loaded = true;
       loadAsset("unknown.png");
     }
+
+    if (baseImageIcons.containsKey(fname)) return;
+
+    // Load base image.
+    ImageIcon baseIcon = new ImageIcon(assetPath + fname);
+    baseIcon.setDescription(fname);
+    if (baseIcon.getIconWidth() <= 0 || baseIcon.getIconHeight() <= 0) {
+      baseIcon = new ImageIcon(assetPath + "unknown.png");
+      baseIcon.setDescription("unknown.png");
+    }
+
+    // Load scaled image.
+    ImageIcon scaledIcon = new ImageIcon(
+        baseIcon.getImage().
+            getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH));
+    scaledIcon.setDescription(baseIcon.getDescription());
+
+    baseImageIcons.put(fname, baseIcon);
+    scaledImageIcons.put(fname, scaledIcon);
   }
 
   /**
@@ -89,12 +77,12 @@ public class AssetManager {
    * @param newCellSize Cell size.
    */
   public static void scaleImages(int newCellSize) {
-    if (cellSize == newCellSize) return;
     cellSize = newCellSize;
     for (String key : baseImageIcons.keySet()) {
-      Image baseImage = baseImageIcons.get(key).getImage();
-      ImageIcon scaledIcon = new ImageIcon(
-          baseImage.getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH));
+      ImageIcon baseImage = baseImageIcons.get(key);
+      ImageIcon scaledIcon = new ImageIcon(baseImage.getImage()
+          .getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH));
+      scaledIcon.setDescription(baseImage.getDescription());
       scaledImageIcons.put(key, scaledIcon);
     }
   }
@@ -106,32 +94,37 @@ public class AssetManager {
    * @return ImageIcon.
    */
   public static ImageIcon getScaledImage(String fname) {
-    fname = assetPath + fname;
+    loadAsset(fname); // Check asset exists.
 
-    ImageIcon scaledIcon = scaledImageIcons.get(fname);
-    if (scaledIcon == null) {
-      scaledIcon = scaledImageIcons.get(assetPath + "unknown.png");
-    }
-    return scaledIcon;
+    return scaledImageIcons.get(fname);
   }
 
   /**
    * Gets an ImageIcon at the last scaled size,
    * with a number overlay.
    *
+   * Number will be clipped from [1,9].
+   *
    * @param fname file path.
-   * @param number to overlay.
+   * @param number to overlay from [1,9].
    * @return ImageIcon.
    */
   public static ImageIcon getNumberedScaledImage(String fname, int number) {
-    // TODO: Make it add the number overlay.
-    fname = assetPath + fname;
+    // Number clipping.
+    String nname = ((number < 10 && number > 0) ? number : "NaN") + ".png";
 
-    ImageIcon scaledIcon = scaledImageIcons.get(fname);
-    if (scaledIcon == null) {
-      scaledIcon = scaledImageIcons.get(assetPath + "unknown.png");
-    }
-    return scaledIcon;
+    // Check assets exist.
+    loadAsset(fname);
+    loadAsset(nname);
+
+    // Get icons.
+    ImageIcon baseIcon = scaledImageIcons.get(fname);
+    ImageIcon numberIcon = scaledImageIcons.get(nname);
+
+    // Return overlaid image.
+    ImageIcon combinedIcon = new CombinedImageIcon(baseIcon, numberIcon);
+    combinedIcon.setDescription(fname + "_" + nname);
+    return combinedIcon;
   }
 
   /**
@@ -141,20 +134,17 @@ public class AssetManager {
    * @return ImageIcon.
    */
   public static ImageIcon getScaledImageInstance(String fname, int newCellSize) {
-    fname = assetPath + fname;
+    loadAsset(fname);
 
+    // Get base image
     ImageIcon baseIcon = baseImageIcons.get(fname);
-    if (baseIcon == null) {
-      baseIcon = baseImageIcons.get(assetPath + "unknown.png");
-    }
+    String desc = baseIcon.getDescription();
 
-    try {
-      baseIcon = new ImageIcon(baseIcon.getImage()
-          .getScaledInstance(newCellSize, newCellSize, Image.SCALE_SMOOTH));
-    } catch (IllegalArgumentException e) {
-      baseIcon = scaledImageIcons.get(fname);
-    }
+    // Scale new image
+    baseIcon = new ImageIcon(baseIcon.getImage()
+        .getScaledInstance(newCellSize, newCellSize, Image.SCALE_SMOOTH));
 
+    baseIcon.setDescription(desc);
     return baseIcon;
   }
 }

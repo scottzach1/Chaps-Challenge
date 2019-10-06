@@ -1,15 +1,11 @@
 package nz.ac.vuw.ecs.swen225.a3.application;
 
 import nz.ac.vuw.ecs.swen225.a3.maze.Board;
-import nz.ac.vuw.ecs.swen225.a3.maze.Exit;
 import nz.ac.vuw.ecs.swen225.a3.maze.Player;
-import nz.ac.vuw.ecs.swen225.a3.maze.Tiles;
+import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
 import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
 import nz.ac.vuw.ecs.swen225.a3.renderer.GUI;
 
-import javax.json.JsonObjectBuilder;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
@@ -23,10 +19,24 @@ public class ChapsChallenge {
 
   private Board board;
   private GUI gui;
+
+  public void setPlayer(Player player) {
+    this.player = player;
+  }
+
   private Player player;
 
   private long totalTime = 100; //100 seconds, todo change with levels
   private long startTime;
+
+
+  public void setBoard(Board board) {
+    this.board = board;
+  }
+
+  public void setTimeLeft(long timeLeft) {
+    this.timeLeft = timeLeft;
+  }
 
   private long timeLeft = totalTime;
 
@@ -50,6 +60,7 @@ public class ChapsChallenge {
     runningThread();
   }
 
+
   /**
    * Moves the player in the direction specified.
    * Checks if the tile is able to be moved onto by interacting with it.
@@ -57,11 +68,11 @@ public class ChapsChallenge {
    *
    * @param direction the direction to move in.
    */
-  public void move(Tiles.Direction direction) {
+  public void move(Tile.Direction direction) {
     if (gamePaused) return;
 
-    Tiles currentLocation = player.getLocation();
-    Tiles nextLocation = null;
+    Tile currentLocation = player.getLocation();
+    Tile nextLocation = null;
     switch (direction) {
       case Up:
         nextLocation = currentLocation.getUp();
@@ -88,13 +99,13 @@ public class ChapsChallenge {
   }
 
   private void checkFields(){
-    if (player.getLocation().getType() == Tiles.Type.Exit){
+    if (player.getLocation().getType() == Tile.Type.Exit){
       board.setNextLevel();
       player = new Player(board.getPlayerLocation());
       timeLeft=totalTime;
     }
 
-    if (player.getLocation().getType() == Tiles.Type.InfoField){
+    if (player.getLocation().getType() == Tile.Type.InfoField){
       //gui.displayInfoTile(player.getLocation());
     }
 
@@ -140,7 +151,7 @@ public class ChapsChallenge {
    * Loads the game.
    */
   public void loadGame() {
-    // TODO: Load Game
+    JsonReadWrite.loadGameState("saveGame.txt");
     gui.loadGame();
     System.out.println("Game loaded.");
   }
@@ -149,7 +160,7 @@ public class ChapsChallenge {
    * Saves the game.
    */
   public void saveGame() {
-    // TODO: Save Game
+    JsonReadWrite.saveGameState(this);
     gui.saveGame();
     System.out.println("Game saved.");
   }
@@ -253,7 +264,7 @@ public class ChapsChallenge {
    *
    * @return Stream of tiles to be drawn
    */
-  public Stream<Tiles> getTilesToRender() {
+  public Stream<Tile> getTilesToRender() {
     return board.getStream(player.getLocation());
   }
 
@@ -282,7 +293,6 @@ public class ChapsChallenge {
   public Player getPlayer(){
     return player;
   }
-
 
   /**
    * Get time remaining.

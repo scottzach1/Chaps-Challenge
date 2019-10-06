@@ -1,15 +1,14 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
-import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
-
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+import javax.json.JsonReader;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 
-public class ExitLock extends Tiles {
+public class ExitLock extends Tile {
   private int totalTreasures;// amount of treasures that still need to be collected
 
   /**
@@ -21,9 +20,6 @@ public class ExitLock extends Tiles {
     isAccessible = false;
     imageUrl = "exit_lock.png";
     defaultImageUrl = "free.png";
-
-    AssetManager.loadAsset(imageUrl);
-    AssetManager.loadAsset(defaultImageUrl);
   }
 
   /**
@@ -75,4 +71,15 @@ public class ExitLock extends Tiles {
       return writer.toString();
     }catch(IOException e) {throw new Error("Error parsing " + this.toString() + " to json");}
   }
+
+  @Override
+  public Tile setTileFromJson(JsonReader json) {
+    JsonObject tile = json.readObject();
+    isAccessible = tile.getBoolean("isAccessible");
+    setRow(tile.getInt("row"));
+    setCol(tile.getInt("col"));
+    imageUrl = tile.getString("imageUrl");
+    defaultImageUrl = tile.getString("defaultImageUrl");
+    totalTreasures = tile.getInt("totalTreasures");
+    return this;  }
 }

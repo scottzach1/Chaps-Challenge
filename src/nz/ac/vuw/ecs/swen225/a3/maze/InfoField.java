@@ -1,15 +1,14 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
-import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
-
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+import javax.json.JsonReader;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 
-public class InfoField extends Tiles {
+public class InfoField extends Tile {
 
   private String info;
 
@@ -18,15 +17,12 @@ public class InfoField extends Tiles {
    * Sets the isAccessible to true.
    * Sets the information contained in the tile.
    */
-   InfoField(String info) {
+   public InfoField(String info) {
      super(Type.InfoField);
     isAccessible = true;
     this.info = info;
     imageUrl = "info_field.png";
     defaultImageUrl = "info_field.png";
-
-     AssetManager.loadAsset(imageUrl);
-     AssetManager.loadAsset(defaultImageUrl);
   }
 
   /**
@@ -70,5 +66,17 @@ public class InfoField extends Tiles {
       Json.createWriter(writer).write(jsonObject);
       return writer.toString();
     }catch(IOException e) {throw new Error("Error parsing " + this.toString() + " to json");}
+  }
+
+  @Override
+  public Tile setTileFromJson(JsonReader json) {
+    JsonObject tile = json.readObject();
+    isAccessible = tile.getBoolean("isAccessible");
+    setRow(tile.getInt("row"));
+    setCol(tile.getInt("col"));
+    imageUrl = tile.getString("imageUrl");
+    defaultImageUrl = tile.getString("defaultImageUrl");
+    info = tile.getString("info");
+    return this;
   }
 }

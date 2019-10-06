@@ -213,12 +213,9 @@ public class Dashboard extends JPanel {
       JLabel item = chapsBagImages.get(i);
       item.setPreferredSize(new Dimension(getWidth() / 4, getHeight() / (6 * 2)));
 
-
       // See if the parsed item exists
       item.setIcon(AssetManager.getNumberedScaledImage(s + ".png", chapsBag.get(s)));
       i++;
-
-
     }
 
     // Fill the rest

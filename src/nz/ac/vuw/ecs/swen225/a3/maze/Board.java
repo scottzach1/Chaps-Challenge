@@ -1,6 +1,5 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
-import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
 import nz.ac.vuw.ecs.swen225.a3.renderer.Canvas;
 
 import java.util.ArrayList;
@@ -16,8 +15,17 @@ import java.util.stream.Stream;
 public class Board {
 
   private int boardSize = 20;
-  private List<Tiles> allTiles;
-  private Tiles[][] tiles = new Tiles[boardSize][boardSize];
+
+  public void setBoardSize(int boardSize) {
+    this.boardSize = boardSize;
+  }
+
+  public void setAllTiles(List<Tile> allTiles) {
+    this.allTiles = allTiles;
+  }
+
+  private List<Tile> allTiles;
+  private Tile[][] tiles = new Tile[boardSize][boardSize];
 
   public List <String> allLevels;
   private int currentLevel;
@@ -43,8 +51,6 @@ public class Board {
   }
 
   public void setLevel(String level){
-    allLevels.add(level);
-    this.currentLevel=allLevels.size()-1;
     try {
       parseBoard(allLevels.get(currentLevel));
     } catch (ParsingException p) {
@@ -72,22 +78,22 @@ public class Board {
     for (String v : values) {
       switch (v) {
         case "_":
-          addTile(index / 20, index % 20, new Free());
+          setTile(index / 20, index % 20, new Free());
           break;
         case "#":
-          addTile(index / 20, index % 20, new Wall());
+          setTile(index / 20, index % 20, new Wall());
           break;
         case "T":
-          addTile(index / 20, index % 20, new Treasure());
+          setTile(index / 20, index % 20, new Treasure());
           break;
         case "?":
-          addTile(index / 20, index % 20, new InfoField("Test"));
+          setTile(index / 20, index % 20, new InfoField("Test"));
           break;
         case "Exit":
-          addTile(index / 20, index % 20, new Exit());
+          setTile(index / 20, index % 20, new Exit());
           break;
         case "ExitLock":
-          addTile(index / 20, index % 20, new ExitLock());
+          setTile(index / 20, index % 20, new ExitLock());
           break;
         case "C":
           if (foundChap) throw new MultiplePlayersFoundException();
@@ -96,9 +102,8 @@ public class Board {
 
           // FIXME: This might not be the best place.
           tile.imageUrl = "chap_front.png";
-          AssetManager.loadAsset(tile.imageUrl);
 
-          addTile(index / 20, index % 20, tile);
+          setTile(index / 20, index % 20, tile);
           break;
         default:
           // Must be a colored key or door
@@ -111,9 +116,9 @@ public class Board {
 
           // Create colored key or door
           if (itemType.equals("K")) {
-            addTile(index / 20, index % 20, new Key(colour));
+            setTile(index / 20, index % 20, new Key(colour));
           } else {
-            addTile(index / 20, index % 20, new LockedDoor(colour));
+            setTile(index / 20, index % 20, new LockedDoor(colour));
           }
       }
       index++;
@@ -131,7 +136,7 @@ public class Board {
     treasureCount = (int) allTiles.stream().filter(p -> p.toString().equals("Treasure")).count();
 
     // Set all exit locks to require correct number of treasures
-    allTiles.stream().filter(p -> p.getType() == Tiles.Type.ExitLock).map(c -> (ExitLock)c).forEach(s -> s.setTotalTreasures(treasureCount));
+    allTiles.stream().filter(p -> p.getType() == Tile.Type.ExitLock).map(c -> (ExitLock)c).forEach(s -> s.setTotalTreasures(treasureCount));
   }
 
   /**
@@ -141,7 +146,7 @@ public class Board {
    * @param col Col index
    * @param t   Tile to add
    */
-  private void addTile(int row, int col, Tiles t) {
+  public void setTile(int row, int col, Tile t) {
     t.setRow(row);
     t.setCol(col);
     tiles[row][col] = t;
@@ -150,19 +155,19 @@ public class Board {
   /**
    * Add neighboring tiles to board tiles.
    */
-  private void setupAdjacency() {
+  public void setupAdjacency() {
     for (int row = 0; row < boardSize; row++) {
       for (int col = 0; col < boardSize; col++) {
-        Tiles t = tiles[row][col];
+        Tile t = tiles[row][col];
 
         //Separate ordinal in different line to stop line limit > 100 characters.
-        int leftOrdinal = Tiles.Direction.Left.ordinal();
+        int leftOrdinal = Tile.Direction.Left.ordinal();
         t.adjacent.add(leftOrdinal,col != 0 ? tiles[row][col - 1] : new Wall());
-        int rightOrdinal = Tiles.Direction.Right.ordinal();
+        int rightOrdinal = Tile.Direction.Right.ordinal();
         t.adjacent.add(rightOrdinal,col != boardSize-1 ? tiles[row][col + 1] : new Wall());
-        int upOrdinal = Tiles.Direction.Up.ordinal();
+        int upOrdinal = Tile.Direction.Up.ordinal();
         t.adjacent.add(upOrdinal,row != 0 ? tiles[row-1][col ] : new Wall());
-        int downOrdinal = Tiles.Direction.Down.ordinal();
+        int downOrdinal = Tile.Direction.Down.ordinal();
         t.adjacent.add(downOrdinal,row != boardSize-1 ? tiles[row+1][col] : new Wall());
       }
     }
@@ -173,15 +178,15 @@ public class Board {
    *
    * @return Stream of all cells, left to right, top to bottom.
    */
-  public Stream<Tiles> getStream(Tiles t) {
-    List<Tiles> tilesList = new ArrayList<>();
+  public Stream<Tile> getStream(Tile t) {
+    List<Tile> tileList = new ArrayList<>();
     for (int r = t.getRow() - Canvas.VIEW_SIZE / 2; r <= t.getRow() + Canvas.VIEW_SIZE / 2; ++r) {
       for (int c = t.getCol() - Canvas.VIEW_SIZE / 2; c <= t.getCol() + Canvas.VIEW_SIZE / 2; ++c) {
-        if (r < 0 || c < 0 || r >= boardSize || c >= boardSize) tilesList.add(new Wall());
-        else tilesList.add(tiles[r][c]);
+        if (r < 0 || c < 0 || r >= boardSize || c >= boardSize) tileList.add(new Wall());
+        else tileList.add(tiles[r][c]);
       }
     }
-    return tilesList.stream();
+    return tileList.stream();
   }
 
   /**
@@ -190,7 +195,7 @@ public class Board {
    *
    * @return Tile player found on
    */
-  public Tiles getPlayerLocation() {
+  public Tile getPlayerLocation() {
     for (int r = 0; r < boardSize; r++) {
       for (int c = 0; c < boardSize; c++) {
         if (tiles[r][c].getImageUrl().equals("chap_front.png")) {
@@ -205,27 +210,33 @@ public class Board {
     return treasureCount;
   }
 
+  public Tile getTile(int row, int col) {
+    if (row >= boardSize || col >= boardSize) return null;
+    if (row < 0 || col < 0) return null;
+    return tiles[row][col];
+  }
+
   /**
    * Get allTiles list.
    * @return list of allTiles in board or null if not filled
    */
-  public List<Tiles> getAllTiles(){
+  public List<Tile> getAllTiles(){
     return allTiles;
   }
 
   private void addLevels(){
     allLevels = new ArrayList<>();
     allLevels.add(
-              "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-            + "_|_|_|_|_|_|_|_|_|_|_|ExitLock|C|_|_|_|_|_|_|_|"
-            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|Exit|_|_|_|_|"
-            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+              "_|_|_|T|T|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "#|#|_|_|_|_|KYellow|KBlue|KRed|KGreen|_|_|C|_|_|_|_|_|_|_|"
+            + "T|DBlue|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "#|#|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "T|DRed|_|_|_|_|_|_|_|_|_|#|ExitLock|#|_|_|_|_|_|_|"
+            + "#|#|_|_|_|_|_|_|_|_|_|#|Exit|#|_|_|_|_|_|_|"
+            + "T|DGreen|_|_|_|_|_|_|_|_|_|#|#|#|_|_|_|_|_|_|"
+            + "#|#|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "T|DYellow|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "#|#|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
@@ -238,26 +249,92 @@ public class Board {
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|");
 
     allLevels.add(
-        "ExitLock|KBlue|DBlue|_|_|_|_|_|_|_|?|T|_|_|_|_|_|_|_|_|"
-            + "_|_|_|_|_|_|_|_|_|_|_|?|C|_|_|_|_|_|_|_|"
-            + "_|_|_|_|_|_|_|_|_|_|_|?|?|?|_|_|_|_|_|_|"
-            + "_|_|_|T|T|T|T|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+              "_|_|_|_|_|_|_|_|_|#|KRed|#|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|?|_|#|T|#|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|#|_|#|_|_|_|_|_|_|_|_|"
+            + "_|_|_|#|#|#|#|_|_|#|_|#|_|#|#|#|#|_|_|_|"
+            + "_|_|_|#|T|T|#|_|_|#|_|#|_|#|T|KYellow|#|_|_|_|"
+            + "_|_|_|#|T|T|#|_|_|#|_|#|_|#|T|T|#|_|_|_|"
+            + "_|_|_|#|#|DYellow|#|_|_|_|_|_|_|#|DGreen|#|#|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|#|#|DBlue|#|_|_|_|_|_|_|#|DRed|#|#|_|_|_|"
+            + "_|_|_|#|T|T|#|_|_|#|_|#|_|#|T|T|#|_|_|_|"
+            + "_|_|_|#|KGreen|T|#|_|_|#|_|#|_|#|T|KBlue|#|_|_|_|"
+            + "_|_|_|#|#|#|#|_|_|#|_|#|_|#|#|#|#|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|#|C|#|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|#|ExitLock|#|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|#|Exit|#|_|_|_|_|_|_|_|_|");
+            
+    allLevels.add(
+              "Exit|ExitLock|_|_|_|_|_|_|_|C|_|KRed|_|_|_|_|_|DBlue|T|KGreen|"
+            + "#|#|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|#|T|T|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|T|_|_|_|#|#|#|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "#|#|#|#|_|_|_|_|_|_|_|_|_|_|_|_|#|#|#|#|"
+            + "KYellow|T|T|DGreen|_|_|_|_|_|_|_|_|_|_|_|_|_|T|T|T|"
+            + "#|#|#|#|_|_|_|_|_|_|_|_|_|_|_|_|#|#|#|#|"
+            + "_|_|_|_|_|_|_|_|T|T|T|T|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|T|T|T|T|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|T|T|T|T|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|T|T|T|T|_|_|_|_|_|_|_|_|"
+            + "#|#|#|#|_|_|_|_|_|_|_|_|_|_|_|_|#|#|#|#|"
+            + "T|T|T|_|_|_|_|_|_|_|_|_|_|_|_|_|DYellow|T|T|T|"
+            + "#|#|#|#|_|_|_|_|_|_|_|_|_|_|_|_|#|#|#|#|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "#|#|#|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "T|T|#|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "KBlue|T|DRed|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|");
+            
+    allLevels.add(
+              "_|_|_|_|_|#|#|#|#|#|#|#|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|#|T|KYellow|#|#|#|#|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|DGreen|T|KBlue|#|Exit|ExitLock|DBlue|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|#|#|#|#|#|#|#|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|#|C|_|#|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|#|_|_|_|_|#|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|#|_|_|T|T|_|_|#|_|_|_|_|_|_|"
+            + "_|_|_|_|_|#|_|_|_|_|_|_|_|_|#|_|_|_|_|_|"
+            + "_|_|_|_|#|_|_|_|_|_|_|_|_|_|_|#|_|_|_|_|"
+            + "_|_|_|#|_|_|_|_|_|_|_|_|_|_|_|_|#|#|DYellow|#|"
+            + "_|_|_|#|_|_|_|_|_|_|_|_|_|_|_|_|#|_|_|_|"
+            + "_|_|_|_|#|_|_|_|_|_|_|_|_|_|_|#|_|_|_|_|"
+            + "_|_|_|_|_|#|_|_|_|_|_|_|_|_|#|_|_|_|_|_|"
+            + "_|_|_|_|_|_|#|_|_|_|_|KRed|_|#|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|#|_|_|_|_|#|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|#|_|_|#|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|#|_|_|_|_|_|_|_|_|_|_|"
+            + "#|#|#|_|_|_|_|_|_|_|_|_|_|_|_|_|_|T|T|T|"
+            + "T|T|#|_|_|_|_|_|_|_|_|_|_|_|_|_|_|T|T|T|"
+            + "KGreen|T|DRed|_|_|_|_|_|_|_|_|_|_|_|_|_|_|T|T|T|");
+    
+    allLevels.add(
+              "KBlue|DGreen|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|#|KGreen|"
+            + "#|#|_|_|_|_|T|_|_|_|_|_|_|T|_|_|_|_|#|DRed|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|#|#|#|#|#|#|#|#|#|#|#|#|#|#|_|_|_|"
+            + "_|_|_|#|_|_|_|_|_|_|_|_|_|DYellow|ExitLock|Exit|#|_|_|_|"
+            + "_|_|_|#|_|_|_|_|_|_|_|_|_|#|#|#|#|_|_|_|"
+            + "_|T|_|#|_|_|T|_|_|_|_|_|_|_|_|_|#|_|T|_|"
+            + "_|_|_|#|_|_|T|T|_|_|_|_|_|_|_|_|#|_|_|_|"
+            + "_|_|_|#|_|_|_|T|T|_|_|_|_|_|_|_|#|_|_|_|"
+            + "_|_|_|#|_|_|_|_|T|T|KYellow|_|_|_|_|_|#|_|_|_|"
+            + "_|_|_|#|_|_|_|_|T|T|_|_|_|_|_|_|#|_|_|_|"
+            + "_|_|_|#|_|_|_|T|T|_|_|_|_|_|_|_|#|_|_|_|"
+            + "_|_|_|#|_|_|T|T|_|_|_|_|_|_|_|_|#|_|_|_|"
+            + "_|T|_|#|_|_|T|_|_|_|_|_|_|_|_|_|#|_|T|_|"
+            + "_|_|_|#|_|_|_|_|_|_|_|_|_|_|_|_|#|_|_|_|"
+            + "_|_|_|#|_|_|_|_|_|_|_|_|_|_|_|_|#|_|_|_|"
+            + "_|_|_|#|DBlue|#|#|#|#|#|#|#|#|#|#|#|#|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|");
+            + "_|_|_|_|_|_|T|_|_|_|_|_|_|T|_|_|_|_|_|_|"
+            + "C|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|KRed|");
 
     currentLevel=0;
   }
