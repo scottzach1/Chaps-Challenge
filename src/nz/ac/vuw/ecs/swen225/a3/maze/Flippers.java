@@ -10,13 +10,13 @@ import java.io.Writer;
 
 public class Flippers extends Tile {
   private boolean collected;
+  private int steps = 9;
 
   Flippers() {
     super(Type.Flippers);
     isAccessible = true;
     imageUrl = "flippers.png";
     defaultImageUrl = "free.png";
-
   }
 
   /**
@@ -28,7 +28,8 @@ public class Flippers extends Tile {
   @Override
   public boolean interact(Player p) {
     if (!collected) {
-      p.addItem(this.toString());
+      for (int i = 0; i < steps; i++)
+        p.addItem(this.toString());
       imageUrl = defaultImageUrl;
       collected = true;
     }
@@ -75,6 +76,7 @@ public class Flippers extends Tile {
     defaultImageUrl = tile.getString("defaultImageUrl");
     return this;
   }
+
 
   /**
    * Standard toString method.
