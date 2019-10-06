@@ -27,7 +27,7 @@ public class Board {
   private List<Tile> allTiles;
   private Tile[][] tiles = new Tile[boardSize][boardSize];
 
-  public List <String> allLevels;
+  private List<String> allLevels;
   private int currentLevel;
   private int treasureCount=0;
   /**

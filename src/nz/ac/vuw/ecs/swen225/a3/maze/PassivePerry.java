@@ -11,7 +11,7 @@ public class PassivePerry extends Mob {
   /**
    * Creates new Bandit mob.
    */
-  public PassivePerry() {
+  PassivePerry() {
     setImageUrl("chap_front.png");
     setMobName("Passive Perry");
 

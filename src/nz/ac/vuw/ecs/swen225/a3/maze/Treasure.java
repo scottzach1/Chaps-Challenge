@@ -10,7 +10,8 @@ import java.io.Writer;
 
 public class Treasure extends Tile {
 
-  public boolean collected = false;
+  private boolean collected = false;
+
   /**
    * Constructor.
    * Sets the isAccessible field to true.

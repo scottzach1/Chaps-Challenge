@@ -14,7 +14,7 @@ public class Player {
     this.treasures = treasures;
   }
 
-  private List<String> inventory = new ArrayList<String>();
+  private List<String> inventory = new ArrayList<>();
   private int treasures = 0;
 
   /**
@@ -62,7 +62,7 @@ public class Player {
     return treasures;
   }
 
-  public void addTreasure() {
+  void addTreasure() {
     treasures++;
   }
 

@@ -98,6 +98,7 @@ public class ChapsChallenge {
       return; //invalid move
     }
     if (nextLocation.isOccupied()) { // stepped on a mob
+      System.out.println("MOBOBOMOBOBOB");
       restartLevel();
     }
     currentLocation.setTileUnoccupied();
@@ -224,7 +225,7 @@ public class ChapsChallenge {
       System.exit(0);
   }
 
-  public void timeOut() {
+  private void timeOut() {
     //gui.timeOut();
     gameOver();
   }
@@ -233,7 +234,7 @@ public class ChapsChallenge {
    * Running thread opens a new thread (double threaded) and
    * runs a timer, updating the dashboard every second
    */
-  public void runningThread() {
+  private void runningThread() {
     Runnable runnable = new Runnable() {
       @Override
       public void run() {
@@ -338,13 +339,13 @@ public class ChapsChallenge {
     return player;
   }
 
-  public void gameOver(){
-    //gui.gameOver();
+  private void gameOver() {
+    //gui.gameOver(); //todo Front end implement
     exitGame();
   }
 
-  public void gameEnd (){
-    //gui.endGame();
+  private void gameEnd() {
+    //gui.endGame(); //todo front end implement
   }
 
   /**

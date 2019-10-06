@@ -15,7 +15,7 @@ public abstract class Mob {
   /**
    * @param newMobName new name of mob.
    */
-  public void setMobName(String newMobName) {
+  void setMobName(String newMobName) {
     mobName = newMobName;
   }
 

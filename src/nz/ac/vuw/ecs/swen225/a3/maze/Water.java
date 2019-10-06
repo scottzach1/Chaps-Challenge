@@ -9,7 +9,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 
 public class Water extends Tile {
-  public Water() {
+  Water() {
     super(Type.Water);
     isAccessible = false;
 
@@ -59,7 +59,7 @@ public class Water extends Tile {
   /**
    * Set tile properties from json.
    *
-   * @param json
+   * @param json the json to read the object from
    */
   @Override
   public Tile setTileFromJson(JsonReader json) {

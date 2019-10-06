@@ -42,7 +42,7 @@ public class MobManager {
    *
    * @param mob to add.
    */
-  public void addMob(Mob mob) {
+  private void addMob(Mob mob) {
     if (mob == null) return;
 
     mobs.add(mob);

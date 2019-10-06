@@ -10,7 +10,7 @@ import java.io.Writer;
 
 public class Flippers extends Tile {
 
-  public Flippers() {
+  Flippers() {
     super(Type.Flippers);
     isAccessible = true;
     imageUrl = "flippers.png";
@@ -59,7 +59,7 @@ public class Flippers extends Tile {
   /**
    * Set tile properties from json.
    *
-   * @param json
+   * @param json the json to read the object from
    */
   @Override
   public Tile setTileFromJson(JsonReader json) {

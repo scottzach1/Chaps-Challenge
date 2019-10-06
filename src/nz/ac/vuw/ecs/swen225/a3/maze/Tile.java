@@ -57,7 +57,7 @@ public abstract class Tile {
    * A cell is occupied if it has a mob on it.
    * @param occupied tile is occupied by mob.
    */
-  public void setOccupied(boolean occupied) {
+  void setOccupied(boolean occupied) {
     this.isOccupied = occupied;
   }
 
@@ -114,14 +114,6 @@ public abstract class Tile {
     return isAccessible;
   }
 
-  /**
-   * Sets the boolean isAccessible based on the parameter.
-   *
-   * @param accessible boolean to set isAccessible to.
-   */
-  void setAccessible(boolean accessible) {
-    isAccessible = accessible;
-  }
 
   /**
    * Gets the tile to the left.
@@ -166,7 +158,7 @@ public abstract class Tile {
    * @param direction of tile.
    * @return tile in direction.
    */
-  public Tile getDir(Direction direction) {
+  Tile getDir(Direction direction) {
     switch (direction) {
       case Right: return getRight();
       case Down: return getDown();

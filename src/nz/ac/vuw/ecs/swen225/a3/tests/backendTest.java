@@ -567,7 +567,7 @@ class backendTest {
    */
   @Test
   void checkTimeout(){
-    ChapsChallenge chapsChallenge = new ChapsChallenge();
+    //ChapsChallenge chapsChallenge = new ChapsChallenge();
    // chapsChallenge.timeOut();
     //todo assert something here
   }
