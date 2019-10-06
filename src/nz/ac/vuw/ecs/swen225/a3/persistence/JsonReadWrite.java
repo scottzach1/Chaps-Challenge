@@ -100,6 +100,13 @@ public class JsonReadWrite {
     return jsonGame;
   }
 
+  /**
+   * Load game state from file.
+   * @param saveGame Name of file
+   * @param g Game object
+   * @return Updated game Object
+   * @throws GameNotFoundException Thrown when file not found
+   */
   public static ChapsChallenge loadGameState(String saveGame, ChapsChallenge g) throws GameNotFoundException{
     JsonObject game = null;
     try {
@@ -168,6 +175,11 @@ public class JsonReadWrite {
     return g;
   }
 
+  /**
+   * Create tile object from JSON description.
+   * @param tile JSON representation
+   * @return Tile object
+   */
   public static Tile createTileFromJson(String tile){
     JsonReader reader = Json.createReader(new StringReader(tile));
     JsonObject tileObject = reader.readObject();

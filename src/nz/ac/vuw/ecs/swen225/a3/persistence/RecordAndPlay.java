@@ -17,6 +17,10 @@ public class RecordAndPlay {
   private static String gameState;
   private static boolean isRecording;
 
+  /**
+   * Set playback delay.
+   * @param d time in millis
+   */
   public static void setDelay(long d) {
     delay = d;
   }
@@ -24,6 +28,10 @@ public class RecordAndPlay {
   private static long delay = 200;
 
 
+  /**
+   * Get state of playback.
+   * @return Running boolean
+   */
   public static boolean getIsRunning() {
     return isRunning;
   }
@@ -86,6 +94,12 @@ public class RecordAndPlay {
     }
   }
 
+  /**
+   * Load game state and move list from recording file.
+   * @param fileName File name
+   * @param game game object to be updated
+   * @return true if successful, false otherwise
+   */
   public static boolean loadRecording(String fileName,ChapsChallenge game){
     JsonObject object;
     try {
@@ -132,6 +146,10 @@ public class RecordAndPlay {
     return true;
   }
 
+  /**
+   * Step replay forward one step
+   * @param game Game object
+   */
   public static void step(ChapsChallenge game){
     if(moves.size() > 0 && isRunning) {
       game.move(moves.get(0));
@@ -141,6 +159,10 @@ public class RecordAndPlay {
     }
   }
 
+  /**
+   * Run through move list until replay is complete.
+   * @param game Game object
+   */
   public static void run(ChapsChallenge game){
     Runnable runnable = () -> {
       while(moves.size() > 0 && isRunning) {
