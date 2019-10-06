@@ -210,8 +210,8 @@ public class ChapsChallenge {
       public void run() {
         while (true) {
           if (!gamePaused) {
-//            mobManager.advanceByOneTick();
-//            gui.updateBoard();
+            mobManager.advanceByOneTick();
+            gui.updateBoard();
             gui.updateDashboard();
             try {
               if (timeLeft > 0)
