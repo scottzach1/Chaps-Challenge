@@ -10,7 +10,7 @@ import java.io.Writer;
 
 public class LockedDoor extends Tile {
   private String colour;
-
+  private boolean active = true;
 
   /**
    * Constructor.
@@ -35,10 +35,12 @@ public class LockedDoor extends Tile {
    */
   @Override
   public boolean interact(Player p) {
+    if (!active) return true;
     if (p.getItem("key_" + colour)) {
       isAccessible = true;
       imageUrl = defaultImageUrl;
-      p.removeItem("key_" + colour); // removes the key from the inventory 
+      p.removeItem("key_" + colour); // removes the key from the inventory
+      active = false;
     }
     return isAccessible;
   }
