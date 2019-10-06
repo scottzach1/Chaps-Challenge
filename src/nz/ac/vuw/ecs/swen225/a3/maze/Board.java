@@ -198,7 +198,7 @@ public class Board {
   public Tile getPlayerLocation() {
     for (int r = 0; r < boardSize; r++) {
       for (int c = 0; c < boardSize; c++) {
-        if (tiles[r][c].getImageUrl().equals("chap_front.png")) {
+        if (tiles[r][c].getImageUrl().startsWith("chap")) {
           return tiles[r][c];
         }
       }

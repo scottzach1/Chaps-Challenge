@@ -183,7 +183,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
   }
 
   public void updateBoard(){
-    canvas.renderBoard();
+    canvas.renderCanvas();
     redraw();
   }
 

@@ -117,7 +117,7 @@ class assetTest {
       String num = (i > 0 && i < 10) ? "" + i : "NaN";
       ImageIcon imageIcon = AssetManager.getNumberedScaledImage("free.png", i);
 
-      assertEquals("free.png_" + num + ".png", imageIcon.getDescription());
+      assertEquals("free.png-" + num + ".png", imageIcon.getDescription());
 
       assertTrue(imageIcon.getIconWidth() >= 0);
       assertTrue(imageIcon.getIconHeight() >= 0);

@@ -4,7 +4,10 @@ import nz.ac.vuw.ecs.swen225.a3.renderer.CombinedImageIcon;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -94,9 +97,32 @@ public class AssetManager {
    * @return ImageIcon.
    */
   public static ImageIcon getScaledImage(String fname) {
+    if (fname.contains("-")) return getOverlaidImages(fname);
+
     loadAsset(fname); // Check asset exists.
 
     return scaledImageIcons.get(fname);
+  }
+
+  private static ImageIcon getOverlaidImages(String mergedFnames) {
+    List<String> fnames = new ArrayList<>(Arrays.asList(mergedFnames.split("-")));
+    List<ImageIcon> layers = new ArrayList<>();
+    StringBuilder description = new StringBuilder();
+
+    // Get icons.
+    for (int i = 0; i != fnames.size(); ++i) {
+      layers.add(getScaledImage(fnames.get(i)));
+      description.append(fnames.get(i));
+      // Also append joiner if not last image.
+      if (i != fnames.size() - 1)
+        description.append("-");
+    }
+
+    // Get combined icon.
+    ImageIcon combinedIcon = new CombinedImageIcon(layers);
+    combinedIcon.setDescription(description.toString());
+
+    return combinedIcon;
   }
 
   /**
@@ -113,18 +139,7 @@ public class AssetManager {
     // Number clipping.
     String nname = ((number < 10 && number > 0) ? number : "NaN") + ".png";
 
-    // Check assets exist.
-    loadAsset(fname);
-    loadAsset(nname);
-
-    // Get icons.
-    ImageIcon baseIcon = scaledImageIcons.get(fname);
-    ImageIcon numberIcon = scaledImageIcons.get(nname);
-
-    // Return overlaid image.
-    ImageIcon combinedIcon = new CombinedImageIcon(baseIcon, numberIcon);
-    combinedIcon.setDescription(fname + "_" + nname);
-    return combinedIcon;
+    return getOverlaidImages(fname + "-" + nname);
   }
 
   /**
@@ -146,5 +161,9 @@ public class AssetManager {
 
     baseIcon.setDescription(desc);
     return baseIcon;
+  }
+
+  public static String combineFnames(String base, String overlay) {
+    return base + "-" + overlay;
   }
 }
