@@ -72,6 +72,7 @@ public class Dashboard extends JPanel {
    * be redone
    */
   public void createDashboardComponents() {
+//    System.out.println("DASHBOARD CREATE");
     // Create the level text. Center aligned
     level = new CustomTextPane("LEVEL", centerAlign, null, TEXT_COLOUR, false);
     // Create the level number text. Right aligned
@@ -94,6 +95,10 @@ public class Dashboard extends JPanel {
    * This consists of two JPanels and their related parts.
    */
   protected void renderDashboardComponents() {
+//    System.out.println("DASHBOARD RENDER");
+    if (getWidth() <= 0)
+      return;
+
     removeAll();
     // reset the GridBagConstraints
     GridBagConstraints constraints = new GridBagConstraints();
@@ -185,6 +190,7 @@ public class Dashboard extends JPanel {
    * Updates the components text within the dashboard
    */
   public void refreshDashboardComponents() {
+//    System.out.println("DASHBOARD REFRESH");
     // If the components don't exist then ignore the command
     // Usually a resizing error will refresh the components before they're instantiated
     if (levelNum == null || timeNum == null || chipsLeftNum == null)
