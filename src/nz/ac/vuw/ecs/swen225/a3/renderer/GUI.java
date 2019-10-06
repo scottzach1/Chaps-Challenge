@@ -327,7 +327,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     }
     // Move Down
     if ((activeKeys.contains(KeyEvent.VK_DOWN) || activeKeys.contains(KeyEvent.VK_S)) && activeKeys.size() == 1  && !lastMove.equals("DOWN")) {
-      application.move(Tiles.Direction.Down);
+      application.move(Tile.Direction.Down);
       lastMove = "DOWN";
       updateBoard();
     }
@@ -339,7 +339,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     }
     // Move Right
     if ((activeKeys.contains(KeyEvent.VK_RIGHT) || activeKeys.contains(KeyEvent.VK_D)) && activeKeys.size() == 1  && !lastMove.equals("RIGHT")) {
-      application.move(Tiles.Direction.Right);
+      application.move(Tile.Direction.Right);
       lastMove = "RIGHT";
       updateBoard();
     }
