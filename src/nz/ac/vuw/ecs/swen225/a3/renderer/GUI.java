@@ -298,11 +298,11 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     }
     // CTRL + P
     if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_P) && activeKeys.size() == 2) {
-      application.setLevel(application.getLevel()+"");
+      application.restartLevel();
     }
     // CTRL + 1
     if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_1) && activeKeys.size() == 2) {
-      application.setLevel("1");
+      application.restartGame();
     }
     // SPACE
     if (activeKeys.contains(KeyEvent.VK_SPACE) && activeKeys.size() == 1) {
