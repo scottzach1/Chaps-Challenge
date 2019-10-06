@@ -52,7 +52,11 @@ public class Board {
 
   public void setLevel(String level){
     try {
-      parseBoard(allLevels.get(currentLevel));
+      if (!allLevels.contains(level)){
+        allLevels.add(0,level);
+        currentLevel=0;
+      }
+      parseBoard(level);
     } catch (ParsingException p) {
       System.out.println(p.getMessage());
       throw new Error(p.getMessage());

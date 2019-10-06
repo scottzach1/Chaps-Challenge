@@ -151,10 +151,10 @@ public class ChapsChallenge {
   /**
    * Loads the game.
    */
-  public void loadGame() {
-    JsonReadWrite.loadGameState("saveGame.txt");
+  public ChapsChallenge loadGame() {
+    ChapsChallenge cc = JsonReadWrite.loadGameState("saveGame.txt");
     gui.loadGame();
-    System.out.println("Game loaded.");
+    return cc;
   }
 
   /**
@@ -163,7 +163,6 @@ public class ChapsChallenge {
   public void saveGame() {
     JsonReadWrite.saveGameState(this);
     gui.saveGame();
-    System.out.println("Game saved.");
   }
 
   /**
@@ -315,7 +314,6 @@ public class ChapsChallenge {
 
   public void gameEnd (){
     //gui.endGame();
-    exitGame();
   }
 
   /**
