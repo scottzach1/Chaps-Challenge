@@ -109,6 +109,12 @@ public class Board {
 
           setTile(index / 20, index % 20, tile);
           break;
+        case "W":
+          setTile(index / 20, index % 20, new Water());
+          break;
+        case "F":
+          setTile(index / 20, index % 20, new Flippers());
+          break;
         default:
           // Must be a colored key or door
           String itemType = v.substring(0, 1);
@@ -231,7 +237,7 @@ public class Board {
   private void addLevels(){
     allLevels = new ArrayList<>();
     allLevels.add(
-              "_|_|_|T|T|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+        "_|_|_|T|T|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "#|#|_|_|_|_|KYellow|KBlue|KRed|KGreen|_|_|C|_|_|_|_|_|_|_|"
             + "T|DBlue|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "#|#|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"

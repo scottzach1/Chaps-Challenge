@@ -2,6 +2,7 @@ package nz.ac.vuw.ecs.swen225.a3.renderer;
 
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
+import nz.ac.vuw.ecs.swen225.a3.persistence.RecordAndPlay;
 
 import javax.swing.*;
 import java.awt.*;
@@ -140,6 +141,8 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
    */
   public void loadGame() {
     // TODO: This needs to be implemented.
+    updateBoard();
+    redraw();
   }
 
   /**

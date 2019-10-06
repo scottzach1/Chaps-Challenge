@@ -9,7 +9,7 @@ import java.util.List;
 public abstract class Tile {
 
   public enum Type{
-    Free, Treasure, Exit, ExitLock, InfoField, Key, LockedDoor, Wall, Mob
+    Free, Treasure, Exit, ExitLock, InfoField, Key, LockedDoor, Wall, Mob, Water, Flippers
   }
 
   public enum Direction {
