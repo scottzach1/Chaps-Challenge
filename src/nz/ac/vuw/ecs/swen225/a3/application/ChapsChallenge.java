@@ -91,7 +91,7 @@ public class ChapsChallenge {
       return; //invalid move
     }
     currentLocation.setTileUnoccupied();
-    nextLocation.setTileOccupied();
+    nextLocation.setTileOccupied("chap_front.png");
     player.setLocation(nextLocation);
 
     checkFields();

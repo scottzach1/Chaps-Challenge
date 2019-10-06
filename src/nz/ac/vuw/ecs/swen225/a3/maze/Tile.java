@@ -7,7 +7,38 @@ import java.util.List;
 public abstract class Tile {
 
   public enum Type{
-    Free, Treasure, Exit, ExitLock, InfoField, Key, LockedDoor, Wall
+    Free, Treasure, Exit, ExitLock, InfoField, Key, LockedDoor, Wall, Mob
+  }
+
+  public enum Direction {
+    Left, Right, Up, Down;
+
+    Direction reverse() {
+      switch (this) {
+        case Left: return Right;
+        case Right: return Left;
+        case Up: return Down;
+        default: return Up;
+      }
+    }
+
+    Direction clockWise() {
+      switch (this) {
+        case Left: return Up;
+        case Up: return Right;
+        case Right: return Down;
+        default: return Left;
+      }
+    }
+
+    Direction antiClockWise() {
+      switch (this) {
+        case Left: return Down;
+        case Down: return Right;
+        case Right: return Up;
+        default: return Left;
+      }
+    }
   }
 
   boolean isAccessible;
@@ -16,12 +47,13 @@ public abstract class Tile {
   private Type type;
   String imageUrl;
   String defaultImageUrl;
+  List<Tile> adjacent = new ArrayList<>();
 
   public Tile(Type t){
     type = t;
   }
 
-  public Tile(){};
+  public Tile(){}
 
   public int getRow() {
     return row;
@@ -68,12 +100,6 @@ public abstract class Tile {
     isAccessible = accessible;
   }
 
-  public enum Direction {
-    Left, Right, Up, Down
-  }
-
-  List<Tile> adjacent = new ArrayList<>();
-
   /**
    * Gets the tile to the left.
    *
@@ -112,6 +138,21 @@ public abstract class Tile {
   }
 
   /**
+   * Gets the tile in the specified direction.
+   *
+   * @param direction of tile.
+   * @return tile in direction.
+   */
+  public Tile getDir(Direction direction) {
+    switch (direction) {
+      case Right: return getRight();
+      case Down: return getDown();
+      case Up: return getUp();
+      default: return getLeft();
+    }
+  }
+
+  /**
    * Checks if the interaction between a character and a tile is valid.
    *
    * @param p The player
@@ -119,8 +160,8 @@ public abstract class Tile {
    */
   public abstract boolean interact(Player p);
 
-  public void setTileOccupied() {
-    imageUrl = "chap_front.png";
+  public void setTileOccupied(String fname) {
+    imageUrl = fname;
   }
 
   /**
