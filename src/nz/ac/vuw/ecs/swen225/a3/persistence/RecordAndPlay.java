@@ -15,6 +15,13 @@ public class RecordAndPlay {
   private static String saveName;
   private static List<Tile.Direction> moves = new ArrayList();
   private static String gameState;
+  private static boolean isRecording;
+
+
+  public static boolean getIsRunning() {
+    return isRunning;
+  }
+
   private static boolean isRunning;
 
   /**
@@ -23,7 +30,7 @@ public class RecordAndPlay {
    */
   public static void newSave(ChapsChallenge g, String s){
     saveName = s;
-    isRunning = true;
+    isRecording = true;
     moves.clear();
     gameState = JsonReadWrite.getGameState(g);
   }
@@ -33,7 +40,7 @@ public class RecordAndPlay {
    */
   public static void addAction(Tile.Direction direction){
     // Check a recording is active
-    if(isRunning){
+    if(isRecording){
       moves.add(direction);
     }
   }
@@ -42,7 +49,7 @@ public class RecordAndPlay {
    * Save action history to file
    */
   public static void saveGame(){
-    if(isRunning){
+    if(isRecording){
       JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
 
       // Array of tiles
@@ -69,15 +76,15 @@ public class RecordAndPlay {
         throw new Error("Failed to save moves");
       }
 
-      isRunning = false;
+      isRecording = false;
     }
   }
 
-  public static boolean loadRecording(String fileName){
+  public static boolean loadRecording(String fileName,ChapsChallenge game){
     JsonObject object;
     try {
       // Load game state
-      JsonReadWrite.loadGameState(fileName);
+      JsonReadWrite.loadGameState(fileName,game);
 
       // Load moves into array
 
@@ -114,16 +121,26 @@ public class RecordAndPlay {
           break;
       }
     }
-
+    if(moves.size() > 0) isRunning = true;
+    game.update();
     return true;
+  }
+
+  public static void step(ChapsChallenge game){
+    if(moves.size() > 0 && isRunning) {
+      game.move(moves.get(0));
+      moves.remove(0);
+      if(moves.size() == 0) isRunning = false;
+      game.update();
+    }
   }
 
   /**
    * Get if recording is active
-   * @return isRunning
+   * @return isRecording
    */
-  public static boolean getIsRunning(){
-    return isRunning;
+  public static boolean getIsRecording(){
+    return isRecording;
   }
 
 }

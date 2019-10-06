@@ -97,7 +97,7 @@ public class ChapsChallenge {
 
     checkFields();
 
-    if(RecordAndPlay.getIsRunning()){
+    if(RecordAndPlay.getIsRecording()){
       RecordAndPlay.addAction(direction);
     }
 
@@ -157,7 +157,7 @@ public class ChapsChallenge {
   public void loadGame() {
     try {
       //TODO: allow choice of save file
-      JsonReadWrite.loadGameState("saveGame.txt");
+      JsonReadWrite.loadGameState("saveGame.txt",this);
     }
     catch(Exception e){
       //TODO: deal with game not found error
@@ -311,6 +311,14 @@ public class ChapsChallenge {
    */
   public long getTimeLeft() {
     return timeLeft;
+  }
+
+
+  /**
+   * Update gui.
+   */
+  public void update(){
+    gui.updateBoard();
   }
 
   /**

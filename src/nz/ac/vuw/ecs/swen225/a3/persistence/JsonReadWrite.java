@@ -93,11 +93,6 @@ public class JsonReadWrite {
     try(Writer writer = new StringWriter()) {
       Json.createWriter(writer).write(builder.build());
       jsonGame = writer.toString();
-      builder = Json.createObjectBuilder()
-          .add("game",jsonGame);
-      Writer writer2 = new StringWriter();
-      Json.createWriter(writer2).write(builder.build());
-      jsonGame = writer2.toString();
     }
     catch(IOException e){
       throw new Error("Failed to parse game");
@@ -105,7 +100,7 @@ public class JsonReadWrite {
     return jsonGame;
   }
 
-  public static ChapsChallenge loadGameState(String saveGame) throws GameNotFoundException{
+  public static ChapsChallenge loadGameState(String saveGame, ChapsChallenge g) throws GameNotFoundException{
     JsonObject game = null;
     try {
       BufferedReader reader = new BufferedReader(new FileReader(saveGame));
@@ -115,8 +110,10 @@ public class JsonReadWrite {
       throw new GameNotFoundException();
     }
 
-    JsonReader gameJsonReader = Json.createReader(new StringReader(game.getString("game")));
-    game = gameJsonReader.readObject();
+    if(game.containsKey("game")) {
+      JsonReader gameJsonReader = Json.createReader(new StringReader(game.getString("game")));
+      game = gameJsonReader.readObject();
+    }
     int timeLeft = game.getInt("timeLeft");
 
     // Parse board
@@ -164,12 +161,11 @@ public class JsonReadWrite {
     b.setupAdjacency();
 
 
-    ChapsChallenge chapsChallenge = new ChapsChallenge();
-    chapsChallenge.setBoard(b);
-    chapsChallenge.setTimeLeft(timeLeft);
-    chapsChallenge.setPlayer(p);
+    g.setBoard(b);
+    g.setTimeLeft(timeLeft);
+    g.setPlayer(p);
 
-    return chapsChallenge;
+    return g;
   }
 
   public static Tile createTileFromJson(String tile){
@@ -196,14 +192,6 @@ public class JsonReadWrite {
     }
   }
 
-  public static void main(String[] args) {
-    try {
-      ChapsChallenge game = loadGameState("saveGame.txt");
-    }
-    catch(GameNotFoundException e){
-      throw new Error(e.getMessage());
-    }
-  }
 
 }
 
