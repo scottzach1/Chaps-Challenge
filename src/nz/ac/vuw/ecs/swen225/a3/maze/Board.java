@@ -350,6 +350,10 @@ public class Board {
 
   }
 
+  public int getCurrentLevel(){
+    return currentLevel;
+  }
+
   /**
    * Return boardSize.
    * @return integer board size.
