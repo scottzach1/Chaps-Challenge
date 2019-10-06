@@ -12,16 +12,16 @@ public class PassivePerry extends Mob {
    * Creates new Bandit mob.
    */
   public PassivePerry() {
-    setImageUrl("chap_front.png");
+    setImageUrl("perry_front.png");
     setMobName("Passive Perry");
 
     direction = Tile.Direction.Down;
 
     images = new HashMap<>();
-    images.put(Tile.Direction.Down, "chap_front.png");
-    images.put(Tile.Direction.Left, "chap_left.png");
-    images.put(Tile.Direction.Up, "chap_back.png");
-    images.put(Tile.Direction.Right, "chap_right.png");
+    images.put(Tile.Direction.Down, "perry_front.png");
+    images.put(Tile.Direction.Left, "perry_left.png");
+    images.put(Tile.Direction.Up, "perry_back.png");
+    images.put(Tile.Direction.Right, "perry_right.png");
   }
 
   @Override
