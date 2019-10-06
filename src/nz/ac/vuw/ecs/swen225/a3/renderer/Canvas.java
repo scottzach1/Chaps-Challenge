@@ -50,7 +50,7 @@ public class Canvas extends JPanel implements ComponentListener {
 
     // Retrieve tiles and add all components.
     components.addAll(application.getTilesToRender()
-        .map(t -> AssetManager.getScaledImage(t.getImageUrl()))
+        .map(t -> AssetManager.getScaledImage(t.getCombinedUrl()))
         .map(JLabel::new)
         .collect(Collectors.toList()));
 

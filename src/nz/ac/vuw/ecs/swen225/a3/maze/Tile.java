@@ -1,5 +1,7 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
+import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
+
 import javax.json.JsonReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +43,7 @@ public abstract class Tile {
     }
   }
 
-  boolean isOccupied;
+  private boolean isOccupied;
   boolean isAccessible;
   private int row;
   private int col;
@@ -96,6 +98,10 @@ public abstract class Tile {
 
   public String getDefaultImageUrl() {
     return defaultImageUrl;
+  }
+
+  public String getCombinedUrl() {
+    return AssetManager.combineFnames(defaultImageUrl, imageUrl);
   }
 
 

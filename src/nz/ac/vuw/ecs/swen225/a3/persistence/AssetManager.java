@@ -162,4 +162,8 @@ public class AssetManager {
     baseIcon.setDescription(desc);
     return baseIcon;
   }
+
+  public static String combineFnames(String base, String overlay) {
+    return base + "-" + overlay;
+  }
 }
