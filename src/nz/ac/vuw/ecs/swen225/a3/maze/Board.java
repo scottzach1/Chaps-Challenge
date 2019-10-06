@@ -339,14 +339,24 @@ public class Board {
     currentLevel=0;
   }
 
-  public void setNextLevel(){
+  public boolean setNextLevel(){
     if (currentLevel<allLevels.size()-1){
       currentLevel++;
       setLevel(allLevels.get(currentLevel));
-      return;
+      return true;
     }
-    //todo end of game screen
+    return false;
+  }
 
+  public void setCurrentLevel(int level){
+    if (level<allLevels.size()){
+      currentLevel= level;
+      setLevel(allLevels.get(currentLevel));
+    }
+  }
+
+  public int getCurrentLevel() {
+    return currentLevel;
   }
 
   /**

@@ -100,13 +100,14 @@ public class ChapsChallenge {
 
   private void checkFields(){
     if (player.getLocation().getType() == Tile.Type.Exit){
-      board.setNextLevel();
+      if (!board.setNextLevel())
+        gameEnd();
       player = new Player(board.getPlayerLocation());
       timeLeft=totalTime;
     }
 
     if (player.getLocation().getType() == Tile.Type.InfoField){
-      //gui.displayInfoTile(player.getLocation());
+      //gui.displayInfoTile(player.getLocation()); // todo implement
     }
 
   }
@@ -169,18 +170,30 @@ public class ChapsChallenge {
    * Restarts the game.
    */
   public void restartGame() {
-    // TODO: Restart Game
+    board.setCurrentLevel(0);
     gui.restartGame();
-    System.out.println("Game restarted.");
   }
 
   /**
    * Sets the game to the previous level.
    */
   public void previousLevel() {
-    // TODO: Previous Level
+    int current = board.getCurrentLevel();
+    if (current>0){
+      board.setCurrentLevel(current-1);
+    }
+    else{
+      board.setCurrentLevel(0);
+    }
+
     gui.previousLevel();
-    System.out.println("Game set to previous level.");
+  }
+
+  public void restartLevel(){
+    int current = board.getCurrentLevel();
+      board.setCurrentLevel(current);
+
+    player = new Player(board.getPlayerLocation());
   }
 
   /**
@@ -292,6 +305,15 @@ public class ChapsChallenge {
    */
   public Player getPlayer(){
     return player;
+  }
+
+  public void gameOver(){
+    //gui.gameOver();
+    exitGame();
+  }
+
+  public void gameEnd (){
+    //todo implement 
   }
 
   /**
