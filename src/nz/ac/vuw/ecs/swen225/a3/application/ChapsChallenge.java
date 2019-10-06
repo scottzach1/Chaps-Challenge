@@ -97,6 +97,9 @@ public class ChapsChallenge {
     if (nextLocation == null || !nextLocation.interact(player)) {
       return; //invalid move
     }
+    if (nextLocation.isOccupied()) { // stepped on a mob
+      restartLevel();
+    }
     currentLocation.setTileUnoccupied();
     nextLocation.setTileOccupied("chap_front.png");
     player.setLocation(nextLocation);
