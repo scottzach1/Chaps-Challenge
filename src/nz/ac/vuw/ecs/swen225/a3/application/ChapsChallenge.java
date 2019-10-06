@@ -155,7 +155,14 @@ public class ChapsChallenge {
    * Loads the game.
    */
   public void loadGame() {
-    JsonReadWrite.loadGameState("saveGame.txt");
+    try {
+      //TODO: allow choice of save file
+      JsonReadWrite.loadGameState("saveGame.txt");
+    }
+    catch(Exception e){
+      //TODO: deal with game not found error
+      System.out.println(e.getMessage());
+    }
     gui.loadGame();
     System.out.println("Game loaded.");
   }

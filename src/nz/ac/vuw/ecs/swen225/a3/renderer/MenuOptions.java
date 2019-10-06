@@ -53,19 +53,23 @@ class MenuOptions extends JMenuBar {
     game.add(pauseItem);
 
     //Create Recording dropdown
-    // Create the game menu
     JMenu recording = new JMenu("Recording");
 
-    // Create the previous level button
+    // Create the startRecording level button
     JMenuItem startRecording = new JMenuItem("Start Recording");
     startRecording.addActionListener(arg0 -> RecordAndPlay.newSave(application,"record.txt"));
     recording.add(startRecording);
 
-    // Create the Pause button
+    // Create the saveRecording button
     JMenuItem saveRecording = new JMenuItem("Save Recording");
     saveRecording.addActionListener(arg0 -> RecordAndPlay.saveGame());
     recording.add(saveRecording);
 
+    //Create the loadRecording button
+    JMenuItem loadRecording = new JMenuItem("Load Recording");
+    //TODO: allow choice of load file
+    loadRecording.addActionListener(arg0 -> RecordAndPlay.loadRecording("record.txt"));
+    recording.add(loadRecording);
     // Add components
     add(file);
     add(game);

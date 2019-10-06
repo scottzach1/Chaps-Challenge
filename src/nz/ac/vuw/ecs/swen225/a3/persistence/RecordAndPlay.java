@@ -3,9 +3,7 @@ package nz.ac.vuw.ecs.swen225.a3.persistence;
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
 
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObjectBuilder;
+import javax.json.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,6 +71,51 @@ public class RecordAndPlay {
 
       isRunning = false;
     }
+  }
+
+  public static boolean loadRecording(String fileName){
+    JsonObject object;
+    try {
+      // Load game state
+      JsonReadWrite.loadGameState(fileName);
+
+      // Load moves into array
+
+      moves.clear();
+
+      try {
+        BufferedReader reader = new BufferedReader(new FileReader(fileName));
+        JsonReader jReader = Json.createReader(new StringReader(reader.readLine()));
+        object = jReader.readObject();
+      } catch (IOException e) {
+        throw new GameNotFoundException();
+      }
+    }
+    catch(GameNotFoundException e){
+      throw new Error(e.getMessage());
+    }
+
+    JsonArray movesJson = object.getJsonArray("moves");
+
+    // Parse moves into array
+    for (JsonString j : movesJson.getValuesAs(JsonString.class)) {
+      switch (j.toString()){
+        case "\"Left\"":
+          moves.add(Tile.Direction.Left);
+          break;
+        case "\"Right\"":
+          moves.add(Tile.Direction.Right);
+          break;
+        case "\"Up\"":
+          moves.add(Tile.Direction.Up);
+          break;
+        case "\"Down\"":
+          moves.add(Tile.Direction.Down);
+          break;
+      }
+    }
+
+    return true;
   }
 
   /**
