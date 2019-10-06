@@ -49,7 +49,7 @@ class backendTest {
         + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
         + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|";
 
-    chapsChallenge.setLevel(level);
+    chapsChallenge.setCustomLevel(level);
     assertEquals(chapsChallenge.getBoard().toString(), level);
   }
 
@@ -84,7 +84,7 @@ class backendTest {
 
      boolean failed=false;
      try {
-       chapsChallenge.setLevel(level);
+       chapsChallenge.setCustomLevel(level);
      }catch (Error e) {
        failed=true;
      }
@@ -122,7 +122,7 @@ class backendTest {
 
     boolean failed=false;
     try {
-      chapsChallenge.setLevel(level);
+      chapsChallenge.setCustomLevel(level);
     }catch (Error e) {
       failed=true;
     }
@@ -160,7 +160,7 @@ class backendTest {
 
     boolean failed=false;
     try {
-      chapsChallenge.setLevel(level);
+      chapsChallenge.setCustomLevel(level);
     }catch (Error e) {
       failed=true;
     }
@@ -194,7 +194,7 @@ class backendTest {
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|";
 
-      chapsChallenge.setLevel(level);
+      chapsChallenge.setCustomLevel(level);
 
       Tile start = chapsChallenge.getPlayer().getLocation();
       chapsChallenge.move(Tile.Direction.Up);
@@ -245,10 +245,10 @@ class backendTest {
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|";
 
-    chapsChallenge.setLevel(level);
+    chapsChallenge.setCustomLevel(level);
     chapsChallenge.move(Tile.Direction.Up);
-
-    assertTrue(    chapsChallenge.getPlayer().getInventory().contains("Blue Key"));
+    System.out.println(chapsChallenge.getPlayer().getInventory());
+    assertTrue(   chapsChallenge.getPlayer().getInventory().contains("key_blue"));
   }
 
   /**
@@ -279,7 +279,7 @@ class backendTest {
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|";
 
-    chapsChallenge.setLevel(level);
+    chapsChallenge.setCustomLevel(level);
     chapsChallenge.move(Tile.Direction.Up);
 
     Tile start = chapsChallenge.getPlayer().getLocation();
@@ -316,7 +316,7 @@ class backendTest {
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|";
 
-    chapsChallenge.setLevel(level);
+    chapsChallenge.setCustomLevel(level);
 
     Tile start = chapsChallenge.getPlayer().getLocation();
     chapsChallenge.move(Tile.Direction.Up);
@@ -353,7 +353,7 @@ class backendTest {
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|";
 
-    chapsChallenge.setLevel(level);
+    chapsChallenge.setCustomLevel(level);
     chapsChallenge.move(Tile.Direction.Up);
 
     Tile start = chapsChallenge.getPlayer().getLocation();
@@ -363,7 +363,7 @@ class backendTest {
   }
 
   /**
-   * Checks that chap can exit with if there are no treasures.
+   * Checks that chap can exit if there are no treasures.
    */
   @Test
   void chapExit(){
@@ -390,17 +390,19 @@ class backendTest {
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|";
 
-    chapsChallenge.setLevel(level);
+    chapsChallenge.setCustomLevel(level);
 
     Tile start = chapsChallenge.getPlayer().getLocation();
     chapsChallenge.move(Tile.Direction.Up);
     Tile end = chapsChallenge.getPlayer().getLocation();
     assertEquals(start.getUp(), end);
 
-    start = chapsChallenge.getPlayer().getLocation();
+    int current = chapsChallenge.getBoard().getCurrentLevel();
+
     chapsChallenge.move(Tile.Direction.Up);
-    end = chapsChallenge.getPlayer().getLocation();
-    assertEquals(start.getUp(), end);
+
+    assertEquals(current+1, chapsChallenge.getBoard().getCurrentLevel());
+
   }
 
   /**
@@ -431,7 +433,7 @@ class backendTest {
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|";
 
-    chapsChallenge.setLevel(level);
+    chapsChallenge.setCustomLevel(level);
 
     chapsChallenge.move(Tile.Direction.Up);
     chapsChallenge.move(Tile.Direction.Up);
@@ -444,10 +446,11 @@ class backendTest {
     Tile end = chapsChallenge.getPlayer().getLocation();
     assertEquals(start.getUp(), end);
 
-    start = chapsChallenge.getPlayer().getLocation();
+    int current = chapsChallenge.getBoard().getCurrentLevel();
     chapsChallenge.move(Tile.Direction.Up);
-    end = chapsChallenge.getPlayer().getLocation();
-    assertEquals(start.getUp(), end);
+
+    assertEquals(current+1, chapsChallenge.getBoard().getCurrentLevel());
+
   }
 
   /**
@@ -457,27 +460,30 @@ class backendTest {
   void restartGame(){
     ChapsChallenge chapsChallenge = new ChapsChallenge();
     chapsChallenge.restartGame();
-    //todo assert something here
+    assertEquals(chapsChallenge.getBoard().getCurrentLevel(),0);
   }
 
   /**
    * Saves the game.
+   * Moves.
+   * Loads game.
+   * Position should be the position before moving.
    */
   @Test
-  void saveGame(){
+  void saveAndLoadGame(){
     ChapsChallenge chapsChallenge = new ChapsChallenge();
     chapsChallenge.saveGame();
-    //todo assert something here
-  }
+    String b=chapsChallenge.getBoard().toString();
+    Tile tile = chapsChallenge.getPlayer().getLocation();
 
-  /**
-   * Loads the game
-   */
-  @Test
-  void loadGame(){
-    ChapsChallenge chapsChallenge = new ChapsChallenge();
-    chapsChallenge.loadGame();
-    //todo assert something here
+    chapsChallenge.move(Tile.Direction.Left);
+    chapsChallenge.move(Tile.Direction.Left);
+
+    chapsChallenge = chapsChallenge.loadGame();
+
+    assertEquals(b, chapsChallenge.getBoard().toString());
+    assertEquals(tile.getCol(), chapsChallenge.getPlayer().getLocation().getCol());
+    assertEquals(tile.getRow(), chapsChallenge.getPlayer().getLocation().getRow());
   }
 
 
@@ -487,19 +493,33 @@ class backendTest {
   @Test
   void checkTimeout(){
     ChapsChallenge chapsChallenge = new ChapsChallenge();
-    chapsChallenge.timeOut();
+   // chapsChallenge.timeOut();
     //todo assert something here
   }
 
   /**
-   * Goes to the previous level
+   * Goes to the previous level, invalid
    */
   @Test
   void prevLevel(){
     ChapsChallenge chapsChallenge = new ChapsChallenge();
+    int current = chapsChallenge.getBoard().getCurrentLevel();
     chapsChallenge.previousLevel();
-    //todo assert something here
+    assertEquals(current, 0);
   }
+
+  /**
+   * Goes to the previous level, valid
+   */
+  @Test
+  void prevLevel2(){
+    ChapsChallenge chapsChallenge = new ChapsChallenge();
+    chapsChallenge.getBoard().setCurrentLevel(2);
+    int current = chapsChallenge.getBoard().getCurrentLevel();
+    chapsChallenge.previousLevel();
+    assertEquals(current-1, chapsChallenge.getBoard().getCurrentLevel());
+  }
+
 
   /**
    * Pauses the game.
@@ -519,7 +539,10 @@ class backendTest {
   @Test
   void nextLevel(){
     ChapsChallenge chapsChallenge = new ChapsChallenge();
+    int current = chapsChallenge.getBoard().getCurrentLevel();
     chapsChallenge.getBoard().setNextLevel();
-    //todo not finished, currently buggy
+    int updated = chapsChallenge.getBoard().getCurrentLevel();
+
+    assertEquals(current+1, updated);
   }
 }

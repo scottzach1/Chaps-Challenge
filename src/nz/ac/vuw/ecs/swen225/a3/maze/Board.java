@@ -52,7 +52,11 @@ public class Board {
 
   public void setLevel(String level){
     try {
-      parseBoard(allLevels.get(currentLevel));
+      if (!allLevels.contains(level)){
+        allLevels.add(0,level);
+        currentLevel=0;
+      }
+      parseBoard(level);
     } catch (ParsingException p) {
       System.out.println(p.getMessage());
       throw new Error(p.getMessage());
@@ -339,14 +343,24 @@ public class Board {
     currentLevel=0;
   }
 
-  public void setNextLevel(){
+  public boolean setNextLevel(){
     if (currentLevel<allLevels.size()-1){
       currentLevel++;
       setLevel(allLevels.get(currentLevel));
-      return;
+      return true;
     }
-    //todo end of game screen
+    return false;
+  }
 
+  public void setCurrentLevel(int level){
+    if (level<allLevels.size()){
+      currentLevel= level;
+      setLevel(allLevels.get(currentLevel));
+    }
+  }
+
+  public int getCurrentLevel() {
+    return currentLevel;
   }
 
   /**
