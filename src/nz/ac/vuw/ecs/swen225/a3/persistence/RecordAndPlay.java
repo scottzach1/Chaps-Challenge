@@ -9,7 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class to allow recording and replaying gameplay
+ * Class to allow recording and replaying game play
+ * @Author Zac Durant
  */
 public class RecordAndPlay {
   private static String saveName;
@@ -98,9 +99,8 @@ public class RecordAndPlay {
    * Load game state and move list from recording file.
    * @param fileName File name
    * @param game game object to be updated
-   * @return true if successful, false otherwise
    */
-  public static boolean loadRecording(String fileName,ChapsChallenge game){
+  public static void loadRecording(String fileName,ChapsChallenge game){
     JsonObject object;
     try {
       // Load game state
@@ -143,7 +143,6 @@ public class RecordAndPlay {
     }
     if(moves.size() > 0) isRunning = true;
     game.update();
-    return true;
   }
 
   /**

@@ -10,7 +10,7 @@ import java.util.List;
 
 
 /**.
- * @author Group.
+ * @author Zac Durant.
  *
  */
 public class JsonReadWrite {
