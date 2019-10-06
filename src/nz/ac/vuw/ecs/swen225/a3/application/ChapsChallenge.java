@@ -5,6 +5,7 @@ import nz.ac.vuw.ecs.swen225.a3.maze.MobManager;
 import nz.ac.vuw.ecs.swen225.a3.maze.Player;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
 import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
+import nz.ac.vuw.ecs.swen225.a3.persistence.RecordAndPlay;
 import nz.ac.vuw.ecs.swen225.a3.renderer.GUI;
 
 import java.util.List;
@@ -102,6 +103,10 @@ public class ChapsChallenge {
 
     checkFields();
 
+    if(RecordAndPlay.getIsRecording()){
+      RecordAndPlay.addAction(direction);
+    }
+
   }
 
   private void checkFields(){
@@ -157,17 +162,24 @@ public class ChapsChallenge {
   /**
    * Loads the game.
    */
-  public ChapsChallenge loadGame() {
-    ChapsChallenge cc = JsonReadWrite.loadGameState("saveGame.txt");
+  public void loadGame() {
+    try {
+      //TODO: allow choice of save file
+      JsonReadWrite.loadGameState("saveGame.txt",this);
+    }
+    catch(Exception e){
+      //TODO: deal with game not found error
+      System.out.println(e.getMessage());
+    }
     gui.loadGame();
-    return cc;
+    System.out.println("Game loaded.");
   }
 
   /**
    * Saves the game.
    */
   public void saveGame() {
-    JsonReadWrite.saveGameState(this);
+    JsonReadWrite.saveGameState(this,"saveGame.txt");
     gui.saveGame();
   }
 
@@ -338,6 +350,14 @@ public class ChapsChallenge {
    */
   public long getTimeLeft() {
     return timeLeft;
+  }
+
+
+  /**
+   * Update gui.
+   */
+  public void update(){
+    gui.updateBoard();
   }
 
   /**

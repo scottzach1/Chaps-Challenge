@@ -10,7 +10,7 @@ import java.util.List;
 
 
 /**.
- * @author Group.
+ * @author Zac Durant.
  *
  */
 public class JsonReadWrite {
@@ -19,7 +19,22 @@ public class JsonReadWrite {
    * Json dump game state (TimeLeft, Board state and player state) to file "save.txt".
    * @param game Instance of Chaps Challenge
    */
-  public static void saveGameState(ChapsChallenge game){
+  public static void saveGameState(ChapsChallenge game,String name){
+    String jsonGame = getGameState(game);
+    try {
+      BufferedWriter writer = new BufferedWriter(new FileWriter(name));
+      writer.write(jsonGame);
+      writer.close();
+    }
+    catch(IOException e){}
+  }
+
+  /**
+   * Get game state to write to file
+   * @param game Game object
+   * @return Json string
+   */
+  public static String getGameState(ChapsChallenge game){
     String jsonGame = "";
     String jsonBoard = "";
     String jsonPlayer = "";
@@ -55,9 +70,9 @@ public class JsonReadWrite {
       arrayBuilder.add(i);
     }
     builder = Json.createObjectBuilder()
-      .add("location",player.getLocation().getJson())
-      .add("inventory",arrayBuilder)
-      .add("treasures",player.getTreasures());
+        .add("location",player.getLocation().getJson())
+        .add("inventory",arrayBuilder)
+        .add("treasures",player.getTreasures());
 
     // Compose player section
     try(Writer writer = new StringWriter()) {
@@ -82,23 +97,30 @@ public class JsonReadWrite {
     catch(IOException e){
       throw new Error("Failed to parse game");
     }
-
-    try {
-      BufferedWriter writer = new BufferedWriter(new FileWriter("saveGame.txt"));
-      writer.write(jsonGame);
-      writer.close();
-    }
-    catch(IOException e){}
+    return jsonGame;
   }
 
-  public static ChapsChallenge loadGameState(String saveGame){
+  /**
+   * Load game state from file.
+   * @param saveGame Name of file
+   * @param g Game object
+   * @return Updated game Object
+   * @throws GameNotFoundException Thrown when file not found
+   */
+  public static ChapsChallenge loadGameState(String saveGame, ChapsChallenge g) throws GameNotFoundException{
     JsonObject game = null;
     try {
       BufferedReader reader = new BufferedReader(new FileReader(saveGame));
       JsonReader jReader = Json.createReader(new StringReader(reader.readLine()));
       game = jReader.readObject();
-    }catch(IOException e){}
+    }catch(IOException e){
+      throw new GameNotFoundException();
+    }
 
+    if(game.containsKey("game")) {
+      JsonReader gameJsonReader = Json.createReader(new StringReader(game.getString("game")));
+      game = gameJsonReader.readObject();
+    }
     int timeLeft = game.getInt("timeLeft");
 
     // Parse board
@@ -146,14 +168,18 @@ public class JsonReadWrite {
     b.setupAdjacency();
 
 
-    ChapsChallenge chapsChallenge = new ChapsChallenge();
-    chapsChallenge.setBoard(b);
-    chapsChallenge.setTimeLeft(timeLeft);
-    chapsChallenge.setPlayer(p);
+    g.setBoard(b);
+    g.setTimeLeft(timeLeft);
+    g.setPlayer(p);
 
-    return chapsChallenge;
+    return g;
   }
 
+  /**
+   * Create tile object from JSON description.
+   * @param tile JSON representation
+   * @return Tile object
+   */
   public static Tile createTileFromJson(String tile){
     JsonReader reader = Json.createReader(new StringReader(tile));
     JsonObject tileObject = reader.readObject();
@@ -178,8 +204,15 @@ public class JsonReadWrite {
     }
   }
 
-  public static void main(String[] args) {
-    ChapsChallenge game = loadGameState("saveGame.txt");
-  }
 
+}
+
+/**
+ * Exception thrown when game is not found for given filename
+ */
+class GameNotFoundException extends Exception{
+  @Override
+  public String getMessage(){
+    return "Game not found for given file name";
+  }
 }

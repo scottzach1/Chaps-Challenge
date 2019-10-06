@@ -2,6 +2,7 @@ package nz.ac.vuw.ecs.swen225.a3.renderer;
 
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
+import nz.ac.vuw.ecs.swen225.a3.persistence.RecordAndPlay;
 
 import javax.swing.*;
 import java.awt.*;
@@ -141,6 +142,8 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
    */
   public void loadGame() {
     // TODO: This needs to be implemented.
+    updateBoard();
+    redraw();
   }
 
   /**
@@ -320,25 +323,25 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     PLAYER CONTROLS
      */
     // Move Up
-    if ((activeKeys.contains(KeyEvent.VK_UP) || activeKeys.contains(KeyEvent.VK_W)) && activeKeys.size() == 1 && !lastMove.equals("UP")) {
+    if ((activeKeys.contains(KeyEvent.VK_UP) || activeKeys.contains(KeyEvent.VK_W)) && activeKeys.size() == 1 && !lastMove.equals("UP") && !RecordAndPlay.getIsRunning()) {
       application.move(Tile.Direction.Up);
       lastMove = "UP";
       updateBoard();
     }
     // Move Down
-    if ((activeKeys.contains(KeyEvent.VK_DOWN) || activeKeys.contains(KeyEvent.VK_S)) && activeKeys.size() == 1  && !lastMove.equals("DOWN")) {
+    if ((activeKeys.contains(KeyEvent.VK_DOWN) || activeKeys.contains(KeyEvent.VK_S)) && activeKeys.size() == 1  && !lastMove.equals("DOWN")&& !RecordAndPlay.getIsRunning()) {
       application.move(Tile.Direction.Down);
       lastMove = "DOWN";
       updateBoard();
     }
     // Move Left
-    if ((activeKeys.contains(KeyEvent.VK_LEFT) || activeKeys.contains(KeyEvent.VK_A)) && activeKeys.size() == 1 && !lastMove.equals("LEFT")) {
+    if ((activeKeys.contains(KeyEvent.VK_LEFT) || activeKeys.contains(KeyEvent.VK_A)) && activeKeys.size() == 1 && !lastMove.equals("LEFT")&& !RecordAndPlay.getIsRunning()) {
       application.move(Tile.Direction.Left);
       lastMove = "LEFT";
       updateBoard();
     }
     // Move Right
-    if ((activeKeys.contains(KeyEvent.VK_RIGHT) || activeKeys.contains(KeyEvent.VK_D)) && activeKeys.size() == 1  && !lastMove.equals("RIGHT")) {
+    if ((activeKeys.contains(KeyEvent.VK_RIGHT) || activeKeys.contains(KeyEvent.VK_D)) && activeKeys.size() == 1  && !lastMove.equals("RIGHT")&& !RecordAndPlay.getIsRunning()) {
       application.move(Tile.Direction.Right);
       lastMove = "RIGHT";
       updateBoard();

@@ -479,7 +479,7 @@ class backendTest {
     chapsChallenge.move(Tile.Direction.Left);
     chapsChallenge.move(Tile.Direction.Left);
 
-    chapsChallenge = chapsChallenge.loadGame();
+    chapsChallenge.loadGame();
 
     assertEquals(b, chapsChallenge.getBoard().toString());
     assertEquals(tile.getCol(), chapsChallenge.getPlayer().getLocation().getCol());

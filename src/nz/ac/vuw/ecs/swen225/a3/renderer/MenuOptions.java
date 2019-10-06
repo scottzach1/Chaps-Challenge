@@ -1,6 +1,7 @@
 package nz.ac.vuw.ecs.swen225.a3.renderer;
 
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
+import nz.ac.vuw.ecs.swen225.a3.persistence.RecordAndPlay;
 
 import javax.swing.*;
 import java.awt.*;
@@ -51,8 +52,59 @@ class MenuOptions extends JMenuBar {
     pauseItem.addActionListener(arg0 -> application.pauseGame());
     game.add(pauseItem);
 
+    //Create Recording dropdown
+    JMenu recording = new JMenu("Recording Options");
+
+    // Create the startRecording level button
+    JMenuItem startRecording = new JMenuItem("Start Recording");
+    startRecording.addActionListener(arg0 -> RecordAndPlay.newSave(application,"record.txt"));
+    recording.add(startRecording);
+
+    // Create the saveRecording button
+    JMenuItem saveRecording = new JMenuItem("Save Recording");
+    saveRecording.addActionListener(arg0 -> RecordAndPlay.saveGame());
+    recording.add(saveRecording);
+
+    //Create the loadRecording button
+    JMenuItem loadRecording = new JMenuItem("Load Recording");
+    //TODO: allow choice of load file
+    loadRecording.addActionListener(arg0 -> RecordAndPlay.loadRecording("record.txt",application));
+    recording.add(loadRecording);
+
+    // Create step button
+    JMenuItem step = new JMenuItem("Step Recording");
+    step.addActionListener(arg0 -> RecordAndPlay.step(application));
+
+    // Create replay speed dropdown
+    JMenu playbackSpeed = new JMenu("Playback speed");
+
+    JMenuItem tenth = new JMenuItem("0.1s");
+    tenth.addActionListener(arg0 -> RecordAndPlay.setDelay(100));
+
+    JMenuItem fifth = new JMenuItem("0.2s");
+    fifth.addActionListener(arg0 -> RecordAndPlay.setDelay(200));
+
+    JMenuItem half = new JMenuItem("0.5s");
+    half.addActionListener(arg0 -> RecordAndPlay.setDelay(500));
+
+    JMenuItem one = new JMenuItem("1s");
+    one.addActionListener(arg0 -> RecordAndPlay.setDelay(1000));
+
+    playbackSpeed.add(tenth);
+    playbackSpeed.add(fifth);
+    playbackSpeed.add(half);
+    playbackSpeed.add(one);
+
+    // Create playback button
+    JMenuItem playback = new JMenuItem("Playback Recording");
+    playback.addActionListener(arg0 -> RecordAndPlay.run(application));
+
     // Add components
     add(file);
     add(game);
+    add(recording);
+    add(step);
+    add(playbackSpeed);
+    add(playback);
   }
 }
