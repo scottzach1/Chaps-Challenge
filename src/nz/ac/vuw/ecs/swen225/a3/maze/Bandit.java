@@ -20,7 +20,7 @@ public class Bandit extends Mob {
     images = new HashMap<>();
     images.put(Tile.Direction.Down, "chap_front.png");
     images.put(Tile.Direction.Left, "chap_left.png");
-    images.put(Tile.Direction.Up, "chap_up.png");
+    images.put(Tile.Direction.Up, "chap_back.png");
     images.put(Tile.Direction.Right, "chap_right.png");
   }
 
@@ -59,6 +59,7 @@ public class Bandit extends Mob {
 
     if (target.getType() != Tile.Type.Free) advanceByTick();
     else {
+      direction = targDirection;
       setImageUrl(images.get(direction));
       occupyHost(target);
     }
