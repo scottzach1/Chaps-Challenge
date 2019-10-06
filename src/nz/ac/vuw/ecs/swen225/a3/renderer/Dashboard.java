@@ -66,6 +66,30 @@ public class Dashboard extends JPanel {
   }
 
   /**
+   * Creates all the components for the dashboard.
+   * - This is separated such that the components are not needing to be
+   * resized and recreated every update, only their values need to
+   * be redone
+   */
+  public void createDashboardComponents() {
+    // Create the level text. Center aligned
+    level = new CustomTextPane("LEVEL", centerAlign, null, TEXT_COLOUR, false);
+    // Create the level number text. Right aligned
+    levelNum = new CustomTextPane("1", rightAlign, TEXT_COLOUR, ACCENT_COLOUR, true);
+    // Create the time text. Center aligned
+    time = new CustomTextPane("TIME", centerAlign, null, TEXT_COLOUR, false);
+    // Create the tie number text. Right aligned
+    timeNum = new CustomTextPane(chapsChallenge.timeLeft() + "", rightAlign, TEXT_COLOUR, ACCENT_COLOUR, true);
+    // Create the chipsLeft text. Center aligned
+    chipsLeft = new CustomTextPane("CHIPS LEFT", centerAlign, null, TEXT_COLOUR, false);
+    // Create the chipsLeft number text. Right aligned
+    chipsLeftNum = new CustomTextPane(chapsChallenge.getTreasures() + "", rightAlign, TEXT_COLOUR, ACCENT_COLOUR, true);
+
+    // Refresh chapsbag
+    fillChapsBag();
+  }
+
+  /**
    * Adds the components of the dashboard.
    * This consists of two JPanels and their related parts.
    */
@@ -157,52 +181,48 @@ public class Dashboard extends JPanel {
     add(bottomPanel, constraints);
   }
 
-  public void createDashboardComponents() {
-    // Create the level text. Center aligned
-    level = new CustomTextPane("LEVEL", centerAlign, null, TEXT_COLOUR, false);
-    // Create the level number text. Right aligned
-    levelNum = new CustomTextPane("1", rightAlign, TEXT_COLOUR, ACCENT_COLOUR, true);
-    // Create the time text. Center aligned
-    time = new CustomTextPane("TIME", centerAlign, null, TEXT_COLOUR, false);
-    // Create the tie number text. Right aligned
-    timeNum = new CustomTextPane(chapsChallenge.timeLeft() + "", rightAlign, TEXT_COLOUR, ACCENT_COLOUR, true);
-    // Create the chipsLeft text. Center aligned
-    chipsLeft = new CustomTextPane("CHIPS LEFT", centerAlign, null, TEXT_COLOUR, false);
-    // Create the chipsLeft number text. Right aligned
-    chipsLeftNum = new CustomTextPane(chapsChallenge.getTreasures() + "", rightAlign, TEXT_COLOUR, ACCENT_COLOUR, true);
-
-    // Refresh chapsbag
-    fillChapsBag();
-  }
-
-
+  /**
+   * Updates the components text within the dashboard
+   */
   public void refreshDashboardComponents() {
-    // TODO: chaps challenge needs to have a function to get the level num
-    levelNum.setText("1");
+    // If the components don't exist then ignore the command
+    // Usually a resizing error will refresh the components before they're instantiated
+    if (levelNum == null || timeNum == null || chipsLeftNum == null)
+      return;
+
+    levelNum.setText(chapsChallenge.getLevel() + "");
     timeNum.setText(chapsChallenge.timeLeft() + "");
-    chipsLeftNum.setText(chapsChallenge.getTreasures() + "");
+    chipsLeftNum.setText((chapsChallenge.getTotalTreasures() - chapsChallenge.getTreasures()) + "");
 
     // Refresh Chaps bag
     fillChapsBag();
   }
 
+  /**
+   * Attempts to fill chaps bag with the contents from ChapsChallenge.
+   * - All duplicated are mapped to an integer of occurrences
+   * - All occurrences are then sent to the asset manager to create an icon with a numerical
+   * value below it.
+   * - If chaps bag contains less than 8 items then all other slots are filled with blanks
+   */
   private void fillChapsBag() {
     // Cycle through 8 blocks to create a new Label for each bag item
     chapsBag = new HashMap<>();
     ArrayList<String> items = new ArrayList<>(chapsChallenge.getPlayerInventory());
 
 
-    // If chaps bag is empty, set it up with blank JLabels
-    if (chapsBagImages.size() == 0) {
+    // If chaps bag is null or empty, set it up with blank JLabels
+    if (chapsBagImages == null || chapsBagImages.size() == 0) {
       fillChapsBagWithBlanks();
       return;
     }
 
     // Find all duplicates
     for (int i = 0; i < items.size(); i++) {
-      // Add a new item to the bag
+      // Add a new item to the bag if it doesn't already exist
       if (!chapsBag.containsKey(items.get(i)))
         chapsBag.put(items.get(i), 1);
+        // If it exists in the bag, then increment the number associated with it by 1
       else
         chapsBag.put(items.get(i), chapsBag.get(items.get(i)) + 1);
     }
@@ -211,21 +231,23 @@ public class Dashboard extends JPanel {
     int i = 0;
     for (String s : chapsBag.keySet()) {
       JLabel item = chapsBagImages.get(i);
-      item.setPreferredSize(new Dimension(getWidth() / 4, getHeight() / (6 * 2)));
 
-      // See if the parsed item exists
+      // Set the items icon to the items image overlaid with the number of items
       item.setIcon(AssetManager.getNumberedScaledImage(s + ".png", chapsBag.get(s)));
       i++;
     }
 
-    // Fill the rest
+    // Fill the rest of the bag with blanks (using j as i is predefined)
     for (int j = items.size(); j < 8; j++) {
-      JLabel item = chapsBagImages.get(i);
+      JLabel item = chapsBagImages.get(j);
       item.setIcon(AssetManager.getScaledImage("free.png"));
     }
   }
 
 
+  /**
+   * Fills chaps dashboard bag with blanks when no items exist in them.
+   */
   private void fillChapsBagWithBlanks() {
     chapsBagImages = new ArrayList<>();
     if (getWidth() > 0)
@@ -236,55 +258,9 @@ public class Dashboard extends JPanel {
       }
   }
 
-  /**
-   * @return
-   */
-  private Dimension getTextBoxDimension() {
-    // Box sizes using the aforementioned padding
-    int boxWidth = (getWidth() / GRID_WIDTH);
-    int boxHeight = (getHeight() / GRID_HEIGHT);
-    return new Dimension(boxWidth, boxHeight);
-  }
 
   /**
-   * @param metrics
-   * @param font
-   * @param text
-   * @return
-   */
-  private Dimension getFontSize(FontMetrics metrics, Font font, String text) {
-    // get the height of a line of text in this font and render context
-    int hgt = metrics.getHeight();
-    // get the advance of my text in this font and render context
-    int adv = metrics.stringWidth(text);
-    // calculate the size of a box to hold the text with some padding.
-    Dimension size = new Dimension(adv + 2, hgt + 2);
-    return size;
-  }
-
-  /**
-   * @param component
-   * @param componentSize
-   * @param oldFont
-   * @param text
-   * @return
-   */
-  private Font findFont(Component component, Dimension componentSize, Font oldFont, String text) {
-    //search up to 100
-    Font savedFont = oldFont;
-    for (int i = 0; i < 150; i++) {
-      Font newFont = new Font(savedFont.getFontName(), savedFont.getStyle(), i);
-      Dimension d = getFontSize(component.getFontMetrics(newFont), newFont, text);
-      if (componentSize.height - (componentSize.height / 3) < d.height) {
-        return savedFont;
-      }
-      savedFont = newFont;
-    }
-    return oldFont;
-  }
-
-  /**
-   * Private class to create multiple custom text panes for the DashBoard.
+   * Private class to create multiple custom JTextPanes for the DashBoard.
    */
   private class CustomTextPane extends JTextPane {
 
@@ -305,9 +281,8 @@ public class Dashboard extends JPanel {
       setBackground(background);
       // - Set the foreground color to the parsed in color
       setForeground(foreground);
-
-      Font style = new Font("Arial", Font.BOLD, 20);
-      setFont(findFont(this, getTextBoxDimension(), style, text));
+      // - Set the font, using a below method to find the font size
+      setFont(findFont(this, new Font("Arial", Font.BOLD, 20), text));
 
       // - If the border boolean parsed in is true, make one
       if (border) {
@@ -336,6 +311,45 @@ public class Dashboard extends JPanel {
       } else {
         setText(text);
       }
+    }
+
+
+    /**
+     * @param component
+     * @param oldFont
+     * @param text
+     * @return
+     */
+    private Font findFont(Component component, Font oldFont, String text) {
+      // Get the size of the area the text can take up
+      int boxWidth = (Dashboard.this.getWidth() / GRID_WIDTH);
+      int boxHeight = (Dashboard.this.getHeight() / GRID_HEIGHT);
+      Dimension componentSize = new Dimension(boxWidth, boxHeight);
+
+      // The default size and text if no size is found to fit
+      Font savedFont = oldFont;
+
+      // Cycle through font sizes, from 0 to 150 to find a fitting size
+      for (int i = 0; i < 150; i++) {
+        // Create a new font to test on, incrementing it's size with i
+        Font newFont = new Font(savedFont.getFontName(), savedFont.getStyle(), i);
+
+        // Get the approximate relative size the text will take up
+        FontMetrics metrics = component.getFontMetrics(newFont);
+        int height = metrics.getHeight();
+        int width = metrics.stringWidth(text);
+        // calculate the size of a box to hold the text with some padding.
+        Dimension d = new Dimension(width + 2, height + 2);
+
+        //
+        if (componentSize.height - (componentSize.height / 3) < d.height) {
+          return savedFont;
+        }
+        savedFont = newFont;
+      }
+
+      // If no sizes fit, resort back to the given font size
+      return oldFont;
     }
   }
 }

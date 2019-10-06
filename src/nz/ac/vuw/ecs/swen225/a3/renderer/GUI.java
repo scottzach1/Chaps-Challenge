@@ -182,7 +182,12 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     return choice != JOptionPane.CLOSED_OPTION && choice != 1;
   }
 
-  public void updateBoard(){
+  public void refreshBoard() {
+    updateBoard();
+    updateDashboard();
+  }
+
+  public void updateBoard() {
     canvas.renderBoard();
     redraw();
   }
@@ -195,7 +200,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     updateBoard();
   }
 
-  public void updateDashboard(){
+  public void updateDashboard() {
     dashboardHolder.renderDashboard();
     redraw();
   }
@@ -271,6 +276,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
    * Handles events occuring after a key is pressed.
    * First adding it to the list of keys pressed, then dealing with all
    * active keys in the 'activeKeys' set.
+   *
    * @param e - The key pressed
    */
   @Override
@@ -282,21 +288,21 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_X) && activeKeys.size() == 2)
       exitGame();
     // CTRL + S
-    if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_S) && activeKeys.size() == 2){
+    if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_S) && activeKeys.size() == 2) {
       saveGame();
       exitGame();
     }
     // CTRL + R
-    if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_R) && activeKeys.size() == 2){
+    if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_R) && activeKeys.size() == 2) {
       // TODO: Resume a saved game
     }
     // CTRL + P
-    if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_P) && activeKeys.size() == 2){
-      // TODO: Start a new game at the last UNFINISHED level
+    if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_P) && activeKeys.size() == 2) {
+      application.setLevel(application.getLevel()+"");
     }
     // CTRL + 1
-    if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_1) && activeKeys.size() == 2){
-      // TODO: Start a new game from LEVEL 1
+    if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_1) && activeKeys.size() == 2) {
+      application.setLevel("1");
     }
     // SPACE
     if (activeKeys.contains(KeyEvent.VK_SPACE) && activeKeys.size() == 1) {
@@ -305,7 +311,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
       activeKeys.clear();
     }
     // ESC
-    if (activeKeys.contains(KeyEvent.VK_ESCAPE) && activeKeys.size() == 1){
+    if (activeKeys.contains(KeyEvent.VK_ESCAPE) && activeKeys.size() == 1) {
       resumeGame();
       activeKeys.clear();
     }
@@ -343,9 +349,12 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
 
   /**
    * Removes any key released from the set of activeKeys.
+   *
    * @param e - The key released
    */
   @Override
-  public void keyReleased(KeyEvent e) {activeKeys.remove(e.getKeyCode()); lastMove = "";
+  public void keyReleased(KeyEvent e) {
+    activeKeys.remove(e.getKeyCode());
+    lastMove = "";
   }
 }

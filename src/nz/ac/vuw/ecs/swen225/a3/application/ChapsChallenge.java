@@ -291,6 +291,14 @@ public class ChapsChallenge {
   }
 
   /**
+   * Gets the current level of this game
+   * @return Level the level currently held by board
+   */
+  public int getLevel(){
+    return board.getCurrentLevel();
+  }
+
+  /**
    * Get board object.
    *
    * @return Board object
