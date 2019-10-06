@@ -9,6 +9,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 
 public class Flippers extends Tile {
+  private boolean collected;
 
   Flippers() {
     super(Type.Flippers);
@@ -26,8 +27,11 @@ public class Flippers extends Tile {
    */
   @Override
   public boolean interact(Player p) {
-    p.addItem(this.toString());
-    imageUrl = defaultImageUrl;
+    if (!collected) {
+      p.addItem(this.toString());
+      imageUrl = defaultImageUrl;
+      collected = true;
+    }
     return isAccessible;
   }
 
@@ -72,6 +76,11 @@ public class Flippers extends Tile {
     return this;
   }
 
+  /**
+   * Standard toString method.
+   *
+   * @return the name of the tile
+   */
   @Override
   public String toString() {
     return "Flippers";

@@ -6,12 +6,30 @@ import javax.json.JsonReader;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public abstract class Tile {
 
+  private boolean isOccupied;
+  boolean isAccessible;
+  private int row;
+  private int col;
+  private Type type;
+  String imageUrl;
+  String defaultImageUrl;
+  List<Tile> adjacent = new ArrayList<>();
+
+
+  /**
+   * Enum for all the different types of tiles.
+   * Used for JSON.
+   */
   public enum Type{
     Free, Treasure, Exit, ExitLock, InfoField, Key, LockedDoor, Wall, Mob, Water, Flippers
   }
 
+  /**
+   * Enum of directions to go from a tile.
+   */
   public enum Direction {
     Left, Right, Up, Down;
 
@@ -43,14 +61,6 @@ public abstract class Tile {
     }
   }
 
-  private boolean isOccupied;
-  boolean isAccessible;
-  private int row;
-  private int col;
-  private Type type;
-  String imageUrl;
-  String defaultImageUrl;
-  List<Tile> adjacent = new ArrayList<>();
 
   /**
    * Sets boolean representing whether the tile is occupied.
@@ -68,52 +78,91 @@ public abstract class Tile {
    */
   public boolean isOccupied() { return isOccupied; }
 
+  /**
+   * Constructor taking a type of tile as a parameter.
+   *
+   * @param t the type of tile.
+   */
   public Tile(Type t){
     type = t;
   }
 
-  public Tile(){}
+  /**
+   * Empty default constructor.
+   */
+  public Tile() {
+  }
 
+  /**
+   * Gets the row of the tile.
+   * @return the row.
+   */
   public int getRow() {
     return row;
   }
 
+  /**
+   * Sets the row of the tile.
+   * @param row the row to set it to.
+   */
   public void setRow(int row) {
     this.row = row;
   }
 
+  /**
+   * Gets the column of the tile.
+   * @return the column.
+   */
   public int getCol() {
     return col;
   }
 
+  /**
+   * Sets the column of the tile.
+   * @param col the column to set it to.
+   */
   public void setCol(int col) {
     this.col = col;
   }
 
-  public Type getType(){return type;}
+  /**
+   * Gets the type of tile.
+   * @return the type.
+   */
+  public Type getType(){return type;
+  }
 
+  /**
+   * Gets the image URL.
+   * @return the Image URL.
+   */
   public String getImageUrl() {
     return imageUrl;
   }
 
+  /**
+   * Gets the default image URL.
+   * @return the default image URL.
+   */
   public String getDefaultImageUrl() {
     return defaultImageUrl;
   }
 
+  /**
+   * Gets the full URL name
+   * @return the combination of the  image url and the default.
+   */
   public String getCombinedUrl() {
     return AssetManager.combineFnames(defaultImageUrl, imageUrl);
   }
 
-
   /**
    * Checks if the current tile is accessible.
-   *
-   * @return if it is accessible
+   * @return if it is accessible.
    */
   public boolean getIsAccessible() {
     return isAccessible;
   }
-
 
   /**
    * Gets the tile to the left.
@@ -190,6 +239,9 @@ public abstract class Tile {
    */
   public abstract Tile setTileFromJson(JsonReader json);
 
+  /**
+   * Sets teh tile URL to the default URL.
+   */
   public void setTileUnoccupied() {
     imageUrl = defaultImageUrl;
   }

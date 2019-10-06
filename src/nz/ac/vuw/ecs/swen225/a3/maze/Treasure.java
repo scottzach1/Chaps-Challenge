@@ -23,21 +23,12 @@ public class Treasure extends Tile {
      defaultImageUrl = "free.png";
    }
 
-  /**
-   * Standard toString method.
-   *
-   * @return the name of the tile
-   */
-  @Override
-  public String toString() {
-    return "Treasure";
-  }
 
   /**
    * Checks if the interaction between a character and a tile is valid.
    *
-   * @param p The player
-   * @return if the interaction is valid
+   * @param p The player.
+   * @return if the interaction is valid.
    */
   @Override
   public boolean interact(Player p) {
@@ -49,6 +40,11 @@ public class Treasure extends Tile {
     return isAccessible;
   }
 
+  /**
+   * Return json representation of this tile.
+   *
+   * @return Json string of tile properties.
+   */
   @Override
   public String getJson() {
     JsonObjectBuilder objectBuilder = Json.createObjectBuilder()
@@ -68,6 +64,11 @@ public class Treasure extends Tile {
     }catch(IOException e) {throw new Error("Error parsing " + this.toString() + " to json");}
   }
 
+  /**
+   * Set tile properties from json.
+   *
+   * @param json the json to read the object from.
+   */
   @Override
   public Tile setTileFromJson(JsonReader json) {
     JsonObject tile = json.readObject();
@@ -79,4 +80,15 @@ public class Treasure extends Tile {
     collected = tile.getBoolean("collected");
     return this;
   }
+
+  /**
+   * Standard toString method.
+   *
+   * @return the name of the tile.
+   */
+  @Override
+  public String toString() {
+    return "Treasure";
+  }
+
 }

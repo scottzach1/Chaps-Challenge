@@ -28,30 +28,25 @@ public class LockedDoor extends Tile {
   }
 
   /**
-   * Standard toString method.
-   *
-   * @return the name of the tile + the colour
-   */
-  @Override
-  public String toString() {
-    return colour + " LockedDoor";
-  }
-
-  /**
    * Checks if the interaction between a character and a tile is valid.
    *
-   * @param p The player
-   * @return if the interaction is valid
+   * @param p The player.
+   * @return if the interaction is valid.
    */
   @Override
   public boolean interact(Player p) {
     if (p.getItem("key_" + colour)) {
-      setAccessible(true);
+      isAccessible = true;
       imageUrl = defaultImageUrl;
     }
     return isAccessible;
   }
 
+  /**
+   * Return json representation of this tile.
+   *
+   * @return Json string of tile properties.
+   */
   @Override
   public String getJson() {
     JsonObjectBuilder objectBuilder = Json.createObjectBuilder()
@@ -71,6 +66,11 @@ public class LockedDoor extends Tile {
     }catch(IOException e) {throw new Error("Error parsing " + this.toString() + " to json");}
   }
 
+  /**
+   * Set tile properties from json.
+   *
+   * @param json the json to read the object from.
+   */
   @Override
   public Tile setTileFromJson(JsonReader json) {
     JsonObject tile = json.readObject();
@@ -82,4 +82,15 @@ public class LockedDoor extends Tile {
     colour = tile.getString("colour");
     return this;
   }
+
+  /**
+   * Standard toString method.
+   *
+   * @return the name of the tile + the colour.
+   */
+  @Override
+  public String toString() {
+    return colour + " LockedDoor";
+  }
+
 }

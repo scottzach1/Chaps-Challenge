@@ -9,6 +9,11 @@ import java.io.StringWriter;
 import java.io.Writer;
 
 public class Water extends Tile {
+
+  /**
+   * Constructor.
+   * Sets the isAccessible field to false.
+   */
   Water() {
     super(Type.Water);
     isAccessible = false;
@@ -20,8 +25,8 @@ public class Water extends Tile {
   /**
    * Checks if the interaction between a character and a tile is valid.
    *
-   * @param p The player
-   * @return if the interaction is valid
+   * @param p The player.
+   * @return if the interaction is valid.
    */
   @Override
   public boolean interact(Player p) {
@@ -59,7 +64,7 @@ public class Water extends Tile {
   /**
    * Set tile properties from json.
    *
-   * @param json the json to read the object from
+   * @param json the json to read the object from.
    */
   @Override
   public Tile setTileFromJson(JsonReader json) {
@@ -70,5 +75,15 @@ public class Water extends Tile {
     imageUrl = tile.getString("imageUrl");
     defaultImageUrl = tile.getString("defaultImageUrl");
     return this;
+  }
+
+  /**
+   * Standard toString method.
+   *
+   * @return the name of the tile.
+   */
+  @Override
+  public String toString() {
+    return "Water";
   }
 }

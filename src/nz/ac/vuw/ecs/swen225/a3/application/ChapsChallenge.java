@@ -207,6 +207,7 @@ public class ChapsChallenge {
       board.setCurrentLevel(0);
     }
 
+    player = new Player(board.getPlayerLocation());
     gui.previousLevel();
   }
 

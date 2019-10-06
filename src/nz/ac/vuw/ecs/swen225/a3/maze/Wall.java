@@ -32,6 +32,11 @@ public class Wall extends Tile {
     return isAccessible;
   }
 
+  /**
+   * Return json representation of this tile.
+   *
+   * @return Json string of tile properties.
+   */
   @Override
   public String getJson() {
     JsonObjectBuilder objectBuilder = Json.createObjectBuilder()
@@ -50,6 +55,11 @@ public class Wall extends Tile {
     }catch(IOException e) {throw new Error("Error parsing " + this.toString() + " to json");}
   }
 
+  /**
+   * Set tile properties from json.
+   *
+   * @param json the json to read the object from.
+   */
   @Override
   public Tile setTileFromJson(JsonReader json) {
     JsonObject tile = json.readObject();
@@ -64,7 +74,7 @@ public class Wall extends Tile {
   /**
    * Standard toString method.
    *
-   * @return the name of the tile
+   * @return the name of the tile.
    */
   @Override
   public String toString() {

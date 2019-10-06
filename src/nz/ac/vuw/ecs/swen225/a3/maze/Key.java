@@ -10,6 +10,7 @@ import java.io.Writer;
 
 public class Key extends Tile {
   private String colour;
+  private boolean collected;
 
   /**
    * Constructor.
@@ -29,16 +30,24 @@ public class Key extends Tile {
   /**
    * Checks if the interaction between a character and a tile is valid.
    *
-   * @param p The player
-   * @return if the interaction is valid
+   * @param p The player.
+   * @return if the interaction is valid.
    */
   @Override
   public boolean interact(Player p) {
-    p.addItem(this.toString());
-    imageUrl = defaultImageUrl;
+    if (!collected) {
+      p.addItem(this.toString());
+      imageUrl = defaultImageUrl;
+      collected = true;
+    }
     return isAccessible;
   }
 
+  /**
+   * Return json representation of this tile.
+   *
+   * @return Json string of tile properties.
+   */
   @Override
   public String getJson() {
     JsonObjectBuilder objectBuilder = Json.createObjectBuilder()
@@ -58,6 +67,11 @@ public class Key extends Tile {
     }catch(IOException e) {throw new Error("Error parsing " + this.toString() + " to json");}
   }
 
+  /**
+   * Set tile properties from json.
+   *
+   * @param json the json to read the object from.
+   */
   @Override
   public Tile setTileFromJson(JsonReader json) {
     JsonObject tile = json.readObject();
@@ -73,7 +87,7 @@ public class Key extends Tile {
   /**
    * Standard toString method.
    *
-   * @return the name of the tile + the colour
+   * @return the name of the tile + the colour.
    */
   @Override
   public String toString() {

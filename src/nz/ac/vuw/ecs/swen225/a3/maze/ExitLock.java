@@ -48,7 +48,7 @@ public class ExitLock extends Tile {
   public boolean interact(Player p) {
     if (totalTreasures == p.getTreasures()) {
       imageUrl = defaultImageUrl;
-      setAccessible(true);
+      isAccessible = true;
     }
     return isAccessible;
   }
