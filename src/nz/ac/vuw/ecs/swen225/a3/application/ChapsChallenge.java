@@ -205,7 +205,8 @@ public class ChapsChallenge {
   }
 
   public void timeOut() {
-    // TODO: Implement a time out in GUI and call here
+    //gui.timeOut();
+    gameOver();
   }
 
   /**
@@ -313,7 +314,8 @@ public class ChapsChallenge {
   }
 
   public void gameEnd (){
-    //todo implement
+    //gui.endGame();
+    exitGame();
   }
 
   /**
