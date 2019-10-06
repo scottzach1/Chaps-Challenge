@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 /**
  * Canvas displays the game maze on the screen.
  */
-public class Canvas extends JPanel implements ComponentListener {
+public class Canvas extends JPanel {
 
   public final static int VIEW_SIZE = 9;
 
@@ -33,7 +33,11 @@ public class Canvas extends JPanel implements ComponentListener {
     setLayout(new GridBagLayout());
     setBackground(GUI.BACKGROUND_COLOUR);
 
-    addComponentListener(this);
+    renderCanvas();
+  }
+
+  public void createCanvasComponents(){
+
   }
 
   /**
@@ -44,6 +48,7 @@ public class Canvas extends JPanel implements ComponentListener {
    * Renders the board stored in application on the  canvas.
    */
   public void renderCanvas() {
+//    System.out.println("CANVAS RENDER");
     // Clear components.
     components.clear();
     removeAll();
@@ -54,9 +59,7 @@ public class Canvas extends JPanel implements ComponentListener {
         .map(JLabel::new)
         .collect(Collectors.toList()));
 
-    // Renders new components.
     revalidateComponents();
-    repaint();
   }
 
 
@@ -66,7 +69,8 @@ public class Canvas extends JPanel implements ComponentListener {
    * <p>
    * DOES NOT REPAINT.
    */
-  private void revalidateComponents() {
+  public void revalidateComponents() {
+//    System.out.println("CANVAS REVALIDATE");
     GridBagConstraints constraints = new GridBagConstraints();
     if (components.size() > 0) {
       constraints.gridy = 0;
@@ -81,50 +85,15 @@ public class Canvas extends JPanel implements ComponentListener {
     }
 
     revalidate();
-  }
-
-  /**
-   * Recalculates cell size and repaints
-   * when resized.
-   *
-   * @param e event.
-   */
-  @Override
-  public void componentResized(ComponentEvent e) {
-    int cellSize = Math.min(getWidth(), getHeight()) / VIEW_SIZE;
-    AssetManager.scaleImages(cellSize);
-
-    renderCanvas();
     repaint();
   }
 
-  /**
-   * Overridden but not utilized.
-   *
-   * @param e event.
-   */
-  @Override
-  public void componentMoved(ComponentEvent e) {
 
-  }
-
-  /**
-   * Overridden but not utilized.
-   *
-   * @param e event.
-   */
-  @Override
-  public void componentShown(ComponentEvent e) {
-
-  }
-
-  /**
-   * Overridden but not utilized.
-   *
-   * @param e event.
-   */
-  @Override
-  public void componentHidden(ComponentEvent e) {
-
+  public void resize(){
+//    System.out.println("CANVAS RESIZE");
+    int cellSize = Math.min(getWidth(), getHeight()) / VIEW_SIZE;
+    AssetManager.scaleImages(cellSize);
+    renderCanvas();
+    revalidateComponents();
   }
 }

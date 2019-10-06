@@ -15,9 +15,10 @@ import java.util.Map;
  * all the assets used in the game.
  */
 public class AssetManager {
-
   private static String assetPath = "assets/";
   private static boolean loaded = false;
+
+  private static boolean activeScaling = false;
 
   /**
    * Private static fields to store important GUI data.
@@ -80,13 +81,18 @@ public class AssetManager {
    * @param newCellSize Cell size.
    */
   public static void scaleImages(int newCellSize) {
-    cellSize = newCellSize;
-    for (String key : baseImageIcons.keySet()) {
-      ImageIcon baseImage = baseImageIcons.get(key);
-      ImageIcon scaledIcon = new ImageIcon(baseImage.getImage()
-          .getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH));
-      scaledIcon.setDescription(baseImage.getDescription());
-      scaledImageIcons.put(key, scaledIcon);
+    if (!activeScaling) {
+      activeScaling = true;
+      cellSize = newCellSize;
+      for (String key : baseImageIcons.keySet()) {
+        ImageIcon baseImage = baseImageIcons.get(key);
+        ImageIcon scaledIcon = new ImageIcon(baseImage.getImage()
+            .getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH));
+        scaledIcon.setDescription(baseImage.getDescription());
+        scaledImageIcons.put(key, scaledIcon);
+      }
+
+      activeScaling = false;
     }
   }
 

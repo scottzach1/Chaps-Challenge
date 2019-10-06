@@ -43,9 +43,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
 
   // HashSet of actively pressed keys
   HashSet<Integer> activeKeys;
-
-  // Current move
-  String lastMove;
+  String direction = "";
 
   /**
    * Constructor: Creates a new JFrame and sets preferred sizes.
@@ -55,8 +53,6 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     application = chaps_challenge;
     // Create new set for hosting keys currently pressed
     activeKeys = new HashSet<>();
-
-    lastMove = "";
 
     //Create & init the frame.
     setPreferredSize(screenDimension.getSize());
@@ -83,6 +79,9 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     addKeyListener(this);
     setFocusable(true);
     setFocusableWindowState(true);
+
+    canvas.resize();
+    dashboardHolder.resize();
   }
 
   /**
@@ -167,7 +166,6 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
    * Invokes a pop up menu to confirm the player wants to exit the game.
    */
   public boolean exitGame() {
-
     // Button options
     String[] options = {"Yes please", "Opps, wrong button"};
 
@@ -185,25 +183,16 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     return choice != JOptionPane.CLOSED_OPTION && choice != 1;
   }
 
-  public void refreshBoard() {
-    updateBoard();
-    updateDashboard();
-  }
 
   public void updateBoard() {
+//    System.out.println("UPDATE BOARD");
+    runMove();
     canvas.renderCanvas();
     redraw();
   }
 
-  /**
-   * Recalculates the size of components on the Canvas.
-   */
-  public void rescaleAssets() {
-    canvas.componentResized(null);
-    updateBoard();
-  }
-
   public void updateDashboard() {
+//    System.out.println("UPDATE DASH");
     dashboardHolder.renderDashboard();
     redraw();
   }
@@ -227,6 +216,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
    */
   @Override
   public void componentResized(ComponentEvent e) {
+//    System.out.println("GUI RESIZE");
     screenDimension = getSize();
 
     screenWidth = screenDimension.width;
@@ -234,6 +224,13 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     canvasWidth = (screenDimension.width * 2) / 3;
     dashboardWidth = (screenDimension.width) / 3;
 
+    if (canvas != null && dashboardHolder != null) {
+      canvas.resize();
+      dashboardHolder.resize();
+      updateBoard();
+      updateDashboard();
+    }
+    revalidate();
     redraw();
   }
 
@@ -323,28 +320,20 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     PLAYER CONTROLS
      */
     // Move Up
-    if ((activeKeys.contains(KeyEvent.VK_UP) || activeKeys.contains(KeyEvent.VK_W)) && activeKeys.size() == 1 && !lastMove.equals("UP") && !RecordAndPlay.getIsRunning()) {
-      application.move(Tile.Direction.Up);
-      lastMove = "UP";
-      updateBoard();
+    if ((activeKeys.contains(KeyEvent.VK_UP) || activeKeys.contains(KeyEvent.VK_W)) && activeKeys.size() == 1) {
+      direction = "UP";
     }
     // Move Down
-    if ((activeKeys.contains(KeyEvent.VK_DOWN) || activeKeys.contains(KeyEvent.VK_S)) && activeKeys.size() == 1  && !lastMove.equals("DOWN")&& !RecordAndPlay.getIsRunning()) {
-      application.move(Tile.Direction.Down);
-      lastMove = "DOWN";
-      updateBoard();
+    if ((activeKeys.contains(KeyEvent.VK_DOWN) || activeKeys.contains(KeyEvent.VK_S)) && activeKeys.size() == 1) {
+      direction = "DOWN";
     }
     // Move Left
-    if ((activeKeys.contains(KeyEvent.VK_LEFT) || activeKeys.contains(KeyEvent.VK_A)) && activeKeys.size() == 1 && !lastMove.equals("LEFT")&& !RecordAndPlay.getIsRunning()) {
-      application.move(Tile.Direction.Left);
-      lastMove = "LEFT";
-      updateBoard();
+    if ((activeKeys.contains(KeyEvent.VK_LEFT) || activeKeys.contains(KeyEvent.VK_A)) && activeKeys.size() == 1) {
+      direction = "LEFT";
     }
     // Move Right
-    if ((activeKeys.contains(KeyEvent.VK_RIGHT) || activeKeys.contains(KeyEvent.VK_D)) && activeKeys.size() == 1  && !lastMove.equals("RIGHT")&& !RecordAndPlay.getIsRunning()) {
-      application.move(Tile.Direction.Right);
-      lastMove = "RIGHT";
-      updateBoard();
+    if ((activeKeys.contains(KeyEvent.VK_RIGHT) || activeKeys.contains(KeyEvent.VK_D)) && activeKeys.size() == 1) {
+      direction = "RIGHT";
     }
 
     redraw();
@@ -357,7 +346,27 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
    */
   @Override
   public void keyReleased(KeyEvent e) {
-    activeKeys.remove(e.getKeyCode());
-    lastMove = "";
+    activeKeys.clear();
   }
+
+
+  private void runMove() {
+    // Go UP
+    if (direction.equals("UP"))
+      application.move(Tile.Direction.Up);
+    // Go DOWN
+    if (direction.equals("DOWN"))
+      application.move(Tile.Direction.Down);
+    // Go LEFT
+    if (direction.equals("LEFT"))
+      application.move(Tile.Direction.Left);
+    // Go RIGHT
+    if (direction.equals("RIGHT"))
+      application.move(Tile.Direction.Right);
+
+
+    direction = "";
+  }
+
+
 }

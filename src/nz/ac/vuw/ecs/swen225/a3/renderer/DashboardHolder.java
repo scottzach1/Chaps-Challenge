@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
-public class DashboardHolder extends JPanel implements ComponentListener {
+public class DashboardHolder extends JPanel {
 
   private Dashboard dashboard;
   private GridBagConstraints gbc;
@@ -23,10 +23,10 @@ public class DashboardHolder extends JPanel implements ComponentListener {
     setBorder(null);
     setLayout(new GridBagLayout());
 
-    addComponentListener(this);
   }
 
   public void renderDashboard(){
+//    System.out.println("DASHBOARDHOLDER RENDER");
     removeAll();
     dashboardHeight = AssetManager.getScaledImage("free.png").getIconHeight() * Canvas.VIEW_SIZE;
 
@@ -40,27 +40,12 @@ public class DashboardHolder extends JPanel implements ComponentListener {
     revalidate();
   }
 
-  @Override
-  public void componentResized(ComponentEvent e) {
+  public void resize() {
+//    System.out.println("DASHBOARD RESIZE");
     removeAll();
     dashboard.createDashboardComponents();
     dashboard.renderDashboardComponents();
     renderDashboard();
     revalidate();
-  }
-
-  @Override
-  public void componentMoved(ComponentEvent e) {
-
-  }
-
-  @Override
-  public void componentShown(ComponentEvent e) {
-
-  }
-
-  @Override
-  public void componentHidden(ComponentEvent e) {
-
   }
 }

@@ -31,6 +31,7 @@ public class ChapsChallenge {
   private long totalTime = 100; //100 seconds, todo change with levels
   private long startTime;
 
+  private final int fps = 20;
 
   public void setBoard(Board board) {
     this.board = board;
@@ -237,19 +238,38 @@ public class ChapsChallenge {
    */
   private void runningThread() {
     Runnable runnable = new Runnable() {
+
+      private int i = 0, chapsOldBagCounter = 0;
+
       @Override
       public void run() {
+        // While the time has not run out
         while (true) {
+          // Only run while the game is not paused
           if (!gamePaused) {
-            mobManager.advanceByOneTick();
-            gui.updateBoard();
-            gui.updateDashboard();
+            // Tick counter cycles (0, 1)
+            i = (i + 1) % fps;
+
+            // Attempt to sleep the thread if there is time left
             try {
-              if (timeLeft > 0)
-                Thread.sleep(1000);
+              if (timeLeft > 0) {
+                // Every second
+                if (i == 0){
+                  // Update the dashboard and mobs
+                  gui.updateDashboard();
+                  mobManager.advanceByOneTick();
+                }
+                // Update the board every 1/4 second
+                gui.updateBoard();
+
+                // Restricts the frame rate to 30 fps
+                Thread.sleep(1000/fps);
+              }
               else
                 throw new InterruptedException("TIMED OUT");
-            } catch (InterruptedException e) {
+            }
+            // If anything was to go unsuccessfully, then control crash the game with a time out
+            catch (InterruptedException e) {
               timeOut();
               return;
             }
