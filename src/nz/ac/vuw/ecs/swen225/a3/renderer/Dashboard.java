@@ -178,9 +178,9 @@ public class Dashboard extends JPanel {
 
   public void refreshDashboardComponents() {
     // TODO: chaps challenge needs to have a function to get the level num
-    levelNum.setText("1");
+    levelNum.setText(chapsChallenge.getLevel() + "");
     timeNum.setText(chapsChallenge.timeLeft() + "");
-    chipsLeftNum.setText(chapsChallenge.getTreasures() + "");
+    chipsLeftNum.setText((chapsChallenge.getTotalTreasures() - chapsChallenge.getTreasures()) + "");
 
     // Refresh Chaps bag
     fillChapsBag();
@@ -220,7 +220,7 @@ public class Dashboard extends JPanel {
 
     // Fill the rest
     for (int j = items.size(); j < 8; j++) {
-      JLabel item = chapsBagImages.get(i);
+      JLabel item = chapsBagImages.get(j);
       item.setIcon(AssetManager.getScaledImage("free.png"));
     }
   }
