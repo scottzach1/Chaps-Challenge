@@ -2,7 +2,7 @@ package nz.ac.vuw.ecs.swen225.a3.tests;
 
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 import nz.ac.vuw.ecs.swen225.a3.maze.Board;
-import nz.ac.vuw.ecs.swen225.a3.maze.Tiles;
+import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -196,23 +196,23 @@ class backendTest {
 
       chapsChallenge.setLevel(level);
 
-      Tiles start = chapsChallenge.getPlayer().getLocation();
-      chapsChallenge.move(Tiles.Direction.Up);
-      Tiles end = chapsChallenge.getPlayer().getLocation();
+      Tile start = chapsChallenge.getPlayer().getLocation();
+      chapsChallenge.move(Tile.Direction.Up);
+      Tile end = chapsChallenge.getPlayer().getLocation();
       assertEquals(start.getUp(), end);
 
       start = chapsChallenge.getPlayer().getLocation();
-      chapsChallenge.move(Tiles.Direction.Down);
+      chapsChallenge.move(Tile.Direction.Down);
       end = chapsChallenge.getPlayer().getLocation();
       assertEquals(start.getDown(), end);
 
       start = chapsChallenge.getPlayer().getLocation();
-      chapsChallenge.move(Tiles.Direction.Left);
+      chapsChallenge.move(Tile.Direction.Left);
       end = chapsChallenge.getPlayer().getLocation();
       assertEquals(start.getLeft(), end);
 
       start = chapsChallenge.getPlayer().getLocation();
-      chapsChallenge.move(Tiles.Direction.Right);
+      chapsChallenge.move(Tile.Direction.Right);
       end = chapsChallenge.getPlayer().getLocation();
       assertEquals(start.getRight(), end);
   }
@@ -246,7 +246,7 @@ class backendTest {
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|";
 
     chapsChallenge.setLevel(level);
-    chapsChallenge.move(Tiles.Direction.Up);
+    chapsChallenge.move(Tile.Direction.Up);
 
     assertTrue(    chapsChallenge.getPlayer().getInventory().contains("Blue Key"));
   }
@@ -280,11 +280,11 @@ class backendTest {
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|";
 
     chapsChallenge.setLevel(level);
-    chapsChallenge.move(Tiles.Direction.Up);
+    chapsChallenge.move(Tile.Direction.Up);
 
-    Tiles start = chapsChallenge.getPlayer().getLocation();
-    chapsChallenge.move(Tiles.Direction.Right);
-    Tiles end = chapsChallenge.getPlayer().getLocation();
+    Tile start = chapsChallenge.getPlayer().getLocation();
+    chapsChallenge.move(Tile.Direction.Right);
+    Tile end = chapsChallenge.getPlayer().getLocation();
     assertEquals(start.getRight(), end);
   }
   /**
@@ -318,9 +318,9 @@ class backendTest {
 
     chapsChallenge.setLevel(level);
 
-    Tiles start = chapsChallenge.getPlayer().getLocation();
-    chapsChallenge.move(Tiles.Direction.Up);
-    Tiles end = chapsChallenge.getPlayer().getLocation();
+    Tile start = chapsChallenge.getPlayer().getLocation();
+    chapsChallenge.move(Tile.Direction.Up);
+    Tile end = chapsChallenge.getPlayer().getLocation();
     assertEquals(start, end);
   }
 
@@ -354,11 +354,11 @@ class backendTest {
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|";
 
     chapsChallenge.setLevel(level);
-    chapsChallenge.move(Tiles.Direction.Up);
+    chapsChallenge.move(Tile.Direction.Up);
 
-    Tiles start = chapsChallenge.getPlayer().getLocation();
-    chapsChallenge.move(Tiles.Direction.Right);
-    Tiles end = chapsChallenge.getPlayer().getLocation();
+    Tile start = chapsChallenge.getPlayer().getLocation();
+    chapsChallenge.move(Tile.Direction.Right);
+    Tile end = chapsChallenge.getPlayer().getLocation();
     assertEquals(start, end);
   }
 
@@ -392,13 +392,13 @@ class backendTest {
 
     chapsChallenge.setLevel(level);
 
-    Tiles start = chapsChallenge.getPlayer().getLocation();
-    chapsChallenge.move(Tiles.Direction.Up);
-    Tiles end = chapsChallenge.getPlayer().getLocation();
+    Tile start = chapsChallenge.getPlayer().getLocation();
+    chapsChallenge.move(Tile.Direction.Up);
+    Tile end = chapsChallenge.getPlayer().getLocation();
     assertEquals(start.getUp(), end);
 
     start = chapsChallenge.getPlayer().getLocation();
-    chapsChallenge.move(Tiles.Direction.Up);
+    chapsChallenge.move(Tile.Direction.Up);
     end = chapsChallenge.getPlayer().getLocation();
     assertEquals(start.getUp(), end);
   }
@@ -433,19 +433,19 @@ class backendTest {
 
     chapsChallenge.setLevel(level);
 
-    chapsChallenge.move(Tiles.Direction.Up);
-    chapsChallenge.move(Tiles.Direction.Up);
-    chapsChallenge.move(Tiles.Direction.Up);
+    chapsChallenge.move(Tile.Direction.Up);
+    chapsChallenge.move(Tile.Direction.Up);
+    chapsChallenge.move(Tile.Direction.Up);
 
     assertEquals(chapsChallenge.getPlayer().getTreasures(), 3);
 
-    Tiles start = chapsChallenge.getPlayer().getLocation();
-    chapsChallenge.move(Tiles.Direction.Up);
-    Tiles end = chapsChallenge.getPlayer().getLocation();
+    Tile start = chapsChallenge.getPlayer().getLocation();
+    chapsChallenge.move(Tile.Direction.Up);
+    Tile end = chapsChallenge.getPlayer().getLocation();
     assertEquals(start.getUp(), end);
 
     start = chapsChallenge.getPlayer().getLocation();
-    chapsChallenge.move(Tiles.Direction.Up);
+    chapsChallenge.move(Tile.Direction.Up);
     end = chapsChallenge.getPlayer().getLocation();
     assertEquals(start.getUp(), end);
   }

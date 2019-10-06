@@ -1,15 +1,11 @@
 package nz.ac.vuw.ecs.swen225.a3.application;
 
 import nz.ac.vuw.ecs.swen225.a3.maze.Board;
-import nz.ac.vuw.ecs.swen225.a3.maze.Exit;
 import nz.ac.vuw.ecs.swen225.a3.maze.Player;
-import nz.ac.vuw.ecs.swen225.a3.maze.Tiles;
+import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
 import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
 import nz.ac.vuw.ecs.swen225.a3.renderer.GUI;
 
-import javax.json.JsonObjectBuilder;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
@@ -72,11 +68,11 @@ public class ChapsChallenge {
    *
    * @param direction the direction to move in.
    */
-  public void move(Tiles.Direction direction) {
+  public void move(Tile.Direction direction) {
     if (gamePaused) return;
 
-    Tiles currentLocation = player.getLocation();
-    Tiles nextLocation = null;
+    Tile currentLocation = player.getLocation();
+    Tile nextLocation = null;
     switch (direction) {
       case Up:
         nextLocation = currentLocation.getUp();
@@ -103,13 +99,15 @@ public class ChapsChallenge {
   }
 
   private void checkFields(){
-    if (player.getLocation().getType() == Tiles.Type.Exit){
-      board.setNextLevel();
+    if (player.getLocation().getType() == Tile.Type.Exit){
+      if (!board.setNextLevel())
+        gameEnd();
       player = new Player(board.getPlayerLocation());
+      timeLeft=totalTime;
     }
 
-    if (player.getLocation().getType() == Tiles.Type.InfoField){
-      //gui.displayInfoTile(player.getLocation());
+    if (player.getLocation().getType() == Tile.Type.InfoField){
+      //gui.displayInfoTile(player.getLocation()); // todo implement
     }
 
   }
@@ -172,18 +170,30 @@ public class ChapsChallenge {
    * Restarts the game.
    */
   public void restartGame() {
-    // TODO: Restart Game
+    board.setCurrentLevel(0);
     gui.restartGame();
-    System.out.println("Game restarted.");
   }
 
   /**
    * Sets the game to the previous level.
    */
   public void previousLevel() {
-    // TODO: Previous Level
+    int current = board.getCurrentLevel();
+    if (current>0){
+      board.setCurrentLevel(current-1);
+    }
+    else{
+      board.setCurrentLevel(0);
+    }
+
     gui.previousLevel();
-    System.out.println("Game set to previous level.");
+  }
+
+  public void restartLevel(){
+    int current = board.getCurrentLevel();
+      board.setCurrentLevel(current);
+
+    player = new Player(board.getPlayerLocation());
   }
 
   /**
@@ -195,7 +205,8 @@ public class ChapsChallenge {
   }
 
   public void timeOut() {
-    // TODO: Implement a time out in GUI and call here
+    //gui.timeOut();
+    gameOver();
   }
 
   /**
@@ -267,7 +278,7 @@ public class ChapsChallenge {
    *
    * @return Stream of tiles to be drawn
    */
-  public Stream<Tiles> getTilesToRender() {
+  public Stream<Tile> getTilesToRender() {
     return board.getStream(player.getLocation());
   }
 
@@ -303,6 +314,16 @@ public class ChapsChallenge {
    */
   public Player getPlayer(){
     return player;
+  }
+
+  public void gameOver(){
+    //gui.gameOver();
+    exitGame();
+  }
+
+  public void gameEnd (){
+    //gui.endGame();
+    exitGame();
   }
 
   /**
