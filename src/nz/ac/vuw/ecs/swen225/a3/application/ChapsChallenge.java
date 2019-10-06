@@ -159,7 +159,7 @@ public class ChapsChallenge {
    * Saves the game.
    */
   public void saveGame() {
-    JsonReadWrite.saveGameState(this);
+    JsonReadWrite.saveGameState(this,"saveGame.txt");
     gui.saveGame();
     System.out.println("Game saved.");
   }

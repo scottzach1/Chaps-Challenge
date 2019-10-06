@@ -19,7 +19,22 @@ public class JsonReadWrite {
    * Json dump game state (TimeLeft, Board state and player state) to file "save.txt".
    * @param game Instance of Chaps Challenge
    */
-  public static void saveGameState(ChapsChallenge game){
+  public static void saveGameState(ChapsChallenge game,String name){
+    String jsonGame = getGameState(game);
+    try {
+      BufferedWriter writer = new BufferedWriter(new FileWriter(name));
+      writer.write(jsonGame);
+      writer.close();
+    }
+    catch(IOException e){}
+  }
+
+  /**
+   * Get game state to write to file
+   * @param game Game object
+   * @return Json string
+   */
+  public static String getGameState(ChapsChallenge game){
     String jsonGame = "";
     String jsonBoard = "";
     String jsonPlayer = "";
@@ -55,9 +70,9 @@ public class JsonReadWrite {
       arrayBuilder.add(i);
     }
     builder = Json.createObjectBuilder()
-      .add("location",player.getLocation().getJson())
-      .add("inventory",arrayBuilder)
-      .add("treasures",player.getTreasures());
+        .add("location",player.getLocation().getJson())
+        .add("inventory",arrayBuilder)
+        .add("treasures",player.getTreasures());
 
     // Compose player section
     try(Writer writer = new StringWriter()) {
@@ -82,13 +97,7 @@ public class JsonReadWrite {
     catch(IOException e){
       throw new Error("Failed to parse game");
     }
-
-    try {
-      BufferedWriter writer = new BufferedWriter(new FileWriter("saveGame.txt"));
-      writer.write(jsonGame);
-      writer.close();
-    }
-    catch(IOException e){}
+    return jsonGame;
   }
 
   public static ChapsChallenge loadGameState(String saveGame){
