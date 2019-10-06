@@ -312,6 +312,9 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
       activeKeys.clear();
     }
 
+    if(RecordAndPlay.getIsRunning())
+      return;
+
     /*
     PLAYER CONTROLS
      */
@@ -362,10 +365,6 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
 
 
     direction = "";
-  }
-
-  public boolean dashBoardIsReady(){
-    return dashboardHolder.getWidth() >= dashboardWidth;
   }
 
 
