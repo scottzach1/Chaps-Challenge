@@ -1,11 +1,10 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class Player {
-  private Tiles location;
+  private Tile location;
 
   public void setInventory(List<String> inventory) {
     this.inventory = inventory;
@@ -23,7 +22,7 @@ public class Player {
    *
    * @param loc Initial location of player
    */
-  public Player(Tiles loc) {
+  public Player(Tile loc) {
     location = loc;
   }
 
@@ -51,11 +50,11 @@ public class Player {
    *
    * @return Tile
    */
-  public Tiles getLocation() {
+  public Tile getLocation() {
     return location;
   }
 
-  public void setLocation(Tiles location) {
+  public void setLocation(Tile location) {
     this.location = location;
   }
 

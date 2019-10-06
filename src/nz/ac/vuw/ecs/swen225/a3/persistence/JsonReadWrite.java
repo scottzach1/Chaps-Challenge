@@ -30,7 +30,7 @@ public class JsonReadWrite {
     JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
 
     // Array of tiles
-    for(Tiles t : board.getAllTiles()){
+    for(Tile t : board.getAllTiles()){
       arrayBuilder.add(t.getJson());
     }
     JsonObjectBuilder builder =  Json.createObjectBuilder()
@@ -109,14 +109,14 @@ public class JsonReadWrite {
 
     JsonArray allTilesJson = board.getJsonArray("allTiles");
 
-    List<Tiles> allTiles = new ArrayList<>();
+    List<Tile> allTiles = new ArrayList<>();
 
     for (JsonString j : allTilesJson.getValuesAs(JsonString.class)) {
       allTiles.add(createTileFromJson(j.getString()));
     }
 
     Board b = new Board();
-    for(Tiles t : allTiles){
+    for(Tile t : allTiles){
       b.setTile(t.getRow(),t.getCol(),t);
     }
 
@@ -136,7 +136,7 @@ public class JsonReadWrite {
       inventory.add(j.getString());
     }
 
-    Tiles location = createTileFromJson(player.getString("location"));
+    Tile location = createTileFromJson(player.getString("location"));
     location = b.getTile(location.getRow(),location.getCol());
 
     Player p = new Player(location);
@@ -154,7 +154,7 @@ public class JsonReadWrite {
     return chapsChallenge;
   }
 
-  public static Tiles createTileFromJson(String tile){
+  public static Tile createTileFromJson(String tile){
     JsonReader reader = Json.createReader(new StringReader(tile));
     JsonObject tileObject = reader.readObject();
     String type = tileObject.getString("type");

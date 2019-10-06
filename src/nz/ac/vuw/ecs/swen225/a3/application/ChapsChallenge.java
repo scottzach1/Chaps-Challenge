@@ -1,15 +1,11 @@
 package nz.ac.vuw.ecs.swen225.a3.application;
 
 import nz.ac.vuw.ecs.swen225.a3.maze.Board;
-import nz.ac.vuw.ecs.swen225.a3.maze.Exit;
 import nz.ac.vuw.ecs.swen225.a3.maze.Player;
-import nz.ac.vuw.ecs.swen225.a3.maze.Tiles;
+import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
 import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
 import nz.ac.vuw.ecs.swen225.a3.renderer.GUI;
 
-import javax.json.JsonObjectBuilder;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
@@ -72,11 +68,11 @@ public class ChapsChallenge {
    *
    * @param direction the direction to move in.
    */
-  public void move(Tiles.Direction direction) {
+  public void move(Tile.Direction direction) {
     if (gamePaused) return;
 
-    Tiles currentLocation = player.getLocation();
-    Tiles nextLocation = null;
+    Tile currentLocation = player.getLocation();
+    Tile nextLocation = null;
     switch (direction) {
       case Up:
         nextLocation = currentLocation.getUp();
@@ -103,12 +99,12 @@ public class ChapsChallenge {
   }
 
   private void checkFields(){
-    if (player.getLocation().getType() == Tiles.Type.Exit){
+    if (player.getLocation().getType() == Tile.Type.Exit){
       board.setNextLevel();
       player = new Player(board.getPlayerLocation());
     }
 
-    if (player.getLocation().getType() == Tiles.Type.InfoField){
+    if (player.getLocation().getType() == Tile.Type.InfoField){
       //gui.displayInfoTile(player.getLocation());
     }
 
@@ -267,7 +263,7 @@ public class ChapsChallenge {
    *
    * @return Stream of tiles to be drawn
    */
-  public Stream<Tiles> getTilesToRender() {
+  public Stream<Tile> getTilesToRender() {
     return board.getStream(player.getLocation());
   }
 

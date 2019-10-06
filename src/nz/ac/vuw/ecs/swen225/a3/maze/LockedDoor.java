@@ -1,7 +1,5 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
-import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
-
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
@@ -10,7 +8,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 
-public class LockedDoor extends Tiles {
+public class LockedDoor extends Tile {
   private String colour;
 
 
@@ -74,7 +72,7 @@ public class LockedDoor extends Tiles {
   }
 
   @Override
-  public Tiles setTileFromJson(JsonReader json) {
+  public Tile setTileFromJson(JsonReader json) {
     JsonObject tile = json.readObject();
     isAccessible = tile.getBoolean("isAccessible");
     setRow(tile.getInt("row"));

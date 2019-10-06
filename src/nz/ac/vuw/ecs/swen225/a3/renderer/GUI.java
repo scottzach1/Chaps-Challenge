@@ -1,8 +1,7 @@
 package nz.ac.vuw.ecs.swen225.a3.renderer;
 
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
-import nz.ac.vuw.ecs.swen225.a3.maze.Tiles;
-import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
+import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
 
 import javax.swing.*;
 import java.awt.*;
@@ -316,25 +315,25 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
      */
     // Move Up
     if ((activeKeys.contains(KeyEvent.VK_UP) || activeKeys.contains(KeyEvent.VK_W)) && activeKeys.size() == 1 && !lastMove.equals("UP")) {
-      application.move(Tiles.Direction.Up);
+      application.move(Tile.Direction.Up);
       lastMove = "UP";
       updateBoard();
     }
     // Move Down
     if ((activeKeys.contains(KeyEvent.VK_DOWN) || activeKeys.contains(KeyEvent.VK_S)) && activeKeys.size() == 1  && !lastMove.equals("DOWN")) {
-      application.move(Tiles.Direction.Down);
+      application.move(Tile.Direction.Down);
       lastMove = "DOWN";
       updateBoard();
     }
     // Move Left
     if ((activeKeys.contains(KeyEvent.VK_LEFT) || activeKeys.contains(KeyEvent.VK_A)) && activeKeys.size() == 1 && !lastMove.equals("LEFT")) {
-      application.move(Tiles.Direction.Left);
+      application.move(Tile.Direction.Left);
       lastMove = "LEFT";
       updateBoard();
     }
     // Move Right
     if ((activeKeys.contains(KeyEvent.VK_RIGHT) || activeKeys.contains(KeyEvent.VK_D)) && activeKeys.size() == 1  && !lastMove.equals("RIGHT")) {
-      application.move(Tiles.Direction.Right);
+      application.move(Tile.Direction.Right);
       lastMove = "RIGHT";
       updateBoard();
     }

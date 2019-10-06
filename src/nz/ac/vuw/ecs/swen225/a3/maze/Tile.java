@@ -1,19 +1,10 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
-import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
-
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
-import javax.json.stream.JsonParsingException;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Tiles {
+public abstract class Tile {
 
   public enum Type{
     Free, Treasure, Exit, ExitLock, InfoField, Key, LockedDoor, Wall
@@ -26,11 +17,11 @@ public abstract class Tiles {
   String imageUrl;
   String defaultImageUrl;
 
-  public Tiles(Type t){
+  public Tile(Type t){
     type = t;
   }
 
-  public Tiles(){};
+  public Tile(){};
 
   public int getRow() {
     return row;
@@ -81,14 +72,14 @@ public abstract class Tiles {
     Left, Right, Up, Down
   }
 
-  List<Tiles> adjacent = new ArrayList<>();
+  List<Tile> adjacent = new ArrayList<>();
 
   /**
    * Gets the tile to the left.
    *
    * @return left of tile.
    */
-  public Tiles getLeft() {
+  public Tile getLeft() {
     return adjacent.get(Direction.Left.ordinal());
   }
 
@@ -97,7 +88,7 @@ public abstract class Tiles {
    *
    * @return right of tile.
    */
-  public Tiles getRight() {
+  public Tile getRight() {
     return adjacent.get(Direction.Right.ordinal());
   }
 
@@ -107,7 +98,7 @@ public abstract class Tiles {
    *
    * @return up of tile.
    */
-  public Tiles getUp() {
+  public Tile getUp() {
     return adjacent.get(Direction.Up.ordinal());
   }
 
@@ -116,7 +107,7 @@ public abstract class Tiles {
    *
    * @return down of tile.
    */
-  public Tiles getDown() {
+  public Tile getDown() {
     return adjacent.get(Direction.Down.ordinal());
   }
 
@@ -141,7 +132,7 @@ public abstract class Tiles {
   /**
    * Set tile properties from json.
    */
-  public abstract Tiles setTileFromJson(JsonReader json);
+  public abstract Tile setTileFromJson(JsonReader json);
 
   public void setTileUnoccupied() {
     imageUrl = defaultImageUrl;
