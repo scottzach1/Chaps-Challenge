@@ -41,6 +41,7 @@ public abstract class Tile {
     }
   }
 
+  boolean isOccupied;
   boolean isAccessible;
   private int row;
   private int col;
@@ -48,6 +49,22 @@ public abstract class Tile {
   String imageUrl;
   String defaultImageUrl;
   List<Tile> adjacent = new ArrayList<>();
+
+  /**
+   * Sets boolean representing whether the tile is occupied.
+   * A cell is occupied if it has a mob on it.
+   * @param occupied tile is occupied by mob.
+   */
+  public void setOccupied(boolean occupied) {
+    this.isOccupied = occupied;
+  }
+
+  /**
+   * Returns a boolean representing whether the tile is occupied.
+   * A cell is occupied if it has a mob on it.
+   * @return boolean tile is occupied by mob.
+   */
+  public boolean isOccupied() { return isOccupied; }
 
   public Tile(Type t){
     type = t;

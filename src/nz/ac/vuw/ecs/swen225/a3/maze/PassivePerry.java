@@ -3,7 +3,7 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Bandit extends Mob {
+public class PassivePerry extends Mob {
 
   private Tile.Direction direction;
   private Map<Tile.Direction, String> images;
@@ -11,9 +11,9 @@ public class Bandit extends Mob {
   /**
    * Creates new Bandit mob.
    */
-  public Bandit() {
+  public PassivePerry() {
     setImageUrl("chap_front.png");
-    setMobName("Bandit");
+    setMobName("Passive Perry");
 
     direction = Tile.Direction.Down;
 
@@ -57,7 +57,8 @@ public class Bandit extends Mob {
       target = getHost().getDir(targDirection);
     }
 
-    if (target.getType() != Tile.Type.Free) advanceByTick();
+    if (target.getType() != Tile.Type.Free && !target.isOccupied())
+      advanceByTick();
     else {
       direction = targDirection;
       setImageUrl(images.get(direction));

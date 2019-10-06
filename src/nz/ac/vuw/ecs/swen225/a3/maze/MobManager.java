@@ -17,9 +17,14 @@ public class MobManager {
     // TODO: This shouldn't take board in the future.
     this.board = board;
     this.mobs = new HashSet<>();
-    Mob bandit = new Bandit();
-    bandit.occupyHost(board.getTile(7,7));
-    addMob(bandit);
+
+    Mob perryOne = new PassivePerry();
+    perryOne.occupyHost(board.getTile(7,7));
+    addMob(perryOne);
+
+    Mob perryTwo = new PassivePerry();
+    perryTwo.occupyHost(board.getTile(11,11));
+    addMob(perryTwo);
   }
 
   /**

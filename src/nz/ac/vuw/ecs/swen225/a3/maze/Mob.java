@@ -49,14 +49,16 @@ public abstract class Mob {
     // Reset old host.
     if (host != null) {
       host.setTileUnoccupied();
+      host.setOccupied(false);
     }
 
     // Set new host.
     host = target;
 
-    if (target != null)
+    if (target != null) {
       target.setTileOccupied(target.getImageUrl() + "-" + imageUrl);
-
+      target.setOccupied(true);
+    }
     active = target != null;
   }
 
