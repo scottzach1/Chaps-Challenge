@@ -1,14 +1,27 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Bandit extends Mob {
 
-  Tile.Direction direction = Tile.Direction.Down;
+  private Tile.Direction direction;
+  private Map<Tile.Direction, String> images;
 
   /**
    * Creates new Bandit mob.
    */
   public Bandit() {
-    setImageUrl("Bandit");
+    setImageUrl("chap_front.png");
+    setMobName("Bandit");
+
+    direction = Tile.Direction.Down;
+
+    images = new HashMap<>();
+    images.put(Tile.Direction.Down, "chap_front.png");
+    images.put(Tile.Direction.Left, "chap_left.png");
+    images.put(Tile.Direction.Up, "chap_up.png");
+    images.put(Tile.Direction.Right, "chap_right.png");
   }
 
   @Override
@@ -18,20 +31,21 @@ public class Bandit extends Mob {
     final double seed = Math.random();
 
     Tile target;
+    Tile.Direction targDirection = direction;
 
     // 50% Chance continue straight.
     if (seed <= 0.50) {
-      target = getHost().getDir(direction);
+      target = getHost().getDir(targDirection);
     }
     // 15% Chance CW
-    if (seed <= 0.65) {
-      direction = direction.clockWise();
-      target = getHost().getDir(direction);
+    else if (seed <= 0.65) {
+      targDirection = targDirection.clockWise();
+      target = getHost().getDir(targDirection);
     }
     // 15% Chance ACW
     else if (seed <= 0.80) {
-      direction = direction.clockWise();
-      target = getHost().getDir(direction);
+      targDirection = targDirection.clockWise();
+      target = getHost().getDir(targDirection);
     }
     // 15% Chance Don't move
     else if (seed <= 0.95) {
@@ -39,10 +53,14 @@ public class Bandit extends Mob {
     }
     // 5% Chance Move backwards.
     else {
-      direction = direction.reverse();
-      target = getHost().getDir(direction);
+      targDirection = targDirection.reverse();
+      target = getHost().getDir(targDirection);
     }
 
-    occupyHost(target);
+    if (target.getType() != Tile.Type.Free) advanceByTick();
+    else {
+      setImageUrl(images.get(direction));
+      occupyHost(target);
+    }
   }
 }

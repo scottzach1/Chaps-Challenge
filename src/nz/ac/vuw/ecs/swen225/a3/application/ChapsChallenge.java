@@ -1,6 +1,7 @@
 package nz.ac.vuw.ecs.swen225.a3.application;
 
 import nz.ac.vuw.ecs.swen225.a3.maze.Board;
+import nz.ac.vuw.ecs.swen225.a3.maze.MobManager;
 import nz.ac.vuw.ecs.swen225.a3.maze.Player;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
 import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
@@ -44,12 +45,17 @@ public class ChapsChallenge {
 
   private Thread thread;
 
+  private MobManager mobManager;
+
   /**
    * Create main game application.
    */
   public ChapsChallenge() {
     // Load the board.
     board = new Board();
+
+    mobManager = new MobManager(board);
+
     player = new Player(board.getPlayerLocation());
     startTime = System.currentTimeMillis();
 
@@ -204,6 +210,8 @@ public class ChapsChallenge {
       public void run() {
         while (true) {
           if (!gamePaused) {
+//            mobManager.advanceByOneTick();
+//            gui.updateBoard();
             gui.updateDashboard();
             try {
               if (timeLeft > 0)

@@ -8,13 +8,31 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
 public abstract class Mob {
 
   private String imageUrl = "unknown.png";
+  private String mobName = "Unnamed Mob.";
   private Tile host;
+  private boolean active;
 
   /**
-   * @param newImageUrl
+   * @param newMobName new name of mob.
+   */
+  public void setMobName(String newMobName) {
+    mobName = newMobName;
+  }
+
+  /**
+   * @param newImageUrl new filename of mob image.
    */
   public void setImageUrl(String newImageUrl) {
     imageUrl = newImageUrl;
+  }
+
+  /**
+   * Sets the active state of the mob.
+   * Will not change if mob has no host.
+   * @param active state of mob.
+   */
+  public void setActive(boolean active) {
+    if (host != null) this.active = active;
   }
 
   /**
@@ -37,7 +55,9 @@ public abstract class Mob {
     host = target;
 
     if (target != null)
-      target.setTileOccupied(imageUrl);
+      target.setTileOccupied(target.getImageUrl() + "-" + imageUrl);
+
+    active = target != null;
   }
 
   /**
@@ -45,6 +65,7 @@ public abstract class Mob {
    */
   public void leaveHost() {
     occupyHost(null);
+    active = false;
   }
 
   /**

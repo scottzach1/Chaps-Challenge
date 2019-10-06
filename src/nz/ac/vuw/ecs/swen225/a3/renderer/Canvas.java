@@ -15,9 +15,6 @@ import java.util.stream.Collectors;
  */
 public class Canvas extends JPanel implements ComponentListener {
 
-  /**
-   * Constructor: Creates and initializes canvas to the correct size.
-   */
   public final static int VIEW_SIZE = 9;
 
   private ArrayList<Component> components = new ArrayList<>();
@@ -25,7 +22,8 @@ public class Canvas extends JPanel implements ComponentListener {
   private ChapsChallenge application;
 
   /**
-   * Constructor: Initializes local variable then renders the board.
+   * Constructor: Creates and initializes canvas to the correct size
+   * Then renders the board.
    */
   Canvas(ChapsChallenge app) {
 
@@ -45,7 +43,7 @@ public class Canvas extends JPanel implements ComponentListener {
    * in final product.
    * Renders the board stored in application on the  canvas.
    */
-  public void renderBoard() {
+  public void renderCanvas() {
     // Clear components.
     components.clear();
     removeAll();
@@ -96,7 +94,7 @@ public class Canvas extends JPanel implements ComponentListener {
     int cellSize = Math.min(getWidth(), getHeight()) / VIEW_SIZE;
     AssetManager.scaleImages(cellSize);
 
-    renderBoard();
+    renderCanvas();
     repaint();
   }
 
