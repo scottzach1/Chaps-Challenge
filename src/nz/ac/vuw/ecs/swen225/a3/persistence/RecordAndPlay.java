@@ -17,6 +17,12 @@ public class RecordAndPlay {
   private static String gameState;
   private static boolean isRecording;
 
+  public void setDelay(long delay) {
+    this.delay = delay;
+  }
+
+  private static long delay = 200;
+
 
   public static boolean getIsRunning() {
     return isRunning;
@@ -133,6 +139,23 @@ public class RecordAndPlay {
       if(moves.size() == 0) isRunning = false;
       game.update();
     }
+  }
+
+  public static void run(ChapsChallenge game){
+    Runnable runnable = () -> {
+      while(moves.size() > 0 && isRunning) {
+        try {
+          game.move(moves.get(0));
+          moves.remove(0);
+          game.update();
+          Thread.sleep(delay);
+        }
+        catch(InterruptedException e){}
+      }
+      isRunning = false;
+    };
+    Thread thread = new Thread(runnable);
+    thread.start();
   }
 
   /**

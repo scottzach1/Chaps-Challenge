@@ -53,7 +53,7 @@ class MenuOptions extends JMenuBar {
     game.add(pauseItem);
 
     //Create Recording dropdown
-    JMenu recording = new JMenu("Recording");
+    JMenu recording = new JMenu("Recording Options");
 
     // Create the startRecording level button
     JMenuItem startRecording = new JMenuItem("Start Recording");
@@ -75,10 +75,15 @@ class MenuOptions extends JMenuBar {
     JMenuItem step = new JMenuItem("Step Recording");
     step.addActionListener(arg0 -> RecordAndPlay.step(application));
 
+    // Create playback button
+    JMenuItem playback = new JMenuItem("Playback Recording");
+    playback.addActionListener(arg0 -> RecordAndPlay.run(application));
+
     // Add components
     add(file);
     add(game);
     add(recording);
     add(step);
+    add(playback);
   }
 }
