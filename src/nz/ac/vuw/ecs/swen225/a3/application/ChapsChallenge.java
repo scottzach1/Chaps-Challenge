@@ -184,7 +184,7 @@ public class ChapsChallenge {
       resetLogistics();
 
     }
-    gamePaused = false;
+    resumeGame();
   }
 
   /**
@@ -220,8 +220,7 @@ public class ChapsChallenge {
   }
 
   private void timeOut() {
-    //gui.timeOut();
-    gameOver();
+    gameOver("Timed Out!");
   }
 
   /**
@@ -364,19 +363,12 @@ public class ChapsChallenge {
     return player;
   }
 
-  /**
-   * Loads the game over screen.
-   */
-  private void gameOver() {
-    //gui.gameOver(); //todo Front end implement
+  private void gameOver(String reason) {
+    gui.gameOver(reason);
+    exitGame();
   }
-
-  /**
-   * Loads the game end screen.
-   * For winning.
-   */
   private void gameEnd() {
-    //gui.endGame(); //todo front end implement
+    gui.endGame();
   }
 
   /**
