@@ -81,8 +81,8 @@ public class ChapsChallenge {
       return; //invalid move
     }
     if (nextLocation.isOccupied()) { // stepped on a mob
-      System.out.println("MOBOBOMOBOBOB");
       restartLevel();
+      return;
     }
     currentLocation.setTileUnoccupied();
     nextLocation.setTileOccupied("chap_front.png");
@@ -106,8 +106,7 @@ public class ChapsChallenge {
 
     if (player.getLocation().getType() == Tile.Type.InfoField){
       InfoField info = (InfoField) player.getLocation();
-
-      //gui.renderInfoField(info.getInfo()); 
+      //gui.renderInfoField(info.getInfo());
     }
 
   }
@@ -178,8 +177,7 @@ public class ChapsChallenge {
    */
   public void restartGame() {
     board.setCurrentLevel(0);
-    player = new Player(board.getPlayerLocation());
-    resetTimer();
+    resetLogistics();
 
     gui.restartGame();
   }
@@ -196,9 +194,7 @@ public class ChapsChallenge {
     else{
       board.setCurrentLevel(0);
     }
-
-    player = new Player(board.getPlayerLocation());
-    resetTimer();
+    resetLogistics();
     gui.previousLevel();
 
   }
@@ -206,8 +202,7 @@ public class ChapsChallenge {
   public void restartLevel(){
     int current = board.getCurrentLevel();
     board.setCurrentLevel(current);
-    player = new Player(board.getPlayerLocation());
-    resetTimer();
+    resetLogistics();
   }
 
   /**
@@ -332,7 +327,7 @@ public class ChapsChallenge {
   public void setCustomLevel(String level){
     board.setLevel(level);
     player = new Player(board.getPlayerLocation());
-    resetTimer();
+    resetLogistics();
   }
 
   /**
@@ -385,9 +380,11 @@ public class ChapsChallenge {
     gui.updateBoard();
   }
 
-  private void resetTimer() {
+  private void resetLogistics() {
     timeLeft = totalTime;
     startTime = System.currentTimeMillis();
+    mobManager = new MobManager(board);
+    player = new Player(board.getPlayerLocation());
   }
 
   public void setBoard(Board board) {
