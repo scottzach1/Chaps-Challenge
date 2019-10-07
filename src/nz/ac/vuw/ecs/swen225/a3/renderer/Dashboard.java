@@ -199,7 +199,7 @@ public class Dashboard extends JPanel {
       return;
     }
 
-    levelNum.setText(chapsChallenge.getLevel() + "");
+    levelNum.setText((chapsChallenge.getLevel() + 1) + "");
     timeNum.setText(chapsChallenge.timeLeft() + "");
     chipsLeftNum.setText((chapsChallenge.getTotalTreasures() - chapsChallenge.getTreasures()) + "");
 
