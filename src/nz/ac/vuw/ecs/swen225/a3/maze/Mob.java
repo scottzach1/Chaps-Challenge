@@ -84,6 +84,10 @@ public abstract class Mob {
 
   public abstract void setMobFromJson(JsonReader json);
 
+  /**
+   * Set host of this mob.
+   * @param t Tile to set as host
+   */
   public void setHost(Tile t){
     host = t;
   }

@@ -189,12 +189,12 @@ public class JsonReadWrite {
 
     b.setupAdjacency();
 
+    // Ensure mobs are using correct tiles from board
     for(Mob m : mobs){
       m.setHost(b.getTile(m.getHost().getRow(),m.getHost().getCol()));
     }
 
-
-
+    // Set game properties
     g.setBoard(b);
     g.setTimeLeft(timeLeft);
     g.setPlayer(p);
