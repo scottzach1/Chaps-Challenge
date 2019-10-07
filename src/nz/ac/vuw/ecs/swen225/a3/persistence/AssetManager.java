@@ -18,7 +18,7 @@ public class AssetManager {
   private static String assetPath = "assets/";
   private static boolean loaded = false;
 
-  private static boolean activeScaling = false;
+  private static boolean scaling = false;
 
   /**
    * Private static fields to store important GUI data.
@@ -50,8 +50,7 @@ public class AssetManager {
    */
   private static void loadAsset(String fname) {
     // Load unknown asset if first run.
-    if (!loaded) {
-      loaded = true;
+    if (loaded != (loaded = true)) {
       loadAsset("unknown.png");
     }
 
@@ -66,10 +65,12 @@ public class AssetManager {
     }
 
     // Load scaled image.
-    ImageIcon scaledIcon = new ImageIcon(
-        baseIcon.getImage().
-            getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH));
+    ImageIcon scaledIcon = new ImageIcon(baseIcon.getImage().
+              getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH));
+
     scaledIcon.setDescription(baseIcon.getDescription());
+
+    if (scaledIcon.getIconHeight() == 0) System.out.println("Oh no s!");
 
     baseImageIcons.put(fname, baseIcon);
     scaledImageIcons.put(fname, scaledIcon);
@@ -81,8 +82,9 @@ public class AssetManager {
    * @param newCellSize Cell size.
    */
   public static void scaleImages(int newCellSize) {
-    if (!activeScaling) {
-      activeScaling = true;
+    if (newCellSize == 0) return;
+
+    if (scaling != (scaling = true)) {
       cellSize = newCellSize;
       for (String key : baseImageIcons.keySet()) {
         ImageIcon baseImage = baseImageIcons.get(key);
@@ -92,7 +94,7 @@ public class AssetManager {
         scaledImageIcons.put(key, scaledIcon);
       }
 
-      activeScaling = false;
+      scaling = false;
     }
   }
 
