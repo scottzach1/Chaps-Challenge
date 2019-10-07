@@ -45,11 +45,10 @@ public class MobManager {
     perryTwo.occupyHost(board.getTile(11,11));
     addMob(perryTwo);
 
-//    Mob sneakySnek = new SneakySnek();
-//    sneakySnek.occupyHost(board.getTile(19, 19));
-//    sneakySnek.setBoard(board);
-//    sneakySnek.setPlayer(player);
-//    addMob(sneakySnek);
+    Mob sneakySnek = new SneakySnek();
+    sneakySnek.occupyHost(board.getTile(19, 19));
+    sneakySnek.setBoard(board);
+    addMob(sneakySnek);
   }
 
   /**

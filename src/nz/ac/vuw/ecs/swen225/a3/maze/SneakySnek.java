@@ -14,22 +14,92 @@ import java.util.Map;
 
 public class SneakySnek extends Mob {
 
+  /**
+   * Creates new Sneaky Snake mob.
+   */
   public SneakySnek() {
     setImageUrl("snek_front.png");
     setMobName("Sneaky Snek");
 
     direction = Tile.Direction.Down;
 
-    images = new HashMap<>();
     images.put(Tile.Direction.Down, "snek_front.png");
     images.put(Tile.Direction.Left, "snek_left.png");
     images.put(Tile.Direction.Up, "snek_back.png");
     images.put(Tile.Direction.Right, "snek_right.png");
+
+    safeTiles.clear();
+    safeTiles.add(Tile.Type.Water);
   }
 
   @Override
   public void advanceByTick() {
     if (getHost() == null) return;
+
+    // If player exists, calculate targeting ai.
+    if (board != null && board.getPlayerLocation() != null) {
+      Tile player = board.getPlayerLocation();
+
+      Tile target = host;
+
+      double distance = host.getDistance(player);
+      boolean foundTarget;
+
+      // If player within 5 tiles, approach player.
+      if (distance < 5) {
+
+        // Calculate move to right.
+        if (host.getCol() < player.getCol()) {
+          Tile newTarget = host.getDir(Tile.Direction.Right);
+          foundTarget = safeTiles.contains(target.getType());
+          double newDistance = newTarget.getDistance(player);
+          if (foundTarget && newDistance <= distance) {
+            target = newTarget;
+            distance = newDistance;
+          }
+        }
+
+        // Calculate move up.
+        if (host.getRow() > player.getRow()) {
+          Tile newTarget = host.getDir(Tile.Direction.Up);
+          foundTarget = safeTiles.contains(target.getType());
+          double newDistance = newTarget.getDistance(player);
+          if (foundTarget && newDistance <= distance) {
+            target = newTarget;
+            distance = newDistance;
+          }
+        }
+
+        // Calculate move to left.
+        if (host.getCol() > player.getCol()) {
+          Tile newTarget = host.getDir(Tile.Direction.Left);
+          foundTarget = safeTiles.contains(target.getType());
+          double newDistance = newTarget.getDistance(player);
+          if (foundTarget && newDistance <= distance) {
+            target = newTarget;
+            distance = newDistance;
+          }
+        }
+
+        // Calculate move down.
+        if (host.getRow() < player.getRow()) {
+          Tile newTarget = host.getDir(Tile.Direction.Down);
+          foundTarget = safeTiles.contains(target.getType());
+          double newDistance = newTarget.getDistance(player);
+          if (foundTarget && newDistance <= distance) {
+            target = newTarget;
+            distance = newDistance;
+          }
+        }
+
+        // Occupy cell.
+        setImageUrl(images.get(direction));
+        occupyHost(target);
+      }
+    }
+
+    // Otherwise, revert to default path finding.
+    super.advanceByTick();
   }
 
   /**

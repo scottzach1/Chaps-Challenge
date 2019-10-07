@@ -1,7 +1,11 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
 import javax.json.JsonReader;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Mob are NPCs in the game that move and interact without any input from the user.
@@ -10,25 +14,31 @@ import java.util.Map;
  */
 public abstract class Mob {
 
-  protected String imageUrl = "unknown.png";
-  protected String mobName = "Unnamed Mob.";
-  protected Tile host;
-  protected boolean active;
-  protected Tile.Direction direction;
-  protected Map<Tile.Direction, String> images;
+  String imageUrl = "unknown.png";
+  String mobName = "Unnamed Mob.";
+  Tile host;
+  boolean active;
+  Tile.Direction direction;
+  Map<Tile.Direction, String> images = new HashMap<>();
+  Set<Tile.Type> safeTiles = new HashSet<>(Arrays.asList(Tile.Type.Free));
   Board board;
-  Player player;
 
 
-  public void setBoard(Board board) {
+  /**
+   * Sets the board for the mob. Handled by the MobManager.
+   * Not all mobs needs this, can't be done at creation.
+   *
+   * @param board to set.
+   */
+  void setBoard(Board board) {
     this.board = board;
   }
 
-  public void setPlayer(Player player) {
-    this.player = player;
-  }
-
-  public void setMobName(String name) {
+  /**
+   * Sets the name of the mob. Handled by concrete sub-class.
+   * @param name to set.
+   */
+  void setMobName(String name) {
     mobName = name;
   }
 
@@ -71,12 +81,12 @@ public abstract class Mob {
     do {
       if (--remaining < 0) {
         remaining = getNextSeed();
-        direction = getNextDirection(remaining, seedCol, seedRow);
+        direction = getNextDirection();
       }
 
       target = host.getDir(direction);
 
-    } while (target.getType() != Tile.Type.Free);
+    } while (!safeTiles.contains(target.getType()));
 
     setImageUrl(images.get(direction));
     occupyHost(target);
@@ -134,7 +144,11 @@ public abstract class Mob {
     host = t;
   }
 
-  final String[] seed = new String[]{
+
+  /**
+   * Seed used for pseudo-random behaviour.
+   */
+  private final String[] seed = new String[]{
       "351567484564846135285846541156461354156163153324856515",
       "351358563565415134691316431343415641651521354516135354",
       "612825353486541354564825865453464651325463548654153413",
@@ -153,7 +167,12 @@ public abstract class Mob {
   int seedRow = 0;
   int seedCol = 0;
 
-  int getNextSeed() {
+  /**
+   * Gets next seed based off indexes.
+   * Seed indexes automatically increment.
+   * @return next pseudo-random number. [0-9].
+   */
+  private int getNextSeed() {
     ++seedCol;
 
     if (seedCol == seed[seedRow].length())
@@ -162,7 +181,11 @@ public abstract class Mob {
     return seed[seedRow].charAt(seedCol) - '0';
   }
 
-  Tile.Direction getNextDirection(int remaining, int seedCol, int seedRow) {
+  /**
+   * Gets next pseudo-random direction based off seed and indexes.
+   * @return pseudo-random direction.
+   */
+  private Tile.Direction getNextDirection() {
     int seed = getNextSeed();
     // Less than 3 straight.
     if (seed <= 2) return direction;
