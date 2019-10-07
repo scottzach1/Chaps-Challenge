@@ -36,43 +36,14 @@ public class PassivePerry extends Mob {
   @Override
   public void advanceByTick() {
     if (getHost() == null) return;
-
-    final double seed = Math.random();
-
-    Tile target;
-    Tile.Direction targDirection = direction;
-
-    // 50% Chance continue straight.
-    if (seed <= 0.50) {
-      target = getHost().getDir(targDirection);
+    Tile target = null;
+    while(target == null){
+      Tile next = host.getDir(direction);
+      target = next.getType() == Tile.Type.Free && next.getIsAccessible() ? next : null;
+      if(target == null) direction = direction.clockWise();
     }
-    // 15% Chance CW
-    else if (seed <= 0.65) {
-      targDirection = targDirection.clockWise();
-      target = getHost().getDir(targDirection);
-    }
-    // 15% Chance ACW
-    else if (seed <= 0.80) {
-      targDirection = targDirection.clockWise();
-      target = getHost().getDir(targDirection);
-    }
-    // 15% Chance Don't move
-    else if (seed <= 0.95) {
-      target = getHost();
-    }
-    // 5% Chance Move backwards.
-    else {
-      targDirection = targDirection.reverse();
-      target = getHost().getDir(targDirection);
-    }
-
-    if (target.getType() != Tile.Type.Free && !target.isOccupied())
-      advanceByTick();
-    else {
-      direction = targDirection;
-      setImageUrl(images.get(direction));
-      occupyHost(target);
-    }
+    setImageUrl(images.get(direction));
+    occupyHost(target);
   }
 
   /**

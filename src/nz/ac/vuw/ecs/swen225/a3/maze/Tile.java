@@ -70,6 +70,7 @@ public abstract class Tile {
    */
   void setOccupied(boolean occupied) {
     this.isOccupied = occupied;
+    isAccessible = !occupied;
   }
 
   /**
