@@ -140,6 +140,7 @@ public class ChapsChallenge {
    */
   public void resumeGame() {
     gamePaused = false;
+    gui.resumeGame();
     runningThread();
     startTime = System.currentTimeMillis();
   }

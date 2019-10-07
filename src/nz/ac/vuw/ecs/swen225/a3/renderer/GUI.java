@@ -122,8 +122,11 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
    * the game.
    */
   public void pauseGame() {
-    new PauseAction("Pause", this, application)
-        .actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null));
+    // TODO: Implement this correctly.
+  }
+
+  public void resumeGame() {
+    // TODO: Implement this correctly.
   }
 
   /**
