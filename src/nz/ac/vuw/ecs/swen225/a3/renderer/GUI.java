@@ -236,6 +236,16 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
   }
 
 
+  public void gameOver(String reason){
+
+  }
+
+
+  public void endGame(){
+
+  }
+
+
   /**
    * Resize dimensions and redraw window on
    * screen resize.
@@ -319,10 +329,6 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     // CTRL + L
     if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_L) && activeKeys.size() == 2) {
       application.loadGame();
-    }
-    // CTRL + R
-    if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_R) && activeKeys.size() == 2) {
-      // TODO: Resume a saved game
     }
     // CTRL + P
     if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_P) && activeKeys.size() == 2) {
