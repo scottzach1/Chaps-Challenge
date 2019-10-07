@@ -355,11 +355,17 @@ public class ChapsChallenge {
     return player;
   }
 
+  /**
+   * Loads the game over screen.
+   */
   private void gameOver() {
     //gui.gameOver(); //todo Front end implement
-    exitGame();
   }
 
+  /**
+   * Loads the game end screen.
+   * For winning.
+   */
   private void gameEnd() {
     //gui.endGame(); //todo front end implement
   }
@@ -380,6 +386,12 @@ public class ChapsChallenge {
     gui.updateBoard();
   }
 
+  /**
+   * Resets the logistics of the game.
+   * Resets timer.
+   * Makes a new Mob manager.
+   * Makes a new Player.
+   */
   private void resetLogistics() {
     timeLeft = totalTime;
     startTime = System.currentTimeMillis();
@@ -387,18 +399,35 @@ public class ChapsChallenge {
     player = new Player(board.getPlayerLocation());
   }
 
+  /**
+   * Sets the current board to a new board.
+   *
+   * @param board the new board.
+   */
   public void setBoard(Board board) {
     this.board = board;
   }
 
+  /**
+   * Sets the time left.
+   * @param timeLeft the time left.
+   */
   public void setTimeLeft(long timeLeft) {
     this.timeLeft = timeLeft;
   }
 
+  /**
+   * Gets the mob manager.
+   * @return the mob manager.
+   */
   public MobManager getMobManager() {
     return mobManager;
   }
 
+  /**
+   * Sets the player to a new player.
+   * @param player the player to set.
+   */
   public void setPlayer(Player player) {
     this.player = player;
   }
