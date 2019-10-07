@@ -154,7 +154,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
   }
 
 
-  public void noFileFound(){
+  public void noFileFound() {
 
   }
 
@@ -316,7 +316,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
       application.exitGame();
     }
     // CTRL + L
-    if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_S) && activeKeys.size() == 2) {
+    if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_L) && activeKeys.size() == 2) {
       application.loadGame();
     }
     // CTRL + R

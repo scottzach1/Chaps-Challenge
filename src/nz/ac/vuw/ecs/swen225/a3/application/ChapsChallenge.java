@@ -84,8 +84,8 @@ public class ChapsChallenge {
       return; //invalid move
     }
     if (nextLocation.isOccupied()) { // stepped on a mob
-      System.out.println("MOBOBOMOBOBOB");
       restartLevel();
+      return;
     }
     currentLocation.setTileUnoccupied();
     nextLocation.setTileOccupied("chap_front.png");
@@ -109,8 +109,7 @@ public class ChapsChallenge {
 
     if (player.getLocation().getType() == Tile.Type.InfoField){
       InfoField info = (InfoField) player.getLocation();
-
-      //gui.renderInfoField(info.getInfo()); 
+      gui.renderInfoField(info.getInfo());
     }
 
   }
@@ -182,7 +181,8 @@ public class ChapsChallenge {
     gamePaused = true;
     if (gui.restartGame()) {
       board.setCurrentLevel(0);
-      player = new Player(board.getPlayerLocation());
+      resetLogistics();
+
     }
     gamePaused = false;
   }
@@ -198,9 +198,7 @@ public class ChapsChallenge {
     } else {
       board.setCurrentLevel(0);
     }
-
-    player = new Player(board.getPlayerLocation());
-    resetTimer();
+    resetLogistics();
     gui.previousLevel();
 
   }
@@ -208,8 +206,7 @@ public class ChapsChallenge {
   public void restartLevel() {
     int current = board.getCurrentLevel();
     board.setCurrentLevel(current);
-    player = new Player(board.getPlayerLocation());
-    resetTimer();
+    resetLogistics();
   }
 
   /**
@@ -337,7 +334,7 @@ public class ChapsChallenge {
   public void setCustomLevel(String level) {
     board.setLevel(level);
     player = new Player(board.getPlayerLocation());
-    resetTimer();
+    resetLogistics();
   }
 
   /**
@@ -367,11 +364,17 @@ public class ChapsChallenge {
     return player;
   }
 
+  /**
+   * Loads the game over screen.
+   */
   private void gameOver() {
     //gui.gameOver(); //todo Front end implement
-    exitGame();
   }
 
+  /**
+   * Loads the game end screen.
+   * For winning.
+   */
   private void gameEnd() {
     //gui.endGame(); //todo front end implement
   }
@@ -408,23 +411,48 @@ public class ChapsChallenge {
     gui.updateBoard();
   }
 
-  private void resetTimer() {
+  /**
+   * Resets the logistics of the game.
+   * Resets timer.
+   * Makes a new Mob manager.
+   * Makes a new Player.
+   */
+  private void resetLogistics() {
     timeLeft = totalTime;
     startTime = System.currentTimeMillis();
+    mobManager = new MobManager(board);
+    player = new Player(board.getPlayerLocation());
   }
 
+  /**
+   * Sets the current board to a new board.
+   *
+   * @param board the new board.
+   */
   public void setBoard(Board board) {
     this.board = board;
   }
 
+  /**
+   * Sets the time left.
+   * @param timeLeft the time left.
+   */
   public void setTimeLeft(long timeLeft) {
     this.timeLeft = timeLeft;
   }
 
+  /**
+   * Gets the mob manager.
+   * @return the mob manager.
+   */
   public MobManager getMobManager() {
     return mobManager;
   }
 
+  /**
+   * Sets the player to a new player.
+   * @param player the player to set.
+   */
   public void setPlayer(Player player) {
     this.player = player;
   }
