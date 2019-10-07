@@ -368,6 +368,7 @@ public class ChapsChallenge {
     gui.gameOver(reason);
     exitGame();
   }
+
   private void gameEnd() {
     gui.endGame();
   }

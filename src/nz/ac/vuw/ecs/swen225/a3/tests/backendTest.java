@@ -3,6 +3,8 @@ package nz.ac.vuw.ecs.swen225.a3.tests;
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 import nz.ac.vuw.ecs.swen225.a3.maze.Board;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
+import nz.ac.vuw.ecs.swen225.a3.persistence.GameNotFoundException;
+import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -505,12 +507,12 @@ class backendTest {
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|W|W|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|W|W|_|_|_|_|_|_|_|_|_|_|"
-            + "_|_|_|_|_|_|_|_|F|W|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|W|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|F|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|C|_|_|_|_|_|_|_|_|_|_|_|"
-            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
@@ -521,6 +523,10 @@ class backendTest {
 
     chapsChallenge.setCustomLevel(level);
 
+    chapsChallenge.move(Tile.Direction.Up);
+    chapsChallenge.move(Tile.Direction.Up);
+    chapsChallenge.move(Tile.Direction.Up);
+    chapsChallenge.move(Tile.Direction.Up);
     chapsChallenge.move(Tile.Direction.Up);
     Tile start = chapsChallenge.getPlayer().getLocation();
     chapsChallenge.move(Tile.Direction.Up);
@@ -572,28 +578,37 @@ class backendTest {
 
     chapsChallenge.setCustomLevel(level);
 
-    chapsChallenge.saveGame();
+    JsonReadWrite.saveGameState(chapsChallenge, "saveTest.txt");
     String b=chapsChallenge.getBoard().toString();
     Tile tile = chapsChallenge.getPlayer().getLocation();
 
     chapsChallenge.move(Tile.Direction.Left);
     chapsChallenge.move(Tile.Direction.Left);
 
-    chapsChallenge.loadGame();
+    try {
+      JsonReadWrite.loadGameState("saveTest.txt", chapsChallenge);
+    } catch (GameNotFoundException e) {
+      e.printStackTrace();
+    }
 
     assertEquals(tile.getCol(), chapsChallenge.getPlayer().getLocation().getCol());
     assertEquals(tile.getRow(), chapsChallenge.getPlayer().getLocation().getRow());
   }
 
-
   /**
-   * Checks timeout feature
+   * Tries to load an invalid game.
    */
   @Test
-  void checkTimeout(){
-    //ChapsChallenge chapsChallenge = new ChapsChallenge();
-   // chapsChallenge.timeOut();
-    //todo assert something here
+  void loadGameInvalid() {
+    ChapsChallenge chapsChallenge = new ChapsChallenge();
+    boolean failed = false;
+    try {
+      JsonReadWrite.loadGameState("failed.txt", chapsChallenge);
+    } catch (GameNotFoundException e) {
+      System.out.println(e.getMessage());
+      failed = true;
+    }
+    assertTrue(failed);
   }
 
   /**
@@ -629,6 +644,8 @@ class backendTest {
   void pauseGame(){
     ChapsChallenge chapsChallenge = new ChapsChallenge();
     assertFalse(chapsChallenge.isGamePaused());
+
+    chapsChallenge.pauseGame();
     //todo Front end fix this
   }
 
@@ -644,4 +661,6 @@ class backendTest {
 
     assertEquals(current+1, updated);
   }
+
+
 }
