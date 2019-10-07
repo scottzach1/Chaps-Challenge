@@ -213,23 +213,31 @@ public abstract class Tile {
   /**
    * Checks if the interaction between a character and a tile is valid.
    *
-   * @param p The player
-   * @return if the interaction is valid
+   * @param p The player.
+   * @return if the interaction is valid.
    */
   public abstract boolean interact(Player p);
 
+  /**
+   * Sets the image url to a different image.
+   *
+   * @param fname image to set it to.
+   */
   public void setTileOccupied(String fname) {
     imageUrl = fname;
   }
 
   /**
    * Return json representation of this tile.
+   *
    * @return Json string of tile properties.
    */
   public abstract String getJson();
 
   /**
    * Set tile properties from json.
+   *
+   * @param json the json to read the object from.
    */
   public abstract Tile setTileFromJson(JsonReader json);
 

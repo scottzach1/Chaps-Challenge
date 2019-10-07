@@ -239,6 +239,7 @@ public class ChapsChallenge {
         try {
           Thread.sleep(400);
         } catch (Exception e) {
+          System.out.println("Error while running thread" + e);
         }
 
         gui.componentResized(new ComponentEvent(gui, 1));
@@ -464,6 +465,6 @@ public class ChapsChallenge {
    * @param args main arguments
    */
   public static void main(String[] args) {
-    ChapsChallenge game = new ChapsChallenge();
+    new ChapsChallenge();
   }
 }

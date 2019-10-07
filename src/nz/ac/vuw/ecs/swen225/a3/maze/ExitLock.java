@@ -33,7 +33,12 @@ public class ExitLock extends Tile {
   }
 
 
-  public void setTotalTreasures(int t) {
+  /**
+   * Sets the total number of treasures to the parameter.
+   *
+   * @param t treasures to set.
+   */
+  void setTotalTreasures(int t) {
     totalTreasures = t;
   }
 
@@ -53,6 +58,10 @@ public class ExitLock extends Tile {
     return isAccessible;
   }
 
+  /**
+   * Return json representation of this tile.
+   * @return Json string of tile properties.
+   */
   @Override
   public String getJson() {
     JsonObjectBuilder objectBuilder = Json.createObjectBuilder()
@@ -72,6 +81,11 @@ public class ExitLock extends Tile {
     }catch(IOException e) {throw new Error("Error parsing " + this.toString() + " to json");}
   }
 
+  /**
+   * Set tile properties from json.
+   *
+   * @param json the json to read the object from.
+   */
   @Override
   public Tile setTileFromJson(JsonReader json) {
     JsonObject tile = json.readObject();
