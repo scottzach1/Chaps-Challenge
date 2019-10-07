@@ -60,7 +60,8 @@ public abstract class Mob {
 
   /**
    * Moves the Mob by one Cell.
-   * Needs to be implemented by concrete class.
+   * Default implementation, this can be override
+   * for advanced behaviour.
    */
   public void advanceByTick() {
     if (getHost() == null) return;

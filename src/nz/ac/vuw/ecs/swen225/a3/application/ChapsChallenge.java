@@ -61,7 +61,7 @@ public class ChapsChallenge {
     // Load the board.
     board = new Board();
     player = new Player(board.getPlayerLocation());
-    mobManager = new MobManager(board, player);
+    mobManager = new MobManager(board);
 
     startTime = System.currentTimeMillis();
 
