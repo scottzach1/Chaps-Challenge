@@ -9,6 +9,7 @@ import nz.ac.vuw.ecs.swen225.a3.persistence.RecordAndPlay;
 import nz.ac.vuw.ecs.swen225.a3.renderer.GUI;
 
 import java.awt.event.ComponentEvent;
+import java.io.File;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
@@ -49,6 +50,8 @@ public class ChapsChallenge {
   private Thread thread;
 
   private MobManager mobManager;
+
+  private File saveFile, loadFile;
 
   /**
    * Create main game application.
@@ -162,22 +165,22 @@ public class ChapsChallenge {
     gamePaused = false;
     runningThread();
     startTime = System.currentTimeMillis();
-    gui.resumeGame();
   }
 
   /**
    * Loads the game.
    */
   public void loadGame() {
+    gamePaused = false;
+    gui.loadGame();
     try {
-      //TODO: allow choice of save file
+      //TODO: use the field "loadFile" - a File object
       JsonReadWrite.loadGameState("saveGame.txt", this);
     } catch (Exception e) {
-      //TODO: deal with game not found error
-      System.out.println(e.getMessage());
+      gui.noFileFound();
     }
-    gui.loadGame();
     System.out.println("Game loaded.");
+    resumeGame();
   }
 
   /**
@@ -396,6 +399,21 @@ public class ChapsChallenge {
     return timeLeft;
   }
 
+  public File getSaveFile() {
+    return saveFile;
+  }
+
+  public void setSaveFile(File saveFile) {
+    this.saveFile = saveFile;
+  }
+
+  public File getLoadFile() {
+    return loadFile;
+  }
+
+  public void setLoadFile(File loadFile) {
+    this.loadFile = loadFile;
+  }
 
   /**
    * Update gui.
