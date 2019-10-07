@@ -6,6 +6,23 @@ import java.util.Set;
 public class MobManager {
 
   private Board board;
+
+  /**
+   * Get set of mobs.
+   * @return Mobs set
+   */
+  public Set<Mob> getMobs() {
+    return mobs;
+  }
+
+  /**
+   * Set the collection of mobs.
+   * @param mobs Set to use
+   */
+  public void setMobs(Set<Mob> mobs) {
+    this.mobs = mobs;
+  }
+
   private Set<Mob> mobs;
 
   /**

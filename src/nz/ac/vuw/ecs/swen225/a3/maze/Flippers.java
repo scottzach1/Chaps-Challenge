@@ -12,7 +12,7 @@ public class Flippers extends Tile {
   private boolean collected;
   private int steps = 9;
 
-  Flippers() {
+  public Flippers() {
     super(Type.Flippers);
     isAccessible = true;
     imageUrl = "flippers.png";

@@ -1,9 +1,6 @@
 package nz.ac.vuw.ecs.swen225.a3.application;
 
-import nz.ac.vuw.ecs.swen225.a3.maze.Board;
-import nz.ac.vuw.ecs.swen225.a3.maze.MobManager;
-import nz.ac.vuw.ecs.swen225.a3.maze.Player;
-import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
+import nz.ac.vuw.ecs.swen225.a3.maze.*;
 import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
 import nz.ac.vuw.ecs.swen225.a3.persistence.RecordAndPlay;
 import nz.ac.vuw.ecs.swen225.a3.renderer.GUI;
@@ -23,30 +20,14 @@ public class ChapsChallenge {
 
   private Board board;
   private GUI gui;
-
-  public void setPlayer(Player player) {
-    this.player = player;
-  }
-
   private Player player;
 
-  private long totalTime = 100; //100 seconds, todo change with levels
+  private long totalTime = 100; //100 seconds
   private long startTime;
-
-  private final int fps = 20;
-
-  public void setBoard(Board board) {
-    this.board = board;
-  }
-
-  public void setTimeLeft(long timeLeft) {
-    this.timeLeft = timeLeft;
-  }
-
   private long timeLeft = totalTime;
-
   private boolean gamePaused = false;
 
+  private final int fps = 20;
   private Thread thread;
 
   private MobManager mobManager;
@@ -126,8 +107,10 @@ public class ChapsChallenge {
       timeLeft = totalTime;
     }
 
-    if (player.getLocation().getType() == Tile.Type.InfoField) {
-      //gui.displayInfoTile(player.getLocation()); // todo implement
+    if (player.getLocation().getType() == Tile.Type.InfoField){
+      InfoField info = (InfoField) player.getLocation();
+
+      //gui.renderInfoField(info.getInfo()); 
     }
 
   }
@@ -428,6 +411,22 @@ public class ChapsChallenge {
   private void resetTimer() {
     timeLeft = totalTime;
     startTime = System.currentTimeMillis();
+  }
+
+  public void setBoard(Board board) {
+    this.board = board;
+  }
+
+  public void setTimeLeft(long timeLeft) {
+    this.timeLeft = timeLeft;
+  }
+
+  public MobManager getMobManager() {
+    return mobManager;
+  }
+
+  public void setPlayer(Player player) {
+    this.player = player;
   }
 
 

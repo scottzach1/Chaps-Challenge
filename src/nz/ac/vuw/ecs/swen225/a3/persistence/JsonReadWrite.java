@@ -6,7 +6,9 @@ import nz.ac.vuw.ecs.swen225.a3.maze.*;
 import javax.json.*;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 /**.
@@ -38,6 +40,7 @@ public class JsonReadWrite {
     String jsonGame = "";
     String jsonBoard = "";
     String jsonPlayer = "";
+    JsonString jsonMobs;
 
 
     // Json dump board
@@ -83,11 +86,21 @@ public class JsonReadWrite {
       throw new Error("Failed to parse Player");
     }
 
+    // Json dump mobs
+    arrayBuilder = Json.createArrayBuilder();
+
+    // Array of mobs
+    for(Mob i : game.getMobManager().getMobs()){
+      arrayBuilder.add(i.getJson());
+    }
+
+
     // Dump game info
     builder =  Json.createObjectBuilder()
         .add("timeLeft",game.getTimeLeft())
         .add("board",jsonBoard)
-        .add("player",jsonPlayer);
+        .add("player",jsonPlayer)
+        .add("mobs",arrayBuilder);
 
     // Compose game section
     try(Writer writer = new StringWriter()) {
@@ -165,14 +178,51 @@ public class JsonReadWrite {
     p.setInventory(inventory);
     p.setTreasures(treasures);
 
+    // Parse mobs
+    JsonArray mobsArray = game.getJsonArray("mobs");
+
+    Set<Mob> mobs = new HashSet<>();
+
+    for (JsonString j : mobsArray.getValuesAs(JsonString.class)) {
+      mobs.add(createMobFromJson(j.getString()));
+    }
+
     b.setupAdjacency();
 
+    // Ensure mobs are using correct tiles from board
+    for(Mob m : mobs){
+      m.setHost(b.getTile(m.getHost().getRow(),m.getHost().getCol()));
+    }
 
+    // Set game properties
     g.setBoard(b);
     g.setTimeLeft(timeLeft);
     g.setPlayer(p);
+    g.getMobManager().setMobs(mobs);
 
     return g;
+  }
+
+  /**
+   * Create mob object from JSON description.
+   * @param string JSON representation
+   * @return Mob object
+   */
+  private static Mob createMobFromJson(String string) {
+    JsonReader reader = Json.createReader(new StringReader(string));
+    JsonObject mobObject = reader.readObject();
+    String name = mobObject.getString("mobName");
+    Mob m;
+    switch (name) {
+      case "Passive Perry":
+        m = new PassivePerry();
+        m.setMobFromJson(Json.createReader(new StringReader(string)));
+        return m;
+      default:
+        m = new PassivePerry();
+        m.setMobFromJson(Json.createReader(new StringReader(string)));
+        return m;
+    }
   }
 
   /**
@@ -199,6 +249,10 @@ public class JsonReadWrite {
         return new Key("").setTileFromJson(Json.createReader(new StringReader(tile)));
       case "LockedDoor":
         return new LockedDoor("").setTileFromJson(Json.createReader(new StringReader(tile)));
+      case "Water":
+        return new Water().setTileFromJson(Json.createReader(new StringReader(tile)));
+      case "Flippers":
+        return new Flippers().setTileFromJson(Json.createReader(new StringReader(tile)));
       default:
         return new Wall().setTileFromJson(Json.createReader(new StringReader(tile)));
     }

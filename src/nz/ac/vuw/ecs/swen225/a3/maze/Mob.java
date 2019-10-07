@@ -1,5 +1,7 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
+import javax.json.JsonReader;
+
 /**
  * Mob are NPCs in the game that move and interact without any input from the user.
  * Functionally, they act as a spider that latches onto a Tile and scale the board.
@@ -7,10 +9,10 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
  */
 public abstract class Mob {
 
-  private String imageUrl = "unknown.png";
-  private String mobName = "Unnamed Mob.";
-  private Tile host;
-  private boolean active;
+  protected String imageUrl = "unknown.png";
+  protected String mobName = "Unnamed Mob.";
+  protected Tile host;
+  protected boolean active;
 
   /**
    * @param newMobName new name of mob.
@@ -74,9 +76,22 @@ public abstract class Mob {
    * Returns host of Mob.
    * @return host of Mob.
    */
-  Tile getHost() {
+  public Tile getHost() {
     return host;
   }
+
+  public abstract String getJson();
+
+  public abstract void setMobFromJson(JsonReader json);
+
+  /**
+   * Set host of this mob.
+   * @param t Tile to set as host
+   */
+  public void setHost(Tile t){
+    host = t;
+  }
+
 
 
 }
