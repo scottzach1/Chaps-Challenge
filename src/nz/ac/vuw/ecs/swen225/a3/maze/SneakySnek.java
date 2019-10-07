@@ -14,10 +14,7 @@ import java.util.Map;
 
 public class SneakySnek extends Mob {
 
-  private Tile.Direction direction;
-  private Map<Tile.Direction, String> images;
-
-  public SneakySnek(Player player) {
+  public SneakySnek() {
     setImageUrl("snek_front.png");
     setMobName("Sneaky Snek");
 
@@ -33,43 +30,6 @@ public class SneakySnek extends Mob {
   @Override
   public void advanceByTick() {
     if (getHost() == null) return;
-
-    final double seed = Math.random();
-
-    Tile target;
-    Tile.Direction targDirection = direction;
-
-    // 50% Chance continue straight.
-    if (seed <= 0.50) {
-      target = getHost().getDir(targDirection);
-    }
-    // 15% Chance CW
-    else if (seed <= 0.65) {
-      targDirection = targDirection.clockWise();
-      target = getHost().getDir(targDirection);
-    }
-    // 15% Chance ACW
-    else if (seed <= 0.80) {
-      targDirection = targDirection.clockWise();
-      target = getHost().getDir(targDirection);
-    }
-    // 15% Chance Don't move
-    else if (seed <= 0.95) {
-      target = getHost();
-    }
-    // 5% Chance Move backwards.
-    else {
-      targDirection = targDirection.reverse();
-      target = getHost().getDir(targDirection);
-    }
-
-    if (target.getType() != Tile.Type.Free && !target.isOccupied())
-      advanceByTick();
-    else {
-      direction = targDirection;
-      setImageUrl(images.get(direction));
-      occupyHost(target);
-    }
   }
 
   /**

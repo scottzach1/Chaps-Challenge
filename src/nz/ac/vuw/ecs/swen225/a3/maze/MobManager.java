@@ -32,7 +32,7 @@ public class MobManager {
    *
    * @param board board to control mob.
    */
-  public MobManager(Board board, Player player) {
+  public MobManager(Board board) {
     // TODO: This shouldn't take board in the future.
     this.board = board;
     this.mobs = new HashSet<>();
@@ -45,11 +45,11 @@ public class MobManager {
     perryTwo.occupyHost(board.getTile(11,11));
     addMob(perryTwo);
 
-    Mob sneakySnek = new SneakySnek(player);
-    sneakySnek.occupyHost(board.getTile(19, 19));
-    sneakySnek.setBoard(board);
-    sneakySnek.setPlayer(player);
-    addMob(sneakySnek);
+//    Mob sneakySnek = new SneakySnek();
+//    sneakySnek.occupyHost(board.getTile(19, 19));
+//    sneakySnek.setBoard(board);
+//    sneakySnek.setPlayer(player);
+//    addMob(sneakySnek);
   }
 
   /**
