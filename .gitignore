@@ -6,3 +6,6 @@ out/
 
 # Ignore IntelliJ config folder.
 .idea/
+
+# Ignore game saves
+record.txt
