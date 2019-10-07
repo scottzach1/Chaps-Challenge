@@ -12,6 +12,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
 import java.util.HashSet;
 
 /**
@@ -21,6 +22,8 @@ import java.util.HashSet;
 public class GUI extends JFrame implements ComponentListener, KeyListener {
   // Nothing important
   private static final long serialVersionUID = 1L;
+
+  public File saveFile, loadFile;
 
 
   // Colour Space.
@@ -133,34 +136,51 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
    * Handles GUI actions related to saving
    * the game.
    */
-  public void saveGame() {
-    // TODO: This needs to be implemented.
+  public boolean saveGame() {
+    JFileChooser jfc = new JFileChooser();
+    jfc.setCurrentDirectory(new File("."));
+    jfc.setDialogTitle("Save file");
+
+    if (jfc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+      saveFile = jfc.getSelectedFile();
+      return true;
+    }
+    return false;
   }
 
   /**
    * Handles GUI actions related to loading
    * the game.
    */
-  public void loadGame() {
-    // TODO: This needs to be implemented.
-    updateBoard();
-    redraw();
+  public boolean loadGame() {
+    JFileChooser jfc = new JFileChooser();
+    jfc.setCurrentDirectory(new File("."));
+    jfc.setDialogTitle("Save file");
+    jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+    jfc.setApproveButtonText("Save");
+
+    if (jfc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+      saveFile = jfc.getSelectedFile();
+      System.out.println(saveFile.getName());
+      return true;
+    }
+    return false;
   }
 
   /**
    * Handles GUI actions related to resetting to
    * previous level.
    */
-  public void previousLevel() {
-    // TODO: THis needs to be implemented.
+  public boolean previousLevel() {
+    return false;
   }
 
   /**
    * Handles GUI actions related to restarting the
    * game.
    */
-  public void restartGame() {
-    // TODO: This needs to be implemented.
+  public boolean restartGame() {
+    return false;
   }
 
   /**
@@ -282,11 +302,15 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     activeKeys.add(e.getKeyCode());
     // CTRL + X
     if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_X) && activeKeys.size() == 2)
-      exitGame();
+      application.exitGame();
     // CTRL + S
     if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_S) && activeKeys.size() == 2) {
-      saveGame();
-      exitGame();
+      application.saveGame();
+      application.exitGame();
+    }
+    // CTRL + L
+    if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_S) && activeKeys.size() == 2) {
+      application.loadGame();
     }
     // CTRL + R
     if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_R) && activeKeys.size() == 2) {
@@ -308,7 +332,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     }
     // ESC
     if (activeKeys.contains(KeyEvent.VK_ESCAPE) && activeKeys.size() == 1) {
-      resumeGame();
+      application.resumeGame();
       activeKeys.clear();
     }
 
