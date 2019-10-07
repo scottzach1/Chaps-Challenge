@@ -271,7 +271,6 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
 
     if (loaded && resizeCycle == 2) {
       componentResized(e);
-      application.resumeGame();
     }
   }
 
