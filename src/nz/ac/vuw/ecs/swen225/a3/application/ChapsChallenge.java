@@ -109,7 +109,7 @@ public class ChapsChallenge {
 
     if (player.getLocation().getType() == Tile.Type.InfoField){
       InfoField info = (InfoField) player.getLocation();
-      //gui.renderInfoField(info.getInfo());
+      gui.renderInfoField(info.getInfo());
     }
 
   }
