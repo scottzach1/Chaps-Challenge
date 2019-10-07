@@ -25,11 +25,70 @@ public class SneakySnek extends Mob {
     images.put(Tile.Direction.Left, "snek_left.png");
     images.put(Tile.Direction.Up, "snek_back.png");
     images.put(Tile.Direction.Right, "snek_right.png");
+
+    safeTiles.clear();
+    safeTiles.add(Tile.Type.Water);
   }
 
   @Override
   public void advanceByTick() {
     if (getHost() == null) return;
+
+    if (board != null && board.getPlayerLocation() != null) {
+      Tile player = board.getPlayerLocation();
+
+      Tile target = host;
+
+      double distance = host.getDistance(player);
+      boolean foundTarget = false;
+
+      if (distance < 5) {
+
+        if (host.getCol() < player.getCol()) {
+          Tile newTarget = host.getDir(Tile.Direction.Right);
+          foundTarget = safeTiles.contains(target.getType());
+          double newDistance = newTarget.getDistance(player);
+          if (foundTarget && newDistance <= distance) {
+            target = newTarget;
+            distance = newDistance;
+          }
+        }
+
+        if (host.getRow() > player.getRow()) {
+          Tile newTarget = host.getDir(Tile.Direction.Up);
+          foundTarget = safeTiles.contains(target.getType());
+          double newDistance = newTarget.getDistance(player);
+          if (foundTarget && newDistance <= distance) {
+            target = newTarget;
+            distance = newDistance;
+          }
+        }
+
+        if (host.getCol() > player.getCol()) {
+          Tile newTarget = host.getDir(Tile.Direction.Left);
+          foundTarget = safeTiles.contains(target.getType());
+          double newDistance = newTarget.getDistance(player);
+          if (foundTarget && newDistance <= distance) {
+            target = newTarget;
+            distance = newDistance;
+          }
+        }
+
+        if (host.getRow() < player.getRow()) {
+          Tile newTarget = host.getDir(Tile.Direction.Down);
+          foundTarget = safeTiles.contains(target.getType());
+          double newDistance = newTarget.getDistance(player);
+          if (foundTarget && newDistance <= distance) {
+            target = newTarget;
+            distance = newDistance;
+          }
+        }
+
+        setImageUrl(images.get(direction));
+        occupyHost(target);
+      }
+    }
+    super.advanceByTick();
   }
 
   /**

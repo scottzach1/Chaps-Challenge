@@ -1,7 +1,10 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
 import javax.json.JsonReader;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Mob are NPCs in the game that move and interact without any input from the user.
@@ -16,16 +19,12 @@ public abstract class Mob {
   protected boolean active;
   protected Tile.Direction direction;
   protected Map<Tile.Direction, String> images;
+  protected Set<Tile.Type> safeTiles = new HashSet<>(Arrays.asList(Tile.Type.Free));
   Board board;
-  Player player;
 
 
   public void setBoard(Board board) {
     this.board = board;
-  }
-
-  public void setPlayer(Player player) {
-    this.player = player;
   }
 
   public void setMobName(String name) {
@@ -76,7 +75,7 @@ public abstract class Mob {
 
       target = host.getDir(direction);
 
-    } while (target.getType() != Tile.Type.Free);
+    } while (!safeTiles.contains(target.getType()));
 
     setImageUrl(images.get(direction));
     occupyHost(target);
