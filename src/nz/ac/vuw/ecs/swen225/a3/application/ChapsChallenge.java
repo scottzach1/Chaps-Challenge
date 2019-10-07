@@ -157,7 +157,7 @@ public class ChapsChallenge {
     gui.loadGame();
     try {
       //TODO: use the field "loadFile" - a File object
-      JsonReadWrite.loadGameState("saveGame.txt", this);
+      JsonReadWrite.loadGameState(loadFile.getAbsolutePath(), this);
     } catch (Exception e) {
       gui.noFileFound();
     }
@@ -171,7 +171,7 @@ public class ChapsChallenge {
   public void saveGame() {
     gamePaused = true;
     if (gui.saveGame())
-      JsonReadWrite.saveGameState(this, "saveGame.txt");
+      JsonReadWrite.saveGameState(this, saveFile.getAbsolutePath());
   }
 
   /**
