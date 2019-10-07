@@ -12,26 +12,24 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PassivePerry extends Mob {
+public class SneakySnek extends Mob {
 
-  /**
-   * Creates new Bandit mob.
-   */
-  public PassivePerry() {
-    setImageUrl("perry_front.png");
-    setMobName("Passive Perry");
+  public SneakySnek() {
+    setImageUrl("snek_front.png");
+    setMobName("Sneaky Snek");
 
     direction = Tile.Direction.Down;
 
     images = new HashMap<>();
-    images.put(Tile.Direction.Down, "perry_front.png");
-    images.put(Tile.Direction.Left, "perry_left.png");
-    images.put(Tile.Direction.Up, "perry_back.png");
-    images.put(Tile.Direction.Right, "perry_right.png");
+    images.put(Tile.Direction.Down, "snek_front.png");
+    images.put(Tile.Direction.Left, "snek_left.png");
+    images.put(Tile.Direction.Up, "snek_back.png");
+    images.put(Tile.Direction.Right, "snek_right.png");
+  }
 
-    seedRow = 5;
-    seedCol = 0;
-    remaining = 0;
+  @Override
+  public void advanceByTick() {
+    if (getHost() == null) return;
   }
 
   /**

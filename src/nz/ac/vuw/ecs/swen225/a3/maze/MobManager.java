@@ -1,5 +1,7 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
+import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -42,6 +44,12 @@ public class MobManager {
     Mob perryTwo = new PassivePerry();
     perryTwo.occupyHost(board.getTile(11,11));
     addMob(perryTwo);
+
+//    Mob sneakySnek = new SneakySnek();
+//    sneakySnek.occupyHost(board.getTile(19, 19));
+//    sneakySnek.setBoard(board);
+//    sneakySnek.setPlayer(player);
+//    addMob(sneakySnek);
   }
 
   /**
