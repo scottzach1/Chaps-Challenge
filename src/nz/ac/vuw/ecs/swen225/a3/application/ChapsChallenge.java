@@ -9,6 +9,7 @@ import nz.ac.vuw.ecs.swen225.a3.persistence.RecordAndPlay;
 import nz.ac.vuw.ecs.swen225.a3.renderer.GUI;
 
 import java.awt.event.ComponentEvent;
+import java.io.File;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
@@ -49,6 +50,8 @@ public class ChapsChallenge {
   private Thread thread;
 
   private MobManager mobManager;
+
+  private File saveFile, loadFile;
 
   /**
    * Create main game application.
@@ -109,21 +112,21 @@ public class ChapsChallenge {
 
     checkFields();
 
-    if(RecordAndPlay.getIsRecording()){
+    if (RecordAndPlay.getIsRecording()) {
       RecordAndPlay.addAction(direction);
     }
 
   }
 
-  private void checkFields(){
-    if (player.getLocation().getType() == Tile.Type.Exit){
+  private void checkFields() {
+    if (player.getLocation().getType() == Tile.Type.Exit) {
       if (!board.setNextLevel())
         gameEnd();
       player = new Player(board.getPlayerLocation());
-      timeLeft=totalTime;
+      timeLeft = totalTime;
     }
 
-    if (player.getLocation().getType() == Tile.Type.InfoField){
+    if (player.getLocation().getType() == Tile.Type.InfoField) {
       //gui.displayInfoTile(player.getLocation()); // todo implement
     }
 
@@ -162,42 +165,43 @@ public class ChapsChallenge {
     gamePaused = false;
     runningThread();
     startTime = System.currentTimeMillis();
-    gui.resumeGame();
   }
 
   /**
    * Loads the game.
    */
   public void loadGame() {
-    try {
-      //TODO: allow choice of save file
-      JsonReadWrite.loadGameState("saveGame.txt",this);
-    }
-    catch(Exception e){
-      //TODO: deal with game not found error
-      System.out.println(e.getMessage());
-    }
+    gamePaused = false;
     gui.loadGame();
+    try {
+      //TODO: use the field "loadFile" - a File object
+      JsonReadWrite.loadGameState("saveGame.txt", this);
+    } catch (Exception e) {
+      gui.noFileFound();
+    }
     System.out.println("Game loaded.");
+    resumeGame();
   }
 
   /**
    * Saves the game.
    */
   public void saveGame() {
-    JsonReadWrite.saveGameState(this,"saveGame.txt");
-    gui.saveGame();
+    gamePaused = true;
+    if (gui.saveGame())
+      JsonReadWrite.saveGameState(this, "saveGame.txt");
   }
 
   /**
    * Restarts the game.
    */
   public void restartGame() {
-    board.setCurrentLevel(0);
-    player = new Player(board.getPlayerLocation());
-    resetTimer();
-
-    gui.restartGame();
+    gamePaused = true;
+    if (gui.restartGame()) {
+      board.setCurrentLevel(0);
+      player = new Player(board.getPlayerLocation());
+    }
+    gamePaused = false;
   }
 
   /**
@@ -206,10 +210,9 @@ public class ChapsChallenge {
    */
   public void previousLevel() {
     int current = board.getCurrentLevel();
-    if (current>0){
-      board.setCurrentLevel(current-1);
-    }
-    else{
+    if (current > 0) {
+      board.setCurrentLevel(current - 1);
+    } else {
       board.setCurrentLevel(0);
     }
 
@@ -219,7 +222,7 @@ public class ChapsChallenge {
 
   }
 
-  public void restartLevel(){
+  public void restartLevel() {
     int current = board.getCurrentLevel();
     board.setCurrentLevel(current);
     player = new Player(board.getPlayerLocation());
@@ -230,8 +233,10 @@ public class ChapsChallenge {
    * Exits the game.
    */
   public void exitGame() {
+    gamePaused = true;
     if (gui.exitGame())
       System.exit(0);
+    resumeGame();
   }
 
   private void timeOut() {
@@ -251,9 +256,10 @@ public class ChapsChallenge {
       @Override
       public void run() {
         // Waits the thread long enough for everything to load
-        try{
+        try {
           Thread.sleep(400);
-        } catch (Exception e){}
+        } catch (Exception e) {
+        }
 
         gui.componentResized(new ComponentEvent(gui, 1));
 
@@ -266,7 +272,7 @@ public class ChapsChallenge {
             try {
               if (timeLeft > 0) {
                 // Every second
-                if (i == 0){
+                if (i == 0) {
                   // Update the dashboard and mobs
                   gui.updateDashboard();
                   mobManager.advanceByOneTick();
@@ -275,12 +281,11 @@ public class ChapsChallenge {
                 gui.updateBoard();
 
                 // Restricts the frame rate to 30 fps
-                Thread.sleep(1000/fps);
+                Thread.sleep(1000 / fps);
 
                 // Tick counter cycles (0, 1)
                 i = (i + 1) % fps;
-              }
-              else
+              } else
                 throw new InterruptedException("TIMED OUT");
             }
             // If anything was to go unsuccessfully, then control crash the game with a time out
@@ -329,7 +334,7 @@ public class ChapsChallenge {
    * @return Total number of treasures
    */
   public int getTotalTreasures() {
-    return  board.getTreasureCount();
+    return board.getTreasureCount();
   }
 
   /**
@@ -343,9 +348,10 @@ public class ChapsChallenge {
 
   /**
    * Sets the board to the string, changes the level.
+   *
    * @param level the level to change to.
    */
-  public void setCustomLevel(String level){
+  public void setCustomLevel(String level) {
     board.setLevel(level);
     player = new Player(board.getPlayerLocation());
     resetTimer();
@@ -353,9 +359,10 @@ public class ChapsChallenge {
 
   /**
    * Gets the current level of this game
+   *
    * @return Level the level currently held by board
    */
-  public int getLevel(){
+  public int getLevel() {
     return board.getCurrentLevel();
   }
 
@@ -364,15 +371,16 @@ public class ChapsChallenge {
    *
    * @return Board object
    */
-  public Board getBoard(){
+  public Board getBoard() {
     return board;
   }
 
   /**
    * Get Player object.
+   *
    * @return player object
    */
-  public Player getPlayer(){
+  public Player getPlayer() {
     return player;
   }
 
@@ -387,17 +395,33 @@ public class ChapsChallenge {
 
   /**
    * Get time remaining.
+   *
    * @return long time in seconds
    */
   public long getTimeLeft() {
     return timeLeft;
   }
 
+  public File getSaveFile() {
+    return saveFile;
+  }
+
+  public void setSaveFile(File saveFile) {
+    this.saveFile = saveFile;
+  }
+
+  public File getLoadFile() {
+    return loadFile;
+  }
+
+  public void setLoadFile(File loadFile) {
+    this.loadFile = loadFile;
+  }
 
   /**
    * Update gui.
    */
-  public void update(){
+  public void update() {
     gui.updateBoard();
   }
 
