@@ -9,21 +9,23 @@ import javax.json.JsonReader;
  */
 public abstract class Mob {
 
-  private String imageUrl = "unknown.png";
-  private String mobName = "Unnamed Mob.";
-  private Tile host;
-  private boolean active;
+  protected String imageUrl = "unknown.png";
+  protected String mobName = "Unnamed Mob.";
+  protected Tile host;
+  protected boolean active;
+  Board board;
   Player player;
 
-  public Mob(Player player) {
+  public void setBoard(Board board) {
+    this.board = board;
+  }
+
+  public void setPlayer(Player player) {
     this.player = player;
   }
 
-  /**
-   * @param newMobName new name of mob.
-   */
-  void setMobName(String newMobName) {
-    mobName = newMobName;
+  public void setMobName(String name) {
+    mobName = name;
   }
 
   /**

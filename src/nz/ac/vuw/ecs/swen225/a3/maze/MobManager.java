@@ -37,16 +37,18 @@ public class MobManager {
     this.board = board;
     this.mobs = new HashSet<>();
 
-    Mob perryOne = new PassivePerry(player);
+    Mob perryOne = new PassivePerry();
     perryOne.occupyHost(board.getTile(7,7));
     addMob(perryOne);
 
-    Mob perryTwo = new PassivePerry(player);
+    Mob perryTwo = new PassivePerry();
     perryTwo.occupyHost(board.getTile(11,11));
     addMob(perryTwo);
 
     Mob sneakySnek = new SneakySnek(player);
     sneakySnek.occupyHost(board.getTile(19, 19));
+    sneakySnek.setBoard(board);
+    sneakySnek.setPlayer(player);
     addMob(sneakySnek);
   }
 

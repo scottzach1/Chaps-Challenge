@@ -1,5 +1,14 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
+import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
+
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+import javax.json.JsonReader;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,7 +18,6 @@ public class SneakySnek extends Mob {
   private Map<Tile.Direction, String> images;
 
   public SneakySnek(Player player) {
-    super(player);
     setImageUrl("snek_front.png");
     setMobName("Sneaky Snek");
 
@@ -24,50 +32,82 @@ public class SneakySnek extends Mob {
 
   @Override
   public void advanceByTick() {
-    if (getHost() == null || player == null) return;
+    if (getHost() == null) return;
 
     final double seed = Math.random();
 
     Tile target;
-    Tile playerTile = player.getLocation();
     Tile.Direction targDirection = direction;
 
-    // Target player if within 5 cells.
-    if (player.getLocation().getDistance(getHost()) <= 5) {
+    // 50% Chance continue straight.
+    if (seed <= 0.50) {
+      target = getHost().getDir(targDirection);
+    }
+    // 15% Chance CW
+    else if (seed <= 0.65) {
+      targDirection = targDirection.clockWise();
+      target = getHost().getDir(targDirection);
+    }
+    // 15% Chance ACW
+    else if (seed <= 0.80) {
+      targDirection = targDirection.clockWise();
+      target = getHost().getDir(targDirection);
+    }
+    // 15% Chance Don't move
+    else if (seed <= 0.95) {
       target = getHost();
-      double distance = playerTile.getDistance(target);
-
-      targDirection = targDirection.antiClockWise();
-
-      while (playerTile.getDistance(target) > distance || target.getType() != Tile.Type.Water) {
-        targDirection = targDirection.clockWise();
-        target = getHost().getDir(targDirection);
-      }
     }
-    // Normal perry movement.
+    // 5% Chance Move backwards.
     else {
-      // 50% Chance continue straight.
-      if (seed <= 0.50) {
-        target = getHost().getDir(targDirection);
-      }
-      // 25% Chance CW
-      else if (seed <= 0.75) {
-        targDirection = targDirection.clockWise();
-        target = getHost().getDir(targDirection);
-      }
-      // 25% Chance ACW
-      else {
-        targDirection = targDirection.clockWise();
-        target = getHost().getDir(targDirection);
-      }
+      targDirection = targDirection.reverse();
+      target = getHost().getDir(targDirection);
     }
 
-    if (target.getType() != Tile.Type.Water && !target.isOccupied())
+    if (target.getType() != Tile.Type.Free && !target.isOccupied())
       advanceByTick();
     else {
       direction = targDirection;
       setImageUrl(images.get(direction));
       occupyHost(target);
+    }
+  }
+
+  /**
+   * Return json representation of this tile.
+   *
+   * @return Json string of tile properties.
+   */
+  @Override
+  public String getJson() {
+    JsonObjectBuilder objectBuilder = Json.createObjectBuilder()
+        .add("imageUrl",imageUrl)
+        .add("mobName", mobName)
+        .add("host", host.getJson())
+        .add("active", active)
+        .add("direction",direction.toString());
+
+    JsonObject jsonObject = objectBuilder.build();
+
+    try(Writer writer = new StringWriter()) {
+      Json.createWriter(writer).write(jsonObject);
+      return writer.toString();
+    }catch(IOException e) {throw new Error("Error parsing " + this.toString() + " to json");}
+  }
+
+  /**
+   * Update this mobs fields from a json
+   * @param json Json string
+   */
+  public void setMobFromJson(JsonReader json){
+    JsonObject mob = json.readObject();
+    imageUrl = mob.getString("imageUrl");
+    mobName = mob.getString("mobName");
+    host = JsonReadWrite.createTileFromJson(mob.getString("host"));
+    active = mob.getBoolean("active");
+    for(Tile.Direction d : Tile.Direction.values()){
+      if(d.toString().equals(mob.getString("direction"))){
+        direction = d;
+      }
     }
   }
 }
