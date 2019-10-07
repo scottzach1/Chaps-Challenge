@@ -93,8 +93,11 @@ public class SneakySnek extends Mob {
         }
 
         // Occupy cell.
-        setImageUrl(images.get(direction));
-        occupyHost(target);
+        if (safeTiles.contains(target.getType())) {
+          setImageUrl(images.get(direction));
+          occupyHost(target);
+          return;
+        }
       }
     }
 

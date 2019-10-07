@@ -23,7 +23,7 @@ public abstract class Tile {
    * Enum for all the different types of tiles.
    * Used for JSON.
    */
-  public enum Type{
+  public enum Type {
     Free, Treasure, Exit, ExitLock, InfoField, Key, LockedDoor, Wall, Water, Flippers
   }
 
@@ -36,28 +36,40 @@ public abstract class Tile {
 
     Direction reverse() {
       switch (this) {
-        case Left: return Right;
-        case Right: return Left;
-        case Up: return Down;
-        default: return Up;
+        case Left:
+          return Right;
+        case Right:
+          return Left;
+        case Up:
+          return Down;
+        default:
+          return Up;
       }
     }
 
     Direction clockWise() {
       switch (this) {
-        case Left: return Up;
-        case Up: return Right;
-        case Right: return Down;
-        default: return Left;
+        case Left:
+          return Up;
+        case Up:
+          return Right;
+        case Right:
+          return Down;
+        default:
+          return Left;
       }
     }
 
     Direction antiClockWise() {
       switch (this) {
-        case Left: return Down;
-        case Down: return Right;
-        case Right: return Up;
-        default: return Left;
+        case Left:
+          return Down;
+        case Down:
+          return Right;
+        case Right:
+          return Up;
+        default:
+          return Left;
       }
     }
   }
@@ -66,6 +78,7 @@ public abstract class Tile {
   /**
    * Sets boolean representing whether the tile is occupied.
    * A cell is occupied if it has a mob on it.
+   *
    * @param occupied tile is occupied by mob.
    */
   void setOccupied(boolean occupied) {
@@ -76,21 +89,25 @@ public abstract class Tile {
   /**
    * Returns a boolean representing whether the tile is occupied.
    * A cell is occupied if it has a mob on it.
+   *
    * @return boolean tile is occupied by mob.
    */
-  public boolean isOccupied() { return isOccupied; }
+  public boolean isOccupied() {
+    return isOccupied;
+  }
 
   /**
    * Constructor taking a type of tile as a parameter.
    *
    * @param t the type of tile.
    */
-  public Tile(Type t){
+  public Tile(Type t) {
     type = t;
   }
 
   /**
    * Gets the row of the tile.
+   *
    * @return the row.
    */
   public int getRow() {
@@ -99,6 +116,7 @@ public abstract class Tile {
 
   /**
    * Sets the row of the tile.
+   *
    * @param row the row to set it to.
    */
   public void setRow(int row) {
@@ -107,6 +125,7 @@ public abstract class Tile {
 
   /**
    * Gets the column of the tile.
+   *
    * @return the column.
    */
   public int getCol() {
@@ -115,6 +134,7 @@ public abstract class Tile {
 
   /**
    * Sets the column of the tile.
+   *
    * @param col the column to set it to.
    */
   public void setCol(int col) {
@@ -123,13 +143,16 @@ public abstract class Tile {
 
   /**
    * Gets the type of tile.
+   *
    * @return the type.
    */
-  public Type getType(){return type;
+  public Type getType() {
+    return type;
   }
 
   /**
    * Gets the image URL.
+   *
    * @return the Image URL.
    */
   public String getImageUrl() {
@@ -138,6 +161,7 @@ public abstract class Tile {
 
   /**
    * Gets the default image URL.
+   *
    * @return the default image URL.
    */
   public String getDefaultImageUrl() {
@@ -146,6 +170,7 @@ public abstract class Tile {
 
   /**
    * Gets the full URL name
+   *
    * @return the combination of the  image url and the default.
    */
   public String getCombinedUrl() {
@@ -154,6 +179,7 @@ public abstract class Tile {
 
   /**
    * Checks if the current tile is accessible.
+   *
    * @return if it is accessible.
    */
   public boolean getIsAccessible() {
@@ -166,7 +192,8 @@ public abstract class Tile {
    * @return left of tile.
    */
   public Tile getLeft() {
-    return adjacent.get(Direction.Left.ordinal());
+    if (adjacent.size() < 4) return null;
+    else return adjacent.get(Direction.Left.ordinal());
   }
 
   /**
@@ -175,6 +202,7 @@ public abstract class Tile {
    * @return right of tile.
    */
   public Tile getRight() {
+    if (adjacent.size() < 4) return null;
     return adjacent.get(Direction.Right.ordinal());
   }
 
@@ -185,6 +213,7 @@ public abstract class Tile {
    * @return up of tile.
    */
   public Tile getUp() {
+    if (adjacent.size() < 4) return null;
     return adjacent.get(Direction.Up.ordinal());
   }
 
@@ -194,6 +223,7 @@ public abstract class Tile {
    * @return down of tile.
    */
   public Tile getDown() {
+    if (adjacent.size() < 4) return null;
     return adjacent.get(Direction.Down.ordinal());
   }
 

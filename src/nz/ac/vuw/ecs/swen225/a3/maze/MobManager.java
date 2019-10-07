@@ -1,7 +1,5 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
-import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,6 +35,8 @@ public class MobManager {
     this.board = board;
     this.mobs = new HashSet<>();
 
+
+    // TODO: Mobs should be loaded through board, not mob manager.
     Mob perryOne = new PassivePerry();
     perryOne.occupyHost(board.getTile(7,7));
     addMob(perryOne);
@@ -49,6 +49,11 @@ public class MobManager {
     sneakySnek.occupyHost(board.getTile(19, 19));
     sneakySnek.setBoard(board);
     addMob(sneakySnek);
+
+    Mob angryAndrew = new GrumpyGary();
+    angryAndrew.occupyHost(board.getTile(11,19));
+    angryAndrew.setBoard(board);
+    addMob(angryAndrew);
   }
 
   /**
