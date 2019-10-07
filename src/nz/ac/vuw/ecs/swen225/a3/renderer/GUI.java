@@ -36,6 +36,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
   // ChapsChallenge component fields.
   private Canvas canvas;
   private DashboardHolder dashboardHolder;
+  private PauseMenu pauseMenu;
   private JMenuBar menuBar;
   private ChapsChallenge application;
 
@@ -47,6 +48,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
   private String direction;
 
   private boolean loaded;
+  private boolean resizing;
 
   private int resizeCycle;
 
@@ -80,6 +82,8 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     // Add components.
     canvas = new Canvas(application);
     dashboardHolder = new DashboardHolder(application);
+    pauseMenu = new PauseMenu(application);
+    ;
     menuBar = new MenuOptions(application);
 
 
@@ -122,8 +126,40 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
    * the game.
    */
   public void pauseGame() {
-    new PauseAction("Pause", this, application)
-        .actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null));
+    getContentPane().removeAll();
+    constraints = new GridBagConstraints();
+    constraints.fill = GridBagConstraints.BOTH;
+    constraints.weightx = 1;
+    constraints.weighty = 1;
+    pauseMenu.renderPauseMenu();
+
+    add(pauseMenu, constraints);
+    redraw();
+    componentResized(new ComponentEvent(this, ComponentEvent.COMPONENT_RESIZED));
+  }
+
+  public void resumeGame() {
+    getContentPane().removeAll();
+    // Add MenuBar.
+    setJMenuBar(menuBar);
+    constraints.fill = GridBagConstraints.BOTH;
+
+    // Set Layout
+    int padding = Math.min(screenHeight, canvasWidth) / 11;
+
+    // Set Canvas.
+    constraints.insets = new Insets(padding, padding, padding, padding / 2);
+    constraints.weightx = 2;
+    constraints.weighty = 2;
+    add(canvas, constraints);
+
+    // Set Dashboard.
+    constraints.insets = new Insets(padding, padding / 2, padding, padding);
+    constraints.weightx = 1;
+    constraints.weighty = 1;
+    add(dashboardHolder, constraints);
+    redraw();
+    componentResized(new ComponentEvent(this, ComponentEvent.COMPONENT_RESIZED));
   }
 
   /**
@@ -200,12 +236,16 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
 
 
   public void updateBoard() {
+    if (resizing)
+      return;
     runMove();
     canvas.refreshComponents();
     redraw();
   }
 
   public void updateDashboard() {
+    if (resizing)
+      return;
     dashboardHolder.renderDashboard();
     redraw();
   }
@@ -254,24 +294,37 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
    */
   @Override
   public void componentResized(ComponentEvent e) {
+    resizing = true;
     resizeCycle++;
+
     screenDimension = getSize();
     screenWidth = screenDimension.width;
     screenHeight = screenDimension.height - MENU_HEIGHT;
     canvasWidth = (screenDimension.width * 2) / 3;
     dashboardWidth = (screenDimension.width) / 3;
 
-    if (canvas != null && dashboardHolder != null) {
-      canvas.resize();
-      dashboardHolder.resize();
-      loaded = true;
-    }
-    revalidate();
-    redraw();
 
-    if (loaded && resizeCycle == 2) {
-      componentResized(e);
+
+    if (!application.isGamePaused()) {
+
+      if (canvas != null && dashboardHolder != null) {
+        canvas.resize();
+        dashboardHolder.resize();
+        loaded = true;
+      }
+      redraw();
+
+      if (loaded && resizeCycle == 2) {
+        pauseMenu.createComponents();
+        componentResized(e);
+        application.startRunningThread();
+      }
+    } else {
+      if (pauseMenu != null)
+        pauseMenu.resize();
+      redraw();
     }
+    resizing = false;
   }
 
   /**
@@ -348,12 +401,14 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     if (activeKeys.contains(KeyEvent.VK_SPACE) && activeKeys.size() == 1) {
       if (application.isGamePaused()) application.resumeGame();
       else application.pauseGame();
-      activeKeys.clear();
+    }
+    // CTRL + R
+    if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_R) && activeKeys.size() == 2) {
+      if (application.isGamePaused()) application.resumeGame();
     }
     // ESC
     if (activeKeys.contains(KeyEvent.VK_ESCAPE) && activeKeys.size() == 1) {
-      application.resumeGame();
-      activeKeys.clear();
+      if (application.isGamePaused()) application.resumeGame();
     }
 
     if (RecordAndPlay.getIsRunning())

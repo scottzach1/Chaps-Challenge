@@ -643,10 +643,14 @@ class backendTest {
   @Test
   void pauseGame(){
     ChapsChallenge chapsChallenge = new ChapsChallenge();
-    assertFalse(chapsChallenge.isGamePaused());
 
+    assertFalse(chapsChallenge.isGamePaused());
     chapsChallenge.pauseGame();
-    //todo Front end fix this
+
+    assertTrue(chapsChallenge.isGamePaused());
+    chapsChallenge.resumeGame();
+
+    assertFalse(chapsChallenge.isGamePaused());
   }
 
   /**

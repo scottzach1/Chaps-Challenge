@@ -33,6 +33,8 @@ public class ChapsChallenge {
 
   private File saveFile, loadFile;
 
+  private Thread thread;
+
   /**
    * Create main game application.
    */
@@ -46,6 +48,7 @@ public class ChapsChallenge {
 
     // Creates a GUI and gives it a keyListener
     gui = new GUI(this);
+
   }
 
 
@@ -141,6 +144,7 @@ public class ChapsChallenge {
    */
   public void resumeGame() {
     gamePaused = false;
+    gui.resumeGame();
     runningThread();
     startTime = System.currentTimeMillis();
   }
@@ -221,15 +225,15 @@ public class ChapsChallenge {
    * runs a timer, updating the dashboard every second
    */
   private void runningThread() {
-    Runnable runnable = new Runnable() {
 
+
+    Runnable runnable = new Runnable() {
       private int i = 0;
 
       @Override
       public void run() {
         // While the time has not run out
         while (true) {
-
           // Only run while the game is not paused
           if (!gamePaused) {
             // Attempt to sleep the thread if there is time left
@@ -261,7 +265,8 @@ public class ChapsChallenge {
         }
       }
     };
-    new Thread(runnable).start();
+    thread = new Thread(runnable);
+    thread.start();
   }
 
   /**
@@ -436,6 +441,14 @@ public class ChapsChallenge {
   public void setPlayer(Player player) {
     this.player = player;
   }
+
+
+  public void startRunningThread(){
+    if (thread != null && thread.isAlive())
+      thread.interrupt();
+    runningThread();
+  }
+
 
 
   /**
