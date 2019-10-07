@@ -33,9 +33,14 @@ public class InfoField extends Tile {
    */
   @Override
   public boolean interact(Player p) {
-    //TODO change print to a popup
-    System.out.println(info);
     return isAccessible;
+  }
+
+  /**
+   * Returns the info text.
+   */
+  public String getInfo() {
+    return info;
   }
 
   /**
