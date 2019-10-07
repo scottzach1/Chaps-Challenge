@@ -6,6 +6,15 @@ import java.util.Set;
 public class MobManager {
 
   private Board board;
+
+  public Set<Mob> getMobs() {
+    return mobs;
+  }
+
+  public void setMobs(Set<Mob> mobs) {
+    this.mobs = mobs;
+  }
+
   private Set<Mob> mobs;
 
   /**

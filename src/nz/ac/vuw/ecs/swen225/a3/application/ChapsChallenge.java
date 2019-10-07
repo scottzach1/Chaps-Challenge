@@ -48,6 +48,10 @@ public class ChapsChallenge {
 
   private Thread thread;
 
+  public MobManager getMobManager() {
+    return mobManager;
+  }
+
   private MobManager mobManager;
 
   /**
@@ -176,6 +180,7 @@ public class ChapsChallenge {
     catch(Exception e){
       //TODO: deal with game not found error
       System.out.println(e.getMessage());
+      throw new Error(e.getMessage());
     }
     gui.loadGame();
     System.out.println("Game loaded.");
