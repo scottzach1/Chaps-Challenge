@@ -2,9 +2,7 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
 
 import nz.ac.vuw.ecs.swen225.a3.renderer.Canvas;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 
 
@@ -30,6 +28,9 @@ public class Board {
   private List<String> allLevels;
   private int currentLevel;
   private int treasureCount=0;
+
+  public Set<Tile> tileTypes = new HashSet<>();
+
   /**
    * Constructor.
    */

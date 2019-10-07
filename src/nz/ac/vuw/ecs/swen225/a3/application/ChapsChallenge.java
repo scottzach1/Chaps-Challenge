@@ -2,7 +2,7 @@ package nz.ac.vuw.ecs.swen225.a3.application;
 
 import nz.ac.vuw.ecs.swen225.a3.maze.*;
 import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
-import nz.ac.vuw.ecs.swen225.a3.persistence.RecordAndPlay;
+import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
 import nz.ac.vuw.ecs.swen225.a3.renderer.GUI;
 
 import java.awt.event.ComponentEvent;
@@ -157,7 +157,7 @@ public class ChapsChallenge {
     gui.loadGame();
     try {
       //TODO: use the field "loadFile" - a File object
-      JsonReadWrite.loadGameState("saveGame.txt", this);
+      JsonReadWrite.loadGameState(loadFile.getAbsolutePath(), this);
     } catch (Exception e) {
       gui.noFileFound();
     }
@@ -171,7 +171,7 @@ public class ChapsChallenge {
   public void saveGame() {
     gamePaused = true;
     if (gui.saveGame())
-      JsonReadWrite.saveGameState(this, "saveGame.txt");
+      JsonReadWrite.saveGameState(this, saveFile.getAbsolutePath());
   }
 
   /**
