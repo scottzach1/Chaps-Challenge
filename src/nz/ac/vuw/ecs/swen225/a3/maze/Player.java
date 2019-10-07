@@ -1,11 +1,14 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Player {
   private Tile location;
   private List<String> inventory = new ArrayList<>();
+  private Map<Tile.Direction, String> images = new HashMap<>();
   private int treasures = 0;
 
 
@@ -16,6 +19,20 @@ public class Player {
    */
   public Player(Tile loc) {
     location = loc;
+
+    images.put(Tile.Direction.Down, "chap_front.png");
+    images.put(Tile.Direction.Left, "chap_left.png");
+    images.put(Tile.Direction.Up, "chap_back.png");
+    images.put(Tile.Direction.Right, "chap_right.png");
+  }
+
+  /**
+   * Gets filename of asset from given direction.
+   * @param direction player is facing.
+   * @return filename of asset.
+   */
+  public String getImageUrl(Tile.Direction direction) {
+    return images.get(direction);
   }
 
   /**

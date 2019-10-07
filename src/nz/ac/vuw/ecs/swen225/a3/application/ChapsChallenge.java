@@ -76,6 +76,7 @@ public class ChapsChallenge {
         break;
     }
     if (nextLocation == null || !nextLocation.interact(player)) {
+      currentLocation.setTileOccupied(player.getImageUrl(direction));
       return; //invalid move
     }
     if (nextLocation.isOccupied()) { // stepped on a mob
@@ -83,7 +84,7 @@ public class ChapsChallenge {
       return;
     }
     currentLocation.setTileUnoccupied();
-    nextLocation.setTileOccupied("chap_front.png");
+    nextLocation.setTileOccupied(player.getImageUrl(direction));
     player.setLocation(nextLocation);
 
     checkFields();
