@@ -14,7 +14,7 @@ public class Water extends Tile {
    * Constructor.
    * Sets the isAccessible field to false.
    */
-  Water() {
+  public Water() {
     super(Type.Water);
     isAccessible = false;
 

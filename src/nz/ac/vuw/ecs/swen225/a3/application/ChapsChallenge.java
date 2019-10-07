@@ -200,6 +200,8 @@ public class ChapsChallenge {
   public void restartGame() {
     board.setCurrentLevel(0);
     player = new Player(board.getPlayerLocation());
+    resetTimer();
+
     gui.restartGame();
   }
 
@@ -217,6 +219,7 @@ public class ChapsChallenge {
     }
 
     player = new Player(board.getPlayerLocation());
+    resetTimer();
     gui.previousLevel();
 
   }
@@ -225,6 +228,7 @@ public class ChapsChallenge {
     int current = board.getCurrentLevel();
     board.setCurrentLevel(current);
     player = new Player(board.getPlayerLocation());
+    resetTimer();
   }
 
   /**
@@ -349,6 +353,7 @@ public class ChapsChallenge {
   public void setCustomLevel(String level){
     board.setLevel(level);
     player = new Player(board.getPlayerLocation());
+    resetTimer();
   }
 
   /**
@@ -400,6 +405,12 @@ public class ChapsChallenge {
   public void update(){
     gui.updateBoard();
   }
+
+  private void resetTimer() {
+    timeLeft = totalTime;
+    startTime = System.currentTimeMillis();
+  }
+
 
   /**
    * ChapsChallenge invocation point for running the game.

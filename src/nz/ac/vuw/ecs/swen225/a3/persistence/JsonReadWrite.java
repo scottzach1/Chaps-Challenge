@@ -249,6 +249,10 @@ public class JsonReadWrite {
         return new Key("").setTileFromJson(Json.createReader(new StringReader(tile)));
       case "LockedDoor":
         return new LockedDoor("").setTileFromJson(Json.createReader(new StringReader(tile)));
+      case "Water":
+        return new Water().setTileFromJson(Json.createReader(new StringReader(tile)));
+      case "Flippers":
+        return new Flippers().setTileFromJson(Json.createReader(new StringReader(tile)));
       default:
         return new Wall().setTileFromJson(Json.createReader(new StringReader(tile)));
     }
