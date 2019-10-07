@@ -14,6 +14,9 @@ import java.util.Map;
 
 public class SneakySnek extends Mob {
 
+  /**
+   * Creates new Sneaky Snake mob.
+   */
   public SneakySnek() {
     setImageUrl("snek_front.png");
     setMobName("Sneaky Snek");

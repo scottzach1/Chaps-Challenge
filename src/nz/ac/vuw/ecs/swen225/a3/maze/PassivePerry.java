@@ -15,7 +15,7 @@ import java.util.Map;
 public class PassivePerry extends Mob {
 
   /**
-   * Creates new Bandit mob.
+   * Creates new Passive Perry mob.
    */
   public PassivePerry() {
     setImageUrl("perry_front.png");
