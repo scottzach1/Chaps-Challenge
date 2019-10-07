@@ -2,7 +2,7 @@ package nz.ac.vuw.ecs.swen225.a3.application;
 
 import nz.ac.vuw.ecs.swen225.a3.maze.*;
 import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
-import nz.ac.vuw.ecs.swen225.a3.persistence.RecordAndPlay;
+import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
 import nz.ac.vuw.ecs.swen225.a3.renderer.GUI;
 
 import java.awt.event.ComponentEvent;
