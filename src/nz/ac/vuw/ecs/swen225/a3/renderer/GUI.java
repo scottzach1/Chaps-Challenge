@@ -277,12 +277,12 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
 
 
   public void gameOver(String reason) {
-
+    // TODO: Implement method and add tests.
   }
 
 
   public void endGame() {
-
+    // TODO: Implement method and add tests.
   }
 
 
@@ -344,7 +344,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
    */
   @Override
   public void componentShown(ComponentEvent e) {
-
+    if (application.isGamePaused()) application.resumeGame();
   }
 
   /**
@@ -354,7 +354,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
    */
   @Override
   public void componentHidden(ComponentEvent e) {
-
+    if (!application.isGamePaused()) application.pauseGame();
   }
 
   /**
@@ -374,7 +374,6 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
    */
   @Override
   public void keyPressed(KeyEvent e) {
-
     // Add the key pressed to the current list of pressed keys
     activeKeys.add(e.getKeyCode());
     // CTRL + X

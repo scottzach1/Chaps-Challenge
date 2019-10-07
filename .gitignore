@@ -9,3 +9,4 @@ out/
 
 # Ignore game saves
 record.txt
+saveTest.txt

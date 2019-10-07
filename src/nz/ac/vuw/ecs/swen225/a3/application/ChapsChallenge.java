@@ -51,6 +51,13 @@ public class ChapsChallenge {
 
   }
 
+  /**
+   * Gets the GUI of the game.
+   * @return GUI of the game.
+   */
+  public GUI getGui() {
+    return gui;
+  }
 
   /**
    * Moves the player in the direction specified.

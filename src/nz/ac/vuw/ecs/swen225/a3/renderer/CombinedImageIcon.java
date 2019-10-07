@@ -25,20 +25,4 @@ public class CombinedImageIcon extends ImageIcon {
     g.dispose();
     setImage(combinedImage);
   }
-
-
-  /**
-   * CompinedImageIcon: Create an ImageIcon from a base icon and an overlay icon.
-   * @param base Bottom icon.
-   * @param top Top icon.
-   */
-  public CombinedImageIcon(ImageIcon base, ImageIcon top) {
-    super();
-    BufferedImage combinedImage = new BufferedImage(base.getIconWidth(), base.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g = combinedImage.createGraphics();
-    g.drawImage(base.getImage(),0,0,null);
-    g.drawImage(top.getImage(),0,0,null);
-    g.dispose();
-    setImage(combinedImage);
-  }
 }
