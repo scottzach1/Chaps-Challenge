@@ -9,8 +9,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
 class backendTest {
+
+  private ChapsChallenge chapsChallenge = new ChapsChallenge();
 
   /**
    * The default chaps challenge should start at level 1;
@@ -18,7 +19,7 @@ class backendTest {
    */
   @Test
    void loadDefault(){
-    ChapsChallenge chapsChallenge = new ChapsChallenge();
+    chapsChallenge = new ChapsChallenge();
     Board board = new Board();
     assertEquals(chapsChallenge.getBoard().toString(), board.toString());
   }
@@ -28,7 +29,6 @@ class backendTest {
    */
   @Test
   void overrideLevel(){
-    ChapsChallenge chapsChallenge = new ChapsChallenge();
     String level =
         "ExitLock|KBlue|DGreen|_|_|_|_|_|_|_|?|T|_|_|_|_|_|_|_|_|"
         + "_|_|_|_|_|_|_|_|_|_|_|ExitLock|C|_|_|_|_|_|_|_|"
@@ -61,7 +61,6 @@ class backendTest {
    */
    @Test
    void overrideInvalid(){
-     ChapsChallenge chapsChallenge = new ChapsChallenge();
      String level =
                "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
              + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
@@ -99,7 +98,6 @@ class backendTest {
    */
   @Test
   void overrideInvalid2(){
-    ChapsChallenge chapsChallenge = new ChapsChallenge();
     String level =
               "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
@@ -137,7 +135,6 @@ class backendTest {
    */
   @Test
   void overrideInvalid3(){
-    ChapsChallenge chapsChallenge = new ChapsChallenge();
     String level =
         "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|{|_|_|_|_|_|_|_|_|_|_|_|"
@@ -173,7 +170,6 @@ class backendTest {
    */
   @Test
   void chapMove(){
-    ChapsChallenge chapsChallenge = new ChapsChallenge();
     String level =
         "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
@@ -224,7 +220,6 @@ class backendTest {
    */
   @Test
   void chapPickUpKey(){
-    ChapsChallenge chapsChallenge = new ChapsChallenge();
     String level =
         "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
@@ -257,7 +252,6 @@ class backendTest {
    */
   @Test
   void chapOpenDoor(){
-    ChapsChallenge chapsChallenge = new ChapsChallenge();
     String level =
         "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
@@ -294,7 +288,6 @@ class backendTest {
    */
   @Test
   void chapOpenDoorInvalid(){
-    ChapsChallenge chapsChallenge = new ChapsChallenge();
     String level =
         "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
@@ -331,7 +324,6 @@ class backendTest {
    */
   @Test
   void chapOpenDoorInvalid2(){
-    ChapsChallenge chapsChallenge = new ChapsChallenge();
     String level =
         "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
@@ -368,7 +360,6 @@ class backendTest {
    */
   @Test
   void chapExit(){
-    ChapsChallenge chapsChallenge = new ChapsChallenge();
     String level =
         "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
@@ -411,7 +402,6 @@ class backendTest {
    */
   @Test
   void chapExit3Treasures(){
-    ChapsChallenge chapsChallenge = new ChapsChallenge();
     String level =
         "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
@@ -460,7 +450,6 @@ class backendTest {
    */
   @Test
   void invalidWater() {
-    ChapsChallenge chapsChallenge = new ChapsChallenge();
     String level =
         "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
@@ -498,7 +487,6 @@ class backendTest {
    */
   @Test
   void validWater() {
-    ChapsChallenge chapsChallenge = new ChapsChallenge();
     String level =
         "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
@@ -539,7 +527,6 @@ class backendTest {
    */
   @Test
   void restartGame(){
-    ChapsChallenge chapsChallenge = new ChapsChallenge();
     chapsChallenge.restartGame();
     assertEquals(chapsChallenge.getBoard().getCurrentLevel(),0);
   }
@@ -552,7 +539,6 @@ class backendTest {
    */
   @Test
   void saveAndLoadGame(){
-    ChapsChallenge chapsChallenge = new ChapsChallenge();
 
     String level =
         "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
@@ -579,7 +565,6 @@ class backendTest {
     chapsChallenge.setCustomLevel(level);
 
     JsonReadWrite.saveGameState(chapsChallenge, "saveTest.txt");
-    String b=chapsChallenge.getBoard().toString();
     Tile tile = chapsChallenge.getPlayer().getLocation();
 
     chapsChallenge.move(Tile.Direction.Left);
@@ -600,7 +585,6 @@ class backendTest {
    */
   @Test
   void loadGameInvalid() {
-    ChapsChallenge chapsChallenge = new ChapsChallenge();
     boolean failed = false;
     try {
       JsonReadWrite.loadGameState("failed.txt", chapsChallenge);
@@ -616,7 +600,6 @@ class backendTest {
    */
   @Test
   void prevLevel(){
-    ChapsChallenge chapsChallenge = new ChapsChallenge();
     int current = chapsChallenge.getBoard().getCurrentLevel();
     chapsChallenge.previousLevel();
     assertEquals(current, 0);
@@ -627,7 +610,6 @@ class backendTest {
    */
   @Test
   void prevLevel2(){
-    ChapsChallenge chapsChallenge = new ChapsChallenge();
     chapsChallenge.getBoard().setCurrentLevel(2);
     int current = chapsChallenge.getBoard().getCurrentLevel();
     chapsChallenge.previousLevel();
@@ -638,12 +620,9 @@ class backendTest {
   /**
    * Pauses the game.
    * Un-pauses the game.
-   * Timer should be the same.
    */
   @Test
   void pauseGame(){
-    ChapsChallenge chapsChallenge = new ChapsChallenge();
-
     assertFalse(chapsChallenge.isGamePaused());
     chapsChallenge.pauseGame();
 
@@ -658,7 +637,6 @@ class backendTest {
    */
   @Test
   void nextLevel(){
-    ChapsChallenge chapsChallenge = new ChapsChallenge();
     int current = chapsChallenge.getBoard().getCurrentLevel();
     chapsChallenge.getBoard().setNextLevel();
     int updated = chapsChallenge.getBoard().getCurrentLevel();
