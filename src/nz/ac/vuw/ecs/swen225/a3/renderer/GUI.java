@@ -134,21 +134,31 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     pauseMenu.renderPauseMenu();
 
     add(pauseMenu, constraints);
-
-    try{
-      Thread.sleep(100);
-    } catch (Exception e){ }
-
     redraw();
+    componentResized(new ComponentEvent(this, ComponentEvent.COMPONENT_RESIZED));
   }
 
   public void resumeGame() {
     getContentPane().removeAll();
-    addLayoutComponents();
-    try{
-      Thread.sleep(100);
-    } catch (Exception e){ }
+    // Add MenuBar.
+    setJMenuBar(menuBar);
+    constraints.fill = GridBagConstraints.BOTH;
 
+    // Set Layout
+    int padding = Math.min(screenHeight, canvasWidth) / 11;
+
+    // Set Canvas.
+    constraints.insets = new Insets(padding, padding, padding, padding / 2);
+    constraints.weightx = 2;
+    constraints.weighty = 2;
+    add(canvas, constraints);
+
+    // Set Dashboard.
+    constraints.insets = new Insets(padding, padding / 2, padding, padding);
+    constraints.weightx = 1;
+    constraints.weighty = 1;
+    add(dashboardHolder, constraints);
+    redraw();
     componentResized(new ComponentEvent(this, ComponentEvent.COMPONENT_RESIZED));
   }
 
@@ -286,13 +296,16 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
   public void componentResized(ComponentEvent e) {
     resizing = true;
     resizeCycle++;
-    if (!application.isGamePaused()) {
 
-      screenDimension = getSize();
-      screenWidth = screenDimension.width;
-      screenHeight = screenDimension.height - MENU_HEIGHT;
-      canvasWidth = (screenDimension.width * 2) / 3;
-      dashboardWidth = (screenDimension.width) / 3;
+    screenDimension = getSize();
+    screenWidth = screenDimension.width;
+    screenHeight = screenDimension.height - MENU_HEIGHT;
+    canvasWidth = (screenDimension.width * 2) / 3;
+    dashboardWidth = (screenDimension.width) / 3;
+
+
+
+    if (!application.isGamePaused()) {
 
       if (canvas != null && dashboardHolder != null) {
         canvas.resize();

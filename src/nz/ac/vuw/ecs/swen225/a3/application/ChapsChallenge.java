@@ -224,6 +224,8 @@ public class ChapsChallenge {
    * runs a timer, updating the dashboard every second
    */
   private void runningThread() {
+
+
     Runnable runnable = new Runnable() {
       private int i = 0;
 
