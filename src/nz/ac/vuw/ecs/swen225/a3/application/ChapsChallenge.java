@@ -40,10 +40,9 @@ public class ChapsChallenge {
   public ChapsChallenge() {
     // Load the board.
     board = new Board();
-
+    player = new Player(board.getPlayerLocation());
     mobManager = new MobManager(board);
 
-    player = new Player(board.getPlayerLocation());
     startTime = System.currentTimeMillis();
 
     // Creates a GUI and gives it a keyListener
