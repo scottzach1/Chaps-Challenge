@@ -170,8 +170,10 @@ public class ChapsChallenge {
    */
   public void saveGame() {
     gamePaused = true;
-    if (gui.saveGame())
-      JsonReadWrite.saveGameState(this, saveFile.getAbsolutePath());
+    if (gui.saveGame()) {
+      JsonReadWrite.saveGameState(this, "saveGame.txt");
+    }
+    resumeGame();
   }
 
   /**
@@ -182,7 +184,6 @@ public class ChapsChallenge {
     if (gui.restartGame()) {
       board.setCurrentLevel(0);
       resetLogistics();
-
     }
     resumeGame();
   }
