@@ -2,8 +2,7 @@ package nz.ac.vuw.ecs.swen225.a3.renderer;
 
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
-import nz.ac.vuw.ecs.swen225.a3.persistence.RecordAndPlay;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
 
 import javax.swing.*;
 import java.awt.*;

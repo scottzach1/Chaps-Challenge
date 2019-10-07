@@ -24,8 +24,9 @@ public abstract class Tile {
    * Used for JSON.
    */
   public enum Type{
-    Free, Treasure, Exit, ExitLock, InfoField, Key, LockedDoor, Wall, Mob, Water, Flippers
+    Free, Treasure, Exit, ExitLock, InfoField, Key, LockedDoor, Wall, Water, Flippers
   }
+
 
   /**
    * Enum of directions to go from a tile.

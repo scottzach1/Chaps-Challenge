@@ -121,7 +121,7 @@ public class JsonReadWrite {
    * @throws GameNotFoundException Thrown when file not found
    */
   public static ChapsChallenge loadGameState(String saveGame, ChapsChallenge g) throws GameNotFoundException{
-    JsonObject game = null;
+    JsonObject game;
     try {
       BufferedReader reader = new BufferedReader(new FileReader(saveGame));
       JsonReader jReader = Json.createReader(new StringReader(reader.readLine()));
@@ -234,6 +234,12 @@ public class JsonReadWrite {
     JsonReader reader = Json.createReader(new StringReader(tile));
     JsonObject tileObject = reader.readObject();
     String type = tileObject.getString("type");
+
+    // Use reflection to find correct class
+    // Done to allow dynamic drop in of new tile types
+
+
+
     switch (type){
       case "Free":
         return new Free().setTileFromJson(Json.createReader(new StringReader(tile)));
