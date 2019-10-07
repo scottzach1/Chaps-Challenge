@@ -1,7 +1,8 @@
-package nz.ac.vuw.ecs.swen225.a3.persistence;
+package nz.ac.vuw.ecs.swen225.a3.recnplay;
 
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
+import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
 
 import javax.json.*;
 import java.io.*;
@@ -101,7 +102,7 @@ public class RecordAndPlay {
    * @param game game object to be updated
    */
   public static void loadRecording(String fileName,ChapsChallenge game){
-    JsonObject object;
+    JsonObject object = null;
     try {
       // Load game state
       JsonReadWrite.loadGameState(fileName,game);
@@ -115,34 +116,34 @@ public class RecordAndPlay {
         JsonReader jReader = Json.createReader(new StringReader(reader.readLine()));
         object = jReader.readObject();
       } catch (IOException e) {
-        throw new GameNotFoundException();
+        //TODO: deal withs
       }
-    }
-    catch(GameNotFoundException e){
+
+      JsonArray movesJson = object.getJsonArray("moves");
+
+      // Parse moves into array
+      for (JsonString j : movesJson.getValuesAs(JsonString.class)) {
+        switch (j.toString()) {
+          case "\"Left\"":
+            moves.add(Tile.Direction.Left);
+            break;
+          case "\"Right\"":
+            moves.add(Tile.Direction.Right);
+            break;
+          case "\"Up\"":
+            moves.add(Tile.Direction.Up);
+            break;
+          case "\"Down\"":
+            moves.add(Tile.Direction.Down);
+            break;
+        }
+      }
+      if (moves.size() > 0) isRunning = true;
+      game.update();
+    } catch (Exception e) {
       throw new Error(e.getMessage());
     }
 
-    JsonArray movesJson = object.getJsonArray("moves");
-
-    // Parse moves into array
-    for (JsonString j : movesJson.getValuesAs(JsonString.class)) {
-      switch (j.toString()){
-        case "\"Left\"":
-          moves.add(Tile.Direction.Left);
-          break;
-        case "\"Right\"":
-          moves.add(Tile.Direction.Right);
-          break;
-        case "\"Up\"":
-          moves.add(Tile.Direction.Up);
-          break;
-        case "\"Down\"":
-          moves.add(Tile.Direction.Down);
-          break;
-      }
-    }
-    if(moves.size() > 0) isRunning = true;
-    game.update();
   }
 
   /**

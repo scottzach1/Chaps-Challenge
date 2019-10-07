@@ -2,7 +2,7 @@ package nz.ac.vuw.ecs.swen225.a3.application;
 
 import nz.ac.vuw.ecs.swen225.a3.maze.*;
 import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
-import nz.ac.vuw.ecs.swen225.a3.persistence.RecordAndPlay;
+import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
 import nz.ac.vuw.ecs.swen225.a3.renderer.GUI;
 
 import java.awt.event.ComponentEvent;
@@ -157,7 +157,7 @@ public class ChapsChallenge {
     gui.loadGame();
     try {
       //TODO: use the field "loadFile" - a File object
-      JsonReadWrite.loadGameState("saveGame.txt", this);
+      JsonReadWrite.loadGameState(loadFile.getAbsolutePath(), this);
     } catch (Exception e) {
       gui.noFileFound();
     }
@@ -171,7 +171,7 @@ public class ChapsChallenge {
   public void saveGame() {
     gamePaused = true;
     if (gui.saveGame())
-      JsonReadWrite.saveGameState(this, "saveGame.txt");
+      JsonReadWrite.saveGameState(this, saveFile.getAbsolutePath());
   }
 
   /**
@@ -184,7 +184,7 @@ public class ChapsChallenge {
       resetLogistics();
 
     }
-    gamePaused = false;
+    resumeGame();
   }
 
   /**
@@ -220,8 +220,7 @@ public class ChapsChallenge {
   }
 
   private void timeOut() {
-    //gui.timeOut();
-    gameOver();
+    gameOver("Timed Out!");
   }
 
   /**
@@ -365,19 +364,12 @@ public class ChapsChallenge {
     return player;
   }
 
-  /**
-   * Loads the game over screen.
-   */
-  private void gameOver() {
-    //gui.gameOver(); //todo Front end implement
+  private void gameOver(String reason) {
+    gui.gameOver(reason);
+    exitGame();
   }
-
-  /**
-   * Loads the game end screen.
-   * For winning.
-   */
   private void gameEnd() {
-    //gui.endGame(); //todo front end implement
+    gui.endGame();
   }
 
   /**
