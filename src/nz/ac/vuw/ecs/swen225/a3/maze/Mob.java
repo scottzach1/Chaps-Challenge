@@ -9,10 +9,15 @@ import javax.json.JsonReader;
  */
 public abstract class Mob {
 
-  protected String imageUrl = "unknown.png";
-  protected String mobName = "Unnamed Mob.";
-  protected Tile host;
-  protected boolean active;
+  private String imageUrl = "unknown.png";
+  private String mobName = "Unnamed Mob.";
+  private Tile host;
+  private boolean active;
+  Player player;
+
+  public Mob(Player player) {
+    this.player = player;
+  }
 
   /**
    * @param newMobName new name of mob.
@@ -35,6 +40,14 @@ public abstract class Mob {
    */
   public void setActive(boolean active) {
     if (host != null) this.active = active;
+  }
+
+  /**
+   * Gets the active state of the mob.
+   * @return boolean active state of mob.
+   */
+  public boolean getActive() {
+    return active;
   }
 
   /**

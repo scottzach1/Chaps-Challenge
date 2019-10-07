@@ -240,4 +240,13 @@ public abstract class Tile {
     imageUrl = defaultImageUrl;
   }
 
+  /**
+   * Gets the Euclidean distance between tiles.
+   * @param other tile to measure distance from.
+   * @return distance between tiles.
+   */
+  public double getDistance(Tile other) {
+    return (Math.sqrt(Math.pow(getRow() - other.getRow(), 2) + Math.pow(getCol() - other.getCol(), 2)));
+  }
+
 }
