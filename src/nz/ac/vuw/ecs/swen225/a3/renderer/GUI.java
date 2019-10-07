@@ -43,8 +43,12 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
   private GridBagConstraints constraints = new GridBagConstraints();
 
   // HashSet of actively pressed keys
-  HashSet<Integer> activeKeys;
-  String direction = "";
+  private HashSet<Integer> activeKeys;
+  private String direction;
+
+  private boolean loaded;
+
+  private int resizeCycle;
 
 
   /**
@@ -52,6 +56,9 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
    * Creates and adds all relevant GUI components then redraws.
    */
   public GUI(ChapsChallenge chaps_challenge) {
+    loaded = false;
+    resizeCycle = 0;
+    direction = "";
     application = chaps_challenge;
     // Create new set for hosting keys currently pressed
     activeKeys = new HashSet<>();
@@ -82,7 +89,6 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     addKeyListener(this);
     setFocusable(true);
     setFocusableWindowState(true);
-
   }
 
   /**
@@ -155,24 +161,19 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
 
 
   public void noFileFound() {
+    // Button options
+    String[] options = {"Okay"};
 
-  }
-
-
-  /**
-   * Handles GUI actions related to resetting to
-   * previous level.
-   */
-  public boolean previousLevel() {
-    return false;
-  }
-
-  /**
-   * Handles GUI actions related to restarting the
-   * game.
-   */
-  public boolean restartGame() {
-    return false;
+    // Create and display the JOptionPane
+    JOptionPane.showOptionDialog(null,
+        "Invalid file\n",
+        "WARNING",
+        JOptionPane.OK_OPTION,
+        JOptionPane.ERROR_MESSAGE,
+        null,
+        options,
+        options[0]);
+    application.loadGame();
   }
 
   /**
@@ -214,7 +215,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     String[] options = {"Okay"};
 
     // Create and display the JOptionPane
-    int choice = JOptionPane.showOptionDialog(null,
+    JOptionPane.showOptionDialog(null,
         text + "\n",
         "INFO",
         JOptionPane.OK_OPTION,
@@ -253,6 +254,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
    */
   @Override
   public void componentResized(ComponentEvent e) {
+    resizeCycle++;
     screenDimension = getSize();
     screenWidth = screenDimension.width;
     screenHeight = screenDimension.height - MENU_HEIGHT;
@@ -262,9 +264,15 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     if (canvas != null && dashboardHolder != null) {
       canvas.resize();
       dashboardHolder.resize();
+      loaded = true;
     }
     revalidate();
     redraw();
+
+    if (loaded && resizeCycle == 2) {
+      componentResized(e);
+      application.resumeGame();
+    }
   }
 
   /**

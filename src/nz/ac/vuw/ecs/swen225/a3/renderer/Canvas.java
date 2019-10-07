@@ -31,9 +31,6 @@ public class Canvas extends JPanel {
 
     setLayout(new GridBagLayout());
     setBackground(GUI.BACKGROUND_COLOUR);
-
-    createCanvasComponents();
-
   }
 
   public void createCanvasComponents() {
@@ -46,7 +43,6 @@ public class Canvas extends JPanel {
         components.add(item);
       }
     }
-    refreshComponents();
   }
 
   /**
@@ -103,8 +99,10 @@ public class Canvas extends JPanel {
 
 
   public void resize() {
+
     int cellSize = Math.min(getWidth(), getHeight()) / VIEW_SIZE;
     AssetManager.scaleImages(cellSize);
+
     createCanvasComponents();
     refreshComponents();
     renderCanvasComponents();

@@ -16,34 +16,36 @@ public class DashboardHolder extends JPanel {
   public static int dashboardHeight;
 
   public DashboardHolder(ChapsChallenge chapsChallenge) {
+    setPreferredSize(new Dimension(GUI.dashboardWidth, GUI.screenHeight));
     dashboard = new Dashboard(chapsChallenge);
 
     setBackground(null);
     setForeground(null);
     setBorder(null);
     setLayout(new GridBagLayout());
-    renderDashboard();
   }
 
   public void renderDashboard() {
     removeAll();
     dashboardHeight = AssetManager.getScaledImage("free.png").getIconHeight() * Canvas.VIEW_SIZE;
 
+
+    dashboard.refreshDashboardComponents();
+
     gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.ipady = dashboardHeight;
     gbc.weightx = 1;
     gbc.weighty = 1;
-    dashboard.refreshDashboardComponents();
     add(dashboard, gbc);
     revalidate();
     repaint();
   }
 
   public void resize() {
-    removeAll();
     dashboard.createDashboardComponents();
     dashboard.renderDashboardComponents();
+    dashboard.refreshDashboardComponents();
     renderDashboard();
   }
 }

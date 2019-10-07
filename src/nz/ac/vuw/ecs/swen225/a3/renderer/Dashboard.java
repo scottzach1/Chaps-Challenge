@@ -62,8 +62,6 @@ public class Dashboard extends JPanel {
     StyleConstants.setAlignment(centerAlign, StyleConstants.ALIGN_CENTER);
     rightAlign = new SimpleAttributeSet();
     StyleConstants.setAlignment(rightAlign, StyleConstants.ALIGN_RIGHT);
-
-    createDashboardComponents();
   }
 
   /**
@@ -173,7 +171,7 @@ public class Dashboard extends JPanel {
       bottomPanelConstraints.weighty = 1;
 
       // Add the panel
-      if (chapsBagImages.get(i) != null)
+      if (chapsBagImages.size() > i && chapsBagImages.get(i) != null)
         bottomPanel.add(chapsBagImages.get(i), bottomPanelConstraints);
     }
 
@@ -192,6 +190,7 @@ public class Dashboard extends JPanel {
    * Updates the components text within the dashboard
    */
   public void refreshDashboardComponents() {
+
     // If the components don't exist then ignore the command
     // Usually a resizing error will refresh the components before they're instantiated
     if (levelNum == null || timeNum == null || chipsLeftNum == null) {
@@ -259,12 +258,11 @@ public class Dashboard extends JPanel {
    */
   private void fillChapsBagWithBlanks() {
     chapsBagImages = new ArrayList<>();
-    if (getWidth() > 0)
-      for (int i = 0; i < 8; i++) {
-        JLabel item = new JLabel(AssetManager.getScaledImage("free.png"));
-        item.setPreferredSize(new Dimension(getWidth() / 4, getHeight() / (6 * 2)));
-        chapsBagImages.add(item);
-      }
+    for (int i = 0; i < 8; i++) {
+      JLabel item = new JLabel(AssetManager.getScaledImage("free.png"));
+      item.setPreferredSize(new Dimension(getWidth() / 4, getHeight() / (6 * 2)));
+      chapsBagImages.add(item);
+    }
   }
 
 
@@ -283,6 +281,7 @@ public class Dashboard extends JPanel {
      * @param border        - If true: Add a matte border of foreground color, if false, no border
      */
     private CustomTextPane(String text, SimpleAttributeSet textAlignment, Color background, Color foreground, boolean border) {
+
       // Basic setup:
       // - Not editable
       setEditable(false);

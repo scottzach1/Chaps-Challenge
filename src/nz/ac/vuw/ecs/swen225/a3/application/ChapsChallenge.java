@@ -28,7 +28,6 @@ public class ChapsChallenge {
   private boolean gamePaused = false;
 
   private final int fps = 20;
-  private Thread thread;
 
   private MobManager mobManager;
 
@@ -47,9 +46,6 @@ public class ChapsChallenge {
 
     // Creates a GUI and gives it a keyListener
     gui = new GUI(this);
-
-    // Start the running loop
-    runningThread();
   }
 
 
@@ -106,7 +102,7 @@ public class ChapsChallenge {
       timeLeft = totalTime;
     }
 
-    if (player.getLocation().getType() == Tile.Type.InfoField){
+    if (player.getLocation().getType() == Tile.Type.InfoField) {
       InfoField info = (InfoField) player.getLocation();
       gui.renderInfoField(info.getInfo());
     }
@@ -153,14 +149,16 @@ public class ChapsChallenge {
    */
   public void loadGame() {
     gamePaused = false;
-    gui.loadGame();
-    try {
-      //TODO: use the field "loadFile" - a File object
-      JsonReadWrite.loadGameState(loadFile.getAbsolutePath(), this);
-    } catch (Exception e) {
-      gui.noFileFound();
+    if (gui.loadGame()) {
+      try {
+        //TODO: use the field "loadFile" - a File object
+        JsonReadWrite.loadGameState(loadFile.getAbsolutePath(), this);
+      } catch (Exception e) {
+        gui.noFileFound();
+        return;
+      }
+      System.out.println("Game loaded.");
     }
-    System.out.println("Game loaded.");
     resumeGame();
   }
 
@@ -179,12 +177,8 @@ public class ChapsChallenge {
    * Restarts the game.
    */
   public void restartGame() {
-    gamePaused = true;
-    if (gui.restartGame()) {
-      board.setCurrentLevel(0);
-      resetLogistics();
-    }
-    resumeGame();
+    board.setCurrentLevel(0);
+    resetLogistics();
   }
 
   /**
@@ -199,8 +193,6 @@ public class ChapsChallenge {
       board.setCurrentLevel(0);
     }
     resetLogistics();
-    gui.previousLevel();
-
   }
 
   public void restartLevel() {
@@ -230,19 +222,10 @@ public class ChapsChallenge {
   private void runningThread() {
     Runnable runnable = new Runnable() {
 
-      private int i = 0, chapsOldBagCounter = 0;
+      private int i = 0;
 
       @Override
       public void run() {
-        // Waits the thread long enough for everything to load
-        try {
-          Thread.sleep(400);
-        } catch (Exception e) {
-          System.out.println("Error while running thread" + e);
-        }
-
-        gui.componentResized(new ComponentEvent(gui, 1));
-
         // While the time has not run out
         while (true) {
 
@@ -277,8 +260,7 @@ public class ChapsChallenge {
         }
       }
     };
-    thread = new Thread(runnable);
-    thread.start();
+    new Thread(runnable).start();
   }
 
   /**
@@ -429,6 +411,7 @@ public class ChapsChallenge {
 
   /**
    * Sets the time left.
+   *
    * @param timeLeft the time left.
    */
   public void setTimeLeft(long timeLeft) {
@@ -437,6 +420,7 @@ public class ChapsChallenge {
 
   /**
    * Gets the mob manager.
+   *
    * @return the mob manager.
    */
   public MobManager getMobManager() {
@@ -445,6 +429,7 @@ public class ChapsChallenge {
 
   /**
    * Sets the player to a new player.
+   *
    * @param player the player to set.
    */
   public void setPlayer(Player player) {
