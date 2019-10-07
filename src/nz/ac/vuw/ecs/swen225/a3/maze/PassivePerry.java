@@ -23,7 +23,6 @@ public class PassivePerry extends Mob {
 
     direction = Tile.Direction.Down;
 
-    images = new HashMap<>();
     images.put(Tile.Direction.Down, "perry_front.png");
     images.put(Tile.Direction.Left, "perry_left.png");
     images.put(Tile.Direction.Up, "perry_back.png");

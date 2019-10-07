@@ -20,7 +20,6 @@ public class SneakySnek extends Mob {
 
     direction = Tile.Direction.Down;
 
-    images = new HashMap<>();
     images.put(Tile.Direction.Down, "snek_front.png");
     images.put(Tile.Direction.Left, "snek_left.png");
     images.put(Tile.Direction.Up, "snek_back.png");
@@ -34,16 +33,19 @@ public class SneakySnek extends Mob {
   public void advanceByTick() {
     if (getHost() == null) return;
 
+    // If player exists, calculate targeting ai.
     if (board != null && board.getPlayerLocation() != null) {
       Tile player = board.getPlayerLocation();
 
       Tile target = host;
 
       double distance = host.getDistance(player);
-      boolean foundTarget = false;
+      boolean foundTarget;
 
+      // If player within 5 tiles, approach player.
       if (distance < 5) {
 
+        // Calculate move to right.
         if (host.getCol() < player.getCol()) {
           Tile newTarget = host.getDir(Tile.Direction.Right);
           foundTarget = safeTiles.contains(target.getType());
@@ -54,6 +56,7 @@ public class SneakySnek extends Mob {
           }
         }
 
+        // Calculate move up.
         if (host.getRow() > player.getRow()) {
           Tile newTarget = host.getDir(Tile.Direction.Up);
           foundTarget = safeTiles.contains(target.getType());
@@ -64,6 +67,7 @@ public class SneakySnek extends Mob {
           }
         }
 
+        // Calculate move to left.
         if (host.getCol() > player.getCol()) {
           Tile newTarget = host.getDir(Tile.Direction.Left);
           foundTarget = safeTiles.contains(target.getType());
@@ -74,6 +78,7 @@ public class SneakySnek extends Mob {
           }
         }
 
+        // Calculate move down.
         if (host.getRow() < player.getRow()) {
           Tile newTarget = host.getDir(Tile.Direction.Down);
           foundTarget = safeTiles.contains(target.getType());
@@ -84,10 +89,13 @@ public class SneakySnek extends Mob {
           }
         }
 
+        // Occupy cell.
         setImageUrl(images.get(direction));
         occupyHost(target);
       }
     }
+
+    // Otherwise, revert to default path finding.
     super.advanceByTick();
   }
 
