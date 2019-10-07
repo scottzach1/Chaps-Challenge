@@ -88,12 +88,6 @@ public abstract class Tile {
   }
 
   /**
-   * Empty default constructor.
-   */
-  public Tile() {
-  }
-
-  /**
    * Gets the row of the tile.
    * @return the row.
    */
