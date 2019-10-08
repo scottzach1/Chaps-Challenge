@@ -178,7 +178,7 @@ public class ChapsChallenge {
     if (gui.loadGame()) {
       try {
         //TODO: use the field "loadFile" - a File object
-        //JsonReadWrite.loadGameState(loadFile.getAbsolutePath(), this);
+        JsonReadWrite.loadGameStateFromFile(loadFile.getAbsolutePath(), this);
       } catch (Exception e) {
         gui.noFileFound();
         return;
