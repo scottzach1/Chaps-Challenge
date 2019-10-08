@@ -15,9 +15,8 @@ public class LevelManager {
     static ArrayList<InputStream> levelDescriptions = new ArrayList<>();
 
     public static void loadLevels(){
-
-        // Load strings
-        File folder = new File("levels/");
+        //Load strings
+        File folder = new File("src/levels/");
         for(File f : folder.listFiles()){
             try {
                 ZipFile zf = new ZipFile(f.getAbsolutePath());
@@ -30,11 +29,11 @@ public class LevelManager {
                                     throw new Error("Failed to load level from " + f.getAbsolutePath());
                                 }});
                     levelDescriptions.forEach(s -> {
-                                try {
-                                    System.out.println(new BufferedReader(new InputStreamReader(s)).readLine());
-                                } catch (Exception e) {
-                                }
-                            });
+                        try {
+                            System.out.println(new BufferedReader(new InputStreamReader(s)).readLine());
+                        } catch (Exception e) {
+                        }
+                    });
                 }finally {
                     zf.close();
                 }
@@ -42,24 +41,5 @@ public class LevelManager {
             catch(Exception e){}
         }
 
-        try {
-            JarFile jarFile = new JarFile("levels/level-1.zip");
-            Enumeration<JarEntry> e = jarFile.entries();
-
-            URL[] urls = {new URL("jar:file:" + "levels/level-1.zip" + "!/")};
-            URLClassLoader cl = URLClassLoader.newInstance(urls);
-
-            while (e.hasMoreElements()) {
-                JarEntry je = e.nextElement();
-                if (je.isDirectory() || !je.getName().endsWith(".class")) {
-                    continue;
-                }
-                // -6 because of .class
-                String className = je.getName().substring(0, je.getName().length() - 6);
-                className = className.replace('/', '.');
-                Class c = cl.loadClass(className);
-
-            }
-        }catch(Exception e){}
     }
 }
