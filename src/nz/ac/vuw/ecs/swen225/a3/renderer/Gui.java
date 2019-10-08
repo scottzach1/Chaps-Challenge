@@ -35,10 +35,10 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
   // Dimension of the frame, based on screen size.
   static Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
   static final int MENU_HEIGHT = screenDimension.height / 30;
-  int screenWidth = screenDimension.width;
-  int screenHeight = screenDimension.height - MENU_HEIGHT;
-  int canvasWidth = (screenDimension.width * 2) / 3;
-  int dashboardWidth = (screenDimension.width) / 3;
+  static int screenWidth = screenDimension.width;
+  static int screenHeight = screenDimension.height - MENU_HEIGHT;
+  static int canvasWidth = (screenDimension.width * 2) / 3;
+  static int dashboardWidth = (screenDimension.width) / 3;
 
   // ChapsChallenge component fields.
   private Canvas canvas;
