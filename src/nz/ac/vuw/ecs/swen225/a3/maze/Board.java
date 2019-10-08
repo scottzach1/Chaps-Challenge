@@ -1,10 +1,14 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
+import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
 import nz.ac.vuw.ecs.swen225.a3.renderer.Canvas;
 
-import java.nio.file.Path;
+import java.io.*;
+import java.nio.file.*;
 import java.util.*;
 import java.util.stream.Stream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 
 /**
@@ -50,6 +54,18 @@ public class Board {
       throw new Error(pnf.getMessage());
     }
     setupAdjacency();
+    try {
+        ZipFile zf = new ZipFile("levels/level-1.zip");
+        try {
+            ZipEntry a = zf.getEntry("level-1/level1.txt");
+            zf.stream().forEach(s -> System.out.println(((ZipEntry) s).toString()));
+            BufferedReader read = new BufferedReader(new InputStreamReader(zf.getInputStream(a)));
+            System.out.println(read.readLine());
+        } finally {
+            zf.close();
+        }
+    }
+    catch(Exception e){}
   }
 
   /**
@@ -452,5 +468,5 @@ public class Board {
   public String toString() {
     return allLevels.get(currentLevel);
   }
-  
+
 }
