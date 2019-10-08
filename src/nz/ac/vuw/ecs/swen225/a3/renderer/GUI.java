@@ -299,7 +299,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
    * @param reason given.
    */
   public void gameOver(String reason) {
-    // TODO: Implement method and add tests.
+    // TODO: Implement method and add test.
   }
 
 
@@ -307,7 +307,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
    * TODO: Endgame with no provided reason.
    */
   public void endGame() {
-    // TODO: Implement method and add tests.
+    // TODO: Implement method and add test.
   }
 
 

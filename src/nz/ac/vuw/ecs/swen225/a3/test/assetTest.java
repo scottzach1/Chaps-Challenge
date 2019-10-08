@@ -1,14 +1,9 @@
-package nz.ac.vuw.ecs.swen225.a3.tests;
+package nz.ac.vuw.ecs.swen225.a3.test;
 
-import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
 import org.junit.jupiter.api.Test;
 
 import javax.swing.*;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;

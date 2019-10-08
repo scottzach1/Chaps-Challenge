@@ -1,4 +1,4 @@
-package nz.ac.vuw.ecs.swen225.a3.tests;
+package nz.ac.vuw.ecs.swen225.a3.test;
 
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 import nz.ac.vuw.ecs.swen225.a3.maze.Board;
