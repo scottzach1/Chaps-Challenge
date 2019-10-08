@@ -13,24 +13,123 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class keyboardTest {
 
+  /**
+   * Test movement to left.
+   * @throws InterruptedException from sleep.
+   */
   @Test
-  void testMoveLeft() {
+  void testMoveLeft() throws InterruptedException {
+    // Make game
     ChapsChallenge application = new ChapsChallenge();
     GUI gui = application.getGui();
 
-    Board board = application.getBoard();
-    Tile oldTile = board.getPlayerLocation();
+    // Get initial tile
+    Tile oldTile = application.getBoard().getPlayerLocation();
 
-    System.out.println(oldTile.getRow() + ", " + oldTile.getCol());
+    // Wait till game has resized.
+    while (gui.isResizing()) Thread.sleep(100);
 
-    KeyEvent e = new KeyEvent(gui, KeyEvent.KEY_PRESSED, System.currentTimeMillis(), KeyEvent.VK_UNDEFINED, KeyEvent.VK_LEFT);
-    gui.keyPressed(e);
-    gui.updateBoard();
-    
-    Tile newTile = board.getPlayerLocation();
+    // Input key
+    gui.keyPressed(new KeyEvent(gui, KeyEvent.KEY_PRESSED, System.currentTimeMillis(), KeyEvent.VK_UNDEFINED, KeyEvent.VK_LEFT));
+    application.update();
 
-    System.out.println(newTile.getRow() + ", " + newTile.getCol());
+    // Wait till game has resized.
+    while (gui.isResizing()) Thread.sleep(100);
 
+    // Get new tile
+    Tile newTile = application.getBoard().getPlayerLocation();
+
+    // Compare.
     assertEquals(oldTile.getLeft(), newTile);
+  }
+
+  /**
+   * Test movement to right.
+   * @throws InterruptedException from sleep.
+   */
+  @Test
+  void testMoveRight() throws InterruptedException {
+    // Make game
+    ChapsChallenge application = new ChapsChallenge();
+    GUI gui = application.getGui();
+
+    // Get initial tile
+    Tile oldTile = application.getBoard().getPlayerLocation();
+
+    // Wait till game has resized.
+    while (gui.isResizing()) Thread.sleep(100);
+
+    // Input key
+    gui.keyPressed(new KeyEvent(gui, KeyEvent.KEY_PRESSED, System.currentTimeMillis(), KeyEvent.VK_UNDEFINED, KeyEvent.VK_RIGHT));
+    application.update();
+
+    // Wait till game has resized.
+    while (gui.isResizing()) Thread.sleep(100);
+
+    // Get new tile
+    Tile newTile = application.getBoard().getPlayerLocation();
+
+    // Compare.
+    assertEquals(oldTile.getRight(), newTile);
+  }
+
+  /**
+   * Test movement to down.
+   * @throws InterruptedException from sleep.
+   */
+  @Test
+  void testMoveDown() throws InterruptedException {
+    // Make game
+    ChapsChallenge application = new ChapsChallenge();
+    GUI gui = application.getGui();
+
+    // Get initial tile
+    Tile oldTile = application.getBoard().getPlayerLocation();
+
+    // Wait till game has resized.
+    while (gui.isResizing()) Thread.sleep(100);
+
+    // Input key
+    gui.keyPressed(new KeyEvent(gui, KeyEvent.KEY_PRESSED, System.currentTimeMillis(), KeyEvent.VK_UNDEFINED, KeyEvent.VK_DOWN));
+    application.update();
+
+    // Wait till game has resized.
+    while (gui.isResizing()) Thread.sleep(100);
+
+    // Get new tile
+    Tile newTile = application.getBoard().getPlayerLocation();
+
+    // Compare.
+    assertEquals(oldTile.getDown(), newTile);
+  }
+
+  /**
+   * Test movement to up.
+   * @throws InterruptedException from sleep.
+   */
+  @Test
+  void testMoveUp() throws InterruptedException {
+    // Make game
+    ChapsChallenge application = new ChapsChallenge();
+    GUI gui = application.getGui();
+
+    // Get initial tile
+    Tile oldTile = application.getBoard().getPlayerLocation();
+
+    // Wait till game has resized.
+    while (gui.isResizing()) Thread.sleep(100);
+
+    // Input key
+    gui.keyPressed(new KeyEvent(gui, KeyEvent.KEY_PRESSED, System.currentTimeMillis(), KeyEvent.VK_UNDEFINED, KeyEvent.VK_UP));
+    application.update();
+
+    // Wait till game has resized.
+    while (gui.isResizing()) Thread.sleep(100);
+
+    // Get new tile
+    Tile newTile = application.getBoard().getPlayerLocation();
+
+    // Compare.
+    assertEquals(oldTile.getUp(), newTile);
   }
 }

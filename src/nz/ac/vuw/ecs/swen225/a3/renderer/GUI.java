@@ -90,6 +90,10 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
 
   }
 
+  public boolean isResizing() {
+    return resizing;
+  }
+
   /**
    * Sets up GridBagLayout with all screen components.
    */
@@ -367,7 +371,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
   public void keyTyped(KeyEvent e) {/* UNUSED */}
 
   /**
-   * Handles events occuring after a key is pressed.
+   * Handles events occurring after a key is pressed.
    * First adding it to the list of keys pressed, then dealing with all
    * active keys in the 'activeKeys' set.
    *
