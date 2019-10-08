@@ -98,6 +98,9 @@ public class Canvas extends JPanel {
   }
 
 
+  /**
+   * Recalculates cell size then resize the canvas.
+   */
   public void resize() {
 
     int cellSize = Math.min(getWidth(), getHeight()) / VIEW_SIZE;

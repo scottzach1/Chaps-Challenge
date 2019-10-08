@@ -29,14 +29,14 @@ class keyboardTest {
     Tile oldTile = application.getBoard().getPlayerLocation();
 
     // Wait while gui is busy.
-    while (gui.isResizing()) Thread.sleep(100);
+    while (gui.isBusy()) Thread.sleep(100);
 
     // Input left key
     gui.keyPressed(new KeyEvent(gui, KeyEvent.KEY_PRESSED, System.currentTimeMillis(), KeyEvent.VK_UNDEFINED, KeyEvent.VK_LEFT));
     application.update();
 
     // Wait while gui is busy.
-    while (gui.isResizing()) Thread.sleep(100);
+    while (gui.isBusy()) Thread.sleep(100);
 
     // Get new tile
     Tile newTile = application.getBoard().getPlayerLocation();
@@ -59,14 +59,14 @@ class keyboardTest {
     Tile oldTile = application.getBoard().getPlayerLocation();
 
     // Wait while gui is busy.
-    while (gui.isResizing()) Thread.sleep(100);
+    while (gui.isBusy()) Thread.sleep(100);
 
     // Input right key
     gui.keyPressed(new KeyEvent(gui, KeyEvent.KEY_PRESSED, System.currentTimeMillis(), KeyEvent.VK_UNDEFINED, KeyEvent.VK_RIGHT));
     application.update();
 
     // Wait while gui is busy.
-    while (gui.isResizing()) Thread.sleep(100);
+    while (gui.isBusy()) Thread.sleep(100);
 
     // Get new tile
     Tile newTile = application.getBoard().getPlayerLocation();
@@ -89,14 +89,14 @@ class keyboardTest {
     Tile oldTile = application.getBoard().getPlayerLocation();
 
     // Wait while gui is busy.
-    while (gui.isResizing()) Thread.sleep(100);
+    while (gui.isBusy()) Thread.sleep(100);
 
     // Input up key
     gui.keyPressed(new KeyEvent(gui, KeyEvent.KEY_PRESSED, System.currentTimeMillis(), KeyEvent.VK_UNDEFINED, KeyEvent.VK_DOWN));
     application.update();
 
     // Wait while gui is busy.
-    while (gui.isResizing()) Thread.sleep(100);
+    while (gui.isBusy()) Thread.sleep(100);
 
     // Get new tile
     Tile newTile = application.getBoard().getPlayerLocation();
@@ -119,14 +119,14 @@ class keyboardTest {
     Tile oldTile = application.getBoard().getPlayerLocation();
 
     // Wait while gui is busy.
-    while (gui.isResizing()) Thread.sleep(100);
+    while (gui.isBusy()) Thread.sleep(100);
 
     // Input up key
     gui.keyPressed(new KeyEvent(gui, KeyEvent.KEY_PRESSED, System.currentTimeMillis(), KeyEvent.VK_UNDEFINED, KeyEvent.VK_UP));
     application.update();
 
     // Wait while gui is busy.
-    while (gui.isResizing()) Thread.sleep(100);
+    while (gui.isBusy()) Thread.sleep(100);
 
     // Get new tile
     Tile newTile = application.getBoard().getPlayerLocation();
@@ -148,14 +148,14 @@ class keyboardTest {
     assertFalse(application.isGamePaused());
 
     // Wait while gui is busy.
-    while (gui.isResizing()) Thread.sleep(100);
+    while (gui.isBusy()) Thread.sleep(100);
 
     // Input space key
     gui.keyPressed(new KeyEvent(gui, KeyEvent.KEY_PRESSED, System.currentTimeMillis(), KeyEvent.VK_UNDEFINED, KeyEvent.VK_SPACE));
     application.update();
 
     // Wait while gui is busy.
-    while (gui.isResizing()) Thread.sleep(100);
+    while (gui.isBusy()) Thread.sleep(100);
 
     assertTrue(application.isGamePaused());
   }
@@ -173,14 +173,14 @@ class keyboardTest {
     assertFalse(application.isGamePaused());
 
     // Wait while gui is busy.
-    while (gui.isResizing()) Thread.sleep(100);
+    while (gui.isBusy()) Thread.sleep(100);
 
     // Input space key
     gui.keyPressed(new KeyEvent(gui, KeyEvent.KEY_PRESSED, System.currentTimeMillis(), KeyEvent.VK_UNDEFINED, KeyEvent.VK_SPACE));
     application.update();
 
     // Wait while gui is busy.
-    while (gui.isResizing()) Thread.sleep(100);
+    while (gui.isBusy()) Thread.sleep(100);
 
     assertTrue(application.isGamePaused());
 
@@ -189,7 +189,7 @@ class keyboardTest {
     application.update();
 
     // Wait while gui is busy.
-    while (gui.isResizing()) Thread.sleep(100);
+    while (gui.isBusy()) Thread.sleep(100);
 
     assertFalse(application.isGamePaused());
   }
@@ -207,19 +207,19 @@ class keyboardTest {
     assertFalse(application.isGamePaused());
 
     // Wait while gui is busy.
-    while (gui.isResizing()) Thread.sleep(100);
+    while (gui.isBusy()) Thread.sleep(100);
 
     // Input Space key
     gui.keyPressed(new KeyEvent(gui, KeyEvent.KEY_PRESSED, System.currentTimeMillis(), KeyEvent.VK_UNDEFINED, KeyEvent.VK_SPACE));
     application.update();
 
-    while (gui.isResizing()) Thread.sleep(100);
+    while (gui.isBusy()) Thread.sleep(100);
 
     // Release Space key
     gui.keyReleased(new KeyEvent(gui, KeyEvent.KEY_RELEASED, System.currentTimeMillis(), KeyEvent.VK_UNDEFINED, KeyEvent.VK_SPACE));
     application.update();
 
-    while (gui.isResizing()) Thread.sleep(100);
+    while (gui.isBusy()) Thread.sleep(100);
 
     assertTrue(application.isGamePaused());
 
@@ -228,7 +228,7 @@ class keyboardTest {
     application.update();
 
     // Wait while gui is busy.
-    while (gui.isResizing()) Thread.sleep(100);
+    while (gui.isBusy()) Thread.sleep(100);
 
     assertFalse(application.isGamePaused());
   }
@@ -246,13 +246,13 @@ class keyboardTest {
     assertFalse(application.isGamePaused());
 
     // Wait while gui is busy.
-    while (gui.isResizing()) Thread.sleep(100);
+    while (gui.isBusy()) Thread.sleep(100);
 
     // Input Space key
     gui.keyPressed(new KeyEvent(gui, KeyEvent.KEY_PRESSED, System.currentTimeMillis(), KeyEvent.VK_UNDEFINED, KeyEvent.VK_SPACE));
     application.update();
 
-    while (gui.isResizing()) Thread.sleep(100);
+    while (gui.isBusy()) Thread.sleep(100);
 
     // Release Space
     gui.keyReleased(new KeyEvent(gui, KeyEvent.KEY_RELEASED, System.currentTimeMillis(), KeyEvent.VK_UNDEFINED, KeyEvent.VK_SPACE));
@@ -260,17 +260,17 @@ class keyboardTest {
 
     assertTrue(application.isGamePaused());
 
-    while (gui.isResizing()) Thread.sleep(100);
+    while (gui.isBusy()) Thread.sleep(100);
 
     // Input ctrl + R keys
     gui.keyPressed(new KeyEvent(gui, KeyEvent.KEY_PRESSED, System.currentTimeMillis(), KeyEvent.VK_UNDEFINED, KeyEvent.VK_CONTROL));
     application.update();
-    while (gui.isResizing()) Thread.sleep(100);
+    while (gui.isBusy()) Thread.sleep(100);
     gui.keyPressed(new KeyEvent(gui, KeyEvent.KEY_PRESSED, System.currentTimeMillis(), KeyEvent.VK_UNDEFINED, KeyEvent.VK_R));
     application.update();
 
     // Wait while gui is busy.
-    while (gui.isResizing()) Thread.sleep(100);
+    while (gui.isBusy()) Thread.sleep(100);
 
     assertFalse(application.isGamePaused());
   }
@@ -290,17 +290,17 @@ class keyboardTest {
     assertEquals(1, application.getLevel());
 
     // Wait while gui is busy.
-    while (gui.isResizing()) Thread.sleep(100);
+    while (gui.isBusy()) Thread.sleep(100);
 
     // Input ctrl + 1 keys
     gui.keyPressed(new KeyEvent(gui, KeyEvent.KEY_PRESSED, System.currentTimeMillis(), KeyEvent.VK_UNDEFINED, KeyEvent.VK_CONTROL));
     application.update();
-    while (gui.isResizing()) Thread.sleep(100);
+    while (gui.isBusy()) Thread.sleep(100);
     gui.keyPressed(new KeyEvent(gui, KeyEvent.KEY_PRESSED, System.currentTimeMillis(), KeyEvent.VK_UNDEFINED, KeyEvent.VK_1));
     application.update();
 
     // Wait while gui is busy.
-    while (gui.isResizing()) Thread.sleep(100);
+    while (gui.isBusy()) Thread.sleep(100);
 
     assertEquals(0, application.getLevel());
   }
@@ -318,17 +318,17 @@ class keyboardTest {
     assertNotEquals(start, board.getPlayerLocation());
 
     // Wait while gui is busy.
-    while (gui.isResizing()) Thread.sleep(100);
+    while (gui.isBusy()) Thread.sleep(100);
 
     // Input ctrl + P keys
     gui.keyPressed(new KeyEvent(gui, KeyEvent.KEY_PRESSED, System.currentTimeMillis(), KeyEvent.VK_UNDEFINED, KeyEvent.VK_CONTROL));
     application.update();
-    while (gui.isResizing()) Thread.sleep(100);
+    while (gui.isBusy()) Thread.sleep(100);
     gui.keyPressed(new KeyEvent(gui, KeyEvent.KEY_PRESSED, System.currentTimeMillis(), KeyEvent.VK_UNDEFINED, KeyEvent.VK_P));
     application.update();
 
     // Wait while gui is busy.
-    while (gui.isResizing()) Thread.sleep(100);
+    while (gui.isBusy()) Thread.sleep(100);
 
     // Check player reset position.
     Tile resetTile = board.getPlayerLocation();

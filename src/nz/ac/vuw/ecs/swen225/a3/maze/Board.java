@@ -32,7 +32,7 @@ public class Board {
   public Set<Tile> tileTypes = new HashSet<>();
 
   /**
-   * Constructor.
+   * Constructs and parses a new board.
    */
   public Board() {
     addLevels();
@@ -51,6 +51,10 @@ public class Board {
     setupAdjacency();
   }
 
+  /**
+   * Sets the board to the desired level.
+   * @param level to set.
+   */
   public void setLevel(String level){
     try {
       if (!allLevels.contains(level)){
@@ -217,6 +221,10 @@ public class Board {
    return null;
   }
 
+  /**
+   * Gets number of treasure remaining.
+   * @return number of treasure remaining.
+   */
   public int getTreasureCount() {
     return treasureCount;
   }
@@ -235,8 +243,15 @@ public class Board {
     return allTiles;
   }
 
+  /**
+   * Adds levels to the level list.
+   * Sets the current level to 0.
+   */
   private void addLevels(){
+    currentLevel=0; // Set current level to 0.
+
     allLevels = new ArrayList<>();
+    // Level 1
     allLevels.add(
         "_|_|_|T|T|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "#|#|_|_|_|_|KYellow|KBlue|KRed|KGreen|_|_|C|_|_|_|_|_|_|_|"
@@ -258,7 +273,7 @@ public class Board {
             + "W|W|W|W|W|W|W|W|W|W|W|W|W|W|W|W|W|W|W|W|"
             + "W|W|W|W|W|W|W|W|W|W|W|W|W|W|W|W|W|W|W|W|"
             + "W|W|W|W|W|W|W|W|W|W|W|W|W|W|W|W|W|W|W|W|");
-
+    // Level 2
     allLevels.add(
               "_|_|_|_|_|_|_|_|_|#|KRed|#|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|?|_|#|T|#|_|_|_|_|_|_|_|_|"
@@ -280,7 +295,7 @@ public class Board {
             + "_|_|_|_|_|_|_|_|_|#|C|#|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|#|ExitLock|#|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|#|Exit|#|_|_|_|_|_|_|_|_|");
-            
+    // Level 3
     allLevels.add(
               "Exit|ExitLock|_|_|_|_|_|_|_|C|_|KRed|_|_|_|_|_|DBlue|T|KGreen|"
             + "#|#|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|#|T|T|"
@@ -302,7 +317,7 @@ public class Board {
             + "#|#|#|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "T|T|#|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "KBlue|T|DRed|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|");
-            
+    // Level 4
     allLevels.add(
               "_|_|_|_|_|#|#|#|#|#|#|#|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|#|T|KYellow|#|#|#|#|_|_|_|_|_|_|_|_|"
@@ -324,7 +339,7 @@ public class Board {
             + "#|#|#|_|_|_|_|_|_|_|_|_|_|_|_|_|_|T|T|T|"
             + "T|T|#|_|_|_|_|_|_|_|_|_|_|_|_|_|_|T|T|T|"
             + "KGreen|T|DRed|_|_|_|_|_|_|_|_|_|_|_|_|_|_|T|T|T|");
-    
+    // Level 5
     allLevels.add(
               "KBlue|DGreen|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|#|KGreen|"
             + "#|#|_|_|_|_|T|_|_|_|_|_|_|T|_|_|_|_|#|DRed|"
@@ -346,10 +361,13 @@ public class Board {
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|T|_|_|_|_|_|_|T|_|_|_|_|_|_|"
             + "C|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|KRed|");
-
-    currentLevel=0;
   }
 
+  /**
+   * Sets the board level to the next level.
+   * Retains level if on final level.
+   * @return boolean board changed.
+   */
   public boolean setNextLevel(){
     if (currentLevel<allLevels.size()-1){
       currentLevel++;
@@ -359,17 +377,30 @@ public class Board {
     return false;
   }
 
+  /**
+   * Sets the board level to the desired level.
+   * Retains level if given level is invalid.
+   * @param level to set.
+   */
   public void setCurrentLevel(int level){
-    if (level<allLevels.size()){
+    if (level >= 0 && level<allLevels.size()){
       currentLevel= level;
       setLevel(allLevels.get(currentLevel));
     }
   }
 
+  /**
+   * Gets the current level the board is on.
+   * @return level of board.
+   */
   public int getCurrentLevel() {
     return currentLevel;
   }
 
+  /**
+   * Gets the final level number.
+   * @return last level of board.
+   */
   public int getFinalLevel() {
     return allLevels.size() - 1;
   }
@@ -385,7 +416,7 @@ public class Board {
   /**
    * Exception thrown when no chap is present in level description.
    */
-  public class PlayerNotFoundException extends Exception {
+  public static class PlayerNotFoundException extends Exception {
     @Override
     public String getMessage() {
       return "No Chap in string description of level";
@@ -395,7 +426,7 @@ public class Board {
   /**
    * Exception thrown when multiple chaps present in level description.
    */
-  public class MultiplePlayersFoundException extends Exception {
+  public static class MultiplePlayersFoundException extends Exception {
     @Override
     public String getMessage() {
       return "Multiple Chaps in string description of level";
@@ -405,13 +436,17 @@ public class Board {
   /**
    * Exception thrown when invalid token found in level description.
    */
-  public class ParsingException extends Exception {
+  public static class ParsingException extends Exception {
     @Override
     public String getMessage() {
       return "Invalid token in string description of level";
     }
   }
 
+  /**
+   * Gets string representation of the board.
+   * @return string representation of the board.
+   */
   @Override
   public String toString() {
     return allLevels.get(currentLevel);

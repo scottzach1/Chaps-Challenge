@@ -35,7 +35,6 @@ public class MobManager {
     this.board = board;
     this.mobs = new HashSet<>();
 
-
     // TODO: Mobs should be loaded through board, not mob manager.
     Mob perryOne = new PassivePerry();
     perryOne.occupyHost(board.getTile(7,7));

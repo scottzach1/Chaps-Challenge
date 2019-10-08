@@ -6,15 +6,12 @@ import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Set;
 
 /**
  * GUI class extends JFrame and is responsible with
@@ -50,7 +47,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
   private String direction;
 
   private boolean loaded;
-  private boolean resizing;
+  private boolean isBusy;
 
   private int resizeCycle;
 
@@ -92,8 +89,13 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
 
   }
 
-  public boolean isResizing() {
-    return resizing;
+  /**
+   * Returns boolean state of whether gui is busy.
+   *
+   * @return is busy true or false.
+   */
+  public boolean isBusy() {
+    return isBusy;
   }
 
   /**
@@ -139,6 +141,9 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     componentResized(new ComponentEvent(this, ComponentEvent.COMPONENT_RESIZED));
   }
 
+  /**
+   * Closes the pause menu and loads the game screen.
+   */
   public void resumeGame() {
     getContentPane().removeAll();
     // Add MenuBar.
@@ -196,7 +201,9 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     return false;
   }
 
-
+  /**
+   * Creates a popup telling the user there was an invalid file.
+   */
   public void noFileFound() {
     // Button options
     String[] options = {"Okay"};
@@ -236,21 +243,31 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
   }
 
 
+  /**
+   * If not busy executes move and redraws dashboard.
+   */
   public void updateBoard() {
-    if (resizing)
+    if (isBusy)
       return;
     runMove();
     canvas.refreshComponents();
     redraw();
   }
 
+  /**
+   * If not busy renders the dashboard.
+   */
   public void updateDashboard() {
-    if (resizing)
+    if (isBusy)
       return;
     dashboardHolder.renderDashboard();
     redraw();
   }
 
+  /**
+   * Displays info field text pop up.
+   * @param text to display.
+   */
   public void renderInfoField(String text) {
     // Button options
     String[] options = {"Okay"};
@@ -277,11 +294,18 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
   }
 
 
+  /**
+   * TODO: Endgame promping provided reason.
+   * @param reason given.
+   */
   public void gameOver(String reason) {
     // TODO: Implement method and add tests.
   }
 
 
+  /**
+   * TODO: Endgame with no provided reason.
+   */
   public void endGame() {
     // TODO: Implement method and add tests.
   }
@@ -296,7 +320,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
   @Override
   public void componentResized(ComponentEvent e) {
 
-    resizing = true;
+    isBusy = true;
     resizeCycle++;
 
 
@@ -305,7 +329,6 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     screenHeight = screenDimension.height - MENU_HEIGHT;
     canvasWidth = (screenDimension.width * 2) / 3;
     dashboardWidth = (screenDimension.width) / 3;
-
 
 
     if (!application.isGamePaused()) {
@@ -317,7 +340,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
       }
       redraw();
 
-      if(resizeCycle == 1){
+      if (resizeCycle == 1) {
         componentResized(new ComponentEvent(this, ComponentEvent.COMPONENT_RESIZED));
         application.startRunningThread();
       }
@@ -328,7 +351,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
       }
       redraw();
     }
-    resizing = false;
+    isBusy = false;
   }
 
   /**
@@ -399,7 +422,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
 
     // CTRL + Number
     if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.size() == 2) {
-      for (int i=0; i!=10; ++i) {
+      for (int i = 0; i != 10; ++i) {
         if (activeKeys.contains(KeyEvent.VK_1 + i)) {
           application.setLevel(i);
         }
@@ -457,6 +480,10 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
   }
 
 
+  /**
+   * Executes move in application in direction of the field 'direction'.
+   * Then clears direction field.
+   */
   private void runMove() {
     // Go UP
     if (direction.equals("UP"))
@@ -470,7 +497,6 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     // Go RIGHT
     if (direction.equals("RIGHT"))
       application.move(Tile.Direction.Right);
-
 
     direction = "";
   }

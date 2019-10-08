@@ -8,6 +8,9 @@ import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
+/**
+ * DashBoardHolder contains the dashboard such that it can be resized.
+ */
 public class DashboardHolder extends JPanel {
 
   private Dashboard dashboard;
@@ -16,6 +19,10 @@ public class DashboardHolder extends JPanel {
 
   private int dashboardHeight;
 
+  /**
+   * Constructor creates a new dashboard but does no render.
+   * @param chapsChallenge
+   */
   public DashboardHolder(ChapsChallenge chapsChallenge) {
     application = chapsChallenge;
 
@@ -29,6 +36,9 @@ public class DashboardHolder extends JPanel {
     setLayout(new GridBagLayout());
   }
 
+  /**
+   * Recalculates and renders the dashboard
+   */
   public void renderDashboard() {
     removeAll();
     dashboardHeight = AssetManager.getScaledImage("free.png").getIconHeight() * Canvas.VIEW_SIZE;
@@ -45,12 +55,19 @@ public class DashboardHolder extends JPanel {
     repaint();
   }
 
+  /**
+   * Resize's the dashboard to the new calculated size.
+   */
   public void resize() {
     dashboard.createDashboardComponents();
     dashboard.renderDashboardComponents();
     renderDashboard();
   }
 
+  /**
+   * Gets the height of the dashboard.
+   * @return dashboard height.
+   */
   protected int getDashboardHeight(){
     return dashboardHeight;
   }

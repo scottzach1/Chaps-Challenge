@@ -7,14 +7,17 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-public class PauseMenu extends JPanel {
+/**
+ * Pause menu is a jpanel that replaces the game screen with a menu of buttons the user can chose.
+ */
+class PauseMenu extends JPanel {
 
   private ArrayList<JButton> components = new ArrayList<>();
   private ChapsChallenge application;
   private Color foreground, background, otherForeground, otherBackground;
   private JPanel panel;
 
-  public PauseMenu(ChapsChallenge aChapsChallenge){
+  PauseMenu(ChapsChallenge aChapsChallenge){
     application = aChapsChallenge;
 
     setPreferredSize(new Dimension(GUI.screenWidth, GUI.screenHeight));
@@ -33,7 +36,7 @@ public class PauseMenu extends JPanel {
     panel.setLayout(new GridBagLayout());
   }
 
-  public void createComponents(){
+  void createComponents(){
     removeAll();
     components.clear();
     // Create the buttons
@@ -60,27 +63,14 @@ public class PauseMenu extends JPanel {
     quit.setForeground(foreground);
 
     // Add their action listeners
-    resume.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        application.resumeGame();
-      }
+    resume.addActionListener(e -> application.resumeGame());
+
+    restart.addActionListener(e -> {
+      application.resumeGame();
+      application.restartGame();
     });
 
-    restart.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        application.resumeGame();
-        application.restartGame();
-      }
-    });
-
-    quit.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        application.exitGame();
-      }
-    });
+    quit.addActionListener(e -> application.exitGame());
 
     // Add mouse listeners
     resume.addMouseListener(new MouseAdapter() {
@@ -130,7 +120,10 @@ public class PauseMenu extends JPanel {
   }
 
 
-  public void renderPauseMenu(){
+  /**
+   * Renders the pause menu.
+   */
+  void renderPauseMenu(){
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.weightx = 1;
     gbc.weighty = 1;
@@ -147,15 +140,19 @@ public class PauseMenu extends JPanel {
   }
 
 
-  public void resize(){
+  /**
+   * Recalculates then resize components.
+   */
+  void resize(){
     createComponents();
     renderPauseMenu();
   }
   /**
-   * @param component
-   * @param oldFont
-   * @param text
-   * @return
+   * Takes a given font and attempts to find the correct size given some parameters.
+   * @param component containing font.
+   * @param oldFont old font to change.
+   * @param text to display
+   * @return font with correct size and values.
    */
   private Font findFont(Component component, Font oldFont, String text) {
     // Get the size of the area the text can take up
