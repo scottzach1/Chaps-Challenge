@@ -16,6 +16,7 @@ import java.util.Map;
  */
 public class AssetManager {
   private static String assetPath = "assets/";
+  private static String customAssetPath = "";
   private static boolean loaded = false;
 
   private static boolean scaling = false;
@@ -40,8 +41,8 @@ public class AssetManager {
    * Sets the path to look for assets.
    * @param path path to load assets.
    */
-  public static void setAssetPath(String path) {
-    assetPath = path;
+  public static void setCustomAssetPath(String path) {
+    customAssetPath = path;
   }
 
   /**
@@ -56,21 +57,32 @@ public class AssetManager {
 
     if (baseImageIcons.containsKey(fname)) return;
 
-    // Load base image.
-    ImageIcon baseIcon = new ImageIcon(assetPath + fname);
+    // -- Load base image -- //
+
+    // Try Custom path.
+    ImageIcon baseIcon = new ImageIcon(customAssetPath + fname);
+
+    // Otherwise try Local path.
+    if (baseIcon.getIconWidth() <= 0 || baseIcon.getIconHeight() <= 0) {
+      baseIcon = new ImageIcon(assetPath + fname);
+    }
+
     baseIcon.setDescription(fname);
+
+    // Else use unknown from local path.
     if (baseIcon.getIconWidth() <= 0 || baseIcon.getIconHeight() <= 0) {
       baseIcon = new ImageIcon(assetPath + "unknown.png");
       baseIcon.setDescription("unknown.png");
     }
 
-    // Load scaled image.
+    //  -- Load scaled image -- //
+
     ImageIcon scaledIcon = new ImageIcon(baseIcon.getImage().
-              getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH));
+        getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH));
 
     scaledIcon.setDescription(baseIcon.getDescription());
 
-    if (scaledIcon.getIconHeight() == 0) System.out.println("Oh no s!");
+    // -- Save icons -- //
 
     baseImageIcons.put(fname, baseIcon);
     scaledImageIcons.put(fname, scaledIcon);
