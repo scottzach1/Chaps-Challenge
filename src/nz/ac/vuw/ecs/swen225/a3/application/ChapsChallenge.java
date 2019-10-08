@@ -1,21 +1,24 @@
 package nz.ac.vuw.ecs.swen225.a3.application;
 
-import nz.ac.vuw.ecs.swen225.a3.maze.*;
-import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
-import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
-import nz.ac.vuw.ecs.swen225.a3.renderer.GUI;
-
-import java.awt.event.ComponentEvent;
 import java.io.File;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
+import nz.ac.vuw.ecs.swen225.a3.maze.Board;
+import nz.ac.vuw.ecs.swen225.a3.maze.InfoField;
+import nz.ac.vuw.ecs.swen225.a3.maze.MobManager;
+import nz.ac.vuw.ecs.swen225.a3.maze.Player;
+import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
+import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
+import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
+import nz.ac.vuw.ecs.swen225.a3.renderer.GUI;
+
+
 /**
  * Chip and Chap.
  * Chap’s challenge is a creative clone of the (first level of the)
  * 1989 Atari game Chips Challenge. To learn more about Chip’s Challenge.
- *
  * ChapsChallenge maintains the functionality of the game.
  * It also provides the link between the Maze, Renderer and Persistence packages.
  *
@@ -36,7 +39,8 @@ public class ChapsChallenge {
 
   private MobManager mobManager;
 
-  private File saveFile, loadFile;
+  private File saveFile;
+  private File loadFile;
 
   private Thread thread;
 
@@ -72,10 +76,12 @@ public class ChapsChallenge {
    * @param direction the direction to move in.
    */
   public void move(Tile.Direction direction) {
-    if (gamePaused) return;
+    if (gamePaused) {
+      return;
+    }
 
     Tile currentLocation = player.getLocation();
-    Tile nextLocation = null;
+    Tile nextLocation;
     switch (direction) {
       case Up:
         nextLocation = currentLocation.getUp();
@@ -89,6 +95,8 @@ public class ChapsChallenge {
       case Right:
         nextLocation = currentLocation.getRight();
         break;
+      default:
+        nextLocation = null;
     }
     if (nextLocation == null || !nextLocation.interact(player)) {
       currentLocation.setTileOccupied(player.getImageUrl(direction));
@@ -112,8 +120,9 @@ public class ChapsChallenge {
 
   private void checkFields() {
     if (player.getLocation().getType() == Tile.Type.Exit) {
-      if (!board.setNextLevel())
+      if (!board.setNextLevel()) {
         gameEnd();
+      }
       player = new Player(board.getPlayerLocation());
       timeLeft = totalTime;
     }
@@ -241,7 +250,9 @@ public class ChapsChallenge {
    * @param level number.
    */
   public void setLevel(int level) {
-    if (level < 0 || level > board.getFinalLevel()) return;
+    if (level < 0 || level > board.getFinalLevel()) {
+      return;
+    }
 
     board.setCurrentLevel(level);
     resetLogistics();
@@ -252,8 +263,9 @@ public class ChapsChallenge {
    */
   public void exitGame() {
     gamePaused = true;
-    if (gui.exitGame())
+    if (gui.exitGame()) {
       System.exit(0);
+    }
     resumeGame();
   }
 
@@ -262,14 +274,13 @@ public class ChapsChallenge {
   }
 
   /**
-   * Running thread opens a new thread (double threaded) and
-   * runs a timer, updating the dashboard every second
+   * Running thread opens a new thread (double threaded).
+   * and runs a timer, updating the dashboard every second
    */
   private void runningThread() {
 
-
     Runnable runnable = new Runnable() {
-      private int i = 0;
+      private int timeCheck = 0;
 
       @Override
       public void run() {
@@ -281,7 +292,7 @@ public class ChapsChallenge {
             try {
               if (timeLeft > 0) {
                 // Every second
-                if (i == 0) {
+                if (timeCheck == 0) {
                   // Update the dashboard and mobs
                   gui.updateDashboard();
                   mobManager.advanceByOneTick();
@@ -293,12 +304,12 @@ public class ChapsChallenge {
                 Thread.sleep(1000 / fps);
 
                 // Tick counter cycles (0, 1)
-                i = (i + 1) % fps;
-              } else
+                timeCheck = (timeCheck + 1) % fps;
+              } else {
                 throw new InterruptedException("TIMED OUT");
-            }
-            // If anything was to go unsuccessfully, then control crash the game with a time out
-            catch (InterruptedException e) {
+              }
+            } catch (InterruptedException e) {
+              // If anything was to go unsuccessfully, then control crash the game with a time out
               timeOut();
               return;
             }
@@ -338,9 +349,9 @@ public class ChapsChallenge {
   }
 
   /**
-   * Return total number of treasures in the level
+   * Return total number of treasures in the level.
    *
-   * @return Total number of treasures
+   * @return Total number of treasures.
    */
   public int getTotalTreasures() {
     return board.getTreasureCount();
@@ -349,7 +360,7 @@ public class ChapsChallenge {
   /**
    * Get tiles around player to render on screen.
    *
-   * @return Stream of tiles to be drawn
+   * @return Stream of tiles to be drawn.
    */
   public Stream<Tile> getTilesToRender() {
     return board.getStream(player.getLocation());
@@ -367,9 +378,9 @@ public class ChapsChallenge {
   }
 
   /**
-   * Gets the current level of this game
+   * Gets the current level of this game.
    *
-   * @return Level the level currently held by board
+   * @return Level the level currently held by board.
    */
   public int getLevel() {
     return board.getCurrentLevel();
@@ -378,7 +389,7 @@ public class ChapsChallenge {
   /**
    * Get board object.
    *
-   * @return Board object
+   * @return Board object.
    */
   public Board getBoard() {
     return board;
@@ -484,9 +495,13 @@ public class ChapsChallenge {
   }
 
 
-  public void startRunningThread(){
-    if (thread != null && thread.isAlive())
+  /**
+   * Checks if there is a running thread, which gets interrupted. and creates a new one.
+   */
+  public void startRunningThread() {
+    if (thread != null && thread.isAlive()) {
       thread.interrupt();
+    }
     runningThread();
   }
 
