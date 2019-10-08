@@ -54,6 +54,7 @@ public class LevelManager {
 
         // Load classes
         try {
+            
             folder = new File("src/levels/");
             for(File f : folder.listFiles()){
                 JarFile jarFile = new JarFile(f);
