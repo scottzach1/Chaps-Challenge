@@ -59,7 +59,7 @@ public class LevelManager {
                 String className = je.getName().substring(0, je.getName().length() - 6);
                 className = className.replace('/', '.');
                 Class c = cl.loadClass(className);
-                Object o = c.getDeclaredConstructor().newInstance();
+                classSet.add(c);
             }
         }catch(Exception e){}
     }

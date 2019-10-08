@@ -270,9 +270,15 @@ public class JsonReadWrite {
     // Done to allow dynamic drop in of new tile types
 
     try {
-      Class c = Class.forName("levels.Flippers");
-      System.out.println(c.toString());
-    }catch (ClassNotFoundException e){}
+      Class c = Class.forName("nz.ac.vuw.ecs.swen225.a3.maze." + type);
+      System.out.println("default: " + c.getName());
+    }catch (ClassNotFoundException e){
+      for(Class classes : LevelManager.classSet){
+        if(classes.getName().equals(type)){
+          System.out.println("new " + classes.getName());
+        }
+      }
+    }
 
     switch (type) {
 //      case "Free":

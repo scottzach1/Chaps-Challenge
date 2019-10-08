@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
+
+import nz.ac.vuw.ecs.swen225.a3.persistence.LevelManager;
 import nz.ac.vuw.ecs.swen225.a3.renderer.Canvas;
 
 
@@ -31,6 +33,7 @@ public class Board {
    * Constructs and parses a new board.
    */
   public Board() {
+    getClass().getName();
     addLevels();
     try {
       parseBoard(allLevels.get(currentLevel));
