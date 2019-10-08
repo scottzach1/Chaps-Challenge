@@ -24,12 +24,11 @@ class frontendTest {
     ChapsChallenge chapsChallenge = new ChapsChallenge();
     GUI gui = chapsChallenge.getGui();
 
-    gui.componentResized(new ComponentEvent(gui, ComponentEvent.COMPONENT_RESIZED));
-
     assertFalse(chapsChallenge.isGamePaused());
     gui.componentHidden(new ComponentEvent(gui, ComponentEvent.COMPONENT_HIDDEN));
     assertTrue(chapsChallenge.isGamePaused());
     gui.componentShown(new ComponentEvent(gui, ComponentEvent.COMPONENT_SHOWN));
     assertFalse(chapsChallenge.isGamePaused());
   }
+
 }
