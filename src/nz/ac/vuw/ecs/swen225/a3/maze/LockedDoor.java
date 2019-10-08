@@ -21,6 +21,10 @@ public class LockedDoor extends Tile {
   private String colour;
   private boolean active = true;
 
+  public LockedDoor(){
+    super(Type.LockedDoor);
+  }
+
   /**
    * Constructor. Sets the isAccessible to true. Sets the colour of the door to the parameter.
    *

@@ -25,7 +25,7 @@ public class MobManager {
     this.mobs = mobs;
   }
 
-  private Set<Mob> mobs;
+  private Set<Mob> mobs = new HashSet<>();
 
   /**
    * Creates a new Mob manager.
@@ -34,27 +34,27 @@ public class MobManager {
    */
   public MobManager(Board board) {
     // TODO: This shouldn't take board in the future.
-    this.setBoard(board);
-    this.mobs = new HashSet<>();
-
-    // TODO: Mobs should be loaded through board, not mob manager.
-    Mob perryOne = new PassivePerry();
-    perryOne.occupyHost(board.getTile(7, 7));
-    addMob(perryOne);
-
-    Mob perryTwo = new PassivePerry();
-    perryTwo.occupyHost(board.getTile(11, 11));
-    addMob(perryTwo);
-
-    Mob sneakySnek = new SneakySnek();
-    sneakySnek.occupyHost(board.getTile(19, 19));
-    sneakySnek.setBoard(board);
-    addMob(sneakySnek);
-
-    Mob angryAndrew = new GrumpyGary();
-    angryAndrew.occupyHost(board.getTile(11, 19));
-    angryAndrew.setBoard(board);
-    addMob(angryAndrew);
+//    this.setBoard(board);
+//    this.mobs = new HashSet<>();
+//
+//    // TODO: Mobs should be loaded through board, not mob manager.
+//    Mob perryOne = new PassivePerry();
+//    perryOne.occupyHost(board.getTile(7, 7));
+//    addMob(perryOne);
+//
+//    Mob perryTwo = new PassivePerry();
+//    perryTwo.occupyHost(board.getTile(11, 11));
+//    addMob(perryTwo);
+//
+//    Mob sneakySnek = new SneakySnek();
+//    sneakySnek.occupyHost(board.getTile(19, 19));
+//    sneakySnek.setBoard(board);
+//    addMob(sneakySnek);
+//
+//    Mob angryAndrew = new GrumpyGary();
+//    angryAndrew.occupyHost(board.getTile(11, 19));
+//    angryAndrew.setBoard(board);
+//    addMob(angryAndrew);
   }
 
   /**

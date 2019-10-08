@@ -9,6 +9,8 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -271,35 +273,37 @@ public class JsonReadWrite {
 
     try {
       Class c = Class.forName("nz.ac.vuw.ecs.swen225.a3.maze." + type);
-      System.out.println("default: " + c.getName());
-    }catch (ClassNotFoundException e){
-      for(Class classes : LevelManager.classSet){
-        if(classes.getName().equals(type)){
-          System.out.println("new " + classes.getName());
+      Object o = c.getDeclaredConstructor().newInstance();
+      Method m = c.getDeclaredMethod("setTileFromJson", JsonReader.class);
+      return (Tile) m.invoke(o, Json.createReader(new StringReader(tile)));
+    } catch (ClassNotFoundException e) {
+      for (Class classes : LevelManager.classSet) {
+        if (classes.getName().equals(type)) {
+          try {
+            Object o = classes.getDeclaredConstructor().newInstance();
+            Method m = classes.getDeclaredMethod("setTileFromJson", JsonReader.class);
+            return (Tile) m.invoke(o, Json.createReader(new StringReader(tile)));
+          } catch (InstantiationException ex) {
+            ex.printStackTrace();
+          } catch (InvocationTargetException ex) {
+            ex.printStackTrace();
+          } catch (NoSuchMethodException ex) {
+            ex.printStackTrace();
+          } catch (IllegalAccessException ex) {
+            ex.printStackTrace();
+          }
         }
       }
+    } catch (NoSuchMethodException e) {
+      e.printStackTrace();
+    } catch (IllegalAccessException e) {
+      e.printStackTrace();
+    } catch (InstantiationException e) {
+      e.printStackTrace();
+    } catch (InvocationTargetException e) {
+      e.printStackTrace();
     }
-
-    switch (type) {
-//      case "Free":
-//        return new Free().setTileFromJson(Json.createReader(new StringReader(tile)));
-//      case "Treasure":
-//        return new Treasure().setTileFromJson(Json.createReader(new StringReader(tile)));
-//      case "Exit":
-//        return new Exit().setTileFromJson(Json.createReader(new StringReader(tile)));
-//      case "ExitLock":
-//        return new ExitLock().setTileFromJson(Json.createReader(new StringReader(tile)));
-//      case "InfoField":
-//        return new InfoField("").setTileFromJson(Json.createReader(new StringReader(tile)));
-//      case "Key":
-//        return new Key("").setTileFromJson(Json.createReader(new StringReader(tile)));
-//      case "LockedDoor":
-//        return new LockedDoor("").setTileFromJson(Json.createReader(new StringReader(tile)));
-      default:
-        return new Wall().setTileFromJson(Json.createReader(new StringReader(tile)));
-    }
+    return new Wall().setTileFromJson(Json.createReader(new StringReader(tile)));
   }
-
-
 }
 
