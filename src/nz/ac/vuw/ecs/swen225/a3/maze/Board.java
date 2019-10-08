@@ -86,6 +86,8 @@ public class Board {
     int index = 0;
     for (String v : values) {
       switch (v) {
+        case "W":
+        case "F":
         case "_":
           setTile(index / 20, index % 20, new Free());
           break;
