@@ -124,7 +124,7 @@ public class RecordAndPlay {
     JsonObject object = null;
     try {
       // Load game state
-      JsonReadWrite.loadGameState(fileName, game);
+      //JsonReadWrite.loadGameState(fileName, game);
 
       // Load moves into array
 

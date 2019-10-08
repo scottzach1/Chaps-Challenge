@@ -49,7 +49,7 @@ public class ChapsChallenge {
   public ChapsChallenge() {
     LevelManager.loadLevels();
     // Load the board.
-    board = new Board();
+    board = new Board(this);
     player = new Player(board.getPlayerLocation());
     mobManager = new MobManager(board);
 
@@ -177,7 +177,7 @@ public class ChapsChallenge {
     if (gui.loadGame()) {
       try {
         //TODO: use the field "loadFile" - a File object
-        JsonReadWrite.loadGameState(loadFile.getAbsolutePath(), this);
+        //JsonReadWrite.loadGameState(loadFile.getAbsolutePath(), this);
       } catch (Exception e) {
         gui.noFileFound();
         return;

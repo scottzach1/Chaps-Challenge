@@ -8,6 +8,7 @@ import java.util.stream.Stream;
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 import nz.ac.vuw.ecs.swen225.a3.persistence.GameNotFoundException;
 import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
+import nz.ac.vuw.ecs.swen225.a3.persistence.LevelManager;
 import nz.ac.vuw.ecs.swen225.a3.renderer.Canvas;
 
 
@@ -40,8 +41,7 @@ public class Board {
     getClass().getName();
     addLevels();
     try {
-      String level = "level-" + currentLevel + 1 + ".txt";
-      JsonReadWrite.loadGameState(level, chapsChallenge);
+      JsonReadWrite.loadGameState(LevelManager.getCurrentLevelStream(), chapsChallenge);
     } catch (GameNotFoundException g) {
       System.out.println("Game cannot be found: " + g);
     }

@@ -7,6 +7,7 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashSet;
+import java.util.InputMismatchException;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -81,11 +82,8 @@ public class LevelManager {
 
     }
 
-    /**
-     * Get current level counter.
-     * @return current level integer.
-     */
-    public static int getCurrentLevel(){
-        return currentLevel;
+
+    public static InputStream getCurrentLevelStream() {
+        return levelDescriptions.get(currentLevel);
     }
 }

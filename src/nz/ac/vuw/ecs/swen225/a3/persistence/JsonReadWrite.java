@@ -179,7 +179,7 @@ public class JsonReadWrite {
       allTiles.add(createTileFromJson(j.getString()));
     }
 
-    Board b = new Board();
+    Board b = new Board(g);
     for (Tile t : allTiles) {
       b.setTile(t.getRow(), t.getCol(), t);
     }
