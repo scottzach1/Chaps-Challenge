@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 public class LevelManager {
@@ -36,6 +37,13 @@ public class LevelManager {
                         } catch (Exception e) {
                         }
                     });
+
+                    zf.stream().filter(p -> p.getName().contains(".png"))
+                            .forEach(s -> {
+                                try {
+                                    zf.getInputStream(s);
+                                }catch (Exception e){}
+                                });
                 }finally {
                     zf.close();
                 }
@@ -43,6 +51,7 @@ public class LevelManager {
             catch(Exception e){}
         }
 
+        // Load classes
         try {
             JarFile jarFile = new JarFile("src/levels/level-1.zip");
             Enumeration<JarEntry> e = jarFile.entries();
@@ -62,5 +71,8 @@ public class LevelManager {
                 classSet.add(c);
             }
         }catch(Exception e){}
+
+        // Load resources
+
     }
 }
