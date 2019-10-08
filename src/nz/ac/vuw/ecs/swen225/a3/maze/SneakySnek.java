@@ -9,6 +9,13 @@ import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
 import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
 
+/**
+ * Sneaky Snake is a water based mob.
+ * He that is aggressive when he smells
+ * the player is near by.
+ *
+ * @author Zac Scott.
+ */
 public class SneakySnek extends Mob {
 
   /**

@@ -9,6 +9,7 @@ import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
 
 /**
  * DashBoardHolder contains the dashboard such that it can be resized.
+ * @author Harrison Cook
  */
 public class DashboardHolder extends JPanel {
 

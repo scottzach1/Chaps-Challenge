@@ -20,7 +20,7 @@ import nz.ac.vuw.ecs.swen225.a3.renderer.Gui;
  * ChapsChallenge maintains the functionality of the game.
  * It also provides the link between the Maze, Renderer and Persistence packages.
  *
- * @author Luisa Kristen 300444458
+ * @author Luisa Kristen 300444458.
  */
 public class ChapsChallenge {
 
@@ -420,16 +420,8 @@ public class ChapsChallenge {
     return timeLeft;
   }
 
-  public File getSaveFile() {
-    return saveFile;
-  }
-
   public void setSaveFile(File saveFile) {
     this.saveFile = saveFile;
-  }
-
-  public File getLoadFile() {
-    return loadFile;
   }
 
   public void setLoadFile(File loadFile) {

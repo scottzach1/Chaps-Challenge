@@ -17,6 +17,7 @@ import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 
 /**
  * Pause menu is a jpanel that replaces the game screen with a menu of buttons the user can chose.
+ * @author Harrison Cook.
  */
 class PauseMenu extends JPanel {
 

@@ -10,7 +10,9 @@ import nz.ac.vuw.ecs.swen225.a3.renderer.Gui;
 
 import org.junit.jupiter.api.Test;
 
-
+/**
+ * Tests some gui components.
+ */
 class FrontendTest {
 
   @Test

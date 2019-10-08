@@ -13,11 +13,14 @@ import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
 import nz.ac.vuw.ecs.swen225.a3.renderer.Gui;
 
 
+/**
+ * Tests keyboard inputs effects on the game.
+ * @author Zac Scott.
+ */
 class KeyboardTest {
 
   /**
    * Test movement to left.
-   *
    * @throws InterruptedException from sleep.
    */
   @SuppressWarnings("deprecation")

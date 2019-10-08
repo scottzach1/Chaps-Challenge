@@ -13,6 +13,7 @@ import nz.ac.vuw.ecs.swen225.a3.renderer.CombinedImageIcon;
 /**
  * AssetManager class is responsible for dealing with storing and scaling all the assets used in the
  * game.
+ * @author Zac Scott.
  */
 public class AssetManager {
 

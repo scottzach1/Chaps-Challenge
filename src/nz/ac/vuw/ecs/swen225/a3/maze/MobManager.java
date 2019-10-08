@@ -3,6 +3,10 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Stores and controls the ticking of all mobs in game.
+ * @author Zac Scott.
+ */
 public class MobManager {
 
   private Board board;

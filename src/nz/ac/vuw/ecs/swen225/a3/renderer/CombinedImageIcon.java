@@ -7,6 +7,7 @@ import javax.swing.ImageIcon;
 
 /**
  * CombinedImageIcon: Helpful class for stacking icons.
+ * @author Zac Scott.
  * https://stackoverflow.com/questions/17088599/how-to-combine-two-icons-in-java
  */
 public class CombinedImageIcon extends ImageIcon {
