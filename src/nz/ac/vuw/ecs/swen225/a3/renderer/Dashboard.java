@@ -37,7 +37,8 @@ public class Dashboard extends JPanel {
   private final int GRID_WIDTH = 4, GRID_HEIGHT = 8;
   private HashMap<String, Integer> chapsBag;
   private ArrayList<JLabel> chapsBagImages;
-  private ChapsChallenge chapsChallenge;
+  private ChapsChallenge application;
+  private DashboardHolder parent;
 
   /**
    * The Dashboard constructor.
@@ -45,12 +46,13 @@ public class Dashboard extends JPanel {
    *
    * @param aChapsChallenge - The parent ChapsChallenge object the GUI to create this DashBoard
    */
-  Dashboard(ChapsChallenge aChapsChallenge) {
-    chapsChallenge = aChapsChallenge;
+  Dashboard(ChapsChallenge aChapsChallenge, DashboardHolder aDashboardHolder) {
+    application = aChapsChallenge;
+    parent = aDashboardHolder;
     chapsBag = new HashMap<>();
     chapsBagImages = new ArrayList<>();
 
-    setPreferredSize(new Dimension(GUI.dashboardWidth, DashboardHolder.dashboardHeight));
+    setPreferredSize(new Dimension(parent.getWidth(), parent.getDashboardHeight()));
 
     setBackground(BACKGROUND_COLOUR);
 
@@ -72,7 +74,6 @@ public class Dashboard extends JPanel {
    */
   public void createDashboardComponents() {
     removeAll();
-
 // Create the level text. Center aligned
     level = new CustomTextPane("LEVEL", centerAlign, null, TEXT_COLOUR, false);
     // Create the level number text. Right aligned
@@ -80,11 +81,11 @@ public class Dashboard extends JPanel {
     // Create the time text. Center aligned
     time = new CustomTextPane("TIME", centerAlign, null, TEXT_COLOUR, false);
     // Create the tie number text. Right aligned
-    timeNum = new CustomTextPane(chapsChallenge.timeLeft() + "", rightAlign, TEXT_COLOUR, ACCENT_COLOUR, true);
+    timeNum = new CustomTextPane(application.timeLeft() + "", rightAlign, TEXT_COLOUR, ACCENT_COLOUR, true);
     // Create the chipsLeft text. Center aligned
     chipsLeft = new CustomTextPane("CHIPS LEFT", centerAlign, null, TEXT_COLOUR, false);
     // Create the chipsLeft number text. Right aligned
-    chipsLeftNum = new CustomTextPane(chapsChallenge.getTreasures() + "", rightAlign, TEXT_COLOUR, ACCENT_COLOUR, true);
+    chipsLeftNum = new CustomTextPane(application.getTreasures() + "", rightAlign, TEXT_COLOUR, ACCENT_COLOUR, true);
 
     // Refresh chapsbag
     fillChapsBag();
@@ -95,10 +96,6 @@ public class Dashboard extends JPanel {
    * This consists of two JPanels and their related parts.
    */
   protected void renderDashboardComponents() {
-
-    if (level == null || levelNum == null || time == null || timeNum == null || level == null || levelNum == null || chapsBagImages == null)
-      createDashboardComponents();
-
     removeAll();
     // reset the GridBagConstraints
     GridBagConstraints constraints = new GridBagConstraints();
@@ -190,7 +187,6 @@ public class Dashboard extends JPanel {
    * Updates the components text within the dashboard
    */
   public void refreshDashboardComponents() {
-
     // If the components don't exist then ignore the command
     // Usually a resizing error will refresh the components before they're instantiated
     if (levelNum == null || timeNum == null || chipsLeftNum == null) {
@@ -198,9 +194,15 @@ public class Dashboard extends JPanel {
       return;
     }
 
-    levelNum.setText((chapsChallenge.getLevel() + 1) + "");
-    timeNum.setText(chapsChallenge.timeLeft() + "");
-    chipsLeftNum.setText((chapsChallenge.getTotalTreasures() - chapsChallenge.getTreasures()) + "");
+    // Check that the size is correct
+    if (levelNum.getHeight() != parent.getDashboardHeight() / GRID_HEIGHT) {
+      createDashboardComponents();
+      renderDashboardComponents();
+    }
+
+    levelNum.setText((application.getLevel() + 1) + "");
+    timeNum.setText(application.timeLeft() + "");
+    chipsLeftNum.setText((application.getTotalTreasures() - application.getTreasures()) + "");
 
     // Refresh Chaps bag
     fillChapsBag();
@@ -216,7 +218,7 @@ public class Dashboard extends JPanel {
   private void fillChapsBag() {
     // Cycle through 8 blocks to create a new Label for each bag item
     chapsBag = new HashMap<>();
-    ArrayList<String> items = new ArrayList<>(chapsChallenge.getPlayerInventory());
+    ArrayList<String> items = new ArrayList<>(application.getPlayerInventory());
 
 
     // If chaps bag is null or empty, set it up with blank JLabels
@@ -330,8 +332,8 @@ public class Dashboard extends JPanel {
      */
     private Font findFont(Component component, Font oldFont, String text) {
       // Get the size of the area the text can take up
-      int boxWidth = (Dashboard.this.getWidth() / GRID_WIDTH);
-      int boxHeight = (Dashboard.this.getHeight() / GRID_HEIGHT);
+      int boxWidth = (parent.getWidth() / GRID_WIDTH);
+      int boxHeight = (parent.getDashboardHeight() / GRID_HEIGHT);
       Dimension componentSize = new Dimension(boxWidth, boxHeight);
 
       // The default size and text if no size is found to fit
