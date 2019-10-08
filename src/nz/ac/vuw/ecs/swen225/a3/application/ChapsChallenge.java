@@ -371,7 +371,7 @@ public class ChapsChallenge {
    * @param level the level to change to.
    */
   public void setCustomLevel(String level) {
-    board.setLevel(level);
+    board.setCustomLevel(level);
     player = new Player(board.getPlayerLocation());
     resetLogistics();
   }

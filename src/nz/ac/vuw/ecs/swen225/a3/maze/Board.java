@@ -5,7 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
-import nz.ac.vuw.ecs.swen225.a3.persistence.LevelManager;
+import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
+import nz.ac.vuw.ecs.swen225.a3.persistence.GameNotFoundException;
+import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
 import nz.ac.vuw.ecs.swen225.a3.renderer.Canvas;
 
 
@@ -29,23 +31,19 @@ public class Board {
   private int currentLevel;
   private int treasureCount = 0;
 
+  private ChapsChallenge chapsChallenge;
   /**
    * Constructs and parses a new board.
    */
-  public Board() {
+  public Board(ChapsChallenge chapsChallenge) {
+    this.chapsChallenge = chapsChallenge;
     getClass().getName();
     addLevels();
     try {
-      parseBoard(allLevels.get(currentLevel));
-    } catch (ParsingException p) {
-      System.out.println(p.getMessage());
-      throw new Error(p.getMessage());
-    } catch (MultiplePlayersFoundException m) {
-      System.out.println(m.getMessage());
-      throw new Error(m.getMessage());
-    } catch (PlayerNotFoundException pnf) {
-      System.out.println(pnf.getMessage());
-      throw new Error(pnf.getMessage());
+      String level = "level-" + currentLevel + 1 + ".txt";
+      JsonReadWrite.loadGameState(level, chapsChallenge);
+    } catch (GameNotFoundException g) {
+      System.out.println("Game cannot be found: " + g);
     }
     setupAdjacency();
   }
@@ -54,7 +52,7 @@ public class Board {
    * Sets the board to a custom level.
    * @param level to set.
    */
-  public void setLevel(String level) {
+  public void setCustomLevel(String level) {
     try {
       if (!allLevels.contains(level)) {
         allLevels.add(0,level);
@@ -386,7 +384,7 @@ public class Board {
   public boolean setNextLevel() {
     if (currentLevel < allLevels.size() - 1) {
       currentLevel++;
-      setLevel(allLevels.get(currentLevel));
+      setCustomLevel(allLevels.get(currentLevel));
       return true;
     }
     return false;
@@ -400,7 +398,7 @@ public class Board {
   public void setCurrentLevel(int level) {
     if (level >= 0 && level < allLevels.size()) {
       currentLevel = level;
-      setLevel(allLevels.get(currentLevel));
+      setCustomLevel(allLevels.get(currentLevel));
     }
   }
 
