@@ -1,11 +1,15 @@
 package nz.ac.vuw.ecs.swen225.a3.persistence;
 
 import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import nz.ac.vuw.ecs.swen225.a3.renderer.CombinedImageIcon;
 
@@ -13,6 +17,7 @@ import nz.ac.vuw.ecs.swen225.a3.renderer.CombinedImageIcon;
 /**
  * AssetManager class is responsible for dealing with storing and scaling all the assets used in the
  * game.
+ * @author Zac Scott.
  */
 public class AssetManager {
 
@@ -45,6 +50,49 @@ public class AssetManager {
    */
   public static void setCustomAssetPath(String path) {
     customAssetPath = path;
+  }
+
+
+  /**
+   * Loads an asset from an input stream.
+   * @param inputStream containing asset.
+   * @param fname of asset.
+   * @throws IOException on ImageIO read.
+   */
+  public static void loadAssetFromInputStream(InputStream inputStream, String fname) throws IOException {
+    BufferedImage bufferedImage = ImageIO.read(inputStream);
+
+    // -- Load base image -- //
+
+    ImageIcon baseIcon = new ImageIcon(bufferedImage);
+
+    if (baseImageIcons.containsKey(fname)) {
+      return;
+    }
+
+    if (baseIcon.getIconHeight() <= 0 || baseIcon.getIconWidth() <= 0) {
+      baseIcon = new ImageIcon(assetPath + fname);
+    }
+
+    baseIcon.setDescription(fname);
+
+    // Else use unknown from local path.
+    if (baseIcon.getIconWidth() <= 0 || baseIcon.getIconHeight() <= 0) {
+      baseIcon = new ImageIcon(assetPath + "unknown.png");
+      baseIcon.setDescription("unknown.png");
+    }
+
+    //  -- Load scaled image -- //
+
+    ImageIcon scaledIcon = new ImageIcon(baseIcon.getImage()
+        .getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH));
+
+    scaledIcon.setDescription(baseIcon.getDescription());
+
+    // -- Save icons -- //
+
+    baseImageIcons.put(fname, baseIcon);
+    scaledImageIcons.put(fname, scaledIcon);
   }
 
   /**

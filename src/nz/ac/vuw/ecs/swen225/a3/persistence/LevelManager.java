@@ -18,7 +18,7 @@ public class LevelManager {
     static Set<Class> classSet = new HashSet<>();
 
     public static void loadLevels(){
-        //Load strings
+        //Load level description and assets
         File folder = new File("src/levels/");
         for(File f : folder.listFiles()){
             try {
@@ -38,10 +38,11 @@ public class LevelManager {
                         }
                     });
 
+                    // Load Assets
                     zf.stream().filter(p -> p.getName().contains(".png"))
                             .forEach(s -> {
                                 try {
-                                    zf.getInputStream(s);
+                                    AssetManager.loadAssetFromInputStream(zf.getInputStream(s),s.getName());
                                 }catch (Exception e){}
                                 });
                 }finally {
@@ -72,7 +73,6 @@ public class LevelManager {
             }
         }catch(Exception e){}
 
-        // Load resources
 
     }
 }

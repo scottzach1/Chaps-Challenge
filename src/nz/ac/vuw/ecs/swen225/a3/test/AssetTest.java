@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * JUnit Tests: Checks all assets are loaded correctly.
+ * @author Zac Scott
  */
 class AssetTest {
 

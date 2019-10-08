@@ -9,7 +9,11 @@ import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
 import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
 
-
+/**
+ * Passive Perry is a mob that minds his own business.
+ * Although passive by nature he bites if you get too close.
+ * @author Zac Scott.
+ */
 public class PassivePerry extends Mob {
 
   /**

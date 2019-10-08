@@ -14,7 +14,6 @@ import nz.ac.vuw.ecs.swen225.a3.persistence.LevelManager;
 import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
 import nz.ac.vuw.ecs.swen225.a3.renderer.Gui;
 
-
 /**
  * Chip and Chap.
  * Chap’s challenge is a creative clone of the (first level of the)
@@ -22,7 +21,7 @@ import nz.ac.vuw.ecs.swen225.a3.renderer.Gui;
  * ChapsChallenge maintains the functionality of the game.
  * It also provides the link between the Maze, Renderer and Persistence packages.
  *
- * @author Luisa Kristen 300444458
+ * @author Luisa Kristen 300444458.
  */
 public class ChapsChallenge {
 
@@ -116,7 +115,6 @@ public class ChapsChallenge {
     if (RecordAndPlay.getIsRecording()) {
       RecordAndPlay.addAction(direction);
     }
-
   }
 
   private void checkFields() {
@@ -423,16 +421,8 @@ public class ChapsChallenge {
     return timeLeft;
   }
 
-  public File getSaveFile() {
-    return saveFile;
-  }
-
   public void setSaveFile(File saveFile) {
     this.saveFile = saveFile;
-  }
-
-  public File getLoadFile() {
-    return loadFile;
   }
 
   public void setLoadFile(File loadFile) {
@@ -505,8 +495,6 @@ public class ChapsChallenge {
     }
     runningThread();
   }
-
-
 
   /**
    * ChapsChallenge invocation point for running the game.

@@ -12,6 +12,11 @@ import nz.ac.vuw.ecs.swen225.a3.persistence.GameNotFoundException;
 import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Checks the functionality of the Maze and Application packages.
+ *
+ * @author Luisa Kristen 300444458
+ */
 class BackendTest {
 
   private ChapsChallenge chapsChallenge = new ChapsChallenge();

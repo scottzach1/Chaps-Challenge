@@ -12,6 +12,7 @@ import javax.json.JsonReader;
  * Mob are NPCs in the game that move and interact without any input from the user. Functionally,
  * they act as a spider that latches onto a Tile and scale the board. Although the Constructor takes
  * a Board, the board is not modified at all.
+ * @author Zac Scott.
  */
 public abstract class Mob {
 
