@@ -282,7 +282,7 @@ public class JsonReadWrite {
           } catch (InstantiationException ex) {
             ex.printStackTrace();
           } catch (InvocationTargetException ex) {
-            ex.printStackTrace();
+            System.out.println(ex.getCause());
           } catch (NoSuchMethodException ex) {
             ex.printStackTrace();
           } catch (IllegalAccessException ex) {
