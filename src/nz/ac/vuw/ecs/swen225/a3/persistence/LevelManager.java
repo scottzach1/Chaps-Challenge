@@ -82,8 +82,20 @@ public class LevelManager {
 
     }
 
+    /**
+     * Get current level counter.
+     *
+     * @return current level integer.
+     */
+    public static int getCurrentLevelInt() {
+        return currentLevel;
+    }
 
-    public static InputStream getCurrentLevelStream() {
-        return levelDescriptions.get(currentLevel);
+    public static InputStream getCurrentLevelStream(int level) {
+        return levelDescriptions.get(level);
+    }
+
+    public static int getNumLevels() {
+        return levelDescriptions.size();
     }
 }
