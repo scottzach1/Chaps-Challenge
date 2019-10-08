@@ -15,7 +15,7 @@ import java.util.zip.ZipFile;
 
 public class LevelManager {
     static ArrayList<InputStream> levelDescriptions = new ArrayList<>();
-    static Set<Class> classSet = new HashSet<>();
+    public static Set<Class> classSet = new HashSet<>();
 
     public static void loadLevels(){
         //Load level description and assets
@@ -54,23 +54,27 @@ public class LevelManager {
 
         // Load classes
         try {
-            JarFile jarFile = new JarFile("src/levels/level-1.zip");
-            Enumeration<JarEntry> e = jarFile.entries();
+            folder = new File("src/levels/");
+            for(File f : folder.listFiles()){
+                JarFile jarFile = new JarFile(f);
+                Enumeration<JarEntry> e = jarFile.entries();
 
-            URL[] urls = {new URL("jar:file:" + "src/levels/level-1.zip" + "!/")};
-            URLClassLoader cl = URLClassLoader.newInstance(urls);
+                URL[] urls = {new URL("jar:file:" + jarFile.getName() + "!/")};
+                URLClassLoader cl = URLClassLoader.newInstance(urls);
 
-            while (e.hasMoreElements()) {
-                JarEntry je = e.nextElement();
-                if (je.isDirectory() || !je.getName().endsWith(".class")) {
-                    continue;
+                while (e.hasMoreElements()) {
+                    JarEntry je = e.nextElement();
+                    if (je.isDirectory() || !je.getName().endsWith(".class")) {
+                        continue;
+                    }
+                    // -6 because of .class
+                    String className = je.getName().substring(0, je.getName().length() - 6);
+                    className = className.replace('/', '.');
+                    Class c = cl.loadClass(className);
+                    classSet.add(c);
                 }
-                // -6 because of .class
-                String className = je.getName().substring(0, je.getName().length() - 6);
-                className = className.replace('/', '.');
-                Class c = cl.loadClass(className);
-                classSet.add(c);
             }
+
         }catch(Exception e){}
 
 

@@ -16,14 +16,14 @@ import javax.json.JsonReader;
  */
 public abstract class Mob {
 
-  String imageUrl = "unknown.png";
-  String mobName = "Unnamed Mob.";
-  Tile host;
-  boolean active;
-  Tile.Direction direction;
-  Map<Tile.Direction, String> images = new HashMap<>();
-  Set<Tile.Type> safeTiles = new HashSet<>(Arrays.asList(Tile.Type.Free));
-  Board board;
+  public String imageUrl = "unknown.png";
+  public String mobName = "Unnamed Mob.";
+  public Tile host;
+  public boolean active;
+  public Tile.Direction direction;
+  public Map<Tile.Direction, String> images = new HashMap<>();
+  public Set<Tile.Type> safeTiles = new HashSet<>(Arrays.asList(Tile.Type.Free));
+  public Board board;
 
 
   /**
@@ -32,7 +32,7 @@ public abstract class Mob {
    *
    * @param board to set.
    */
-  void setBoard(Board board) {
+  public void setBoard(Board board) {
     this.board = board;
   }
 
@@ -41,7 +41,7 @@ public abstract class Mob {
    *
    * @param name to set.
    */
-  void setMobName(String name) {
+  public void setMobName(String name) {
     mobName = name;
   }
 
@@ -103,7 +103,7 @@ public abstract class Mob {
    *
    * @param target cell to occupy.
    */
-  void occupyHost(Tile target) {
+  public void occupyHost(Tile target) {
     // Reset old host.
     if (host != null) {
       host.setTileUnoccupied();
@@ -154,7 +154,7 @@ public abstract class Mob {
   /**
    * Seed used for pseudo-random behaviour.
    */
-  private final String[] seed = new String[]{
+  public final String[] seed = new String[]{
       "351567484564846135285846541156461354156163153324856515",
       "351358563565415134691316431343415641651521354516135354",
       "612825353486541354564825865453464651325463548654153413",
@@ -169,16 +169,16 @@ public abstract class Mob {
       "235453125645133253213245321543123254562315345643215645",
       "456525435245135534135231531453215342315321534523135335"};
 
-  int remaining = 0;
-  int seedRow = 0;
-  int seedCol = 0;
+  public int remaining = 0;
+  public int seedRow = 0;
+  public int seedCol = 0;
 
   /**
    * Gets next seed based off indexes. Seed indexes automatically increment.
    *
    * @return next pseudo-random number. [0-9].
    */
-  private int getNextSeed() {
+  public int getNextSeed() {
     ++seedCol;
 
     if (seedCol == seed[seedRow].length()) {
@@ -193,7 +193,7 @@ public abstract class Mob {
    *
    * @return pseudo-random direction.
    */
-  private Tile.Direction getNextDirection() {
+  public Tile.Direction getNextDirection() {
     int seed = getNextSeed();
     // Less than 3 straight.
     if (seed <= 2) {

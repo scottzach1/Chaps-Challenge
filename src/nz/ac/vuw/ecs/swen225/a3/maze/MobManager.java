@@ -9,7 +9,7 @@ import java.util.Set;
  */
 public class MobManager {
 
-  private Board board;
+  public Board board;
 
   /**
    * Get set of mobs.
@@ -29,7 +29,7 @@ public class MobManager {
     this.mobs = mobs;
   }
 
-  private Set<Mob> mobs = new HashSet<>();
+  public Set<Mob> mobs = new HashSet<>();
 
   /**
    * Creates a new Mob manager.
@@ -58,7 +58,7 @@ public class MobManager {
    *
    * @param mob to add.
    */
-  private void addMob(Mob mob) {
+  public void addMob(Mob mob) {
     if (mob == null) {
       return;
     }

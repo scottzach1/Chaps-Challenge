@@ -26,17 +26,9 @@ import javax.json.JsonString;
 
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 import nz.ac.vuw.ecs.swen225.a3.maze.Board;
-import nz.ac.vuw.ecs.swen225.a3.maze.Exit;
-import nz.ac.vuw.ecs.swen225.a3.maze.ExitLock;
-import nz.ac.vuw.ecs.swen225.a3.maze.Free;
-import nz.ac.vuw.ecs.swen225.a3.maze.InfoField;
-import nz.ac.vuw.ecs.swen225.a3.maze.Key;
-import nz.ac.vuw.ecs.swen225.a3.maze.LockedDoor;
 import nz.ac.vuw.ecs.swen225.a3.maze.Mob;
-import nz.ac.vuw.ecs.swen225.a3.maze.PassivePerry;
 import nz.ac.vuw.ecs.swen225.a3.maze.Player;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
-import nz.ac.vuw.ecs.swen225.a3.maze.Treasure;
 import nz.ac.vuw.ecs.swen225.a3.maze.Wall;
 
 
@@ -245,16 +237,17 @@ public class JsonReadWrite {
     JsonObject mobObject = reader.readObject();
     String name = mobObject.getString("mobName");
     Mob m;
-    switch (name) {
-      case "Passive Perry":
-        m = new PassivePerry();
-        m.setMobFromJson(Json.createReader(new StringReader(string)));
-        return m;
-      default:
-        m = new PassivePerry();
-        m.setMobFromJson(Json.createReader(new StringReader(string)));
-        return m;
-    }
+    return null;
+//    switch (name) {
+//      case "Passive Perry":
+//        m = new PassivePerry();
+//        m.setMobFromJson(Json.createReader(new StringReader(string)));
+//        return m;
+//      default:
+//        m = new PassivePerry();
+//        m.setMobFromJson(Json.createReader(new StringReader(string)));
+//        return m;
+//    }
   }
 
   /**
