@@ -54,18 +54,7 @@ public class Board {
       throw new Error(pnf.getMessage());
     }
     setupAdjacency();
-    try {
-        ZipFile zf = new ZipFile("levels/level-1.zip");
-        try {
-            ZipEntry a = zf.getEntry("level-1/level1.txt");
-            zf.stream().forEach(s -> System.out.println(((ZipEntry) s).toString()));
-            BufferedReader read = new BufferedReader(new InputStreamReader(zf.getInputStream(a)));
-            System.out.println(read.readLine());
-        } finally {
-            zf.close();
-        }
-    }
-    catch(Exception e){}
+
   }
 
   /**
