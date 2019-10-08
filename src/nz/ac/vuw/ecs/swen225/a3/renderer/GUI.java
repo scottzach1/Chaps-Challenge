@@ -62,37 +62,32 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     resizeCycle = 0;
     direction = "";
     application = chaps_challenge;
+
     // Create new set for hosting keys currently pressed
     activeKeys = new HashSet<>();
+
+    // Add components.
+    canvas = new Canvas(application);
+    dashboardHolder = new DashboardHolder(application);
+    pauseMenu = new PauseMenu(application);
+    menuBar = new MenuOptions(application);
+
+    // Set GridBag
+    setLayout(new GridBagLayout());
+    addLayoutComponents();
 
     //Create & init the frame.
     setPreferredSize(screenDimension.getSize());
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
     setResizable(true);
     setMinimumSize(new Dimension(screenDimension.width / 5, screenDimension.height / 5));
     setVisible(true);
     setFocusable(true);
     setFocusableWindowState(true);
     getContentPane().setBackground(BACKGROUND_COLOUR);
-
-
     addComponentListener(this);
-
-    // Add components.
-    canvas = new Canvas(application);
-    dashboardHolder = new DashboardHolder(application);
-    pauseMenu = new PauseMenu(application);
-    ;
-    menuBar = new MenuOptions(application);
-
-
-    // Set GridBag
-    setLayout(new GridBagLayout());
-    addLayoutComponents();
     addKeyListener(this);
-    setFocusable(true);
-    setFocusableWindowState(true);
+
   }
 
   /**
@@ -294,6 +289,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
    */
   @Override
   public void componentResized(ComponentEvent e) {
+
     resizing = true;
     resizeCycle++;
 
@@ -317,12 +313,11 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
       }
       redraw();
 
-      if (loaded && resizeCycle == 2) {
-        System.out.println("AND ONE FOR GOOD LUCK");
-        pauseMenu.createComponents();
-        componentResized(e);
+      if(resizeCycle == 1){
+        componentResized(new ComponentEvent(this, ComponentEvent.COMPONENT_RESIZED));
         application.startRunningThread();
       }
+
     } else {
       if (pauseMenu != null) {
         System.out.println("PAUSE MENU");
