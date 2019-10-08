@@ -11,6 +11,7 @@ import nz.ac.vuw.ecs.swen225.a3.maze.Player;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
 import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
 import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
+import nz.ac.vuw.ecs.swen225.a3.renderer.GameMenu.MenuType;
 import nz.ac.vuw.ecs.swen225.a3.renderer.Gui;
 
 /**
@@ -101,7 +102,7 @@ public class ChapsChallenge {
       return; //invalid move
     }
     if (nextLocation.isOccupied()) { // stepped on a mob
-      restartLevel();
+      gameOver(MenuType.DEATH);
       return;
     }
     currentLocation.setTileUnoccupied();
@@ -118,7 +119,8 @@ public class ChapsChallenge {
   private void checkFields() {
     if (player.getLocation().getType() == Tile.Type.Exit) {
       if (!board.setNextLevel()) {
-        gameEnd();
+        gameOver(MenuType.WINNER);
+        return;
       }
       player = new Player(board.getPlayerLocation());
       timeLeft = totalTime;
@@ -266,10 +268,6 @@ public class ChapsChallenge {
     resumeGame();
   }
 
-  private void timeOut() {
-    gameOver("Timed Out!");
-  }
-
   /**
    * Running thread opens a new thread (double threaded).
    * and runs a timer, updating the dashboard every second
@@ -307,7 +305,7 @@ public class ChapsChallenge {
               }
             } catch (InterruptedException e) {
               // If anything was to go unsuccessfully, then control crash the game with a time out
-              timeOut();
+              gameOver(MenuType.TIMEOUT);
               return;
             }
           }
@@ -401,14 +399,11 @@ public class ChapsChallenge {
     return player;
   }
 
-  private void gameOver(String reason) {
+  private void gameOver(MenuType reason) {
+    gamePaused = true;
     gui.gameOver(reason);
-    exitGame();
   }
 
-  private void gameEnd() {
-    gui.endGame();
-  }
 
   /**
    * Get time remaining.

@@ -20,9 +20,11 @@ import javax.swing.WindowConstants;
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
 import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
+import nz.ac.vuw.ecs.swen225.a3.renderer.GameMenu.MenuType;
 
 /**
  * GUI class extends JFrame and is responsible with maintain the Graphical Interface.
+ *
  * @author Harrison Cook 300402048, Zac Scott 300447976.
  */
 public class Gui extends JFrame implements ComponentListener, KeyListener {
@@ -44,7 +46,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
   // ChapsChallenge component fields.
   private Canvas canvas;
   private DashboardHolder dashboardHolder;
-  private PauseMenu pauseMenu;
+  private GameMenu gameMenu;
   private JMenuBar menuBar;
   private ChapsChallenge application;
 
@@ -75,8 +77,8 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
     // Add components.
     canvas = new Canvas(application);
     dashboardHolder = new DashboardHolder(application);
-    pauseMenu = new PauseMenu(application);
-    menuBar = new MenuOptions(application);
+    gameMenu = new GameMenu(application);
+    menuBar = new MenuOptionPane(application);
 
     // Set GridBag
     setLayout(new GridBagLayout());
@@ -140,9 +142,9 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
     constraints.fill = GridBagConstraints.BOTH;
     constraints.weightx = 1;
     constraints.weighty = 1;
-    pauseMenu.renderPauseMenu();
+    gameMenu.renderMenu();
 
-    add(pauseMenu, constraints);
+    add(gameMenu, constraints);
     redraw();
     componentResized(new ComponentEvent(this, ComponentEvent.COMPONENT_RESIZED));
   }
@@ -304,8 +306,33 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
    *
    * @param reason given.
    */
-  public void gameOver(String reason) {
-    // TODO: Implement method and add test.
+  public void gameOver(MenuType reason) {
+    getContentPane().removeAll();
+    constraints = new GridBagConstraints();
+    constraints.fill = GridBagConstraints.BOTH;
+    constraints.weightx = 1;
+    constraints.weighty = 1;
+
+    switch (reason) {
+      case TIMEOUT:
+        gameMenu.setMenuType(MenuType.TIMEOUT);
+        break;
+      case DEATH:
+        gameMenu.setMenuType(MenuType.DEATH);
+        break;
+      case WINNER:
+        gameMenu.setMenuType(MenuType.WINNER);
+        break;
+      default:
+        gameMenu.setMenuType(MenuType.ERROR);
+    }
+
+    gameMenu.renderMenu();
+
+    add(gameMenu, constraints);
+    redraw();
+    componentResized(new ComponentEvent(this, ComponentEvent.COMPONENT_RESIZED));
+
   }
 
 
@@ -348,8 +375,8 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
       }
 
     } else {
-      if (pauseMenu != null) {
-        pauseMenu.resize();
+      if (gameMenu != null) {
+        gameMenu.resize();
       }
       redraw();
     }
