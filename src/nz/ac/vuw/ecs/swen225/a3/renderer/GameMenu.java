@@ -27,10 +27,10 @@ import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
  *
  * @author Harrison Cook 300402048, Zac Scott 300447976.
  */
-class PauseMenu extends JPanel {
+public class GameMenu extends JPanel {
 
   public enum MenuType {
-    PAUSE, DEATH, TIMEOUT, WINNER;
+    PAUSE, DEATH, TIMEOUT, WINNER, ERROR;
   }
 
   /**
@@ -39,6 +39,7 @@ class PauseMenu extends JPanel {
   private static final long serialVersionUID = 1L;
   private ArrayList<MenuButton> menuButtons = new ArrayList<>();
   private CustomTextPane textPane;
+  private int textPaneFontSize;
   private ChapsChallenge application;
   private Color buttonForeground;
   private Color buttonBackground;
@@ -46,6 +47,7 @@ class PauseMenu extends JPanel {
   private Color otherBackground;
   private JPanel panel;
   private MenuType menuType;
+  private MenuType oldMenuType;
   private SimpleAttributeSet centerAlign;
 
   /**
@@ -53,9 +55,10 @@ class PauseMenu extends JPanel {
    *
    * @param chapsChallenge - The chapsChallenge object for the game this object is in
    */
-  PauseMenu(ChapsChallenge chapsChallenge) {
+  GameMenu(ChapsChallenge chapsChallenge) {
     application = chapsChallenge;
     menuType = MenuType.PAUSE;
+    oldMenuType = MenuType.PAUSE;
 
     centerAlign = new SimpleAttributeSet();
     StyleConstants.setAlignment(centerAlign, StyleConstants.ALIGN_CENTER);
@@ -84,9 +87,6 @@ class PauseMenu extends JPanel {
     removeAll();
     panel.removeAll();
     menuButtons.clear();
-
-    // Create the text for the menu
-    textPane = new CustomTextPane("PAUSED", centerAlign, null, foreground, false, Gui.screenWidth / 2, Gui.screenHeight / 3);
 
     // Create the width and height of the components
     int width = Gui.screenWidth / 2;
@@ -118,35 +118,99 @@ class PauseMenu extends JPanel {
     menuButtons.add(resume);
     menuButtons.add(restart);
     menuButtons.add(quit);
+
+    // Create the text for the menu
+    textPane = new CustomTextPane("PAUSED", centerAlign, null, buttonForeground, false);
+  }
+
+  /**
+   * Creates the buttons and text necessary for the timeout menu
+   */
+  void createOtherComponents() {
+    removeAll();
+    panel.removeAll();
+    menuButtons.clear();
+
+    // Create the width and height of the components
+    int width = Gui.screenWidth / 2;
+    int height = Gui.screenHeight / (3 * 2);
+
+    MenuButton restartLevel = new MenuButton("Restart Level", new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        application.resumeGame();
+        application.restartLevel();
+      }
+    }, width, height);
+
+    MenuButton restartGame = new MenuButton("Restart Game", new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        application.resumeGame();
+        application.restartGame();
+      }
+    }, width, height);
+
+    MenuButton quit = new MenuButton("Quit", new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        application.exitGame();
+      }
+    }, width, height);
+
+    menuButtons.add(restartLevel);
+    menuButtons.add(restartGame);
+    menuButtons.add(quit);
+
+    // Create the text for the menu
+    System.out.println(menuType);
+    switch (menuType) {
+      case TIMEOUT:
+        textPane = new CustomTextPane("OUT OF TIME", centerAlign, null, buttonForeground, false);
+        break;
+      case DEATH:
+        textPane = new CustomTextPane("YOU DIED", centerAlign, null, buttonForeground, false);
+        break;
+      case WINNER:
+        textPane = new CustomTextPane("YOU WON !!!", centerAlign, null, buttonForeground, false);
+        break;
+      default:
+        textPane = new CustomTextPane("An Error Occurred", centerAlign, null, buttonForeground, false);
+        break;
+    }
   }
 
 
   /**
    * Renders the pause menu.
    */
-  void renderPauseMenu() {
-    if(textPane == null)
-      return;
-
-    System.out.println(textPane.getFont().getSize());
+  void renderMenu() {
+    if (menuType != oldMenuType || textPane == null || menuButtons.size() <= 0) {
+      switchMenu();
+    }
 
     GridBagConstraints gbc = new GridBagConstraints();
 
+//    gbc.fill = GridBagConstraints.BOTH;
+
     // Add the CustomTextPane
     gbc.weighty = 2;
-    gbc.weightx = 1;
+    gbc.weightx = 4;
     gbc.gridx = 0;
+    gbc.gridy = 0;
     gbc.gridwidth = 4;
     panel.add(textPane, gbc);
 
     // Add the buttons
     gbc.gridx = 1;
     gbc.gridwidth = 2;
+    gbc.weighty = 1;
+    gbc.weightx = 2;
 
     for (int i = 0; i < menuButtons.size(); i++) {
       // Reset the color of the button
-      menuButtons.get(i).setBackground(background);
-      menuButtons.get(i).setForeground(foreground);
+      menuButtons.get(i).setBackground(buttonBackground);
+      menuButtons.get(i).setForeground(buttonForeground);
       gbc.gridy = i + 1;
       panel.add(menuButtons.get(i), gbc);
     }
@@ -155,17 +219,29 @@ class PauseMenu extends JPanel {
   }
 
 
+  private void switchMenu() {
+    if (menuType == MenuType.PAUSE) {
+      createPauseComponents();
+    } else {
+      createOtherComponents();
+    }
+  }
+
   /**
    * Recalculates then resize components.
    */
   void resize() {
-    if (menuType == MenuType.PAUSE) {
-      createPauseComponents();
-    } else if (menuType == MenuType.TIMEOUT) {
+    switchMenu();
+    renderMenu();
+  }
 
-    }
-
-    renderPauseMenu();
+  /**
+   * Sets the type of menu for this object to display.
+   *
+   * @param mt - The menu type to change to
+   */
+  public void setMenuType(MenuType mt) {
+    menuType = mt;
   }
 
 
@@ -186,8 +262,8 @@ class PauseMenu extends JPanel {
      */
     public MenuButton(String name, ActionListener action, int width, int height) {
       super(name);
-      setBackground(background);
-      setForeground(foreground);
+      setBackground(buttonBackground);
+      setForeground(buttonForeground);
       addActionListener(action);
       setPreferredSize(new Dimension(width, height));
       setFont(findFont(this, new Font("Ariel", Font.BOLD, 30), name));
@@ -201,8 +277,8 @@ class PauseMenu extends JPanel {
 
         @Override
         public void mouseExited(MouseEvent e) {
-          setBackground(background);
-          setForeground(foreground);
+          setBackground(buttonBackground);
+          setForeground(buttonForeground);
         }
       });
     }
@@ -229,7 +305,7 @@ class PauseMenu extends JPanel {
      * @param border        - If true: Add a matte border of foreground color, if false, no border
      */
     private CustomTextPane(String text, SimpleAttributeSet textAlignment, Color background,
-        Color foreground, boolean border, int preferredWidth, int preferredHeight) {
+        Color foreground, boolean border) {
 
       // Basic setup:
       // - Not editable
@@ -238,10 +314,8 @@ class PauseMenu extends JPanel {
       setBackground(background);
       // - Set the foreground color to the parsed in color
       setForeground(foreground);
-      // - Set the preferredSize
-      setPreferredSize(new Dimension(preferredWidth, preferredHeight));
       // - Set the font, using a below method to find the font size
-      setFont(findFont(this, new Font("Arial", Font.BOLD, 20), text));
+      setFont(new Font("Arial", Font.BOLD, textPaneFontSize));
 
       // - If the border boolean parsed in is true, make one
       if (border) {
@@ -290,7 +364,7 @@ class PauseMenu extends JPanel {
     Font savedFont = oldFont;
 
     // Cycle through font sizes, from 0 to 150 to find a fitting size
-    for (int i = 0; i < 300; i++) {
+    for (int i = 0; i < 150; i++) {
       // Create a new font to test on, incrementing it's size with i
       Font newFont = new Font(savedFont.getFontName(), savedFont.getStyle(), i);
 
@@ -303,6 +377,7 @@ class PauseMenu extends JPanel {
 
       //
       if (componentSize.height - (componentSize.height / 3) < d.height) {
+        textPaneFontSize = (int) (savedFont.getSize() * 1.5);
         return savedFont;
       }
       savedFont = newFont;
