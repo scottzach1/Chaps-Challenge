@@ -218,8 +218,13 @@ public class JsonReadWrite {
         m = new PassivePerry();
         m.setMobFromJson(Json.createReader(new StringReader(string)));
         return m;
+      case "Sneaky Snek":
+        m = new SneakySnek();
+        m.setMobFromJson(Json.createReader(new StringReader(string)));
+        return m;
       default:
-        m = new PassivePerry();
+        // Grumpy Gary
+        m = new GrumpyGary();
         m.setMobFromJson(Json.createReader(new StringReader(string)));
         return m;
     }
@@ -235,9 +240,8 @@ public class JsonReadWrite {
     JsonObject tileObject = reader.readObject();
     String type = tileObject.getString("type");
 
-    // Use reflection to find correct class
+    //TODO: Use reflection to find correct class
     // Done to allow dynamic drop in of new tile types
-
 
 
     switch (type){

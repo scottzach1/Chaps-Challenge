@@ -5,7 +5,6 @@ import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
 import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
 import nz.ac.vuw.ecs.swen225.a3.renderer.GUI;
 
-import java.awt.event.ComponentEvent;
 import java.io.File;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -48,7 +47,6 @@ public class ChapsChallenge {
 
     // Creates a GUI and gives it a keyListener
     gui = new GUI(this);
-
   }
 
   /**
@@ -109,8 +107,7 @@ public class ChapsChallenge {
     if (player.getLocation().getType() == Tile.Type.Exit) {
       if (!board.setNextLevel())
         gameEnd();
-      player = new Player(board.getPlayerLocation());
-      timeLeft = totalTime;
+      resetLogistics();
     }
 
     if (player.getLocation().getType() == Tile.Type.InfoField) {
@@ -353,7 +350,7 @@ public class ChapsChallenge {
    * @param level the level to change to.
    */
   public void setCustomLevel(String level) {
-    board.setLevel(level);
+    board.setLevelFromDesignString(level);
     player = new Player(board.getPlayerLocation());
     resetLogistics();
   }
@@ -437,6 +434,7 @@ public class ChapsChallenge {
     startTime = System.currentTimeMillis();
     mobManager = new MobManager(board);
     player = new Player(board.getPlayerLocation());
+    JsonReadWrite.saveGameState(this,""+(board.getCurrentLevel()+1));
   }
 
   /**

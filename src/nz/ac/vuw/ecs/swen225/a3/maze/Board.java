@@ -29,13 +29,11 @@ public class Board {
   private int currentLevel;
   private int treasureCount=0;
 
-  public Set<Tile> tileTypes = new HashSet<>();
-
   /**
    * Constructor.
    */
   public Board() {
-    addLevels();
+    addLevelsFromDesignString();
     try {
       parseBoard(allLevels.get(currentLevel));
     } catch (ParsingException p) {
@@ -51,7 +49,7 @@ public class Board {
     setupAdjacency();
   }
 
-  public void setLevel(String level){
+  public void setLevelFromDesignString(String level){
     try {
       if (!allLevels.contains(level)){
         allLevels.add(0,level);
@@ -235,7 +233,7 @@ public class Board {
     return allTiles;
   }
 
-  private void addLevels(){
+  private void addLevelsFromDesignString(){
     allLevels = new ArrayList<>();
     allLevels.add(
         "_|_|_|T|T|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
@@ -353,7 +351,7 @@ public class Board {
   public boolean setNextLevel(){
     if (currentLevel<allLevels.size()-1){
       currentLevel++;
-      setLevel(allLevels.get(currentLevel));
+      setLevelFromDesignString(allLevels.get(currentLevel));
       return true;
     }
     return false;
@@ -362,7 +360,7 @@ public class Board {
   public void setCurrentLevel(int level){
     if (level<allLevels.size()){
       currentLevel= level;
-      setLevel(allLevels.get(currentLevel));
+      setLevelFromDesignString(allLevels.get(currentLevel));
     }
   }
 
