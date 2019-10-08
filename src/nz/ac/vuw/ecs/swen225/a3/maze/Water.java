@@ -36,8 +36,9 @@ public class Water extends Tile {
    */
   @Override
   public boolean interact(Player p) {
-    if (p.getItem("flippers")) {
-      p.removeItem("flippers");
+
+    if (p.getItem("Flippers")) {
+      p.removeItem("Flippers");
       return true;
     }
     return isAccessible;

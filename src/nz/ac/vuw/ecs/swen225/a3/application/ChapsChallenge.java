@@ -13,7 +13,6 @@ import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
 import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
 import nz.ac.vuw.ecs.swen225.a3.renderer.Gui;
 
-
 /**
  * Chip and Chap.
  * Chap’s challenge is a creative clone of the (first level of the)
@@ -494,8 +493,6 @@ public class ChapsChallenge {
     }
     runningThread();
   }
-
-
 
   /**
    * ChapsChallenge invocation point for running the game.
