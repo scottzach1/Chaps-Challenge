@@ -207,9 +207,35 @@ public class ChapsChallenge {
     resetLogistics();
   }
 
+  /**
+   * Sets the game to the next level.
+   * If there is no next level, current level is restarted.
+   */
+  public void nextLevel() {
+    int current = board.getCurrentLevel();
+    if (current < board.getFinalLevel()) {
+      board.setCurrentLevel(current + 1);
+    } else {
+      board.setCurrentLevel(board.getFinalLevel());
+    }
+    resetLogistics();
+  }
+
   public void restartLevel() {
     int current = board.getCurrentLevel();
     board.setCurrentLevel(current);
+    resetLogistics();
+  }
+
+  /**
+   * Sets the game to the desired level.
+   * If level isn't valid, ignore.
+   * @param level number.
+   */
+  public void setLevel(int level) {
+    if (level < 0 || level > board.getFinalLevel()) return;
+
+    board.setCurrentLevel(level);
     resetLogistics();
   }
 

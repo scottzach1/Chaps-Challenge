@@ -12,7 +12,9 @@ import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * GUI class extends JFrame and is responsible with
@@ -88,6 +90,10 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     addComponentListener(this);
     addKeyListener(this);
 
+  }
+
+  public boolean isResizing() {
+    return resizing;
   }
 
   /**
@@ -364,7 +370,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
   public void keyTyped(KeyEvent e) {/* UNUSED */}
 
   /**
-   * Handles events occuring after a key is pressed.
+   * Handles events occurring after a key is pressed.
    * First adding it to the list of keys pressed, then dealing with all
    * active keys in the 'activeKeys' set.
    *
@@ -390,10 +396,16 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_P) && activeKeys.size() == 2) {
       application.restartLevel();
     }
-    // CTRL + 1
-    if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_1) && activeKeys.size() == 2) {
-      application.restartGame();
+
+    // CTRL + Number
+    if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.size() == 2) {
+      for (int i=0; i!=10; ++i) {
+        if (activeKeys.contains(KeyEvent.VK_1 + i)) {
+          application.setLevel(i);
+        }
+      }
     }
+
     // SPACE
     if (activeKeys.contains(KeyEvent.VK_SPACE) && activeKeys.size() == 1) {
       if (application.isGamePaused()) application.resumeGame();

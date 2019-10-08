@@ -370,6 +370,10 @@ public class Board {
     return currentLevel;
   }
 
+  public int getFinalLevel() {
+    return allLevels.size() - 1;
+  }
+
   /**
    * Return boardSize.
    * @return integer board size.

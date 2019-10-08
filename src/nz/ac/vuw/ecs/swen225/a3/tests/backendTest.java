@@ -616,7 +616,6 @@ class backendTest {
     assertEquals(current-1, chapsChallenge.getBoard().getCurrentLevel());
   }
 
-
   /**
    * Pauses the game.
    * Un-pauses the game.
@@ -642,6 +641,26 @@ class backendTest {
     int updated = chapsChallenge.getBoard().getCurrentLevel();
 
     assertEquals(current+1, updated);
+  }
+
+  @Test
+  void setLevel() {
+    int current = chapsChallenge.getBoard().getCurrentLevel();
+    chapsChallenge.setLevel(chapsChallenge.getBoard().getFinalLevel());
+    int updated = chapsChallenge.getBoard().getCurrentLevel();
+
+    assertNotEquals(current, updated);
+  }
+
+  @Test
+  void nextLevelOnFinalLevel() {
+    chapsChallenge.setLevel(chapsChallenge.getBoard().getFinalLevel());
+    int current = chapsChallenge.getBoard().getCurrentLevel();
+
+    chapsChallenge.nextLevel();
+    int updated = chapsChallenge.getBoard().getCurrentLevel();
+
+    assertEquals(current, updated);
   }
 
 
