@@ -21,7 +21,7 @@ import nz.ac.vuw.ecs.swen225.a3.renderer.Gui;
  * ChapsChallenge maintains the functionality of the game.
  * It also provides the link between the Maze, Renderer and Persistence packages.
  *
- * @author Luisa Kristen 300444458
+ * @author Luisa Kristen 300444458, Zac Scott, Harrison Cook.
  */
 public class ChapsChallenge {
 
