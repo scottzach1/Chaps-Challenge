@@ -302,9 +302,8 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
 
 
   /**
-   * TODO: Endgame promping provided reason.
-   *
-   * @param reason given.
+   * Renders the game menu upon death, timing out, or winning.
+   * @param reason - MenuType to be displayed based on the reason for the game ending.
    */
   public void gameOver(MenuType reason) {
     getContentPane().removeAll();
@@ -333,14 +332,6 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
     redraw();
     componentResized(new ComponentEvent(this, ComponentEvent.COMPONENT_RESIZED));
 
-  }
-
-
-  /**
-   * TODO: Endgame with no provided reason.
-   */
-  public void endGame() {
-    // TODO: Implement method and add test.
   }
 
 

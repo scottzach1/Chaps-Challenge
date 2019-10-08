@@ -163,7 +163,6 @@ public class GameMenu extends JPanel {
     menuButtons.add(quit);
 
     // Create the text for the menu
-    System.out.println(menuType);
     switch (menuType) {
       case TIMEOUT:
         textPane = new CustomTextPane("OUT OF TIME", centerAlign, null, buttonForeground, false);
