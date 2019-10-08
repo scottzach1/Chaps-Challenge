@@ -1,36 +1,32 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
+
 import nz.ac.vuw.ecs.swen225.a3.renderer.Canvas;
 
-import java.nio.file.Path;
-import java.util.*;
-import java.util.stream.Stream;
 
 
 /**
  * Board class.
- * Describes board object and stores Tile array
+ * Holds a 2D array of all the current tiles.
+ * These tiles contain information about the board, such as where Chap is.
+ *
+ * @author Luisa Kristen 300444458
+ * @author Zac Durant 300449785
  */
 public class Board {
 
   private int boardSize = 20;
-
-  public void setBoardSize(int boardSize) {
-    this.boardSize = boardSize;
-  }
-
-  public void setAllTiles(List<Tile> allTiles) {
-    this.allTiles = allTiles;
-  }
 
   private List<Tile> allTiles;
   private Tile[][] tiles = new Tile[boardSize][boardSize];
 
   private List<String> allLevels;
   private int currentLevel;
-  private int treasureCount=0;
-
-  public Set<Tile> tileTypes = new HashSet<>();
+  private int treasureCount = 0;
 
   /**
    * Constructs and parses a new board.
@@ -45,7 +41,7 @@ public class Board {
     } catch (MultiplePlayersFoundException m) {
       System.out.println(m.getMessage());
       throw new Error(m.getMessage());
-    }catch(PlayerNotFoundException pnf){
+    } catch (PlayerNotFoundException pnf) {
       System.out.println(pnf.getMessage());
       throw new Error(pnf.getMessage());
     }
@@ -53,14 +49,14 @@ public class Board {
   }
 
   /**
-   * Sets the board to the desired level.
+   * Sets the board to a custom level.
    * @param level to set.
    */
-  public void setLevel(String level){
+  public void setLevel(String level) {
     try {
-      if (!allLevels.contains(level)){
+      if (!allLevels.contains(level)) {
         allLevels.add(0,level);
-        currentLevel=0;
+        currentLevel = 0;
       }
       parseBoard(level);
     } catch (ParsingException p) {
@@ -69,7 +65,7 @@ public class Board {
     } catch (MultiplePlayersFoundException m) {
       System.out.println(m.getMessage());
       throw new Error(m.getMessage());
-    } catch(PlayerNotFoundException pnf){
+    } catch (PlayerNotFoundException pnf) {
       System.out.println(pnf.getMessage());
       throw new Error(pnf.getMessage());
     }
@@ -81,7 +77,8 @@ public class Board {
    *
    * @param level String representation of board
    */
-  private void parseBoard(String level) throws MultiplePlayersFoundException, ParsingException, PlayerNotFoundException {
+  private void parseBoard(String level)
+      throws MultiplePlayersFoundException, ParsingException, PlayerNotFoundException {
     boolean foundChap = false;
     String[] values = level.split("\\|");
     int index = 0;
@@ -106,7 +103,9 @@ public class Board {
           setTile(index / 20, index % 20, new ExitLock());
           break;
         case "C":
-          if (foundChap) throw new MultiplePlayersFoundException();
+          if (foundChap) {
+            throw new MultiplePlayersFoundException();
+          }
           foundChap = true;
           Free tile = new Free();
 
@@ -126,7 +125,9 @@ public class Board {
           String itemType = v.substring(0, 1);
 
           // Check for invalid token
-          if (!(itemType.equals("K") || itemType.equals("D"))) throw new ParsingException();
+          if (!(itemType.equals("K") || itemType.equals("D"))) {
+            throw new ParsingException();
+          }
 
           String colour = v.substring(1).toLowerCase();
 
@@ -139,7 +140,7 @@ public class Board {
       }
       index++;
     }
-    if (!foundChap){
+    if (!foundChap) {
       throw new PlayerNotFoundException();
     }
 
@@ -152,7 +153,8 @@ public class Board {
     treasureCount = (int) allTiles.stream().filter(p -> p.toString().equals("Treasure")).count();
 
     // Set all exit locks to require correct number of treasures
-    allTiles.stream().filter(p -> p.getType() == Tile.Type.ExitLock).map(c -> (ExitLock)c).forEach(s -> s.setTotalTreasures(treasureCount));
+    allTiles.stream().filter(p -> p.getType() == Tile.Type.ExitLock)
+        .map(c -> (ExitLock) c).forEach(s -> s.setTotalTreasures(treasureCount));
   }
 
   /**
@@ -180,11 +182,11 @@ public class Board {
         int leftOrdinal = Tile.Direction.Left.ordinal();
         t.adjacent.add(leftOrdinal,col != 0 ? tiles[row][col - 1] : new Wall());
         int rightOrdinal = Tile.Direction.Right.ordinal();
-        t.adjacent.add(rightOrdinal,col != boardSize-1 ? tiles[row][col + 1] : new Wall());
+        t.adjacent.add(rightOrdinal, col != boardSize - 1 ? tiles[row][col + 1] : new Wall());
         int upOrdinal = Tile.Direction.Up.ordinal();
-        t.adjacent.add(upOrdinal,row != 0 ? tiles[row-1][col ] : new Wall());
+        t.adjacent.add(upOrdinal, row != 0 ? tiles[row - 1][col] : new Wall());
         int downOrdinal = Tile.Direction.Down.ordinal();
-        t.adjacent.add(downOrdinal,row != boardSize-1 ? tiles[row+1][col] : new Wall());
+        t.adjacent.add(downOrdinal, row != boardSize - 1 ? tiles[row + 1][col] : new Wall());
       }
     }
   }
@@ -198,8 +200,11 @@ public class Board {
     List<Tile> tileList = new ArrayList<>();
     for (int r = t.getRow() - Canvas.VIEW_SIZE / 2; r <= t.getRow() + Canvas.VIEW_SIZE / 2; ++r) {
       for (int c = t.getCol() - Canvas.VIEW_SIZE / 2; c <= t.getCol() + Canvas.VIEW_SIZE / 2; ++c) {
-        if (r < 0 || c < 0 || r >= boardSize || c >= boardSize) tileList.add(new Wall());
-        else tileList.add(tiles[r][c]);
+        if (r < 0 || c < 0 || r >= boardSize || c >= boardSize) {
+          tileList.add(new Wall());
+        } else {
+          tileList.add(tiles[r][c]);
+        }
       }
     }
     return tileList.stream();
@@ -219,7 +224,7 @@ public class Board {
         }
       }
     }
-   return null;
+    return null;
   }
 
   /**
@@ -230,9 +235,20 @@ public class Board {
     return treasureCount;
   }
 
+  /**
+   * Returns the tile corresponding to the row and col specified.
+   *
+   * @param row the row of the tile.
+   * @param col the col of the tile.
+   * @return the tile to return.
+   */
   public Tile getTile(int row, int col) {
-    if (row >= boardSize || col >= boardSize) return null;
-    if (row < 0 || col < 0) return null;
+    if (row >= boardSize || col >= boardSize) {
+      return null;
+    }
+    if (row < 0 || col < 0) {
+      return null;
+    }
     return tiles[row][col];
   }
 
@@ -240,7 +256,7 @@ public class Board {
    * Get allTiles list.
    * @return list of allTiles in board or null if not filled
    */
-  public List<Tile> getAllTiles(){
+  public List<Tile> getAllTiles() {
     return allTiles;
   }
 
@@ -248,8 +264,8 @@ public class Board {
    * Adds levels to the level list.
    * Sets the current level to 0.
    */
-  private void addLevels(){
-    currentLevel=0; // Set current level to 0.
+  private void addLevels() {
+    currentLevel = 0; // Set current level to 0.
 
     allLevels = new ArrayList<>();
     // Level 1
@@ -369,8 +385,8 @@ public class Board {
    * Retains level if on final level.
    * @return boolean board changed.
    */
-  public boolean setNextLevel(){
-    if (currentLevel<allLevels.size()-1){
+  public boolean setNextLevel() {
+    if (currentLevel < allLevels.size() - 1) {
       currentLevel++;
       setLevel(allLevels.get(currentLevel));
       return true;
@@ -383,9 +399,9 @@ public class Board {
    * Retains level if given level is invalid.
    * @param level to set.
    */
-  public void setCurrentLevel(int level){
-    if (level >= 0 && level<allLevels.size()){
-      currentLevel= level;
+  public void setCurrentLevel(int level) {
+    if (level >= 0 && level < allLevels.size()) {
+      currentLevel = level;
       setLevel(allLevels.get(currentLevel));
     }
   }
@@ -410,8 +426,26 @@ public class Board {
    * Return boardSize.
    * @return integer board size.
    */
-  public int getBoardSize(){
+  public int getBoardSize() {
     return boardSize;
+  }
+
+  /**
+   * Sets the size of the board.
+   *
+   * @param boardSize the new size of the board.
+   */
+  public void setBoardSize(int boardSize) {
+    this.boardSize = boardSize;
+  }
+
+  /**
+   * Sets the list of tiles to a new list.
+   *
+   * @param allTiles the new tiles.
+   */
+  public void setAllTiles(List<Tile> allTiles) {
+    this.allTiles = allTiles;
   }
 
   /**

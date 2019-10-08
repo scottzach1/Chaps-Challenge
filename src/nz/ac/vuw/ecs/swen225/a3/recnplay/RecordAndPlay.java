@@ -10,8 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class to allow recording and replaying game play
- * @Author Zac Durant
+ * Class to allow recording and replaying game play.
+ * Saves and records each movement done, and allows these to be played back.
+ *
+ * @author Zac Durant 300449785
  */
 public class RecordAndPlay {
   private static String saveName;
@@ -19,30 +21,28 @@ public class RecordAndPlay {
   private static String gameState;
   private static boolean isRecording;
 
+  private static long delay = 200;
+  private static boolean isRunning;
+
   /**
    * Set playback delay.
-   * @param d time in millis
+   * @param d time in millis.
    */
   public static void setDelay(long d) {
     delay = d;
   }
 
-  private static long delay = 200;
-
-
   /**
    * Get state of playback.
-   * @return Running boolean
+   * @return Running boolean.
    */
   public static boolean getIsRunning() {
     return isRunning;
   }
 
-  private static boolean isRunning;
-
   /**
-   * Create new recording saved in file with name s
-   * @param s Name of save
+   * Create new recording saved in file with name specified.
+   * @param s Name of save.
    */
   public static void newSave(ChapsChallenge g, String s){
     saveName = s;
@@ -52,7 +52,8 @@ public class RecordAndPlay {
   }
 
   /**
-   * Add action to action history
+   * Add action to action history.
+   * @param direction the direction moved.
    */
   public static void addAction(Tile.Direction direction){
     // Check a recording is active
@@ -62,7 +63,7 @@ public class RecordAndPlay {
   }
 
   /**
-   * Save action history to file
+   * Save action history to file.
    */
   public static void saveGame(){
     if(isRecording){
@@ -98,8 +99,8 @@ public class RecordAndPlay {
 
   /**
    * Load game state and move list from recording file.
-   * @param fileName File name
-   * @param game game object to be updated
+   * @param fileName File name.
+   * @param game game object to be updated.
    */
   public static void loadRecording(String fileName,ChapsChallenge game){
     JsonObject object = null;
@@ -119,23 +120,25 @@ public class RecordAndPlay {
         //TODO: deal withs
       }
 
-      JsonArray movesJson = object.getJsonArray("moves");
+      JsonArray movesJson = object != null ? object.getJsonArray("moves") : null;
 
-      // Parse moves into array
-      for (JsonString j : movesJson.getValuesAs(JsonString.class)) {
-        switch (j.toString()) {
-          case "\"Left\"":
-            moves.add(Tile.Direction.Left);
-            break;
-          case "\"Right\"":
-            moves.add(Tile.Direction.Right);
-            break;
-          case "\"Up\"":
-            moves.add(Tile.Direction.Up);
-            break;
-          case "\"Down\"":
-            moves.add(Tile.Direction.Down);
-            break;
+      if (movesJson != null) {
+        // Parse moves into array
+        for (JsonString j : movesJson.getValuesAs(JsonString.class)) {
+          switch (j.toString()) {
+            case "\"Left\"":
+              moves.add(Tile.Direction.Left);
+              break;
+            case "\"Right\"":
+              moves.add(Tile.Direction.Right);
+              break;
+            case "\"Up\"":
+              moves.add(Tile.Direction.Up);
+              break;
+            case "\"Down\"":
+              moves.add(Tile.Direction.Down);
+              break;
+          }
         }
       }
       if (moves.size() > 0) isRunning = true;
@@ -147,8 +150,8 @@ public class RecordAndPlay {
   }
 
   /**
-   * Step replay forward one step
-   * @param game Game object
+   * Step replay forward one step.
+   * @param game Game object.
    */
   public static void step(ChapsChallenge game){
     if(moves.size() > 0 && isRunning) {
@@ -161,7 +164,7 @@ public class RecordAndPlay {
 
   /**
    * Run through move list until replay is complete.
-   * @param game Game object
+   * @param game Game object.
    */
   public static void run(ChapsChallenge game){
     Runnable runnable = () -> {
@@ -171,8 +174,9 @@ public class RecordAndPlay {
           moves.remove(0);
           game.update();
           Thread.sleep(delay);
+        } catch (InterruptedException e) {
+          System.out.println("Running through recording was interupted:" + e);
         }
-        catch(InterruptedException e){}
       }
       isRunning = false;
     };
@@ -181,8 +185,8 @@ public class RecordAndPlay {
   }
 
   /**
-   * Get if recording is active
-   * @return isRecording
+   * Get if recording is active.
+   * @return isRecording.
    */
   public static boolean getIsRecording(){
     return isRecording;

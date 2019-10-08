@@ -11,15 +11,16 @@ import java.util.List;
 import java.util.Set;
 
 
-/**.
- * @author Zac Durant.
+/**
+ * Saves and loads the current game state to a JSON file.
  *
+ * @author Zac Durant 300449785
  */
 public class JsonReadWrite {
 
   /**
    * Json dump game state (TimeLeft, Board state and player state) to file "save.txt".
-   * @param game Instance of Chaps Challenge
+   * @param game Instance of Chaps Challenge.
    */
   public static void saveGameState(ChapsChallenge game,String name){
     String jsonGame = getGameState(game);
@@ -27,14 +28,15 @@ public class JsonReadWrite {
       BufferedWriter writer = new BufferedWriter(new FileWriter(name));
       writer.write(jsonGame);
       writer.close();
+    } catch (IOException e) {
+      System.out.println("Error saving game" + e);
     }
-    catch(IOException e){}
   }
 
   /**
-   * Get game state to write to file
-   * @param game Game object
-   * @return Json string
+   * Get game state to write to file.
+   * @param game Game object.
+   * @return Json string.
    */
   public static String getGameState(ChapsChallenge game){
     String jsonGame = "";
@@ -115,10 +117,10 @@ public class JsonReadWrite {
 
   /**
    * Load game state from file.
-   * @param saveGame Name of file
-   * @param g Game object
-   * @return Updated game Object
-   * @throws GameNotFoundException Thrown when file not found
+   * @param saveGame Name of file.
+   * @param g Game object.
+   * @return Updated game Object.
+   * @throws GameNotFoundException Thrown when file not found.
    */
   public static ChapsChallenge loadGameState(String saveGame, ChapsChallenge g) throws GameNotFoundException{
     JsonObject game;
@@ -205,8 +207,8 @@ public class JsonReadWrite {
 
   /**
    * Create mob object from JSON description.
-   * @param string JSON representation
-   * @return Mob object
+   * @param string JSON representation.
+   * @return Mob object.
    */
   private static Mob createMobFromJson(String string) {
     JsonReader reader = Json.createReader(new StringReader(string));
@@ -227,8 +229,8 @@ public class JsonReadWrite {
 
   /**
    * Create tile object from JSON description.
-   * @param tile JSON representation
-   * @return Tile object
+   * @param tile JSON representation.
+   * @return Tile object.
    */
   public static Tile createTileFromJson(String tile){
     JsonReader reader = Json.createReader(new StringReader(tile));

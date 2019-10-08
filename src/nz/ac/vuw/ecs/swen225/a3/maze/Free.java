@@ -8,6 +8,11 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 
+/**
+ * An empty tile which can be stepped on.
+ *
+ * @author Luisa Kristen 300444458
+ */
 public class Free extends Tile {
 
   /**

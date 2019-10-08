@@ -8,6 +8,13 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 
+
+/**
+ * A water tile. This can only be occupied by the player if they currently hold flippers in their
+ * inventory.
+ *
+ * @author Luisa Kristen 300444458
+ */
 public class Water extends Tile {
 
   /**

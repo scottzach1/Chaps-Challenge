@@ -8,7 +8,16 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 
+
+/**
+ * A locked door. This is a tile that can only be stepped on if the player possesses a key with the
+ * same colour. By stepping on the locked door, one copy of the key will disappear out the
+ * inventory. Turns into a free tile when unlocked.
+ *
+ * @author Luisa Kristen 300444458
+ */
 public class LockedDoor extends Tile {
+
   private String colour;
   private boolean active = true;
 

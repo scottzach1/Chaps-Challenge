@@ -15,6 +15,11 @@ import java.util.stream.Stream;
  * Chip and Chap.
  * Chap’s challenge is a creative clone of the (first level of the)
  * 1989 Atari game Chips Challenge. To learn more about Chip’s Challenge.
+ *
+ * ChapsChallenge maintains the functionality of the game.
+ * It also provides the link between the Maze, Renderer and Persistence packages.
+ *
+ * @author Luisa Kristen 300444458
  */
 public class ChapsChallenge {
 

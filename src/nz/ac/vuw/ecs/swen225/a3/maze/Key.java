@@ -8,7 +8,13 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 
+/**
+ * A key of a particular colour. Used to unlock a locked door.
+ *
+ * @author Luisa Kristen 300444458
+ */
 public class Key extends Tile {
+
   private String colour;
   private boolean collected;
 
@@ -20,7 +26,7 @@ public class Key extends Tile {
    * @param colour the colour of the key.
    */
   public Key(String colour) {
-     super(Type.Key);
+    super(Type.Key);
     isAccessible = true;
     this.colour = colour;
     imageUrl = "key_" + colour + ".png";

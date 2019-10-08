@@ -8,8 +8,15 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 
+/**
+ * A type of lock which accessible once the player has collected all of the treasures. Usually
+ * placed right in front of the exit. Turns into a free tile after it is unlocked.
+ *
+ * @author Luisa Kristen 300444458
+ */
 public class ExitLock extends Tile {
-  private int totalTreasures;// amount of treasures that still need to be collected
+
+  private int totalTreasures;// amount of treasures that need to be collected for this level
 
   /**
    * Constructor.
@@ -22,19 +29,9 @@ public class ExitLock extends Tile {
     defaultImageUrl = "free.png";
   }
 
-  /**
-   * Standard toString method.
-   *
-   * @return the name of the tile
-   */
-  @Override
-  public String toString() {
-    return "ExitLock";
-  }
-
 
   /**
-   * Sets the total number of treasures to the parameter.
+   * Sets the total number of treasures to 't'.
    *
    * @param t treasures to set.
    */
@@ -96,4 +93,16 @@ public class ExitLock extends Tile {
     defaultImageUrl = tile.getString("defaultImageUrl");
     totalTreasures = tile.getInt("totalTreasures");
     return this;  }
+
+
+  /**
+   * Standard toString method.
+   *
+   * @return the name of the tile
+   */
+  @Override
+  public String toString() {
+    return "ExitLock";
+  }
+
 }

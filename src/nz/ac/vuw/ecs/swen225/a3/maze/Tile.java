@@ -6,13 +6,20 @@ import javax.json.JsonReader;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Abstract Tile class. Contains methods used for all subclasses of Tiles.
+ *
+ * @author Luisa Kristen 300444458
+ */
 public abstract class Tile {
 
-  private boolean isOccupied;
-  boolean isAccessible;
+  private boolean isOccupied; // currently occupied by a mob
+  boolean isAccessible; // if the tile can be stepped on
+
+  //Position on the board
   private int row;
   private int col;
+
   private Type type;
   String imageUrl;
   String defaultImageUrl;
@@ -284,7 +291,7 @@ public abstract class Tile {
    * @param other tile to measure distance from.
    * @return distance between tiles.
    */
-  public double getDistance(Tile other) {
+  double getDistance(Tile other) {
     return (Math.sqrt(Math.pow(getRow() - other.getRow(), 2) + Math.pow(getCol() - other.getCol(), 2)));
   }
 

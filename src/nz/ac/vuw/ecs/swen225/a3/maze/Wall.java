@@ -8,15 +8,20 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 
+/**
+ * A wall tile which cannot be occupied by the player.
+ *
+ * @author Luisa Kristen 300444458
+ */
 public class Wall extends Tile {
 
   /**
    * Constructor.
    * Sets the isAccessible field to false.
    */
-   public Wall() {
-     super(Type.Wall);
-     isAccessible = false;
+  public Wall() {
+    super(Type.Wall);
+    isAccessible = false;
     imageUrl = "wall.png";
     defaultImageUrl = "wall.png";
   }

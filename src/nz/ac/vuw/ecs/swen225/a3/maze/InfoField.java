@@ -8,6 +8,12 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 
+
+/**
+ * An info field. This holds a text, which is displayed when the player steps on the tile.
+ *
+ * @author Luisa Kristen 300444458
+ */
 public class InfoField extends Tile {
 
   private String info;
@@ -17,8 +23,8 @@ public class InfoField extends Tile {
    * Sets the isAccessible to true.
    * Sets the information contained in the tile.
    */
-   public InfoField(String info) {
-     super(Type.InfoField);
+  public InfoField(String info) {
+    super(Type.InfoField);
     isAccessible = true;
     this.info = info;
     imageUrl = "info_field.png";

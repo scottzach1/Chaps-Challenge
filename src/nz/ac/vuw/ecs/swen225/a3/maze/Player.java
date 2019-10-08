@@ -5,7 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The player of the game, represented as Chap. Holds an inventory of items that have been picked
+ * up, and a count of treasures that have been collected.
+ *
+ * @author Luisa Kristen 300444458
+ * @author Zac Durant 300449785
+ */
 public class Player {
+
   private Tile location;
   private List<String> inventory = new ArrayList<>();
   private Map<Tile.Direction, String> images = new HashMap<>();

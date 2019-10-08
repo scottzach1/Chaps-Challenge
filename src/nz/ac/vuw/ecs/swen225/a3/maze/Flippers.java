@@ -8,9 +8,15 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 
+/**
+ * A flipper tile, which can be picked up by the player. The possession of flippers allows the
+ * player to step on 9 water tiles per flipper.
+ *
+ * @author Luisa Kristen 300444458
+ */
 public class Flippers extends Tile {
+
   private boolean collected;
-  private int steps = 9;
 
   public Flippers() {
     super(Type.Flippers);
@@ -28,6 +34,7 @@ public class Flippers extends Tile {
   @Override
   public boolean interact(Player p) {
     if (!collected) {
+      int steps = 9;
       for (int i = 0; i < steps; i++)
         p.addItem(this.toString());
       imageUrl = defaultImageUrl;
@@ -85,6 +92,6 @@ public class Flippers extends Tile {
    */
   @Override
   public String toString() {
-    return "flippers";
+    return "Flippers";
   }
 }

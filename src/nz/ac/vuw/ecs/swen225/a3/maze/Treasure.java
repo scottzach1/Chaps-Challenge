@@ -8,6 +8,13 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 
+
+/**
+ * A treasure for the player to collect. These need to be collected in order to advance to the next
+ * level. Upon collection, it turns into a free tile.
+ *
+ * @author Luisa Kristen 300444458
+ */
 public class Treasure extends Tile {
 
   private boolean collected = false;
@@ -16,12 +23,12 @@ public class Treasure extends Tile {
    * Constructor.
    * Sets the isAccessible field to true.
    */
-   public Treasure() {
+  public Treasure() {
     super(Type.Treasure);
     isAccessible = true;
     imageUrl = "treasure.png";
-     defaultImageUrl = "free.png";
-   }
+    defaultImageUrl = "free.png";
+  }
 
 
   /**

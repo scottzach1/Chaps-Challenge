@@ -8,6 +8,12 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 
+/**
+ * The exit for the level. Upon stepping upon this tile, the player is either taken to the next
+ * level, or to the end of game screen (if there are no more levels).
+ *
+ * @author Luisa Kristen 300444458
+ */
 public class Exit extends Tile {
 
   /**
