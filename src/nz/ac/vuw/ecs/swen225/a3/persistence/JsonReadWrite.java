@@ -26,7 +26,6 @@ import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 import nz.ac.vuw.ecs.swen225.a3.maze.Board;
 import nz.ac.vuw.ecs.swen225.a3.maze.Exit;
 import nz.ac.vuw.ecs.swen225.a3.maze.ExitLock;
-import nz.ac.vuw.ecs.swen225.a3.maze.Flippers;
 import nz.ac.vuw.ecs.swen225.a3.maze.Free;
 import nz.ac.vuw.ecs.swen225.a3.maze.InfoField;
 import nz.ac.vuw.ecs.swen225.a3.maze.Key;
@@ -37,7 +36,6 @@ import nz.ac.vuw.ecs.swen225.a3.maze.Player;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
 import nz.ac.vuw.ecs.swen225.a3.maze.Treasure;
 import nz.ac.vuw.ecs.swen225.a3.maze.Wall;
-import nz.ac.vuw.ecs.swen225.a3.maze.Water;
 
 
 /**
@@ -271,25 +269,26 @@ public class JsonReadWrite {
     // Use reflection to find correct class
     // Done to allow dynamic drop in of new tile types
 
+    try {
+      Class c = Class.forName("levels.Flippers");
+      System.out.println(c.toString());
+    }catch (ClassNotFoundException e){}
+
     switch (type) {
-      case "Free":
-        return new Free().setTileFromJson(Json.createReader(new StringReader(tile)));
-      case "Treasure":
-        return new Treasure().setTileFromJson(Json.createReader(new StringReader(tile)));
-      case "Exit":
-        return new Exit().setTileFromJson(Json.createReader(new StringReader(tile)));
-      case "ExitLock":
-        return new ExitLock().setTileFromJson(Json.createReader(new StringReader(tile)));
-      case "InfoField":
-        return new InfoField("").setTileFromJson(Json.createReader(new StringReader(tile)));
-      case "Key":
-        return new Key("").setTileFromJson(Json.createReader(new StringReader(tile)));
-      case "LockedDoor":
-        return new LockedDoor("").setTileFromJson(Json.createReader(new StringReader(tile)));
-      case "Water":
-        return new Water().setTileFromJson(Json.createReader(new StringReader(tile)));
-      case "Flippers":
-        return new Flippers().setTileFromJson(Json.createReader(new StringReader(tile)));
+//      case "Free":
+//        return new Free().setTileFromJson(Json.createReader(new StringReader(tile)));
+//      case "Treasure":
+//        return new Treasure().setTileFromJson(Json.createReader(new StringReader(tile)));
+//      case "Exit":
+//        return new Exit().setTileFromJson(Json.createReader(new StringReader(tile)));
+//      case "ExitLock":
+//        return new ExitLock().setTileFromJson(Json.createReader(new StringReader(tile)));
+//      case "InfoField":
+//        return new InfoField("").setTileFromJson(Json.createReader(new StringReader(tile)));
+//      case "Key":
+//        return new Key("").setTileFromJson(Json.createReader(new StringReader(tile)));
+//      case "LockedDoor":
+//        return new LockedDoor("").setTileFromJson(Json.createReader(new StringReader(tile)));
       default:
         return new Wall().setTileFromJson(Json.createReader(new StringReader(tile)));
     }

@@ -83,6 +83,8 @@ public class Board {
     int index = 0;
     for (String v : values) {
       switch (v) {
+          case "W":
+          case "F":
         case "_":
           setTile(index / 20, index % 20, new Free());
           break;
@@ -112,12 +114,6 @@ public class Board {
           tile.imageUrl = "chap_front.png";
 
           setTile(index / 20, index % 20, tile);
-          break;
-        case "W":
-          setTile(index / 20, index % 20, new Water());
-          break;
-        case "F":
-          setTile(index / 20, index % 20, new Flippers());
           break;
         default:
           // Must be a colored key or door

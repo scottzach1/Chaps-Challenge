@@ -10,6 +10,7 @@ import nz.ac.vuw.ecs.swen225.a3.maze.MobManager;
 import nz.ac.vuw.ecs.swen225.a3.maze.Player;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
 import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
+import nz.ac.vuw.ecs.swen225.a3.persistence.LevelManager;
 import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
 import nz.ac.vuw.ecs.swen225.a3.renderer.Gui;
 
@@ -47,6 +48,7 @@ public class ChapsChallenge {
    * Create main game application.
    */
   public ChapsChallenge() {
+    LevelManager.loadLevels();
     // Load the board.
     board = new Board();
     player = new Player(board.getPlayerLocation());

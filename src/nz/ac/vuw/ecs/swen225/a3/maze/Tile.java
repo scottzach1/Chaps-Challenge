@@ -13,17 +13,17 @@ import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
  */
 public abstract class Tile {
 
-  private boolean isOccupied; // currently occupied by a mob
-  boolean isAccessible; // if the tile can be stepped on
+  public boolean isOccupied; // currently occupied by a mob
+  public boolean isAccessible; // if the tile can be stepped on
 
   //Position on the board
-  private int row;
-  private int col;
+  public int row;
+  public int col;
 
-  private Type type;
-  String imageUrl;
-  String defaultImageUrl;
-  List<Tile> adjacent = new ArrayList<>();
+  public Type type;
+  public String imageUrl;
+  public String defaultImageUrl;
+  public List<Tile> adjacent = new ArrayList<>();
 
 
   /**
@@ -40,7 +40,7 @@ public abstract class Tile {
   public enum Direction {
     Left, Right, Up, Down;
 
-    Direction reverse() {
+    public Direction reverse() {
       switch (this) {
         case Left:
           return Right;
@@ -53,7 +53,7 @@ public abstract class Tile {
       }
     }
 
-    Direction clockWise() {
+    public Direction clockWise() {
       switch (this) {
         case Left:
           return Up;
@@ -66,7 +66,7 @@ public abstract class Tile {
       }
     }
 
-    Direction antiClockWise() {
+    public Direction antiClockWise() {
       switch (this) {
         case Left:
           return Down;
@@ -87,7 +87,7 @@ public abstract class Tile {
    *
    * @param occupied tile is occupied by mob.
    */
-  void setOccupied(boolean occupied) {
+  public void setOccupied(boolean occupied) {
     this.isOccupied = occupied;
   }
 
@@ -247,7 +247,7 @@ public abstract class Tile {
    * @param direction of tile.
    * @return tile in direction.
    */
-  Tile getDir(Direction direction) {
+  public Tile getDir(Direction direction) {
     switch (direction) {
       case Right:
         return getRight();
@@ -304,7 +304,7 @@ public abstract class Tile {
    * @param other tile to measure distance from.
    * @return distance between tiles.
    */
-  double getDistance(Tile other) {
+  public double getDistance(Tile other) {
     return (Math
         .sqrt(Math.pow(getRow() - other.getRow(), 2) + Math.pow(getCol() - other.getCol(), 2)));
   }

@@ -14,10 +14,10 @@ import java.util.Map;
  */
 public class Player {
 
-  private Tile location;
-  private List<String> inventory = new ArrayList<>();
-  private Map<Tile.Direction, String> images = new HashMap<>();
-  private int treasures = 0;
+  public Tile location;
+  public List<String> inventory = new ArrayList<>();
+  public Map<Tile.Direction, String> images = new HashMap<>();
+  public int treasures = 0;
 
 
   /**
@@ -68,7 +68,7 @@ public class Player {
    * @param item String description of item required
    * @return true if player holds item, false otherwise
    */
-  boolean getItem(String item) {
+  public boolean getItem(String item) {
     return inventory.contains(item);
   }
 
@@ -77,7 +77,7 @@ public class Player {
    *
    * @param item String description of item added
    */
-  void addItem(String item) {
+  public void addItem(String item) {
     inventory.add(item);
   }
 
@@ -86,7 +86,7 @@ public class Player {
    *
    * @param item String description of item removed
    */
-  void removeItem(String item) {
+  public void removeItem(String item) {
     inventory.remove(item);
   }
 
@@ -120,7 +120,7 @@ public class Player {
   /**
    * Adds a treasure to the current amount.
    */
-  void addTreasure() {
+  public void addTreasure() {
     treasures++;
   }
 
