@@ -15,6 +15,7 @@ import java.util.zip.ZipFile;
 
 public class LevelManager {
     static ArrayList<InputStream> levelDescriptions = new ArrayList<>();
+    static int currentLevel = 0;
     public static Set<Class> classSet = new HashSet<>();
 
     public static void loadLevels(){
@@ -78,6 +79,13 @@ public class LevelManager {
 
         }catch(Exception e){}
 
+    }
 
+    /**
+     * Get current level counter.
+     * @return current level integer.
+     */
+    public static int getCurrentLevel(){
+        return currentLevel;
     }
 }
