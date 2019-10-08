@@ -114,7 +114,6 @@ public class ChapsChallenge {
     if (RecordAndPlay.getIsRecording()) {
       RecordAndPlay.addAction(direction);
     }
-
   }
 
   private void checkFields() {
