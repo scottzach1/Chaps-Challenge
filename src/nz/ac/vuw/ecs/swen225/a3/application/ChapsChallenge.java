@@ -180,7 +180,7 @@ public class ChapsChallenge {
   public void saveGame() {
     gamePaused = true;
     if (gui.saveGame()) {
-      JsonReadWrite.saveGameState(this, "saveGame.txt");
+      JsonReadWrite.saveGameState(this, saveFile.getAbsolutePath());
     }
     resumeGame();
   }
