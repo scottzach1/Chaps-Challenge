@@ -4,11 +4,7 @@ import java.io.*;
 import java.lang.reflect.Array;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.InputMismatchException;
-import java.util.Set;
+import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
@@ -22,7 +18,9 @@ public class LevelManager {
     public static void loadLevels(){
         //Load level description and assets
         File folder = new File("src/levels/");
-        for(File f : folder.listFiles()){
+        List<File> files = Arrays.asList(folder.listFiles());
+        Collections.sort(files);
+        for(File f : files){
             try {
                 ZipFile zf = new ZipFile(f.getAbsolutePath());
                 try {
