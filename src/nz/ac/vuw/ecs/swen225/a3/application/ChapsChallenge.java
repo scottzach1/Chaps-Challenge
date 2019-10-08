@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
-
 import nz.ac.vuw.ecs.swen225.a3.maze.Board;
 import nz.ac.vuw.ecs.swen225.a3.maze.InfoField;
 import nz.ac.vuw.ecs.swen225.a3.maze.MobManager;
@@ -12,7 +11,7 @@ import nz.ac.vuw.ecs.swen225.a3.maze.Player;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
 import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
 import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
-import nz.ac.vuw.ecs.swen225.a3.renderer.GUI;
+import nz.ac.vuw.ecs.swen225.a3.renderer.Gui;
 
 
 /**
@@ -27,7 +26,7 @@ import nz.ac.vuw.ecs.swen225.a3.renderer.GUI;
 public class ChapsChallenge {
 
   private Board board;
-  private GUI gui;
+  private Gui gui;
   private Player player;
 
   private long totalTime = 100; //100 seconds
@@ -56,7 +55,7 @@ public class ChapsChallenge {
     startTime = System.currentTimeMillis();
 
     // Creates a GUI and gives it a keyListener
-    gui = new GUI(this);
+    gui = new Gui(this);
 
   }
 
@@ -64,7 +63,7 @@ public class ChapsChallenge {
    * Gets the GUI of the game.
    * @return GUI of the game.
    */
-  public GUI getGui() {
+  public Gui getGui() {
     return gui;
   }
 

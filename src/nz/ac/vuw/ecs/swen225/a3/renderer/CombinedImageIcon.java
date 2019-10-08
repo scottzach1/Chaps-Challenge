@@ -12,6 +12,11 @@ import javax.swing.ImageIcon;
 public class CombinedImageIcon extends ImageIcon {
 
   /**
+   * Default serial number.
+   */
+  private static final long serialVersionUID = 1L;
+
+  /**
    * CombinedImageIcon: Create an ImageIcon from a base Icon underneath layers of icons.
    *
    * @param layers Layers to stack.

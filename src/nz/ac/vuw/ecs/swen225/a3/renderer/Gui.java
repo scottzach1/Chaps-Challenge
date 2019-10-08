@@ -12,7 +12,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.util.HashSet;
-
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
@@ -25,7 +24,7 @@ import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
 /**
  * GUI class extends JFrame and is responsible with maintain the Graphical Interface.
  */
-public class GUI extends JFrame implements ComponentListener, KeyListener {
+public class Gui extends JFrame implements ComponentListener, KeyListener {
 
   // Nothing important
   private static final long serialVersionUID = 1L;
@@ -34,12 +33,12 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
   static final Color BACKGROUND_COLOUR = new Color(67, 104, 101);
 
   // Dimension of the frame, based on screen size.
-  private static Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
+  static Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
   static final int MENU_HEIGHT = screenDimension.height / 30;
-  static int screenWidth = screenDimension.width;
-  static int screenHeight = screenDimension.height - MENU_HEIGHT;
-  static int canvasWidth = (screenDimension.width * 2) / 3;
-  static int dashboardWidth = (screenDimension.width) / 3;
+  int screenWidth = screenDimension.width;
+  int screenHeight = screenDimension.height - MENU_HEIGHT;
+  int canvasWidth = (screenDimension.width * 2) / 3;
+  int dashboardWidth = (screenDimension.width) / 3;
 
   // ChapsChallenge component fields.
   private Canvas canvas;
@@ -65,8 +64,8 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
    * Constructor: Creates a new JFrame and sets preferred sizes. Creates and adds all relevant GUI
    * components then redraws.
    */
-  public GUI(ChapsChallenge chapsChallenge) {
-    loaded = false;
+  public Gui(ChapsChallenge chapsChallenge) {
+    setLoaded(false);
     resizeCycle = 0;
     direction = "";
     application = chapsChallenge;
@@ -341,7 +340,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
       if (canvas != null && dashboardHolder != null) {
         canvas.resize();
         dashboardHolder.resize();
-        loaded = true;
+        setLoaded(true);
       }
       redraw();
 
@@ -531,6 +530,14 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     }
 
     direction = "";
+  }
+
+  public boolean isLoaded() {
+    return loaded;
+  }
+
+  public void setLoaded(boolean loaded) {
+    this.loaded = loaded;
   }
 
 

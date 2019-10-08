@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.ImageIcon;
-
 import nz.ac.vuw.ecs.swen225.a3.renderer.CombinedImageIcon;
 
 

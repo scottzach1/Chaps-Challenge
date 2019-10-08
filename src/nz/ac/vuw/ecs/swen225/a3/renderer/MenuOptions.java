@@ -15,11 +15,16 @@ import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
 class MenuOptions extends JMenuBar {
 
   /**
+   * Default serial number.
+   */
+  private static final long serialVersionUID = 1L;
+
+  /**
    * Constructor: Creates MenuBar and adds all game relevant components.
    */
   MenuOptions(ChapsChallenge application) {
     // Set the Size of the Control panel
-    setPreferredSize(new Dimension(GUI.screenWidth, GUI.MENU_HEIGHT));
+    setPreferredSize(new Dimension(Gui.screenWidth, Gui.MENU_HEIGHT));
     setFont(new Font("Serif", Font.BOLD, 18));
 
     // Create the file menu
@@ -76,9 +81,6 @@ class MenuOptions extends JMenuBar {
     JMenuItem step = new JMenuItem("Step Recording");
     step.addActionListener(arg0 -> RecordAndPlay.step(application));
 
-    // Create replay speed dropdown
-    JMenu playbackSpeed = new JMenu("Playback speed");
-
     JMenuItem tenth = new JMenuItem("0.1s");
     tenth.addActionListener(arg0 -> RecordAndPlay.setDelay(100));
 
@@ -90,6 +92,9 @@ class MenuOptions extends JMenuBar {
 
     JMenuItem one = new JMenuItem("1s");
     one.addActionListener(arg0 -> RecordAndPlay.setDelay(1000));
+
+    // Create replay speed dropdown
+    JMenu playbackSpeed = new JMenu("Playback speed");
 
     playbackSpeed.add(tenth);
     playbackSpeed.add(fifth);

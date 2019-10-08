@@ -6,12 +6,11 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.event.KeyEvent;
-
+import org.junit.jupiter.api.Test;
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 import nz.ac.vuw.ecs.swen225.a3.maze.Board;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
-import nz.ac.vuw.ecs.swen225.a3.renderer.GUI;
-import org.junit.jupiter.api.Test;
+import nz.ac.vuw.ecs.swen225.a3.renderer.Gui;
 
 
 class KeyboardTest {
@@ -21,11 +20,12 @@ class KeyboardTest {
    *
    * @throws InterruptedException from sleep.
    */
+  @SuppressWarnings("deprecation")
   @Test
   void testMoveLeft() throws InterruptedException {
     // Make game
     ChapsChallenge application = new ChapsChallenge();
-    GUI gui = application.getGui();
+    Gui gui = application.getGui();
 
     // Get initial tile
     final Tile oldTile = application.getBoard().getPlayerLocation();
@@ -58,11 +58,12 @@ class KeyboardTest {
    *
    * @throws InterruptedException from sleep.
    */
+  @SuppressWarnings("deprecation")
   @Test
   void testMoveRight() throws InterruptedException {
     // Make game
     ChapsChallenge application = new ChapsChallenge();
-    GUI gui = application.getGui();
+    Gui gui = application.getGui();
 
     // Get initial tile
     final Tile oldTile = application.getBoard().getPlayerLocation();
@@ -95,11 +96,12 @@ class KeyboardTest {
    *
    * @throws InterruptedException from sleep.
    */
+  @SuppressWarnings("deprecation")
   @Test
   void testMoveDown() throws InterruptedException {
     // Make game
     ChapsChallenge application = new ChapsChallenge();
-    GUI gui = application.getGui();
+    Gui gui = application.getGui();
 
     // Get initial tile
     final Tile oldTile = application.getBoard().getPlayerLocation();
@@ -132,11 +134,12 @@ class KeyboardTest {
    *
    * @throws InterruptedException from sleep.
    */
+  @SuppressWarnings("deprecation")
   @Test
   void testMoveUp() throws InterruptedException {
     // Make game
     ChapsChallenge application = new ChapsChallenge();
-    GUI gui = application.getGui();
+    Gui gui = application.getGui();
 
     // Get initial tile
     final Tile oldTile = application.getBoard().getPlayerLocation();
@@ -169,11 +172,12 @@ class KeyboardTest {
    *
    * @throws InterruptedException from sleep.
    */
+  @SuppressWarnings("deprecation")
   @Test
   void testPauseGame() throws InterruptedException {
     // Make game
     ChapsChallenge application = new ChapsChallenge();
-    GUI gui = application.getGui();
+    Gui gui = application.getGui();
 
     assertFalse(application.isGamePaused());
 
@@ -201,11 +205,12 @@ class KeyboardTest {
    *
    * @throws InterruptedException from sleep.
    */
+  @SuppressWarnings("deprecation")
   @Test
   void testPauseResumeGameSpace() throws InterruptedException {
     // Make game
     ChapsChallenge application = new ChapsChallenge();
-    GUI gui = application.getGui();
+    Gui gui = application.getGui();
 
     assertFalse(application.isGamePaused());
 
@@ -246,11 +251,12 @@ class KeyboardTest {
    *
    * @throws InterruptedException from sleep.
    */
+  @SuppressWarnings("deprecation")
   @Test
   void testPauseResumeGameEscape() throws InterruptedException {
     // Make game
     ChapsChallenge application = new ChapsChallenge();
-    GUI gui = application.getGui();
+    Gui gui = application.getGui();
 
     assertFalse(application.isGamePaused());
 
@@ -300,11 +306,12 @@ class KeyboardTest {
    *
    * @throws InterruptedException from sleep.
    */
+  @SuppressWarnings("deprecation")
   @Test
   void testPauseResumeGameCtrlR() throws InterruptedException {
     // Make game
     ChapsChallenge application = new ChapsChallenge();
-    GUI gui = application.getGui();
+    Gui gui = application.getGui();
 
     assertFalse(application.isGamePaused());
 
@@ -361,11 +368,12 @@ class KeyboardTest {
    *
    * @throws InterruptedException from sleep.
    */
+  @SuppressWarnings("deprecation")
   @Test
   void testRestartGame() throws InterruptedException {
     // Make game
     ChapsChallenge application = new ChapsChallenge();
-    final GUI gui = application.getGui();
+    final Gui gui = application.getGui();
 
     assertEquals(0, application.getLevel());
     application.nextLevel();
@@ -397,11 +405,12 @@ class KeyboardTest {
     assertEquals(0, application.getLevel());
   }
 
+  @SuppressWarnings("deprecation")
   @Test
   void testRestartLevel() throws InterruptedException {
     // Make game
     ChapsChallenge application = new ChapsChallenge();
-    GUI gui = application.getGui();
+    Gui gui = application.getGui();
     Board board = application.getBoard();
 
     // Move player and check new location.
@@ -437,6 +446,5 @@ class KeyboardTest {
     assertEquals(resetTile.getCol(), start.getCol());
     assertEquals(resetTile.getRow(), start.getRow());
   }
-
 
 }

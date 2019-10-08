@@ -1,18 +1,21 @@
 package nz.ac.vuw.ecs.swen225.a3.renderer;
 
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import javax.swing.JPanel;
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 
 /**
  * DashBoardHolder contains the dashboard such that it can be resized.
  */
 public class DashboardHolder extends JPanel {
 
+  /**
+   * Default serial number.
+   */
+  private static final long serialVersionUID = 1L;
   private Dashboard dashboard;
   private GridBagConstraints gbc;
   private ChapsChallenge application;
@@ -23,9 +26,9 @@ public class DashboardHolder extends JPanel {
    * Constructor creates a new dashboard but does no render.
    */
   public DashboardHolder(ChapsChallenge chapsChallenge) {
-    application = chapsChallenge;
+    setApplication(chapsChallenge);
 
-    setPreferredSize(new Dimension(GUI.dashboardWidth, GUI.screenHeight));
+    setPreferredSize(new Dimension(Gui.dashboardWidth, Gui.screenHeight));
 
     dashboard = new Dashboard(chapsChallenge, this);
 
@@ -36,7 +39,7 @@ public class DashboardHolder extends JPanel {
   }
 
   /**
-   * Recalculates and renders the dashboard
+   * Recalculates and renders the dashboard.
    */
   public void renderDashboard() {
     removeAll();
@@ -70,5 +73,13 @@ public class DashboardHolder extends JPanel {
    */
   protected int getDashboardHeight() {
     return dashboardHeight;
+  }
+
+  public ChapsChallenge getApplication() {
+    return application;
+  }
+
+  public void setApplication(ChapsChallenge application) {
+    this.application = application;
   }
 }

@@ -16,7 +16,6 @@ import javax.swing.JTextPane;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
-
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
 
@@ -30,6 +29,10 @@ public class Dashboard extends JPanel {
   DASHBOARD FIELDS
    */
 
+  /**
+   * Default serial number.
+   */
+  private static final long serialVersionUID = 1L;
   // Colour Space.
   static final Color TEXT_COLOUR = new Color(0, 0, 0);
   static final Color ACCENT_COLOUR = new Color(0, 255, 0);
@@ -50,8 +53,9 @@ public class Dashboard extends JPanel {
   CustomTextPane chipsLeft;
   CustomTextPane chipsLeftNum;
 
-  private final int GRID_WIDTH = 4;
-  private final int GRID_HEIGHT = 8;
+  private static final int gridWidth = 4;
+  private static final int gridHeight = 8;
+
   private HashMap<String, Integer> chapsBag;
   private ArrayList<JLabel> chapsBagImages;
   private ChapsChallenge application;
@@ -113,8 +117,6 @@ public class Dashboard extends JPanel {
    */
   protected void renderDashboardComponents() {
     removeAll();
-    // reset the GridBagConstraints
-    GridBagConstraints constraints = new GridBagConstraints();
 
     /*
     CREATES THE TOP PANEL WITH THE THREE TITLES (LEVEL, TIME, CHIPSLEFT)
@@ -191,6 +193,9 @@ public class Dashboard extends JPanel {
       }
     }
 
+    // reset the GridBagConstraints
+    GridBagConstraints constraints = new GridBagConstraints();
+
     constraints.weighty = 2;
     constraints.gridy = 0;
     // Add the topPanel with 2/3 of the space
@@ -213,7 +218,7 @@ public class Dashboard extends JPanel {
     }
 
     // Check that the size is correct
-    if (levelNum.getHeight() != parent.getDashboardHeight() / GRID_HEIGHT) {
+    if (levelNum.getHeight() != parent.getDashboardHeight() / gridHeight) {
       createDashboardComponents();
       renderDashboardComponents();
     }
@@ -290,6 +295,12 @@ public class Dashboard extends JPanel {
   private class CustomTextPane extends JTextPane {
 
     /**
+     * Default serial number.
+     */
+    private static final long serialVersionUID = 1L;
+
+
+    /**
      * CustomTextPane Constructor, read params for instructions.
      *
      * @param text - The Text in the text pane
@@ -344,8 +355,8 @@ public class Dashboard extends JPanel {
      */
     private Font findFont(Component component, Font oldFont, String text) {
       // Get the size of the area the text can take up
-      int boxWidth = (parent.getWidth() / GRID_WIDTH);
-      int boxHeight = (parent.getDashboardHeight() / GRID_HEIGHT);
+      int boxWidth = (parent.getWidth() / gridWidth);
+      int boxHeight = (parent.getDashboardHeight() / gridHeight);
       Dimension componentSize = new Dimension(boxWidth, boxHeight);
 
       // The default size and text if no size is found to fit

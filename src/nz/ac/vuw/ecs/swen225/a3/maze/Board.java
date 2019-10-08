@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
-
 import nz.ac.vuw.ecs.swen225.a3.renderer.Canvas;
 
 
@@ -452,6 +451,11 @@ public class Board {
    * Exception thrown when no chap is present in level description.
    */
   public static class PlayerNotFoundException extends Exception {
+    /**
+     * Default serial number.
+     */
+    private static final long serialVersionUID = 1L;
+
     @Override
     public String getMessage() {
       return "No Chap in string description of level";
@@ -462,6 +466,11 @@ public class Board {
    * Exception thrown when multiple chaps present in level description.
    */
   public static class MultiplePlayersFoundException extends Exception {
+    /**
+     * Default serial number.
+     */
+    private static final long serialVersionUID = 1L;
+
     @Override
     public String getMessage() {
       return "Multiple Chaps in string description of level";
@@ -472,6 +481,11 @@ public class Board {
    * Exception thrown when invalid token found in level description.
    */
   public static class ParsingException extends Exception {
+    /**
+     * Default serial number.
+     */
+    private static final long serialVersionUID = 1L;
+
     @Override
     public String getMessage() {
       return "Invalid token in string description of level";

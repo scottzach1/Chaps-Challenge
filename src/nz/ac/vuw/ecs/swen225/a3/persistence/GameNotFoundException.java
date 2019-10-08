@@ -7,6 +7,11 @@ package nz.ac.vuw.ecs.swen225.a3.persistence;
  */
 public class GameNotFoundException extends Exception {
 
+  /**
+   * Default serial number.
+   */
+  private static final long serialVersionUID = 1L;
+
   @Override
   public String getMessage() {
     return "Game not found for given file name";

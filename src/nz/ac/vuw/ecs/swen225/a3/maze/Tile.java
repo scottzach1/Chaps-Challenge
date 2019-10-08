@@ -3,7 +3,6 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
 import java.util.ArrayList;
 import java.util.List;
 import javax.json.JsonReader;
-
 import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
 
 

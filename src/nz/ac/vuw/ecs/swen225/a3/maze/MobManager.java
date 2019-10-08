@@ -34,7 +34,7 @@ public class MobManager {
    */
   public MobManager(Board board) {
     // TODO: This shouldn't take board in the future.
-    this.board = board;
+    this.setBoard(board);
     this.mobs = new HashSet<>();
 
     // TODO: Mobs should be loaded through board, not mob manager.
@@ -94,6 +94,14 @@ public class MobManager {
    */
   public void removeAllMobs() {
     mobs.clear();
+  }
+
+  public Board getBoard() {
+    return board;
+  }
+
+  public void setBoard(Board board) {
+    this.board = board;
   }
 
 }

@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.event.ComponentEvent;
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
-import nz.ac.vuw.ecs.swen225.a3.renderer.GUI;
+import nz.ac.vuw.ecs.swen225.a3.renderer.Gui;
 
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +22,7 @@ class FrontendTest {
   @Test
   void componentEvents() {
     ChapsChallenge chapsChallenge = new ChapsChallenge();
-    GUI gui = chapsChallenge.getGui();
+    Gui gui = chapsChallenge.getGui();
 
     assertFalse(chapsChallenge.isGamePaused());
     gui.componentHidden(new ComponentEvent(gui, ComponentEvent.COMPONENT_HIDDEN));

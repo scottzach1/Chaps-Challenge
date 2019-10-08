@@ -6,10 +6,8 @@ import java.awt.GridBagLayout;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
 
@@ -17,6 +15,11 @@ import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
  * Canvas displays the game maze on the screen.
  */
 public class Canvas extends JPanel {
+
+  /**
+   * Default serial number.
+   */
+  private static final long serialVersionUID = 1L;
 
   public static final int VIEW_SIZE = 9;
 
@@ -30,10 +33,10 @@ public class Canvas extends JPanel {
    */
   Canvas(ChapsChallenge app) {
     application = app;
-    setPreferredSize(new Dimension(GUI.canvasWidth, GUI.screenHeight));
+    setPreferredSize(new Dimension(Gui.canvasWidth, Gui.screenHeight));
 
     setLayout(new GridBagLayout());
-    setBackground(GUI.BACKGROUND_COLOUR);
+    setBackground(Gui.BACKGROUND_COLOUR);
   }
 
   /**

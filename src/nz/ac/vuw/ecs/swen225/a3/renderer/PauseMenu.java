@@ -1,26 +1,41 @@
 package nz.ac.vuw.ecs.swen225.a3.renderer;
 
-import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 
 /**
  * Pause menu is a jpanel that replaces the game screen with a menu of buttons the user can chose.
  */
 class PauseMenu extends JPanel {
 
+  /**
+   * Default serial number.
+   */
+  private static final long serialVersionUID = 1L;
   private ArrayList<JButton> components = new ArrayList<>();
   private ChapsChallenge application;
-  private Color foreground, background, otherForeground, otherBackground;
+  private Color foreground;
+  private Color background;
+  private Color otherForeground;
+  private Color otherBackground;
   private JPanel panel;
 
-  PauseMenu(ChapsChallenge aChapsChallenge) {
-    application = aChapsChallenge;
+  PauseMenu(ChapsChallenge chapsChallenge) {
+    application = chapsChallenge;
 
-    setPreferredSize(new Dimension(GUI.screenWidth, GUI.screenHeight));
+    setPreferredSize(new Dimension(Gui.screenWidth, Gui.screenHeight));
     setBackground(new Color(18, 48, 55));
     setLayout(new BorderLayout());
     setVisible(true);
@@ -32,7 +47,7 @@ class PauseMenu extends JPanel {
 
     panel = new JPanel();
     panel.setPreferredSize(
-        new Dimension(GUI.screenWidth / 4, GUI.screenHeight - (GUI.screenHeight / 10)));
+        new Dimension(Gui.screenWidth / 4, Gui.screenHeight - (Gui.screenHeight / 10)));
     panel.setBackground(getBackground().brighter().brighter());
     panel.setLayout(new GridBagLayout());
   }
@@ -46,9 +61,9 @@ class PauseMenu extends JPanel {
     JButton quit = new JButton("Quit");
 
     // Size the buttons
-    resume.setPreferredSize(new Dimension(GUI.screenWidth / 2, GUI.screenHeight / 6));
-    restart.setPreferredSize(new Dimension(GUI.screenWidth / 2, GUI.screenHeight / 6));
-    quit.setPreferredSize(new Dimension(GUI.screenWidth / 2, GUI.screenHeight / 6));
+    resume.setPreferredSize(new Dimension(Gui.screenWidth / 2, Gui.screenHeight / 6));
+    restart.setPreferredSize(new Dimension(Gui.screenWidth / 2, Gui.screenHeight / 6));
+    quit.setPreferredSize(new Dimension(Gui.screenWidth / 2, Gui.screenHeight / 6));
 
     // Size the font of th buttons
     resume.setFont(findFont(this, new Font("Ariel", Font.BOLD, 30), resume.getText()));
@@ -158,8 +173,8 @@ class PauseMenu extends JPanel {
    */
   private Font findFont(Component component, Font oldFont, String text) {
     // Get the size of the area the text can take up
-    int boxWidth = (GUI.screenWidth / 2);
-    int boxHeight = (GUI.screenHeight / 6);
+    int boxWidth = (Gui.screenWidth / 2);
+    int boxHeight = (Gui.screenHeight / 6);
     Dimension componentSize = new Dimension(boxWidth, boxHeight);
 
     // The default size and text if no size is found to fit
