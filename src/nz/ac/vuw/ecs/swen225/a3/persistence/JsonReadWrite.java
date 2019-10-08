@@ -1,14 +1,43 @@
 package nz.ac.vuw.ecs.swen225.a3.persistence;
 
-import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
-import nz.ac.vuw.ecs.swen225.a3.maze.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
 
-import javax.json.*;
-import java.io.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+import javax.json.JsonReader;
+import javax.json.JsonString;
+
+import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
+import nz.ac.vuw.ecs.swen225.a3.maze.Board;
+import nz.ac.vuw.ecs.swen225.a3.maze.Exit;
+import nz.ac.vuw.ecs.swen225.a3.maze.ExitLock;
+import nz.ac.vuw.ecs.swen225.a3.maze.Flippers;
+import nz.ac.vuw.ecs.swen225.a3.maze.Free;
+import nz.ac.vuw.ecs.swen225.a3.maze.InfoField;
+import nz.ac.vuw.ecs.swen225.a3.maze.Key;
+import nz.ac.vuw.ecs.swen225.a3.maze.LockedDoor;
+import nz.ac.vuw.ecs.swen225.a3.maze.Mob;
+import nz.ac.vuw.ecs.swen225.a3.maze.PassivePerry;
+import nz.ac.vuw.ecs.swen225.a3.maze.Player;
+import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
+import nz.ac.vuw.ecs.swen225.a3.maze.Treasure;
+import nz.ac.vuw.ecs.swen225.a3.maze.Wall;
+import nz.ac.vuw.ecs.swen225.a3.maze.Water;
 
 
 /**
@@ -20,9 +49,10 @@ public class JsonReadWrite {
 
   /**
    * Json dump game state (TimeLeft, Board state and player state) to file "save.txt".
+   *
    * @param game Instance of Chaps Challenge.
    */
-  public static void saveGameState(ChapsChallenge game,String name){
+  public static void saveGameState(ChapsChallenge game, String name) {
     String jsonGame = getGameState(game);
     try {
       BufferedWriter writer = new BufferedWriter(new FileWriter(name));
@@ -35,34 +65,33 @@ public class JsonReadWrite {
 
   /**
    * Get game state to write to file.
+   *
    * @param game Game object.
    * @return Json string.
    */
-  public static String getGameState(ChapsChallenge game){
+  public static String getGameState(ChapsChallenge game) {
     String jsonGame = "";
     String jsonBoard = "";
     String jsonPlayer = "";
     JsonString jsonMobs;
-
 
     // Json dump board
     Board board = game.getBoard();
     JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
 
     // Array of tiles
-    for(Tile t : board.getAllTiles()){
+    for (Tile t : board.getAllTiles()) {
       arrayBuilder.add(t.getJson());
     }
-    JsonObjectBuilder builder =  Json.createObjectBuilder()
-        .add("boardSize",board.getBoardSize())
-        .add("allTiles",arrayBuilder);
+    JsonObjectBuilder builder = Json.createObjectBuilder()
+        .add("boardSize", board.getBoardSize())
+        .add("allTiles", arrayBuilder);
 
     // Compose board section
-    try(Writer writer = new StringWriter()) {
+    try (Writer writer = new StringWriter()) {
       Json.createWriter(writer).write(builder.build());
       jsonBoard = writer.toString();
-    }
-    catch(IOException e){
+    } catch (IOException e) {
       throw new Error("Failed to parse Board");
     }
 
@@ -71,20 +100,19 @@ public class JsonReadWrite {
     arrayBuilder = Json.createArrayBuilder();
 
     // Array of tiles
-    for(String i : player.getInventory()){
+    for (String i : player.getInventory()) {
       arrayBuilder.add(i);
     }
     builder = Json.createObjectBuilder()
-        .add("location",player.getLocation().getJson())
-        .add("inventory",arrayBuilder)
-        .add("treasures",player.getTreasures());
+        .add("location", player.getLocation().getJson())
+        .add("inventory", arrayBuilder)
+        .add("treasures", player.getTreasures());
 
     // Compose player section
-    try(Writer writer = new StringWriter()) {
+    try (Writer writer = new StringWriter()) {
       Json.createWriter(writer).write(builder.build());
       jsonPlayer = writer.toString();
-    }
-    catch(IOException e){
+    } catch (IOException e) {
       throw new Error("Failed to parse Player");
     }
 
@@ -92,24 +120,22 @@ public class JsonReadWrite {
     arrayBuilder = Json.createArrayBuilder();
 
     // Array of mobs
-    for(Mob i : game.getMobManager().getMobs()){
+    for (Mob i : game.getMobManager().getMobs()) {
       arrayBuilder.add(i.getJson());
     }
 
-
     // Dump game info
-    builder =  Json.createObjectBuilder()
-        .add("timeLeft",game.getTimeLeft())
-        .add("board",jsonBoard)
-        .add("player",jsonPlayer)
-        .add("mobs",arrayBuilder);
+    builder = Json.createObjectBuilder()
+        .add("timeLeft", game.getTimeLeft())
+        .add("board", jsonBoard)
+        .add("player", jsonPlayer)
+        .add("mobs", arrayBuilder);
 
     // Compose game section
-    try(Writer writer = new StringWriter()) {
+    try (Writer writer = new StringWriter()) {
       Json.createWriter(writer).write(builder.build());
       jsonGame = writer.toString();
-    }
-    catch(IOException e){
+    } catch (IOException e) {
       throw new Error("Failed to parse game");
     }
     return jsonGame;
@@ -117,26 +143,27 @@ public class JsonReadWrite {
 
   /**
    * Load game state from file.
+   *
    * @param saveGame Name of file.
    * @param g Game object.
    * @return Updated game Object.
    * @throws GameNotFoundException Thrown when file not found.
    */
-  public static ChapsChallenge loadGameState(String saveGame, ChapsChallenge g) throws GameNotFoundException{
+  public static ChapsChallenge loadGameState(String saveGame, ChapsChallenge g)
+      throws GameNotFoundException {
     JsonObject game;
     try {
       BufferedReader reader = new BufferedReader(new FileReader(saveGame));
-      JsonReader jReader = Json.createReader(new StringReader(reader.readLine()));
-      game = jReader.readObject();
-    }catch(IOException e){
+      JsonReader jsonReader = Json.createReader(new StringReader(reader.readLine()));
+      game = jsonReader.readObject();
+    } catch (IOException e) {
       throw new GameNotFoundException();
     }
 
-    if(game.containsKey("game")) {
+    if (game.containsKey("game")) {
       JsonReader gameJsonReader = Json.createReader(new StringReader(game.getString("game")));
       game = gameJsonReader.readObject();
     }
-    int timeLeft = game.getInt("timeLeft");
 
     // Parse board
     JsonReader boardJsonReader = Json.createReader(new StringReader(game.getString("board")));
@@ -153,8 +180,8 @@ public class JsonReadWrite {
     }
 
     Board b = new Board();
-    for(Tile t : allTiles){
-      b.setTile(t.getRow(),t.getCol(),t);
+    for (Tile t : allTiles) {
+      b.setTile(t.getRow(), t.getCol(), t);
     }
 
     b.setBoardSize(boardSize);
@@ -164,7 +191,6 @@ public class JsonReadWrite {
     JsonReader playerJsonReader = Json.createReader(new StringReader(game.getString("player")));
     JsonObject player = playerJsonReader.readObject();
 
-    int treasures = player.getInt("treasures");
     JsonArray inventoryJson = player.getJsonArray("inventory");
 
     List<String> inventory = new ArrayList<>();
@@ -174,7 +200,9 @@ public class JsonReadWrite {
     }
 
     Tile location = createTileFromJson(player.getString("location"));
-    location = b.getTile(location.getRow(),location.getCol());
+    location = b.getTile(location.getRow(), location.getCol());
+
+    int treasures = player.getInt("treasures");
 
     Player p = new Player(location);
     p.setInventory(inventory);
@@ -192,9 +220,10 @@ public class JsonReadWrite {
     b.setupAdjacency();
 
     // Ensure mobs are using correct tiles from board
-    for(Mob m : mobs){
-      m.setHost(b.getTile(m.getHost().getRow(),m.getHost().getCol()));
+    for (Mob m : mobs) {
+      m.setHost(b.getTile(m.getHost().getRow(), m.getHost().getCol()));
     }
+    int timeLeft = game.getInt("timeLeft");
 
     // Set game properties
     g.setBoard(b);
@@ -207,6 +236,7 @@ public class JsonReadWrite {
 
   /**
    * Create mob object from JSON description.
+   *
    * @param string JSON representation.
    * @return Mob object.
    */
@@ -229,10 +259,11 @@ public class JsonReadWrite {
 
   /**
    * Create tile object from JSON description.
+   *
    * @param tile JSON representation.
    * @return Tile object.
    */
-  public static Tile createTileFromJson(String tile){
+  public static Tile createTileFromJson(String tile) {
     JsonReader reader = Json.createReader(new StringReader(tile));
     JsonObject tileObject = reader.readObject();
     String type = tileObject.getString("type");
@@ -240,9 +271,7 @@ public class JsonReadWrite {
     // Use reflection to find correct class
     // Done to allow dynamic drop in of new tile types
 
-
-
-    switch (type){
+    switch (type) {
       case "Free":
         return new Free().setTileFromJson(Json.createReader(new StringReader(tile)));
       case "Treasure":

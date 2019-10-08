@@ -1,12 +1,12 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
 
 
 /**
@@ -18,8 +18,7 @@ import java.io.Writer;
 public class Water extends Tile {
 
   /**
-   * Constructor.
-   * Sets the isAccessible field to false.
+   * Constructor. Sets the isAccessible field to false.
    */
   public Water() {
     super(Type.Water);

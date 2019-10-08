@@ -36,6 +36,7 @@ public class Player {
 
   /**
    * Gets filename of asset from given direction.
+   *
    * @param direction player is facing.
    * @return filename of asset.
    */

@@ -1,16 +1,15 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
-import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.util.HashMap;
-import java.util.Map;
+
+import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
 
 public class SneakySnek extends Mob {
 
@@ -34,7 +33,9 @@ public class SneakySnek extends Mob {
 
   @Override
   public void advanceByTick() {
-    if (getHost() == null) return;
+    if (getHost() == null) {
+      return;
+    }
 
     // If player exists, calculate targeting ai.
     if (board != null && board.getPlayerLocation() != null) {
@@ -113,32 +114,35 @@ public class SneakySnek extends Mob {
   @Override
   public String getJson() {
     JsonObjectBuilder objectBuilder = Json.createObjectBuilder()
-        .add("imageUrl",imageUrl)
+        .add("imageUrl", imageUrl)
         .add("mobName", mobName)
         .add("host", host.getJson())
         .add("active", active)
-        .add("direction",direction.toString());
+        .add("direction", direction.toString());
 
     JsonObject jsonObject = objectBuilder.build();
 
-    try(Writer writer = new StringWriter()) {
+    try (Writer writer = new StringWriter()) {
       Json.createWriter(writer).write(jsonObject);
       return writer.toString();
-    }catch(IOException e) {throw new Error("Error parsing " + this.toString() + " to json");}
+    } catch (IOException e) {
+      throw new Error("Error parsing " + this.toString() + " to json");
+    }
   }
 
   /**
-   * Update this mobs fields from a json
+   * Update this mobs fields from a json.
+   *
    * @param json Json string
    */
-  public void setMobFromJson(JsonReader json){
+  public void setMobFromJson(JsonReader json) {
     JsonObject mob = json.readObject();
     imageUrl = mob.getString("imageUrl");
     mobName = mob.getString("mobName");
     host = JsonReadWrite.createTileFromJson(mob.getString("host"));
     active = mob.getBoolean("active");
-    for(Tile.Direction d : Tile.Direction.values()){
-      if(d.toString().equals(mob.getString("direction"))){
+    for (Tile.Direction d : Tile.Direction.values()) {
+      if (d.toString().equals(mob.getString("direction"))) {
         direction = d;
       }
     }

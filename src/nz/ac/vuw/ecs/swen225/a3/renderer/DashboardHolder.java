@@ -21,7 +21,6 @@ public class DashboardHolder extends JPanel {
 
   /**
    * Constructor creates a new dashboard but does no render.
-   * @param chapsChallenge
    */
   public DashboardHolder(ChapsChallenge chapsChallenge) {
     application = chapsChallenge;
@@ -66,9 +65,10 @@ public class DashboardHolder extends JPanel {
 
   /**
    * Gets the height of the dashboard.
+   *
    * @return dashboard height.
    */
-  protected int getDashboardHeight(){
+  protected int getDashboardHeight() {
     return dashboardHeight;
   }
 }

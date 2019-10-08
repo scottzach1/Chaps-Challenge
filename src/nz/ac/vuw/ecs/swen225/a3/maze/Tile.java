@@ -1,10 +1,11 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
-import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
-
-import javax.json.JsonReader;
 import java.util.ArrayList;
 import java.util.List;
+import javax.json.JsonReader;
+
+import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
+
 
 /**
  * Abstract Tile class. Contains methods used for all subclasses of Tiles.
@@ -27,8 +28,7 @@ public abstract class Tile {
 
 
   /**
-   * Enum for all the different types of tiles.
-   * Used for JSON.
+   * Enum for all the different types of tiles. Used for JSON.
    */
   public enum Type {
     Free, Treasure, Exit, ExitLock, InfoField, Key, LockedDoor, Wall, Water, Flippers
@@ -83,8 +83,8 @@ public abstract class Tile {
 
 
   /**
-   * Sets boolean representing whether the tile is occupied.
-   * A cell is occupied if it has a mob on it.
+   * Sets boolean representing whether the tile is occupied. A cell is occupied if it has a mob on
+   * it.
    *
    * @param occupied tile is occupied by mob.
    */
@@ -93,8 +93,8 @@ public abstract class Tile {
   }
 
   /**
-   * Returns a boolean representing whether the tile is occupied.
-   * A cell is occupied if it has a mob on it.
+   * Returns a boolean representing whether the tile is occupied. A cell is occupied if it has a mob
+   * on it.
    *
    * @return boolean tile is occupied by mob.
    */
@@ -175,7 +175,7 @@ public abstract class Tile {
   }
 
   /**
-   * Gets the full URL name
+   * Gets the full URL name.
    *
    * @return the combination of the  image url and the default.
    */
@@ -198,8 +198,11 @@ public abstract class Tile {
    * @return left of tile.
    */
   public Tile getLeft() {
-    if (adjacent.size() < 4) return null;
-    else return adjacent.get(Direction.Left.ordinal());
+    if (adjacent.size() < 4) {
+      return null;
+    } else {
+      return adjacent.get(Direction.Left.ordinal());
+    }
   }
 
   /**
@@ -208,7 +211,9 @@ public abstract class Tile {
    * @return right of tile.
    */
   public Tile getRight() {
-    if (adjacent.size() < 4) return null;
+    if (adjacent.size() < 4) {
+      return null;
+    }
     return adjacent.get(Direction.Right.ordinal());
   }
 
@@ -219,7 +224,9 @@ public abstract class Tile {
    * @return up of tile.
    */
   public Tile getUp() {
-    if (adjacent.size() < 4) return null;
+    if (adjacent.size() < 4) {
+      return null;
+    }
     return adjacent.get(Direction.Up.ordinal());
   }
 
@@ -229,7 +236,9 @@ public abstract class Tile {
    * @return down of tile.
    */
   public Tile getDown() {
-    if (adjacent.size() < 4) return null;
+    if (adjacent.size() < 4) {
+      return null;
+    }
     return adjacent.get(Direction.Down.ordinal());
   }
 
@@ -241,10 +250,14 @@ public abstract class Tile {
    */
   Tile getDir(Direction direction) {
     switch (direction) {
-      case Right: return getRight();
-      case Down: return getDown();
-      case Up: return getUp();
-      default: return getLeft();
+      case Right:
+        return getRight();
+      case Down:
+        return getDown();
+      case Up:
+        return getUp();
+      default:
+        return getLeft();
     }
   }
 
@@ -288,11 +301,13 @@ public abstract class Tile {
 
   /**
    * Gets the Euclidean distance between tiles.
+   *
    * @param other tile to measure distance from.
    * @return distance between tiles.
    */
   double getDistance(Tile other) {
-    return (Math.sqrt(Math.pow(getRow() - other.getRow(), 2) + Math.pow(getCol() - other.getCol(), 2)));
+    return (Math
+        .sqrt(Math.pow(getRow() - other.getRow(), 2) + Math.pow(getCol() - other.getCol(), 2)));
   }
 
 }

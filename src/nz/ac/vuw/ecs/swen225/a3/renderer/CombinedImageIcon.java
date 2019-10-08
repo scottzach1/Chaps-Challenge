@@ -1,9 +1,9 @@
 package nz.ac.vuw.ecs.swen225.a3.renderer;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.List;
+import javax.swing.ImageIcon;
 
 /**
  * CombinedImageIcon: Helpful class for stacking icons.
@@ -12,8 +12,8 @@ import java.util.List;
 public class CombinedImageIcon extends ImageIcon {
 
   /**
-   * CombinedImageIcon: Create an ImageIcon from a base Icon underneath layers of
-   * icons.
+   * CombinedImageIcon: Create an ImageIcon from a base Icon underneath layers of icons.
+   *
    * @param layers Layers to stack.
    */
   public CombinedImageIcon(List<ImageIcon> layers) {

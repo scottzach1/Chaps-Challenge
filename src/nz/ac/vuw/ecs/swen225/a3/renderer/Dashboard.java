@@ -1,15 +1,25 @@
 package nz.ac.vuw.ecs.swen225.a3.renderer;
 
-import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
-import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
-
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.util.ArrayList;
+import java.util.HashMap;
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextPane;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
+
+import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
+import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
+
 
 /**
  * The side object of the GUI that displays the level, time, chipsLeft.
@@ -29,26 +39,33 @@ public class Dashboard extends JPanel {
   int paddingOfBox;
 
   // Create the alignment for the custom text
-  private SimpleAttributeSet centerAlign, rightAlign;
+  private SimpleAttributeSet centerAlign;
+  private SimpleAttributeSet rightAlign;
 
   // CustomTextPane constants
-  CustomTextPane level, levelNum, time, timeNum, chipsLeft, chipsLeftNum;
+  CustomTextPane level;
+  CustomTextPane levelNum;
+  CustomTextPane time;
+  CustomTextPane timeNum;
+  CustomTextPane chipsLeft;
+  CustomTextPane chipsLeftNum;
 
-  private final int GRID_WIDTH = 4, GRID_HEIGHT = 8;
+  private final int GRID_WIDTH = 4;
+  private final int GRID_HEIGHT = 8;
   private HashMap<String, Integer> chapsBag;
   private ArrayList<JLabel> chapsBagImages;
   private ChapsChallenge application;
   private DashboardHolder parent;
 
   /**
-   * The Dashboard constructor.
-   * sets preferred Size, background color, layout, adds a components listener and a key listener
+   * The Dashboard constructor. sets preferred Size, background color, layout, adds a components
+   * listener and a key listener
    *
-   * @param aChapsChallenge - The parent ChapsChallenge object the GUI to create this DashBoard
+   * @param chapsChallenge - The parent ChapsChallenge object the GUI to create this DashBoard
    */
-  Dashboard(ChapsChallenge aChapsChallenge, DashboardHolder aDashboardHolder) {
-    application = aChapsChallenge;
-    parent = aDashboardHolder;
+  Dashboard(ChapsChallenge chapsChallenge, DashboardHolder dashboardHolder) {
+    application = chapsChallenge;
+    parent = dashboardHolder;
     chapsBag = new HashMap<>();
     chapsBagImages = new ArrayList<>();
 
@@ -67,33 +84,32 @@ public class Dashboard extends JPanel {
   }
 
   /**
-   * Creates all the components for the dashboard.
-   * - This is separated such that the components are not needing to be
-   * resized and recreated every update, only their values need to
-   * be redone
+   * Creates all the components for the dashboard. - This is separated such that the components are
+   * not needing to be resized and recreated every update, only their values need to be redone
    */
   public void createDashboardComponents() {
     removeAll();
-// Create the level text. Center aligned
+    // Create the level text. Center aligned
     level = new CustomTextPane("LEVEL", centerAlign, null, TEXT_COLOUR, false);
     // Create the level number text. Right aligned
     levelNum = new CustomTextPane("1", rightAlign, TEXT_COLOUR, ACCENT_COLOUR, true);
     // Create the time text. Center aligned
     time = new CustomTextPane("TIME", centerAlign, null, TEXT_COLOUR, false);
     // Create the tie number text. Right aligned
-    timeNum = new CustomTextPane(application.timeLeft() + "", rightAlign, TEXT_COLOUR, ACCENT_COLOUR, true);
+    timeNum = new CustomTextPane(application.timeLeft() + "", rightAlign, TEXT_COLOUR,
+        ACCENT_COLOUR, true);
     // Create the chipsLeft text. Center aligned
     chipsLeft = new CustomTextPane("CHIPS LEFT", centerAlign, null, TEXT_COLOUR, false);
     // Create the chipsLeft number text. Right aligned
-    chipsLeftNum = new CustomTextPane(application.getTreasures() + "", rightAlign, TEXT_COLOUR, ACCENT_COLOUR, true);
+    chipsLeftNum = new CustomTextPane(application.getTreasures() + "", rightAlign, TEXT_COLOUR,
+        ACCENT_COLOUR, true);
 
     // Refresh chapsbag
     fillChapsBag();
   }
 
   /**
-   * Adds the components of the dashboard.
-   * This consists of two JPanels and their related parts.
+   * Adds the components of the dashboard. This consists of two JPanels and their related parts.
    */
   protected void renderDashboardComponents() {
     removeAll();
@@ -107,7 +123,8 @@ public class Dashboard extends JPanel {
     JPanel topPanel = new JPanel();
     topPanel.setLayout(new GridBagLayout());
     topPanel.setBackground(null);
-    topPanel.setPreferredSize(new Dimension((getWidth() / 2) - (paddingOfBox / 2), (getHeight() * 2 / 3) - paddingOfBox));
+    topPanel.setPreferredSize(
+        new Dimension((getWidth() / 2) - (paddingOfBox / 2), (getHeight() * 2 / 3) - paddingOfBox));
 
     // Create a new GridBagLayout for the top panel
     GridBagConstraints topPanelConstraints = new GridBagConstraints();
@@ -150,7 +167,8 @@ public class Dashboard extends JPanel {
     JPanel bottomPanel = new JPanel();
     bottomPanel.setLayout(new GridBagLayout());
     bottomPanel.setBackground(null);
-    bottomPanel.setPreferredSize(new Dimension(getWidth() - paddingOfBox, (getHeight() / 3) - paddingOfBox));
+    bottomPanel.setPreferredSize(
+        new Dimension(getWidth() - paddingOfBox, (getHeight() / 3) - paddingOfBox));
 
     // Create a new GridBagLayout for the bottom panel
     GridBagConstraints bottomPanelConstraints = new GridBagConstraints();
@@ -168,10 +186,10 @@ public class Dashboard extends JPanel {
       bottomPanelConstraints.weighty = 1;
 
       // Add the panel
-      if (chapsBagImages.size() > i && chapsBagImages.get(i) != null)
+      if (chapsBagImages.size() > i && chapsBagImages.get(i) != null) {
         bottomPanel.add(chapsBagImages.get(i), bottomPanelConstraints);
+      }
     }
-
 
     constraints.weighty = 2;
     constraints.gridy = 0;
@@ -184,7 +202,7 @@ public class Dashboard extends JPanel {
   }
 
   /**
-   * Updates the components text within the dashboard
+   * Updates the components text within the dashboard.
    */
   public void refreshDashboardComponents() {
     // If the components don't exist then ignore the command
@@ -209,17 +227,15 @@ public class Dashboard extends JPanel {
   }
 
   /**
-   * Attempts to fill chaps bag with the contents from ChapsChallenge.
-   * - All duplicated are mapped to an integer of occurrences
-   * - All occurrences are then sent to the asset manager to create an icon with a numerical
-   * value below it.
-   * - If chaps bag contains less than 8 items then all other slots are filled with blanks
+   * Attempts to fill chaps bag with the contents from ChapsChallenge. - All duplicated are mapped
+   * to an integer of occurrences - All occurrences are then sent to the asset manager to create an
+   * icon with a numerical value below it. - If chaps bag contains less than 8 items then all other
+   * slots are filled with blanks
    */
   private void fillChapsBag() {
     // Cycle through 8 blocks to create a new Label for each bag item
     chapsBag = new HashMap<>();
     ArrayList<String> items = new ArrayList<>(application.getPlayerInventory());
-
 
     // If chaps bag is null or empty, set it up with blank JLabels
     if (chapsBagImages == null || chapsBagImages.size() == 0) {
@@ -230,11 +246,11 @@ public class Dashboard extends JPanel {
     // Find all duplicates
     for (int i = 0; i < items.size(); i++) {
       // Add a new item to the bag if it doesn't already exist
-      if (!chapsBag.containsKey(items.get(i)))
+      if (!chapsBag.containsKey(items.get(i))) {
         chapsBag.put(items.get(i), 1);
-        // If it exists in the bag, then increment the number associated with it by 1
-      else
+      } else { // If it exists in the bag, then increment the number associated with it by 1
         chapsBag.put(items.get(i), chapsBag.get(items.get(i)) + 1);
+      }
     }
 
     // Add all the items combined with their image overlay of how many
@@ -276,13 +292,14 @@ public class Dashboard extends JPanel {
     /**
      * CustomTextPane Constructor, read params for instructions.
      *
-     * @param text          - The Text in the text pane
+     * @param text - The Text in the text pane
      * @param textAlignment - The alignment of the text, if null, default used
-     * @param background    - Color of the back ground
-     * @param foreground    - Color of the foreground
-     * @param border        - If true: Add a matte border of foreground color, if false, no border
+     * @param background - Color of the back ground
+     * @param foreground - Color of the foreground
+     * @param border - If true: Add a matte border of foreground color, if false, no border
      */
-    private CustomTextPane(String text, SimpleAttributeSet textAlignment, Color background, Color foreground, boolean border) {
+    private CustomTextPane(String text, SimpleAttributeSet textAlignment, Color background,
+        Color foreground, boolean border) {
 
       // Basic setup:
       // - Not editable
@@ -296,11 +313,10 @@ public class Dashboard extends JPanel {
 
       // - If the border boolean parsed in is true, make one
       if (border) {
-        setBorder(BorderFactory.createMatteBorder(getFont().getSize() / 10, getFont().getSize() / 10,
-            getFont().getSize() / 10, getFont().getSize() / 10, foreground));
-      }
-      // - Else remove any presets
-      else {
+        setBorder(
+            BorderFactory.createMatteBorder(getFont().getSize() / 10, getFont().getSize() / 10,
+                getFont().getSize() / 10, getFont().getSize() / 10, foreground));
+      } else { //remove any presets
         setBorder(null);
       }
 
@@ -313,9 +329,8 @@ public class Dashboard extends JPanel {
           // Insert the text with the alignment
           doc.insertString(doc.getLength(), text, textAlignment);
           doc.setParagraphAttributes(doc.getLength(), 1, textAlignment, false);
-        }
-        // If the right alignment fails, just insert it
-        catch (Exception e) {
+        } catch (Exception e) { // If the right alignment fails, just insert it
+
           setText(text);
         }
       } else {
@@ -325,10 +340,7 @@ public class Dashboard extends JPanel {
 
 
     /**
-     * @param component
-     * @param oldFont
-     * @param text
-     * @return
+     * Finds the front.
      */
     private Font findFont(Component component, Font oldFont, String text) {
       // Get the size of the area the text can take up

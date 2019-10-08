@@ -1,12 +1,12 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
 
 /**
  * A wall tile which cannot be occupied by the player.
@@ -16,8 +16,7 @@ import java.io.Writer;
 public class Wall extends Tile {
 
   /**
-   * Constructor.
-   * Sets the isAccessible field to false.
+   * Constructor. Sets the isAccessible field to false.
    */
   public Wall() {
     super(Type.Wall);
@@ -45,19 +44,21 @@ public class Wall extends Tile {
   @Override
   public String getJson() {
     JsonObjectBuilder objectBuilder = Json.createObjectBuilder()
-        .add("isAccessible",getIsAccessible())
+        .add("isAccessible", getIsAccessible())
         .add("type", getType().toString())
         .add("row", getRow())
         .add("col", getCol())
-        .add("imageUrl",getImageUrl())
-        .add("defaultImageUrl",getDefaultImageUrl());
+        .add("imageUrl", getImageUrl())
+        .add("defaultImageUrl", getDefaultImageUrl());
 
     JsonObject jsonObject = objectBuilder.build();
 
-    try(Writer writer = new StringWriter()) {
+    try (Writer writer = new StringWriter()) {
       Json.createWriter(writer).write(jsonObject);
       return writer.toString();
-    }catch(IOException e) {throw new Error("Error parsing " + this.toString() + " to json");}
+    } catch (IOException e) {
+      throw new Error("Error parsing " + this.toString() + " to json");
+    }
   }
 
   /**

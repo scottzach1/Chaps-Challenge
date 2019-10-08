@@ -1,20 +1,22 @@
 package nz.ac.vuw.ecs.swen225.a3.persistence;
 
-import nz.ac.vuw.ecs.swen225.a3.renderer.CombinedImageIcon;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.swing.ImageIcon;
+
+import nz.ac.vuw.ecs.swen225.a3.renderer.CombinedImageIcon;
+
 
 /**
- * AssetManager class is responsible for dealing with storing and scaling
- * all the assets used in the game.
+ * AssetManager class is responsible for dealing with storing and scaling all the assets used in the
+ * game.
  */
 public class AssetManager {
+
   private static String assetPath = "assets/";
   private static String customAssetPath = "";
   private static boolean loaded = false;
@@ -39,6 +41,7 @@ public class AssetManager {
 
   /**
    * Sets the path to look for assets.
+   *
    * @param path path to load assets.
    */
   public static void setCustomAssetPath(String path) {
@@ -47,6 +50,7 @@ public class AssetManager {
 
   /**
    * Loads asset from filename.
+   *
    * @param fname filename.
    */
   private static void loadAsset(String fname) {
@@ -55,7 +59,9 @@ public class AssetManager {
       loadAsset("unknown.png");
     }
 
-    if (baseImageIcons.containsKey(fname)) return;
+    if (baseImageIcons.containsKey(fname)) {
+      return;
+    }
 
     // -- Load base image -- //
 
@@ -77,8 +83,8 @@ public class AssetManager {
 
     //  -- Load scaled image -- //
 
-    ImageIcon scaledIcon = new ImageIcon(baseIcon.getImage().
-        getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH));
+    ImageIcon scaledIcon = new ImageIcon(baseIcon.getImage()
+        .getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH));
 
     scaledIcon.setDescription(baseIcon.getDescription());
 
@@ -94,7 +100,9 @@ public class AssetManager {
    * @param newCellSize Cell size.
    */
   public static void scaleImages(int newCellSize) {
-    if (newCellSize == 0) return;
+    if (newCellSize == 0) {
+      return;
+    }
 
     if (scaling != (scaling = true)) {
       cellSize = newCellSize;
@@ -117,7 +125,9 @@ public class AssetManager {
    * @return ImageIcon.
    */
   public static ImageIcon getScaledImage(String fname) {
-    if (fname.contains("-")) return getOverlaidImages(fname);
+    if (fname.contains("-")) {
+      return getOverlaidImages(fname);
+    }
 
     loadAsset(fname); // Check asset exists.
 
@@ -134,8 +144,9 @@ public class AssetManager {
       layers.add(getScaledImage(fnames.get(i)));
       description.append(fnames.get(i));
       // Also append joiner if not last image.
-      if (i != fnames.size() - 1)
+      if (i != fnames.size() - 1) {
         description.append("-");
+      }
     }
 
     // Get combined icon.
@@ -146,9 +157,7 @@ public class AssetManager {
   }
 
   /**
-   * Gets an ImageIcon at the last scaled size,
-   * with a number overlay.
-   *
+   * Gets an ImageIcon at the last scaled size, with a number overlay.
    * Number will be clipped from [1,9].
    *
    * @param fname file path.

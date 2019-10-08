@@ -1,20 +1,24 @@
 package nz.ac.vuw.ecs.swen225.a3.renderer;
 
-import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
-import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
+import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
 
 /**
  * Canvas displays the game maze on the screen.
  */
 public class Canvas extends JPanel {
 
-  public final static int VIEW_SIZE = 9;
+  public static final int VIEW_SIZE = 9;
 
   private ArrayList<JLabel> components = new ArrayList<>();
 
@@ -22,8 +26,7 @@ public class Canvas extends JPanel {
 
 
   /**
-   * Constructor: Creates and initializes canvas to the correct size
-   * Then renders the board.
+   * Constructor: Creates and initializes canvas to the correct size Then renders the board.
    */
   Canvas(ChapsChallenge app) {
     application = app;
@@ -33,6 +36,9 @@ public class Canvas extends JPanel {
     setBackground(GUI.BACKGROUND_COLOUR);
   }
 
+  /**
+   * Creates canvas components.
+   */
   public void createCanvasComponents() {
     removeAll();
     components.clear();
@@ -47,21 +53,20 @@ public class Canvas extends JPanel {
 
   /**
    * Creates a board then renders it.
-   * <p>
-   * NOTE: This is just a test method and not intended
-   * in final product.
-   * Renders the board stored in application on the  canvas.
+   * NOTE: This is just a test method and not intended in final product. Renders the board stored in
+   * application on the  canvas.
    */
   public void refreshComponents() {
 
     // Retrieve tiles and add all components.
     // Convert the Stream to List
     AtomicInteger i = new AtomicInteger();
-    application.getTilesToRender().collect(Collectors.toList()).forEach(T -> {
+    application.getTilesToRender().collect(Collectors.toList()).forEach(t -> {
       try {
-        components.get(i.get()).setIcon(AssetManager.getScaledImage(T.getCombinedUrl()));
+        components.get(i.get()).setIcon(AssetManager.getScaledImage(t.getCombinedUrl()));
         i.getAndIncrement();
-      } catch (Exception e){
+      } catch (Exception e) {
+        System.out.println("Error refreshing" + e);
       }
     });
 
@@ -69,15 +74,14 @@ public class Canvas extends JPanel {
 
 
   /**
-   * Revalidate's components on GridBagLayout to
-   * VIEW_SIZE x VIEW_SIZE.
-   * <p>
+   * Revalidate's components on GridBagLayout to VIEW_SIZE x VIEW_SIZE.
    * DOES NOT REPAINT.
    */
   public void renderCanvasComponents() {
 
-    if(getWidth() <= 0)
+    if (getWidth() <= 0) {
       return;
+    }
 
     removeAll();
     GridBagConstraints constraints = new GridBagConstraints();
@@ -86,8 +90,9 @@ public class Canvas extends JPanel {
       for (int i = 0; i < components.size(); i++) {
         constraints.gridx = i % VIEW_SIZE;
         constraints.gridy = i / VIEW_SIZE;
-        if (components.get(i) != null)
+        if (components.get(i) != null) {
           add(components.get(i), constraints);
+        }
       }
     } else {
       this.removeAll();

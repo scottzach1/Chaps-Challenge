@@ -1,16 +1,17 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
-import javax.json.JsonReader;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import javax.json.JsonReader;
+
 
 /**
- * Mob are NPCs in the game that move and interact without any input from the user.
- * Functionally, they act as a spider that latches onto a Tile and scale the board.
- * Although the Constructor takes a Board, the board is not modified at all.
+ * Mob are NPCs in the game that move and interact without any input from the user. Functionally,
+ * they act as a spider that latches onto a Tile and scale the board. Although the Constructor takes
+ * a Board, the board is not modified at all.
  */
 public abstract class Mob {
 
@@ -25,8 +26,8 @@ public abstract class Mob {
 
 
   /**
-   * Sets the board for the mob. Handled by the MobManager.
-   * Not all mobs needs this, can't be done at creation.
+   * Sets the board for the mob. Handled by the MobManager. Not all mobs needs this, can't be done
+   * at creation.
    *
    * @param board to set.
    */
@@ -36,6 +37,7 @@ public abstract class Mob {
 
   /**
    * Sets the name of the mob. Handled by concrete sub-class.
+   *
    * @param name to set.
    */
   void setMobName(String name) {
@@ -43,6 +45,7 @@ public abstract class Mob {
   }
 
   /**
+   * Sets the imageURL to the one specified.
    * @param newImageUrl new filename of mob image.
    */
   public void setImageUrl(String newImageUrl) {
@@ -50,13 +53,14 @@ public abstract class Mob {
   }
 
   /**
-   * Sets the active state of the mob.
-   * Will not change if mob has no host.
+   * Sets the active state of the mob. Will not change if mob has no host.
    *
    * @param active state of mob.
    */
   public void setActive(boolean active) {
-    if (host != null) this.active = active;
+    if (host != null) {
+      this.active = active;
+    }
   }
 
   /**
@@ -69,12 +73,13 @@ public abstract class Mob {
   }
 
   /**
-   * Moves the Mob by one Cell.
-   * Default implementation, this can be override
-   * for advanced behaviour.
+   * Moves the Mob by one Cell. Default implementation, this can be override for advanced
+   * behaviour.
    */
   public void advanceByTick() {
-    if (getHost() == null) return;
+    if (getHost() == null) {
+      return;
+    }
 
     Tile target;
 
@@ -168,33 +173,37 @@ public abstract class Mob {
   int seedCol = 0;
 
   /**
-   * Gets next seed based off indexes.
-   * Seed indexes automatically increment.
+   * Gets next seed based off indexes. Seed indexes automatically increment.
+   *
    * @return next pseudo-random number. [0-9].
    */
   private int getNextSeed() {
     ++seedCol;
 
-    if (seedCol == seed[seedRow].length())
+    if (seedCol == seed[seedRow].length()) {
       seedCol = 0;
+    }
 
     return seed[seedRow].charAt(seedCol) - '0';
   }
 
   /**
    * Gets next pseudo-random direction based off seed and indexes.
+   *
    * @return pseudo-random direction.
    */
   private Tile.Direction getNextDirection() {
     int seed = getNextSeed();
     // Less than 3 straight.
-    if (seed <= 2) return direction;
-    // Equal to 9 reverse.
-    else if (seed == 9) return direction.reverse();
-    // Even clockwise.
-    else if (seed % 2 == 0) return direction.clockWise();
-    // Odd anticlockwise.
-    else return direction.antiClockWise();
+    if (seed <= 2) {
+      return direction;
+    } else if (seed == 9) {    // Equal to 9 reverse.
+      return direction.reverse();
+    } else if (seed % 2 == 0) { // Even clockwise.
+      return direction.clockWise();
+    } else { // Odd anticlockwise.
+      return direction.antiClockWise();
+    }
   }
 
 }

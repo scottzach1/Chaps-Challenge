@@ -1,12 +1,13 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
+
 
 /**
  * A type of lock which accessible once the player has collected all of the treasures. Usually
@@ -19,8 +20,7 @@ public class ExitLock extends Tile {
   private int totalTreasures;// amount of treasures that need to be collected for this level
 
   /**
-   * Constructor.
-   * Sets the isAccessible to true.
+   * Constructor. Sets the isAccessible to true.
    */
   public ExitLock() {
     super(Type.ExitLock);
@@ -57,25 +57,28 @@ public class ExitLock extends Tile {
 
   /**
    * Return json representation of this tile.
+   *
    * @return Json string of tile properties.
    */
   @Override
   public String getJson() {
     JsonObjectBuilder objectBuilder = Json.createObjectBuilder()
-        .add("totalTreasures",totalTreasures)
-        .add("isAccessible",getIsAccessible())
+        .add("totalTreasures", totalTreasures)
+        .add("isAccessible", getIsAccessible())
         .add("type", getType().toString())
         .add("row", getRow())
         .add("col", getCol())
-        .add("imageUrl",getImageUrl())
-        .add("defaultImageUrl",getDefaultImageUrl());
+        .add("imageUrl", getImageUrl())
+        .add("defaultImageUrl", getDefaultImageUrl());
 
     JsonObject jsonObject = objectBuilder.build();
 
-    try(Writer writer = new StringWriter()) {
+    try (Writer writer = new StringWriter()) {
       Json.createWriter(writer).write(jsonObject);
       return writer.toString();
-    }catch(IOException e) {throw new Error("Error parsing " + this.toString() + " to json");}
+    } catch (IOException e) {
+      throw new Error("Error parsing " + this.toString() + " to json");
+    }
   }
 
   /**
@@ -92,7 +95,8 @@ public class ExitLock extends Tile {
     imageUrl = tile.getString("imageUrl");
     defaultImageUrl = tile.getString("defaultImageUrl");
     totalTreasures = tile.getInt("totalTreasures");
-    return this;  }
+    return this;
+  }
 
 
   /**

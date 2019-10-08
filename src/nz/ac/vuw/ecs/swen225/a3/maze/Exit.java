@@ -1,12 +1,12 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
 
 /**
  * The exit for the level. Upon stepping upon this tile, the player is either taken to the next
@@ -60,10 +60,12 @@ public class Exit extends Tile {
 
     JsonObject jsonObject = objectBuilder.build();
 
-    try(Writer writer = new StringWriter()) {
+    try (Writer writer = new StringWriter()) {
       Json.createWriter(writer).write(jsonObject);
       return writer.toString();
-    }catch(IOException e) {throw new Error("Error parsing " + this.toString() + " to json");}
+    } catch (IOException e) {
+      throw new Error("Error parsing " + this.toString() + " to json");
+    }
   }
 
   @Override

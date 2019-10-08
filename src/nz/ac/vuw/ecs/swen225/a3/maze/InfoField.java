@@ -1,12 +1,12 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
 
 
 /**
@@ -19,9 +19,7 @@ public class InfoField extends Tile {
   private String info;
 
   /**
-   * Constructor.
-   * Sets the isAccessible to true.
-   * Sets the information contained in the tile.
+   * Constructor. Sets the isAccessible to true. Sets the information contained in the tile.
    */
   public InfoField(String info) {
     super(Type.InfoField);
@@ -57,20 +55,22 @@ public class InfoField extends Tile {
   @Override
   public String getJson() {
     JsonObjectBuilder objectBuilder = Json.createObjectBuilder()
-        .add("info",info)
-        .add("isAccessible",getIsAccessible())
+        .add("info", info)
+        .add("isAccessible", getIsAccessible())
         .add("type", getType().toString())
         .add("row", getRow())
         .add("col", getCol())
-        .add("imageUrl",getImageUrl())
-        .add("defaultImageUrl",getDefaultImageUrl());
+        .add("imageUrl", getImageUrl())
+        .add("defaultImageUrl", getDefaultImageUrl());
 
     JsonObject jsonObject = objectBuilder.build();
 
-    try(Writer writer = new StringWriter()) {
+    try (Writer writer = new StringWriter()) {
       Json.createWriter(writer).write(jsonObject);
       return writer.toString();
-    }catch(IOException e) {throw new Error("Error parsing " + this.toString() + " to json");}
+    } catch (IOException e) {
+      throw new Error("Error parsing " + this.toString() + " to json");
+    }
   }
 
   /**

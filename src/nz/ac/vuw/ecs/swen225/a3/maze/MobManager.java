@@ -9,6 +9,7 @@ public class MobManager {
 
   /**
    * Get set of mobs.
+   *
    * @return Mobs set
    */
   public Set<Mob> getMobs() {
@@ -17,6 +18,7 @@ public class MobManager {
 
   /**
    * Set the collection of mobs.
+   *
    * @param mobs Set to use
    */
   public void setMobs(Set<Mob> mobs) {
@@ -37,11 +39,11 @@ public class MobManager {
 
     // TODO: Mobs should be loaded through board, not mob manager.
     Mob perryOne = new PassivePerry();
-    perryOne.occupyHost(board.getTile(7,7));
+    perryOne.occupyHost(board.getTile(7, 7));
     addMob(perryOne);
 
     Mob perryTwo = new PassivePerry();
-    perryTwo.occupyHost(board.getTile(11,11));
+    perryTwo.occupyHost(board.getTile(11, 11));
     addMob(perryTwo);
 
     Mob sneakySnek = new SneakySnek();
@@ -50,7 +52,7 @@ public class MobManager {
     addMob(sneakySnek);
 
     Mob angryAndrew = new GrumpyGary();
-    angryAndrew.occupyHost(board.getTile(11,19));
+    angryAndrew.occupyHost(board.getTile(11, 19));
     angryAndrew.setBoard(board);
     addMob(angryAndrew);
   }
@@ -71,14 +73,15 @@ public class MobManager {
    * @param mob to add.
    */
   private void addMob(Mob mob) {
-    if (mob == null) return;
+    if (mob == null) {
+      return;
+    }
 
     mobs.add(mob);
   }
 
   /**
-   * Removes a mob from the managers tracking
-   * set.
+   * Removes a mob from the managers tracking set.
    *
    * @param mob to remove.
    */
@@ -87,8 +90,7 @@ public class MobManager {
   }
 
   /**
-   * Removes all mobs from the managers tracking
-   * set.
+   * Removes all mobs from the managers tracking set.
    */
   public void removeAllMobs() {
     mobs.clear();

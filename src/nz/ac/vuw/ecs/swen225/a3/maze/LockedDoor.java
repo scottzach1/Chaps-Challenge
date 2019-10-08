@@ -1,12 +1,12 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
 
 
 /**
@@ -22,9 +22,7 @@ public class LockedDoor extends Tile {
   private boolean active = true;
 
   /**
-   * Constructor.
-   * Sets the isAccessible to true.
-   * Sets the colour of the door to the parameter.
+   * Constructor. Sets the isAccessible to true. Sets the colour of the door to the parameter.
    *
    * @param colour the colour of the door.
    */
@@ -44,7 +42,9 @@ public class LockedDoor extends Tile {
    */
   @Override
   public boolean interact(Player p) {
-    if (!active) return true;
+    if (!active) {
+      return true;
+    }
     if (p.getItem("key_" + colour)) {
       isAccessible = true;
       imageUrl = defaultImageUrl;
@@ -62,20 +62,22 @@ public class LockedDoor extends Tile {
   @Override
   public String getJson() {
     JsonObjectBuilder objectBuilder = Json.createObjectBuilder()
-        .add("colour",colour)
-        .add("isAccessible",getIsAccessible())
+        .add("colour", colour)
+        .add("isAccessible", getIsAccessible())
         .add("type", getType().toString())
         .add("row", getRow())
         .add("col", getCol())
-        .add("imageUrl",getImageUrl())
-        .add("defaultImageUrl",getDefaultImageUrl());
+        .add("imageUrl", getImageUrl())
+        .add("defaultImageUrl", getDefaultImageUrl());
 
     JsonObject jsonObject = objectBuilder.build();
 
-    try(Writer writer = new StringWriter()) {
+    try (Writer writer = new StringWriter()) {
       Json.createWriter(writer).write(jsonObject);
       return writer.toString();
-    }catch(IOException e) {throw new Error("Error parsing " + this.toString() + " to json");}
+    } catch (IOException e) {
+      throw new Error("Error parsing " + this.toString() + " to json");
+    }
   }
 
   /**

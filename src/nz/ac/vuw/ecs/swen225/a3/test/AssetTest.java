@@ -1,20 +1,21 @@
 package nz.ac.vuw.ecs.swen225.a3.test;
 
-import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
-import org.junit.jupiter.api.Test;
-
-import javax.swing.*;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import javax.swing.ImageIcon;
+import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * JUnit Tests: Checks all assets are loaded correctly.
  */
-class assetTest {
+class AssetTest {
 
   /**
    * Checks whether a particular asset is loaded correctly.
+   *
    * @param fname asset name
    */
   public void checkAsset(String fname) {
@@ -108,7 +109,7 @@ class assetTest {
   void testNumbers() {
     AssetManager.clearAssets();
 
-    for (int i=-2; i<12; ++i) {
+    for (int i = -2; i < 12; ++i) {
       String num = (i > 0 && i < 10) ? "" + i : "NaN";
       ImageIcon imageIcon = AssetManager.getNumberedScaledImage("free.png", i);
 

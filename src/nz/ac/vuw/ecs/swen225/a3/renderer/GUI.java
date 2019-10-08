@@ -1,11 +1,11 @@
 package nz.ac.vuw.ecs.swen225.a3.renderer;
 
-import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
-import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
-import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
@@ -13,11 +13,20 @@ import java.awt.event.KeyListener;
 import java.io.File;
 import java.util.HashSet;
 
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
+import javax.swing.WindowConstants;
+import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
+import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
+import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
+
 /**
- * GUI class extends JFrame and is responsible with
- * maintain the Graphical Interface.
+ * GUI class extends JFrame and is responsible with maintain the Graphical Interface.
  */
 public class GUI extends JFrame implements ComponentListener, KeyListener {
+
   // Nothing important
   private static final long serialVersionUID = 1L;
 
@@ -53,14 +62,14 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
 
 
   /**
-   * Constructor: Creates a new JFrame and sets preferred sizes.
-   * Creates and adds all relevant GUI components then redraws.
+   * Constructor: Creates a new JFrame and sets preferred sizes. Creates and adds all relevant GUI
+   * components then redraws.
    */
-  public GUI(ChapsChallenge chaps_challenge) {
+  public GUI(ChapsChallenge chapsChallenge) {
     loaded = false;
     resizeCycle = 0;
     direction = "";
-    application = chaps_challenge;
+    application = chapsChallenge;
 
     // Create new set for hosting keys currently pressed
     activeKeys = new HashSet<>();
@@ -125,8 +134,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
   }
 
   /**
-   * Handles GUI actions related to pausing
-   * the game.
+   * Handles GUI actions related to pausing the game.
    */
   public void pauseGame() {
     getContentPane().removeAll();
@@ -169,8 +177,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
   }
 
   /**
-   * Handles GUI actions related to saving
-   * the game.
+   * Handles GUI actions related to saving the game.
    */
   public boolean saveGame() {
     JFileChooser jfc = new JFileChooser();
@@ -185,8 +192,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
   }
 
   /**
-   * Handles GUI actions related to loading
-   * the game.
+   * Handles GUI actions related to loading the game.
    */
   public boolean loadGame() {
     JFileChooser jfc = new JFileChooser();
@@ -221,8 +227,8 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
   }
 
   /**
-   * Handles GUI actions related to exiting the game.
-   * Invokes a pop up menu to confirm the player wants to exit the game.
+   * Handles GUI actions related to exiting the game. Invokes a pop up menu to confirm the player
+   * wants to exit the game.
    */
   public boolean exitGame() {
     // Button options
@@ -247,8 +253,9 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
    * If not busy executes move and redraws dashboard.
    */
   public void updateBoard() {
-    if (isBusy)
+    if (isBusy) {
       return;
+    }
     runMove();
     canvas.refreshComponents();
     redraw();
@@ -258,14 +265,16 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
    * If not busy renders the dashboard.
    */
   public void updateDashboard() {
-    if (isBusy)
+    if (isBusy) {
       return;
+    }
     dashboardHolder.renderDashboard();
     redraw();
   }
 
   /**
    * Displays info field text pop up.
+   *
    * @param text to display.
    */
   public void renderInfoField(String text) {
@@ -284,9 +293,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
   }
 
   /**
-   * Redraws the GUI JFrame.
-   * * Revalidates.
-   * * Repaints.
+   * Redraws the GUI JFrame. * Revalidates. * Repaints.
    */
   private void redraw() {
     revalidate();
@@ -296,6 +303,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
 
   /**
    * TODO: Endgame promping provided reason.
+   *
    * @param reason given.
    */
   public void gameOver(String reason) {
@@ -312,8 +320,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
 
 
   /**
-   * Resize dimensions and redraw window on
-   * screen resize.
+   * Resize dimensions and redraw window on screen resize.
    *
    * @param e event.
    */
@@ -323,13 +330,11 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     isBusy = true;
     resizeCycle++;
 
-
     screenDimension = getSize();
     screenWidth = screenDimension.width;
     screenHeight = screenDimension.height - MENU_HEIGHT;
     canvasWidth = (screenDimension.width * 2) / 3;
     dashboardWidth = (screenDimension.width) / 3;
-
 
     if (!application.isGamePaused()) {
 
@@ -371,7 +376,9 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
    */
   @Override
   public void componentShown(ComponentEvent e) {
-    if (application.isGamePaused()) application.resumeGame();
+    if (application.isGamePaused()) {
+      application.resumeGame();
+    }
   }
 
   /**
@@ -381,7 +388,9 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
    */
   @Override
   public void componentHidden(ComponentEvent e) {
-    if (!application.isGamePaused()) application.pauseGame();
+    if (!application.isGamePaused()) {
+      application.pauseGame();
+    }
   }
 
   /**
@@ -390,12 +399,13 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
    * @param e event.
    */
   @Override
-  public void keyTyped(KeyEvent e) {/* UNUSED */}
+  public void keyTyped(KeyEvent e) {
+    /* UNUSED */
+  }
 
   /**
-   * Handles events occurring after a key is pressed.
-   * First adding it to the list of keys pressed, then dealing with all
-   * active keys in the 'activeKeys' set.
+   * Handles events occurring after a key is pressed. First adding it to the list of keys pressed,
+   * then dealing with all active keys in the 'activeKeys' set.
    *
    * @param e - The key pressed
    */
@@ -404,19 +414,24 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     // Add the key pressed to the current list of pressed keys
     activeKeys.add(e.getKeyCode());
     // CTRL + X
-    if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_X) && activeKeys.size() == 2)
+    if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_X)
+        && activeKeys.size() == 2) {
       application.exitGame();
+    }
     // CTRL + S
-    if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_S) && activeKeys.size() == 2) {
+    if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_S)
+        && activeKeys.size() == 2) {
       application.saveGame();
       application.exitGame();
     }
     // CTRL + L
-    if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_L) && activeKeys.size() == 2) {
+    if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_L)
+        && activeKeys.size() == 2) {
       application.loadGame();
     }
     // CTRL + P
-    if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_P) && activeKeys.size() == 2) {
+    if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_P)
+        && activeKeys.size() == 2) {
       application.restartLevel();
     }
 
@@ -431,38 +446,51 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
 
     // SPACE
     if (activeKeys.contains(KeyEvent.VK_SPACE) && activeKeys.size() == 1) {
-      if (application.isGamePaused()) application.resumeGame();
-      else application.pauseGame();
+      if (application.isGamePaused()) {
+        application.resumeGame();
+      } else {
+        application.pauseGame();
+      }
     }
     // CTRL + R
-    if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_R) && activeKeys.size() == 2) {
-      if (application.isGamePaused()) application.resumeGame();
+    if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_R)
+        && activeKeys.size() == 2) {
+      if (application.isGamePaused()) {
+        application.resumeGame();
+      }
     }
     // ESC
     if (activeKeys.contains(KeyEvent.VK_ESCAPE) && activeKeys.size() == 1) {
-      if (application.isGamePaused()) application.resumeGame();
+      if (application.isGamePaused()) {
+        application.resumeGame();
+      }
     }
 
-    if (RecordAndPlay.getIsRunning())
+    if (RecordAndPlay.getIsRunning()) {
       return;
+    }
 
     /*
     PLAYER CONTROLS
      */
     // Move Up
-    if ((activeKeys.contains(KeyEvent.VK_UP) || activeKeys.contains(KeyEvent.VK_W)) && activeKeys.size() == 1) {
+    if ((activeKeys.contains(KeyEvent.VK_UP) || activeKeys.contains(KeyEvent.VK_W))
+        && activeKeys.size() == 1) {
       direction = "UP";
     }
     // Move Down
-    if ((activeKeys.contains(KeyEvent.VK_DOWN) || activeKeys.contains(KeyEvent.VK_S)) && activeKeys.size() == 1) {
+    if ((activeKeys.contains(KeyEvent.VK_DOWN) || activeKeys.contains(KeyEvent.VK_S))
+        && activeKeys.size() == 1) {
       direction = "DOWN";
     }
     // Move Left
-    if ((activeKeys.contains(KeyEvent.VK_LEFT) || activeKeys.contains(KeyEvent.VK_A)) && activeKeys.size() == 1) {
+    if ((activeKeys.contains(KeyEvent.VK_LEFT) || activeKeys.contains(KeyEvent.VK_A))
+        && activeKeys.size() == 1) {
       direction = "LEFT";
     }
     // Move Right
-    if ((activeKeys.contains(KeyEvent.VK_RIGHT) || activeKeys.contains(KeyEvent.VK_D)) && activeKeys.size() == 1) {
+    if ((activeKeys.contains(KeyEvent.VK_RIGHT) || activeKeys.contains(KeyEvent.VK_D))
+        && activeKeys.size() == 1) {
       direction = "RIGHT";
     }
 
@@ -481,22 +509,26 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
 
 
   /**
-   * Executes move in application in direction of the field 'direction'.
-   * Then clears direction field.
+   * Executes move in application in direction of the field 'direction'. Then clears direction
+   * field.
    */
   private void runMove() {
     // Go UP
-    if (direction.equals("UP"))
+    if (direction.equals("UP")) {
       application.move(Tile.Direction.Up);
+    }
     // Go DOWN
-    if (direction.equals("DOWN"))
+    if (direction.equals("DOWN")) {
       application.move(Tile.Direction.Down);
+    }
     // Go LEFT
-    if (direction.equals("LEFT"))
+    if (direction.equals("LEFT")) {
       application.move(Tile.Direction.Left);
+    }
     // Go RIGHT
-    if (direction.equals("RIGHT"))
+    if (direction.equals("RIGHT")) {
       application.move(Tile.Direction.Right);
+    }
 
     direction = "";
   }

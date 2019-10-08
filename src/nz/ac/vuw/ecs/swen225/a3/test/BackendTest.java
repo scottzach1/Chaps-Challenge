@@ -1,5 +1,10 @@
 package nz.ac.vuw.ecs.swen225.a3.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 import nz.ac.vuw.ecs.swen225.a3.maze.Board;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
@@ -7,99 +12,94 @@ import nz.ac.vuw.ecs.swen225.a3.persistence.GameNotFoundException;
 import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class backendTest {
+class BackendTest {
 
   private ChapsChallenge chapsChallenge = new ChapsChallenge();
 
   /**
-   * The default chaps challenge should start at level 1;
-   * which is also the default for a new board.
+   * The default chaps challenge should start at level 1; which is also the default for a new board.
    */
   @Test
-   void loadDefault(){
+  void loadDefault() {
     chapsChallenge = new ChapsChallenge();
     Board board = new Board();
     assertEquals(chapsChallenge.getBoard().toString(), board.toString());
   }
 
   /**
-   * Loads a new level into the game
+   * Loads a new level into the game.
    */
   @Test
-  void overrideLevel(){
+  void overrideLevel() {
     String level =
         "ExitLock|KBlue|DGreen|_|_|_|_|_|_|_|?|T|_|_|_|_|_|_|_|_|"
-        + "_|_|_|_|_|_|_|_|_|_|_|ExitLock|C|_|_|_|_|_|_|_|"
-        + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-        + "_|_|_|T|T|T|T|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-        + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-        + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-        + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-        + "_|_|_|_|_|_|_|_|_|_|_|?|_|_|_|_|_|_|_|_|"
-        + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-        + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-        + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-        + "_|_|_|_|#|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-        + "_|_|_|_|#|_|_|#|_|_|_|_|_|_|_|_|_|_|_|_|"
-        + "_|_|_|_|#|_|_|#|_|_|_|_|_|_|_|Exit|_|_|_|_|"
-        + "_|_|_|_|#|_|_|#|_|_|_|_|_|_|_|_|_|_|_|_|"
-        + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-        + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-        + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-        + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-        + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|";
+            + "_|_|_|_|_|_|_|_|_|_|_|ExitLock|C|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|T|T|T|T|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|?|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|#|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|#|_|_|#|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|#|_|_|#|_|_|_|_|_|_|_|Exit|_|_|_|_|"
+            + "_|_|_|_|#|_|_|#|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|";
 
     chapsChallenge.setCustomLevel(level);
     assertEquals(chapsChallenge.getBoard().toString(), level);
   }
 
   /**
-   * Creates an invalid board with 3 Chaps
-   * Should throw an error.
+   * Creates an invalid board with 3 Chaps Should throw an error.
    */
-   @Test
-   void overrideInvalid(){
-     String level =
-               "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-             + "_|_|_|C|C|C|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|";
+  @Test
+  void overrideInvalid() {
+    String level =
+        "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|C|C|C|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|";
 
-     boolean failed=false;
-     try {
-       chapsChallenge.setCustomLevel(level);
-     }catch (Error e) {
-       failed=true;
-     }
-     assertTrue(failed);
+    boolean failed = false;
+    try {
+      chapsChallenge.setCustomLevel(level);
+    } catch (Error e) {
+      failed = true;
+    }
+    assertTrue(failed);
   }
 
   /**
-   * Creates an invalid board with no chaps
-   * Should throw an error.
+   * Creates an invalid board with no chaps Should throw an error.
    */
   @Test
-  void overrideInvalid2(){
+  void overrideInvalid2() {
     String level =
-              "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+        "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
@@ -120,21 +120,20 @@ class backendTest {
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|";
 
-    boolean failed=false;
+    boolean failed = false;
     try {
       chapsChallenge.setCustomLevel(level);
-    }catch (Error e) {
-      failed=true;
+    } catch (Error e) {
+      failed = true;
     }
     assertTrue(failed);
   }
 
   /**
-   * Creates an invalid board with invalid characters
-   * Should throw an error.
+   * Creates an invalid board with invalid characters Should throw an error.
    */
   @Test
-  void overrideInvalid3(){
+  void overrideInvalid3() {
     String level =
         "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|{|_|_|_|_|_|_|_|_|_|_|_|"
@@ -157,19 +156,20 @@ class backendTest {
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|";
 
-    boolean failed=false;
+    boolean failed = false;
     try {
       chapsChallenge.setCustomLevel(level);
-    }catch (Error e) {
-      failed=true;
+    } catch (Error e) {
+      failed = true;
     }
     assertTrue(failed);
   }
+
   /**
    * Checks that chap can move correctly.
    */
   @Test
-  void chapMove(){
+  void chapMove() {
     String level =
         "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
@@ -192,34 +192,34 @@ class backendTest {
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|";
 
-      chapsChallenge.setCustomLevel(level);
+    chapsChallenge.setCustomLevel(level);
 
-      Tile start = chapsChallenge.getPlayer().getLocation();
-      chapsChallenge.move(Tile.Direction.Up);
-      Tile end = chapsChallenge.getPlayer().getLocation();
-      assertEquals(start.getUp(), end);
+    Tile start = chapsChallenge.getPlayer().getLocation();
+    chapsChallenge.move(Tile.Direction.Up);
+    Tile end = chapsChallenge.getPlayer().getLocation();
+    assertEquals(start.getUp(), end);
 
-      start = chapsChallenge.getPlayer().getLocation();
-      chapsChallenge.move(Tile.Direction.Down);
-      end = chapsChallenge.getPlayer().getLocation();
-      assertEquals(start.getDown(), end);
+    start = chapsChallenge.getPlayer().getLocation();
+    chapsChallenge.move(Tile.Direction.Down);
+    end = chapsChallenge.getPlayer().getLocation();
+    assertEquals(start.getDown(), end);
 
-      start = chapsChallenge.getPlayer().getLocation();
-      chapsChallenge.move(Tile.Direction.Left);
-      end = chapsChallenge.getPlayer().getLocation();
-      assertEquals(start.getLeft(), end);
+    start = chapsChallenge.getPlayer().getLocation();
+    chapsChallenge.move(Tile.Direction.Left);
+    end = chapsChallenge.getPlayer().getLocation();
+    assertEquals(start.getLeft(), end);
 
-      start = chapsChallenge.getPlayer().getLocation();
-      chapsChallenge.move(Tile.Direction.Right);
-      end = chapsChallenge.getPlayer().getLocation();
-      assertEquals(start.getRight(), end);
+    start = chapsChallenge.getPlayer().getLocation();
+    chapsChallenge.move(Tile.Direction.Right);
+    end = chapsChallenge.getPlayer().getLocation();
+    assertEquals(start.getRight(), end);
   }
 
   /**
    * Checks that chap can pick up keys.
    */
   @Test
-  void chapPickUpKey(){
+  void chapPickUpKey() {
     String level =
         "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
@@ -244,14 +244,14 @@ class backendTest {
 
     chapsChallenge.setCustomLevel(level);
     chapsChallenge.move(Tile.Direction.Up);
-    assertTrue(   chapsChallenge.getPlayer().getInventory().contains("key_blue"));
+    assertTrue(chapsChallenge.getPlayer().getInventory().contains("key_blue"));
   }
 
   /**
    * Checks that chap can open a door if he has the right key.
    */
   @Test
-  void chapOpenDoor(){
+  void chapOpenDoor() {
     String level =
         "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
@@ -282,12 +282,12 @@ class backendTest {
     Tile end = chapsChallenge.getPlayer().getLocation();
     assertEquals(start.getRight(), end);
   }
+
   /**
    * Checks that chap cannot open a door if he does not have any keys.
-   *
    */
   @Test
-  void chapOpenDoorInvalid(){
+  void chapOpenDoorInvalid() {
     String level =
         "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
@@ -320,10 +320,9 @@ class backendTest {
 
   /**
    * Checks that chap cannot open a door if he does not have the right coloured key.
-   *
    */
   @Test
-  void chapOpenDoorInvalid2(){
+  void chapOpenDoorInvalid2() {
     String level =
         "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
@@ -359,7 +358,7 @@ class backendTest {
    * Checks that chap can exit if there are no treasures.
    */
   @Test
-  void chapExit(){
+  void chapExit() {
     String level =
         "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
@@ -393,7 +392,7 @@ class backendTest {
 
     chapsChallenge.move(Tile.Direction.Up);
 
-    assertEquals(current+1, chapsChallenge.getBoard().getCurrentLevel());
+    assertEquals(current + 1, chapsChallenge.getBoard().getCurrentLevel());
 
   }
 
@@ -401,7 +400,7 @@ class backendTest {
    * Checks that chap can exit with if there are no treasures.
    */
   @Test
-  void chapExit3Treasures(){
+  void chapExit3Treasures() {
     String level =
         "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
@@ -440,13 +439,13 @@ class backendTest {
     int current = chapsChallenge.getBoard().getCurrentLevel();
     chapsChallenge.move(Tile.Direction.Up);
 
-    assertEquals(current+1, chapsChallenge.getBoard().getCurrentLevel());
+    assertEquals(current + 1, chapsChallenge.getBoard().getCurrentLevel());
 
   }
 
 
   /**
-   * Tests that you cannot stand on water without flippers
+   * Tests that you cannot stand on water without flippers.
    */
   @Test
   void invalidWater() {
@@ -483,7 +482,7 @@ class backendTest {
 
 
   /**
-   * Tests that you can stand on water with flippers
+   * Tests that you can stand on water with flippers.
    */
   @Test
   void validWater() {
@@ -515,7 +514,6 @@ class backendTest {
     chapsChallenge.move(Tile.Direction.Up);
     chapsChallenge.move(Tile.Direction.Up);
     chapsChallenge.move(Tile.Direction.Up);
-    chapsChallenge.move(Tile.Direction.Up);
     Tile start = chapsChallenge.getPlayer().getLocation();
     chapsChallenge.move(Tile.Direction.Up);
 
@@ -526,19 +524,16 @@ class backendTest {
    * Restarts the game.
    */
   @Test
-  void restartGame(){
+  void restartGame() {
     chapsChallenge.restartGame();
-    assertEquals(chapsChallenge.getBoard().getCurrentLevel(),0);
+    assertEquals(chapsChallenge.getBoard().getCurrentLevel(), 0);
   }
 
   /**
-   * Saves the game.
-   * Moves.
-   * Loads game.
-   * Position should be the position before moving.
+   * Saves the game. Moves. Loads game. Position should be the position before moving.
    */
   @Test
-  void saveAndLoadGame(){
+  void saveAndLoadGame() {
 
     String level =
         "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
@@ -568,7 +563,6 @@ class backendTest {
     Tile tile = chapsChallenge.getPlayer().getLocation();
 
     chapsChallenge.move(Tile.Direction.Left);
-    chapsChallenge.move(Tile.Direction.Left);
 
     try {
       JsonReadWrite.loadGameState("saveTest.txt", chapsChallenge);
@@ -596,32 +590,31 @@ class backendTest {
   }
 
   /**
-   * Goes to the previous level, invalid
+   * Goes to the previous level, invalid.
    */
   @Test
-  void prevLevel(){
+  void prevLevel() {
     int current = chapsChallenge.getBoard().getCurrentLevel();
     chapsChallenge.previousLevel();
     assertEquals(current, 0);
   }
 
   /**
-   * Goes to the previous level, valid
+   * Goes to the previous level, valid.
    */
   @Test
-  void prevLevel2(){
+  void prevLevel2() {
     chapsChallenge.getBoard().setCurrentLevel(2);
     int current = chapsChallenge.getBoard().getCurrentLevel();
     chapsChallenge.previousLevel();
-    assertEquals(current-1, chapsChallenge.getBoard().getCurrentLevel());
+    assertEquals(current - 1, chapsChallenge.getBoard().getCurrentLevel());
   }
 
   /**
-   * Pauses the game.
-   * Un-pauses the game.
+   * Pauses the game. Un-pauses the game.
    */
   @Test
-  void pauseGame(){
+  void pauseGame() {
     assertFalse(chapsChallenge.isGamePaused());
     chapsChallenge.pauseGame();
 
@@ -635,12 +628,12 @@ class backendTest {
    * Check going to the next level works.
    */
   @Test
-  void nextLevel(){
+  void nextLevel() {
     int current = chapsChallenge.getBoard().getCurrentLevel();
     chapsChallenge.getBoard().setNextLevel();
     int updated = chapsChallenge.getBoard().getCurrentLevel();
 
-    assertEquals(current+1, updated);
+    assertEquals(current + 1, updated);
   }
 
   @Test

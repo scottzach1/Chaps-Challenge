@@ -1,12 +1,12 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
 
 /**
  * A flipper tile, which can be picked up by the player. The possession of flippers allows the
@@ -18,6 +18,9 @@ public class Flippers extends Tile {
 
   private boolean collected;
 
+  /**
+   * Constructor for flippers. Sets the type and images of the flipper.
+   */
   public Flippers() {
     super(Type.Flippers);
     isAccessible = true;
@@ -35,8 +38,9 @@ public class Flippers extends Tile {
   public boolean interact(Player p) {
     if (!collected) {
       int steps = 9;
-      for (int i = 0; i < steps; i++)
+      for (int i = 0; i < steps; i++) {
         p.addItem(this.toString());
+      }
       imageUrl = defaultImageUrl;
       collected = true;
     }

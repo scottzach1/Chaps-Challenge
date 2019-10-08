@@ -1,17 +1,17 @@
 package nz.ac.vuw.ecs.swen225.a3.test;
 
-import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
-import nz.ac.vuw.ecs.swen225.a3.renderer.GUI;
-import org.junit.jupiter.api.Test;
-
-import java.awt.event.ComponentEvent;
-
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class frontendTest {
+import java.awt.event.ComponentEvent;
+import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
+import nz.ac.vuw.ecs.swen225.a3.renderer.GUI;
+
+import org.junit.jupiter.api.Test;
+
+
+class FrontendTest {
 
   @Test
   void launchWindow() {

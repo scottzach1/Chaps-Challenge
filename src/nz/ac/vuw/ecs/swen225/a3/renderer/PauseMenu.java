@@ -17,7 +17,7 @@ class PauseMenu extends JPanel {
   private Color foreground, background, otherForeground, otherBackground;
   private JPanel panel;
 
-  PauseMenu(ChapsChallenge aChapsChallenge){
+  PauseMenu(ChapsChallenge aChapsChallenge) {
     application = aChapsChallenge;
 
     setPreferredSize(new Dimension(GUI.screenWidth, GUI.screenHeight));
@@ -31,12 +31,13 @@ class PauseMenu extends JPanel {
     otherForeground = foreground.darker().darker();
 
     panel = new JPanel();
-    panel.setPreferredSize(new Dimension(GUI.screenWidth / 4, GUI.screenHeight - (GUI.screenHeight / 10)));
+    panel.setPreferredSize(
+        new Dimension(GUI.screenWidth / 4, GUI.screenHeight - (GUI.screenHeight / 10)));
     panel.setBackground(getBackground().brighter().brighter());
     panel.setLayout(new GridBagLayout());
   }
 
-  void createComponents(){
+  void createComponents() {
     removeAll();
     components.clear();
     // Create the buttons
@@ -113,7 +114,6 @@ class PauseMenu extends JPanel {
       }
     });
 
-
     components.add(resume);
     components.add(restart);
     components.add(quit);
@@ -123,13 +123,13 @@ class PauseMenu extends JPanel {
   /**
    * Renders the pause menu.
    */
-  void renderPauseMenu(){
+  void renderPauseMenu() {
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.weightx = 1;
     gbc.weighty = 1;
     gbc.gridx = 0;
 
-    for (int i = 0; i < components.size(); i++){
+    for (int i = 0; i < components.size(); i++) {
       components.get(i).setBackground(background);
       components.get(i).setForeground(foreground);
       gbc.gridy = i;
@@ -143,12 +143,14 @@ class PauseMenu extends JPanel {
   /**
    * Recalculates then resize components.
    */
-  void resize(){
+  void resize() {
     createComponents();
     renderPauseMenu();
   }
+
   /**
    * Takes a given font and attempts to find the correct size given some parameters.
+   *
    * @param component containing font.
    * @param oldFont old font to change.
    * @param text to display
