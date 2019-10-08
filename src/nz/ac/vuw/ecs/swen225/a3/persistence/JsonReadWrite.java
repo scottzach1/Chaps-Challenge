@@ -1,13 +1,6 @@
 package nz.ac.vuw.ecs.swen225.a3.persistence;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.io.Writer;
+import java.io.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -134,6 +127,21 @@ public class JsonReadWrite {
   }
 
   /**
+   * Load game state from file
+   * @param fileName Name of file to load from.
+   * @param g Chaps challenge object.
+   * @return Chaps challenge object.
+   */
+  public static ChapsChallenge loadGameStateFromFile(String fileName, ChapsChallenge g){
+    try {
+      InputStream reader = new FileInputStream(new File(fileName));
+      return loadGameState(reader,g);
+    } catch (Exception e) {
+      //TODO: Deal
+      throw new Error("FAILED TO READ LEVEL");
+    }
+  }
+  /**
    * Load game state from file.
    *
    * @param saveGame Name of file.
@@ -141,11 +149,11 @@ public class JsonReadWrite {
    * @return Updated game Object.
    * @throws GameNotFoundException Thrown when file not found.
    */
-  public static ChapsChallenge loadGameState(String saveGame, ChapsChallenge g)
+  public static ChapsChallenge loadGameState(InputStream saveGame, ChapsChallenge g)
       throws GameNotFoundException {
     JsonObject game;
     try {
-      BufferedReader reader = new BufferedReader(new FileReader(saveGame));
+      BufferedReader reader = new BufferedReader(new InputStreamReader(saveGame));
       JsonReader jsonReader = Json.createReader(new StringReader(reader.readLine()));
       game = jsonReader.readObject();
     } catch (IOException e) {
