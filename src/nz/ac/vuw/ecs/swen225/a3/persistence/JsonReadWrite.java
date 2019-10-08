@@ -5,6 +5,7 @@ import nz.ac.vuw.ecs.swen225.a3.maze.*;
 
 import javax.json.*;
 import java.io.*;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -237,8 +238,13 @@ public class JsonReadWrite {
 
     // Use reflection to find correct class
     // Done to allow dynamic drop in of new tile types
-
-
+    try {
+      Class c = Class.forName("nz.ac.vuw.ecs.swen225.a3.maze.Free");
+      Method m = c.getMethod("setTileFromJson", JsonReader.class);
+      Object o = m.invoke(c.newInstance(),Json.createReader(new StringReader(tile)));
+      System.out.println(o.toString());
+    }
+    catch(Exception e){}
 
     switch (type){
       case "Free":
