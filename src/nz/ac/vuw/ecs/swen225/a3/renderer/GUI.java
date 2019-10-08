@@ -297,6 +297,8 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     resizing = true;
     resizeCycle++;
 
+    System.out.println("RESIZE: " + resizeCycle);
+
     screenDimension = getSize();
     screenWidth = screenDimension.width;
     screenHeight = screenDimension.height - MENU_HEIGHT;
@@ -308,6 +310,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     if (!application.isGamePaused()) {
 
       if (canvas != null && dashboardHolder != null) {
+        System.out.println("CANVAS + DASHBOARD");
         canvas.resize();
         dashboardHolder.resize();
         loaded = true;
@@ -315,13 +318,16 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
       redraw();
 
       if (loaded && resizeCycle == 2) {
+        System.out.println("AND ONE FOR GOOD LUCK");
         pauseMenu.createComponents();
         componentResized(e);
         application.startRunningThread();
       }
     } else {
-      if (pauseMenu != null)
+      if (pauseMenu != null) {
+        System.out.println("PAUSE MENU");
         pauseMenu.resize();
+      }
       redraw();
     }
     resizing = false;
