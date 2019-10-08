@@ -2,6 +2,7 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
 
 import nz.ac.vuw.ecs.swen225.a3.renderer.Canvas;
 
+import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -451,4 +452,5 @@ public class Board {
   public String toString() {
     return allLevels.get(currentLevel);
   }
+  
 }
