@@ -33,6 +33,7 @@ public class Board {
   private int treasureCount = 0;
 
   private ChapsChallenge chapsChallenge;
+
   /**
    * Constructs and parses a new board.
    */
@@ -41,7 +42,7 @@ public class Board {
   }
 
   public void setup(){
-    JsonReadWrite.loadGameState(LevelManager.getCurrentLevelStream(), chapsChallenge);
+    JsonReadWrite.loadGameState(LevelManager.getCurrentLevelStream(0), chapsChallenge);
     setupAdjacency();
   }
 
@@ -379,9 +380,10 @@ public class Board {
    * @return boolean board changed.
    */
   public boolean setNextLevel() {
-    if (currentLevel < allLevels.size() - 1) {
-      currentLevel++;
-      setCustomLevel(allLevels.get(currentLevel));
+    int currentLevel = LevelManager.getCurrentLevelInt();
+    if (currentLevel < LevelManager.getNumLevels() - 1) {
+    JsonReadWrite.loadGameState(LevelManager.getCurrentLevelStream(currentLevel + 1),
+        chapsChallenge);
       return true;
     }
     return false;
@@ -393,9 +395,8 @@ public class Board {
    * @param level to set.
    */
   public void setCurrentLevel(int level) {
-    if (level >= 0 && level < allLevels.size()) {
-      currentLevel = level;
-      setCustomLevel(allLevels.get(currentLevel));
+    if (level > 0 && level < LevelManager.getNumLevels()) {
+    JsonReadWrite.loadGameState(LevelManager.getCurrentLevelStream(level), chapsChallenge);
     }
   }
 
@@ -404,7 +405,7 @@ public class Board {
    * @return level of board.
    */
   public int getCurrentLevel() {
-    return currentLevel;
+    return LevelManager.getCurrentLevelInt();
   }
 
   /**
@@ -412,7 +413,7 @@ public class Board {
    * @return last level of board.
    */
   public int getFinalLevel() {
-    return allLevels.size() - 1;
+    return LevelManager.getNumLevels() - 1;
   }
 
   /**
@@ -492,7 +493,7 @@ public class Board {
    */
   @Override
   public String toString() {
-    return allLevels.get(currentLevel);
+    return allLevels.get(currentLevel); // todo change
   }
   
 }
