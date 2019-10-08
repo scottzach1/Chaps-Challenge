@@ -260,7 +260,6 @@ public class JsonReadWrite {
    * @return Tile object.
    */
   public static Tile createTileFromJson(String tile) {
-    System.out.println(tile);
     JsonReader reader = Json.createReader(new StringReader(tile));
     JsonObject tileObject = reader.readObject();
     String type = tileObject.getString("type");
