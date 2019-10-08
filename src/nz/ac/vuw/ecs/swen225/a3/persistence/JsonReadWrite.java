@@ -4,6 +4,7 @@ import java.io.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -135,7 +136,7 @@ public class JsonReadWrite {
   public static ChapsChallenge loadGameStateFromFile(String fileName, ChapsChallenge g){
     try {
       InputStream reader = new FileInputStream(new File(fileName));
-      return loadGameState(reader,g);
+      return loadGameState(new BufferedReader(new InputStreamReader(reader)).readLine(),g);
     } catch (Exception e) {
       //TODO: Deal
       throw new Error("FAILED TO READ LEVEL");
@@ -149,16 +150,10 @@ public class JsonReadWrite {
    * @return Updated game Object.
    * @throws GameNotFoundException Thrown when file not found.
    */
-  public static ChapsChallenge loadGameState(InputStream saveGame, ChapsChallenge g)
-      throws GameNotFoundException {
+  public static ChapsChallenge loadGameState(String saveGame, ChapsChallenge g){
     JsonObject game;
-    try {
-      BufferedReader reader = new BufferedReader(new InputStreamReader(saveGame));
-      JsonReader jsonReader = Json.createReader(new StringReader(reader.readLine()));
-      game = jsonReader.readObject();
-    } catch (IOException e) {
-      throw new GameNotFoundException();
-    }
+    JsonReader jsonReader = Json.createReader(new StringReader(saveGame));
+    game = jsonReader.readObject();
 
     if (game.containsKey("game")) {
       JsonReader gameJsonReader = Json.createReader(new StringReader(game.getString("game")));
@@ -179,7 +174,7 @@ public class JsonReadWrite {
       allTiles.add(createTileFromJson(j.getString()));
     }
 
-    Board b = new Board(g);
+    Board b = g.getBoard();
     for (Tile t : allTiles) {
       b.setTile(t.getRow(), t.getCol(), t);
     }
@@ -229,7 +224,7 @@ public class JsonReadWrite {
     g.setBoard(b);
     g.setTimeLeft(timeLeft);
     g.setPlayer(p);
-    g.getMobManager().setMobs(mobs);
+    //g.getMobManager().setMobs(mobs);
 
     return g;
   }
@@ -265,6 +260,7 @@ public class JsonReadWrite {
    * @return Tile object.
    */
   public static Tile createTileFromJson(String tile) {
+    System.out.println(tile);
     JsonReader reader = Json.createReader(new StringReader(tile));
     JsonObject tileObject = reader.readObject();
     String type = tileObject.getString("type");

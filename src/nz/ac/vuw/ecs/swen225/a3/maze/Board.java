@@ -38,13 +38,10 @@ public class Board {
    */
   public Board(ChapsChallenge chapsChallenge) {
     this.chapsChallenge = chapsChallenge;
-    getClass().getName();
-    addLevels();
-    try {
-      JsonReadWrite.loadGameState(LevelManager.getCurrentLevelStream(), chapsChallenge);
-    } catch (GameNotFoundException g) {
-      System.out.println("Game cannot be found: " + g);
-    }
+  }
+
+  public void setup(){
+    JsonReadWrite.loadGameState(LevelManager.getCurrentLevelStream(), chapsChallenge);
     setupAdjacency();
   }
 

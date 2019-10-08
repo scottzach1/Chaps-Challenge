@@ -15,7 +15,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 public class LevelManager {
-    static ArrayList<InputStream> levelDescriptions = new ArrayList<>();
+    static ArrayList<String> levelDescriptions = new ArrayList<>();
     static int currentLevel = 0;
     public static Set<Class> classSet = new HashSet<>();
 
@@ -29,16 +29,10 @@ public class LevelManager {
                     zf.stream().filter(p -> p.getName().contains(".txt"))
                             .forEach(s -> {
                                 try{
-                                    levelDescriptions.add((zf.getInputStream(s)));
+                                    levelDescriptions.add(new BufferedReader(new InputStreamReader(zf.getInputStream(s))).readLine());
                                 }catch (IOException e){
                                     throw new Error("Failed to load level from " + f.getAbsolutePath());
                                 }});
-                    levelDescriptions.forEach(s -> {
-                        try {
-                            System.out.println(new BufferedReader(new InputStreamReader(s)).readLine());
-                        } catch (Exception e) {
-                        }
-                    });
 
                     // Load Assets
                     zf.stream().filter(p -> p.getName().contains(".png"))
@@ -83,7 +77,7 @@ public class LevelManager {
     }
 
 
-    public static InputStream getCurrentLevelStream() {
+    public static String getCurrentLevelStream() {
         return levelDescriptions.get(currentLevel);
     }
 }

@@ -50,6 +50,7 @@ public class ChapsChallenge {
     LevelManager.loadLevels();
     // Load the board.
     board = new Board(this);
+    board.setup();
     player = new Player(board.getPlayerLocation());
     mobManager = new MobManager(board);
 
@@ -445,7 +446,7 @@ public class ChapsChallenge {
   private void resetLogistics() {
     timeLeft = totalTime;
     startTime = System.currentTimeMillis();
-    mobManager = new MobManager(board);
+    //mobManager = new MobManager(board);
     player = new Player(board.getPlayerLocation());
   }
 
