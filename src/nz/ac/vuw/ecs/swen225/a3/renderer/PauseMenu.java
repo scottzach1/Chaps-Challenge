@@ -17,7 +17,6 @@ public class PauseMenu extends JPanel {
   public PauseMenu(ChapsChallenge aChapsChallenge){
     application = aChapsChallenge;
 
-
     setPreferredSize(new Dimension(GUI.screenWidth, GUI.screenHeight));
     setBackground(new Color(18, 48, 55));
     setLayout(new BorderLayout());
@@ -138,6 +137,8 @@ public class PauseMenu extends JPanel {
     gbc.gridx = 0;
 
     for (int i = 0; i < components.size(); i++){
+      components.get(i).setBackground(background);
+      components.get(i).setForeground(foreground);
       gbc.gridy = i;
       panel.add(components.get(i), gbc);
     }
