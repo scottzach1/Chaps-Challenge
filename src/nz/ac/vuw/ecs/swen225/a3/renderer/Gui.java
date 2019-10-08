@@ -55,7 +55,6 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
   private HashSet<Integer> activeKeys;
   private String direction;
 
-  private boolean loaded;
   private boolean isBusy;
 
   private int resizeCycle;
@@ -66,7 +65,6 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
    * components then redraws.
    */
   public Gui(ChapsChallenge chapsChallenge) {
-    setLoaded(false);
     resizeCycle = 0;
     direction = "";
     application = chapsChallenge;
@@ -341,7 +339,6 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
       if (canvas != null && dashboardHolder != null) {
         canvas.resize();
         dashboardHolder.resize();
-        setLoaded(true);
       }
       redraw();
 
@@ -366,7 +363,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
    */
   @Override
   public void componentMoved(ComponentEvent e) {
-
+    /* NOT UTILISED */
   }
 
   /**
@@ -376,13 +373,11 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
    */
   @Override
   public void componentShown(ComponentEvent e) {
-    if (application.isGamePaused()) {
-      application.resumeGame();
-    }
+    /* NOT UTILISED */
   }
 
   /**
-   * Overridden but not utilized.
+   * Pauses the game on component hidden.
    *
    * @param e event.
    */
@@ -400,7 +395,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
    */
   @Override
   public void keyTyped(KeyEvent e) {
-    /* UNUSED */
+    /* NOT UTILISED */
   }
 
   /**
@@ -532,14 +527,5 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
 
     direction = "";
   }
-
-  public boolean isLoaded() {
-    return loaded;
-  }
-
-  public void setLoaded(boolean loaded) {
-    this.loaded = loaded;
-  }
-
 
 }
