@@ -13,7 +13,7 @@ import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
 
 /**
  * Canvas displays the game maze on the screen.
- * @author Zac Scott, Harrison Cook
+ * @author Zac Scott 300447976, Harrison Cook 300402048
  */
 public class Canvas extends JPanel {
 

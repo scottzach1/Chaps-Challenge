@@ -22,7 +22,7 @@ import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
 
 /**
  * The side object of the GUI that displays the level, time, chipsLeft.
- * @author Harrison Cook
+ * @author Harrison Cook 300402048.
  */
 public class Dashboard extends JPanel {
 

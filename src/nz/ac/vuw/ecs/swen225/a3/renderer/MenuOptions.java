@@ -11,7 +11,7 @@ import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
 /**
  * MenuOptions extends JMenuBar and is responsible for hosting the options in the menu bar at the
  * top of the GUI.
- * @author Zac Scott, Harrison Cook, Jacob Fraser.
+ * @author Zac Scott 300447976, Harrison Cook 300402048, Jacob Fraser.
  */
 class MenuOptions extends JMenuBar {
 

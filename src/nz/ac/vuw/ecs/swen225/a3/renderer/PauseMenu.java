@@ -8,33 +8,57 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JTextPane;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 
 /**
  * Pause menu is a jpanel that replaces the game screen with a menu of buttons the user can chose.
- * @author Harrison Cook, Zac Scott.
+ *
+ * @author Harrison Cook 300402048, Zac Scott 300447976.
  */
 class PauseMenu extends JPanel {
+
+  public enum MenuType {
+    PAUSE, DEATH, TIMEOUT, WINNER;
+  }
 
   /**
    * Default serial number.
    */
   private static final long serialVersionUID = 1L;
-  private ArrayList<JButton> components = new ArrayList<>();
+  private ArrayList<MenuButton> menuButtons = new ArrayList<>();
+  private CustomTextPane textPane;
   private ChapsChallenge application;
   private Color buttonForeground;
   private Color buttonBackground;
   private Color otherForeground;
   private Color otherBackground;
   private JPanel panel;
+  private MenuType menuType;
+  private SimpleAttributeSet centerAlign;
 
+  /**
+   * Constructor for the PauseMenu, by Default it is set to pause
+   *
+   * @param chapsChallenge - The chapsChallenge object for the game this object is in
+   */
   PauseMenu(ChapsChallenge chapsChallenge) {
     application = chapsChallenge;
+    menuType = MenuType.PAUSE;
+
+    centerAlign = new SimpleAttributeSet();
+    StyleConstants.setAlignment(centerAlign, StyleConstants.ALIGN_CENTER);
 
     setPreferredSize(new Dimension(Gui.screenWidth, Gui.screenHeight));
     setBackground(Gui.BACKGROUND_COLOUR.darker());
@@ -54,73 +78,46 @@ class PauseMenu extends JPanel {
   }
 
   /**
-   * Creates and loads menu buttons to components JPanel.
+   * Creates the buttons and text necessary for the pause menu
    */
-  private void createComponents() {
+  void createPauseComponents() {
     removeAll();
-    components.clear();
+    panel.removeAll();
+    menuButtons.clear();
+
+    // Create the text for the menu
+    textPane = new CustomTextPane("PAUSED", centerAlign, null, foreground, false, Gui.screenWidth / 2, Gui.screenHeight / 3);
+
+    // Create the width and height of the components
+    int width = Gui.screenWidth / 2;
+    int height = Gui.screenHeight / (3 * 2);
+
     // Create the buttons
-    JButton resume = new JButton("Resume");
-    JButton restart = new JButton("Restart");
-    JButton quit = new JButton("Quit");
-
-    // Size the buttons.
-    resume.setPreferredSize(new Dimension(Gui.screenWidth / 2, Gui.screenHeight / 6));
-    restart.setPreferredSize(new Dimension(Gui.screenWidth / 2, Gui.screenHeight / 6));
-    quit.setPreferredSize(new Dimension(Gui.screenWidth / 2, Gui.screenHeight / 6));
-
-    // Size the font of th buttons.
-    resume.setFont(findFont(this, new Font("Ariel", Font.BOLD, 30), resume.getText()));
-    restart.setFont(findFont(this, new Font("Ariel", Font.BOLD, 30), restart.getText()));
-    quit.setFont(findFont(this, new Font("Ariel", Font.BOLD, 30), quit.getText()));
-
-    // Set their colors.
-    resume.setBackground(buttonBackground);
-    resume.setForeground(buttonForeground);
-    restart.setBackground(buttonBackground);
-    restart.setForeground(buttonForeground);
-    quit.setBackground(buttonBackground);
-    quit.setForeground(buttonForeground);
-
-    // Add their action listeners.
-    resume.addActionListener(e -> application.resumeGame());
-
-    restart.addActionListener(e -> {
-      application.resumeGame();
-      application.restartGame();
-    });
-
-    quit.addActionListener(e -> application.exitGame());
-
-    // Set Colours.
-    setButtonColours(resume);
-    setButtonColours(restart);
-    setButtonColours(quit);
-
-    // Add components.
-    components.add(resume);
-    components.add(restart);
-    components.add(quit);
-  }
-
-  /**
-   * Sets the colours of the of a JButton.
-   * @param button to set colours.
-   */
-  private void setButtonColours(JButton button) {
-    button.addMouseListener(new MouseAdapter() {
+    MenuButton resume = new MenuButton("Resume", new ActionListener() {
       @Override
-      public void mouseEntered(MouseEvent e) {
-        button.setBackground(otherBackground);
-        button.setForeground(otherForeground);
+      public void actionPerformed(ActionEvent e) {
+        application.resumeGame();
       }
+    }, width, height);
 
+    MenuButton restart = new MenuButton("Restart", new ActionListener() {
       @Override
-      public void mouseExited(MouseEvent e) {
-        button.setBackground(buttonBackground);
-        button.setForeground(buttonForeground);
+      public void actionPerformed(ActionEvent e) {
+        application.resumeGame();
+        application.restartGame();
       }
-    });
+    }, width, height);
+
+    MenuButton quit = new MenuButton("Quit", new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        application.exitGame();
+      }
+    }, width, height);
+
+    menuButtons.add(resume);
+    menuButtons.add(restart);
+    menuButtons.add(quit);
   }
 
 
@@ -128,16 +125,30 @@ class PauseMenu extends JPanel {
    * Renders the pause menu.
    */
   void renderPauseMenu() {
-    GridBagConstraints gbc = new GridBagConstraints();
-    gbc.weightx = 1;
-    gbc.weighty = 1;
-    gbc.gridx = 0;
+    if(textPane == null)
+      return;
 
-    for (int i = 0; i < components.size(); i++) {
-      components.get(i).setBackground(buttonBackground);
-      components.get(i).setForeground(buttonForeground);
-      gbc.gridy = i;
-      panel.add(components.get(i), gbc);
+    System.out.println(textPane.getFont().getSize());
+
+    GridBagConstraints gbc = new GridBagConstraints();
+
+    // Add the CustomTextPane
+    gbc.weighty = 2;
+    gbc.weightx = 1;
+    gbc.gridx = 0;
+    gbc.gridwidth = 4;
+    panel.add(textPane, gbc);
+
+    // Add the buttons
+    gbc.gridx = 1;
+    gbc.gridwidth = 2;
+
+    for (int i = 0; i < menuButtons.size(); i++) {
+      // Reset the color of the button
+      menuButtons.get(i).setBackground(background);
+      menuButtons.get(i).setForeground(foreground);
+      gbc.gridy = i + 1;
+      panel.add(menuButtons.get(i), gbc);
     }
 
     add(panel, BorderLayout.CENTER);
@@ -148,16 +159,125 @@ class PauseMenu extends JPanel {
    * Recalculates then resize components.
    */
   void resize() {
-    createComponents();
+    if (menuType == MenuType.PAUSE) {
+      createPauseComponents();
+    } else if (menuType == MenuType.TIMEOUT) {
+
+    }
+
     renderPauseMenu();
   }
+
+
+  /**
+   * A Private class that extends JButton. Allows for implementing more than one type of Menu with
+   * PauseMenu.
+   */
+  private class MenuButton extends JButton {
+
+
+    /**
+     * MenuButton Constructor
+     *
+     * @param name   - Name and text of the button
+     * @param action - An ActionListener to perform
+     * @param width  - The buttons preferred width
+     * @param height - The buttons preferred height
+     */
+    public MenuButton(String name, ActionListener action, int width, int height) {
+      super(name);
+      setBackground(background);
+      setForeground(foreground);
+      addActionListener(action);
+      setPreferredSize(new Dimension(width, height));
+      setFont(findFont(this, new Font("Ariel", Font.BOLD, 30), name));
+
+      addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseEntered(MouseEvent e) {
+          setBackground(otherBackground);
+          setForeground(otherForeground);
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+          setBackground(background);
+          setForeground(foreground);
+        }
+      });
+    }
+  }
+
+  /**
+   * Private class to create multiple custom JTextPanes for the DashBoard.
+   */
+  private class CustomTextPane extends JTextPane {
+
+    /**
+     * Default serial number.
+     */
+    private static final long serialVersionUID = 1L;
+
+
+    /**
+     * CustomTextPane Constructor, read params for instructions.
+     *
+     * @param text          - The Text in the text pane
+     * @param textAlignment - The alignment of the text, if null, default used
+     * @param background    - Color of the back ground
+     * @param foreground    - Color of the foreground
+     * @param border        - If true: Add a matte border of foreground color, if false, no border
+     */
+    private CustomTextPane(String text, SimpleAttributeSet textAlignment, Color background,
+        Color foreground, boolean border, int preferredWidth, int preferredHeight) {
+
+      // Basic setup:
+      // - Not editable
+      setEditable(false);
+      // - Set the background color to the parsed in color
+      setBackground(background);
+      // - Set the foreground color to the parsed in color
+      setForeground(foreground);
+      // - Set the preferredSize
+      setPreferredSize(new Dimension(preferredWidth, preferredHeight));
+      // - Set the font, using a below method to find the font size
+      setFont(findFont(this, new Font("Arial", Font.BOLD, 20), text));
+
+      // - If the border boolean parsed in is true, make one
+      if (border) {
+        setBorder(
+            BorderFactory.createMatteBorder(getFont().getSize() / 10, getFont().getSize() / 10,
+                getFont().getSize() / 10, getFont().getSize() / 10, foreground));
+      } else { //remove any presets
+        setBorder(null);
+      }
+
+      // Try Align Text
+      if (textAlignment != null) {
+        try {
+          // Create a Styled document (allows for the editing of JTextPane)
+          StyledDocument doc = getStyledDocument();
+
+          // Insert the text with the alignment
+          doc.insertString(doc.getLength(), text, textAlignment);
+          doc.setParagraphAttributes(doc.getLength(), 1, textAlignment, false);
+        } catch (Exception e) { // If the right alignment fails, just insert it
+
+          setText(text);
+        }
+      } else {
+        setText(text);
+      }
+    }
+  }
+
 
   /**
    * Takes a given font and attempts to find the correct size given some parameters.
    *
    * @param component containing font.
-   * @param oldFont old font to change.
-   * @param text to display
+   * @param oldFont   old font to change.
+   * @param text      to display
    * @return font with correct size and values.
    */
   private Font findFont(Component component, Font oldFont, String text) {
@@ -170,7 +290,7 @@ class PauseMenu extends JPanel {
     Font savedFont = oldFont;
 
     // Cycle through font sizes, from 0 to 150 to find a fitting size
-    for (int i = 0; i < 150; i++) {
+    for (int i = 0; i < 300; i++) {
       // Create a new font to test on, incrementing it's size with i
       Font newFont = new Font(savedFont.getFontName(), savedFont.getStyle(), i);
 
@@ -192,3 +312,4 @@ class PauseMenu extends JPanel {
     return oldFont;
   }
 }
+

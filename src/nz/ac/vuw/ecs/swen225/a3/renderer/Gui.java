@@ -23,7 +23,7 @@ import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
 
 /**
  * GUI class extends JFrame and is responsible with maintain the Graphical Interface.
- * @author Harrison Cook, Zac Scott.
+ * @author Harrison Cook 300402048, Zac Scott 300447976.
  */
 public class Gui extends JFrame implements ComponentListener, KeyListener {
 
