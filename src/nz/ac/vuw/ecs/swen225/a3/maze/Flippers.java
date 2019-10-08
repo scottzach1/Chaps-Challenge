@@ -85,6 +85,6 @@ public class Flippers extends Tile {
    */
   @Override
   public String toString() {
-    return "Flippers";
+    return "flippers";
   }
 }
