@@ -203,16 +203,16 @@ public class JsonReadWrite {
 
     for (int i = 0; i <mobsArray.size(); ++i){
       JsonString s = mobsArray.getJsonString(i);
-      JsonReader mobJsonReader = Json.createReader(new StringReader(s.getString()));
-      JsonObject mob = mobJsonReader.readObject();
-      String name = mob.getString("mobName");
-      for (Class classes : LevelManager.classSet) {
-        if (classes.getName().equals(name)) {
-          try {
-            Object o = classes.getDeclaredConstructor().newInstance();
-            Method m = classes.getDeclaredMethod("setMobFromJson", JsonReader.class);
-            m.invoke(o, Json.createReader(new StringReader(s.getString())));
-            mobs.add((Mob)o);
+            JsonReader mobJsonReader = Json.createReader(new StringReader(s.getString()));
+            JsonObject mob = mobJsonReader.readObject();
+            String name = mob.getString("mobName");
+            for (Class classes : LevelManager.classSet) {
+              if (classes.getName().equals(name)) {
+                try {
+                  Object o = classes.getDeclaredConstructor().newInstance();
+                  Method m = classes.getDeclaredMethod("setMobFromJson", JsonReader.class);
+                  m.invoke(o, Json.createReader(new StringReader(s.getString())));
+                  mobs.add((Mob)o);
             break;
           } catch (InstantiationException ex) {
             ex.printStackTrace();
@@ -232,6 +232,7 @@ public class JsonReadWrite {
     // Ensure mobs are using correct tiles from board
     for (Mob m : mobs) {
       m.setHost(b.getTile(m.getHost().getRow(), m.getHost().getCol()));
+      m.setBoard(b);
     }
     MobManager mm = new MobManager(b);
     mm.setMobs(mobs);

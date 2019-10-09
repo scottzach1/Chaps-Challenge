@@ -184,7 +184,6 @@ public class ChapsChallenge {
     startTime = System.currentTimeMillis();
     if (gui.loadGame()) {
       try {
-        //TODO: use the field "loadFile" - a File object
         JsonReadWrite.loadGameStateFromFile(loadFile.getAbsolutePath(), this);
       } catch (Exception e) {
         gui.noFileFound();
