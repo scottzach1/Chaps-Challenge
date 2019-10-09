@@ -209,8 +209,10 @@ public class JsonReadWrite {
     Set<Mob> mobs = new HashSet<>();
 
     for (JsonString j : mobsArray.getValuesAs(JsonString.class)) {
-      mobs.add(createMobFromJson(j.getString()));
+      mobs.add(createMobFromJson(j.toString()));
     }
+
+
 
     b.setupAdjacency();
 
@@ -239,18 +241,27 @@ public class JsonReadWrite {
     JsonReader reader = Json.createReader(new StringReader(string));
     JsonObject mobObject = reader.readObject();
     String name = mobObject.getString("mobName");
-    Mob m;
+    // Use reflection to find correct class
+    // Done to allow dynamic drop in of new tile types
+    for (Class classes : LevelManager.classSet) {
+      if (classes.getName().equals(name)) {
+        try {
+          Object o = classes.getDeclaredConstructor().newInstance();
+          Method m = classes.getDeclaredMethod("setTileFromJson", JsonReader.class);
+          m.invoke(o, Json.createReader(new StringReader(string)));
+          return (Mob)o;
+        } catch (InstantiationException ex) {
+          ex.printStackTrace();
+        } catch (InvocationTargetException ex) {
+          System.out.println(ex.getCause());
+        } catch (NoSuchMethodException ex) {
+          ex.printStackTrace();
+        } catch (IllegalAccessException ex) {
+          ex.printStackTrace();
+        }
+      }
+    }
     return null;
-//    switch (name) {
-//      case "Passive Perry":
-//        m = new PassivePerry();
-//        m.setMobFromJson(Json.createReader(new StringReader(string)));
-//        return m;
-//      default:
-//        m = new PassivePerry();
-//        m.setMobFromJson(Json.createReader(new StringReader(string)));
-//        return m;
-//    }
   }
 
   /**

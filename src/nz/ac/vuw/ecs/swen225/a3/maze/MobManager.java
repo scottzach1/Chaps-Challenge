@@ -37,10 +37,8 @@ public class MobManager {
    * @param board board to control mob.
    */
   public MobManager(Board board) {
-    // TODO: This shouldn't take board in the future.
     this.setBoard(board);
     this.mobs = new HashSet<>();
-
   }
 
   /**

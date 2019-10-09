@@ -446,7 +446,7 @@ public class ChapsChallenge {
   private void resetLogistics() {
     timeLeft = totalTime;
     startTime = System.currentTimeMillis();
-    //mobManager = new MobManager(board);
+    mobManager = new MobManager(board);
     player = new Player(board.getPlayerLocation());
   }
 
