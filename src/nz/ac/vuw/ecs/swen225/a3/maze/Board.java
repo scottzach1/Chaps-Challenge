@@ -41,7 +41,6 @@ public class Board {
     setupAdjacency();
   }
 
-
   /**
    * Add tile to 2d array and store row and column.
    *
@@ -360,6 +359,15 @@ public class Board {
    */
   public void setAllTiles(List<Tile> allTiles) {
     this.allTiles = allTiles;
+  }
+
+  /**
+   * Gets the current game.
+   *
+   * @return the current game.
+   */
+  public ChapsChallenge getChapsChallenge() {
+    return chapsChallenge;
   }
 
   /**

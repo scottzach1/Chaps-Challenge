@@ -344,7 +344,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
     isBusy = true;
     resizeCycle++;
 
-    System.out.println(resizeCycle);
+    //System.out.println(resizeCycle);
 
     screenDimension = getSize();
     screenWidth = screenDimension.width;

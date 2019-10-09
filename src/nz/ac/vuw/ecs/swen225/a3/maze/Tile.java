@@ -292,7 +292,7 @@ public abstract class Tile {
   public abstract Tile setTileFromJson(JsonReader json);
 
   /**
-   * Sets teh tile URL to the default URL.
+   * Sets the tile URL to the default URL.
    */
   public void setTileUnoccupied() {
     imageUrl = defaultImageUrl;

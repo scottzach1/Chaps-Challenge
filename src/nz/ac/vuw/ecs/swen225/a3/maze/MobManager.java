@@ -40,7 +40,6 @@ public class MobManager {
   public MobManager(Board board) {
     this.setBoard(board);
     this.mobs = new HashSet<>();
-
   }
 
   /**
