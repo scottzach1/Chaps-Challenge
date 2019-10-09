@@ -41,7 +41,6 @@ public class MobManager {
     this.setBoard(board);
     this.mobs = new HashSet<>();
 
-//
   }
 
   /**

@@ -397,7 +397,7 @@ public class ChapsChallenge {
     return player;
   }
 
-  private void gameOver(MenuType reason) {
+  public void gameOver(MenuType reason) {
     gamePaused = true;
     gui.gameOver(reason);
   }

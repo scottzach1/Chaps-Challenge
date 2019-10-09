@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import javax.json.JsonReader;
+import nz.ac.vuw.ecs.swen225.a3.renderer.GameMenu.MenuType;
 
 
 /**
@@ -114,6 +115,10 @@ public abstract class Mob {
     host = target;
 
     if (target != null) {
+      Tile player = board.getPlayerLocation();
+      if (player != null && player.equals(target)) {
+        board.getChapsChallenge().gameOver(MenuType.DEATH);
+      }
       target.setTileOccupied(target.getImageUrl() + "-" + imageUrl);
       target.setOccupied(true);
     }
