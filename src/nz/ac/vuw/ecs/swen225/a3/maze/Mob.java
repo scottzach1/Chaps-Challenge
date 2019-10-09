@@ -13,6 +13,7 @@ import nz.ac.vuw.ecs.swen225.a3.renderer.GameMenu.MenuType;
  * Mob are NPCs in the game that move and interact without any input from the user. Functionally,
  * they act as a spider that latches onto a Tile and scale the board. Although the Constructor takes
  * a Board, the board is not modified at all.
+ *
  * @author Zac Scott.
  */
 public abstract class Mob {
@@ -48,6 +49,7 @@ public abstract class Mob {
 
   /**
    * Sets the imageURL to the one specified.
+   *
    * @param newImageUrl new filename of mob image.
    */
   public void setImageUrl(String newImageUrl) {
@@ -112,15 +114,14 @@ public abstract class Mob {
     }
 
     // Set new host.
-    host = target;
 
-    if (target != null) {
-      if (board != null) {
-        Tile player = board.getPlayerLocation();
-        if (player != null && player.equals(target)) {
-          board.getChapsChallenge().gameOver(MenuType.DEATH);
-        }
+    if (target != null && board != null) {
+      Tile player = board.getPlayerLocation();
+      if (player != null && player.equals(target)) {
+        board.getChapsChallenge().gameOver(MenuType.DEATH);
+        return;
       }
+      host = target;
       target.setTileOccupied(target.getImageUrl() + "-" + imageUrl);
       target.setOccupied(true);
     }
