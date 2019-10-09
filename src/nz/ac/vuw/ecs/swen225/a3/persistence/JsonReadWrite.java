@@ -1,19 +1,38 @@
 package nz.ac.vuw.ecs.swen225.a3.persistence;
 
-import java.io.*;
-
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.json.*;
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+import javax.json.JsonReader;
+import javax.json.JsonString;
 
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
-import nz.ac.vuw.ecs.swen225.a3.maze.*;
+import nz.ac.vuw.ecs.swen225.a3.maze.Board;
+import nz.ac.vuw.ecs.swen225.a3.maze.Mob;
+import nz.ac.vuw.ecs.swen225.a3.maze.MobManager;
+import nz.ac.vuw.ecs.swen225.a3.maze.Player;
+import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
+import nz.ac.vuw.ecs.swen225.a3.maze.Wall;
 
 
 /**
@@ -119,20 +138,22 @@ public class JsonReadWrite {
   }
 
   /**
-   * Load game state from file
+   * Load game state from file.
+   *
    * @param fileName Name of file to load from.
    * @param g Chaps challenge object.
    * @return Chaps challenge object.
    */
-  public static ChapsChallenge loadGameStateFromFile(String fileName, ChapsChallenge g){
+  public static ChapsChallenge loadGameStateFromFile(String fileName, ChapsChallenge g) {
     try {
       InputStream reader = new FileInputStream(new File(fileName));
-      return loadGameState(new BufferedReader(new InputStreamReader(reader)).readLine(),g);
+      return loadGameState(new BufferedReader(new InputStreamReader(reader)).readLine(), g);
     } catch (Exception e) {
       //TODO: Deal
       throw new Error("FAILED TO READ LEVEL");
     }
   }
+
   /**
    * Load game state from file.
    *
@@ -141,7 +162,7 @@ public class JsonReadWrite {
    * @return Updated game Object.
    * @throws GameNotFoundException Thrown when file not found.
    */
-  public static ChapsChallenge loadGameState(String saveGame, ChapsChallenge g){
+  public static ChapsChallenge loadGameState(String saveGame, ChapsChallenge g) {
     JsonObject game;
     JsonReader jsonReader = Json.createReader(new StringReader(saveGame));
     game = jsonReader.readObject();
@@ -175,7 +196,6 @@ public class JsonReadWrite {
     b.setTreasureCount(
         (int) allTiles.stream().filter(p -> p.toString().equals("Treasure")).count());
 
-
     // Parse player
     JsonReader playerJsonReader = Json.createReader(new StringReader(game.getString("player")));
     JsonObject player = playerJsonReader.readObject();
@@ -202,18 +222,18 @@ public class JsonReadWrite {
 
     Set<Mob> mobs = new HashSet<>();
 
-    for (int i = 0; i <mobsArray.size(); ++i){
+    for (int i = 0; i < mobsArray.size(); ++i) {
       JsonString s = mobsArray.getJsonString(i);
-            JsonReader mobJsonReader = Json.createReader(new StringReader(s.getString()));
-            JsonObject mob = mobJsonReader.readObject();
-            String name = mob.getString("mobName");
-            for (Class classes : LevelManager.classSet) {
-              if (classes.getName().equals(name)) {
-                try {
-                  Object o = classes.getDeclaredConstructor().newInstance();
-                  Method m = classes.getDeclaredMethod("setMobFromJson", JsonReader.class);
-                  m.invoke(o, Json.createReader(new StringReader(s.getString())));
-                  mobs.add((Mob)o);
+      JsonReader mobJsonReader = Json.createReader(new StringReader(s.getString()));
+      JsonObject mob = mobJsonReader.readObject();
+      String name = mob.getString("mobName");
+      for (Class classes : LevelManager.classSet) {
+        if (classes.getName().equals(name)) {
+          try {
+            Object o = classes.getDeclaredConstructor().newInstance();
+            Method m = classes.getDeclaredMethod("setMobFromJson", JsonReader.class);
+            m.invoke(o, Json.createReader(new StringReader(s.getString())));
+            mobs.add((Mob) o);
             break;
           } catch (InstantiationException ex) {
             ex.printStackTrace();
@@ -267,7 +287,7 @@ public class JsonReadWrite {
           Object o = classes.getDeclaredConstructor().newInstance();
           Method m = classes.getDeclaredMethod("setTileFromJson", JsonReader.class);
           m.invoke(o, Json.createReader(new StringReader(string)));
-          return (Mob)o;
+          return (Mob) o;
         } catch (InstantiationException ex) {
           ex.printStackTrace();
         } catch (InvocationTargetException ex) {

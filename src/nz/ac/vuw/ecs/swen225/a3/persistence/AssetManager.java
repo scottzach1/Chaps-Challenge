@@ -48,7 +48,8 @@ public class AssetManager {
    * @param fname of asset.
    * @throws IOException on ImageIO read.
    */
-  public static void loadAssetFromInputStream(InputStream inputStream, String fname) throws IOException {
+  public static void loadAssetFromInputStream(InputStream inputStream, String fname)
+      throws IOException {
     fname = fname.toLowerCase();
     BufferedImage bufferedImage = ImageIO.read(inputStream);
 
