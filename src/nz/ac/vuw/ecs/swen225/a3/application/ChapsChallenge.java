@@ -81,7 +81,6 @@ public class ChapsChallenge {
    * @param direction the direction to move in.
    */
   public void move(Tile.Direction direction) {
-    System.out.println(getLevel());
     if (gamePaused) {
       return;
     }
@@ -109,6 +108,7 @@ public class ChapsChallenge {
       return; //invalid move
     }
     if (nextLocation.isOccupied()) { // stepped on a mob
+      gui.playerIsDead();
       gameOver(MenuType.DEATH);
       return;
     }
@@ -126,6 +126,7 @@ public class ChapsChallenge {
   private void checkFields() {
     if (player.getLocation().getType() == Tile.Type.Exit) {
       if (!board.setNextLevel()) {
+        gui.playerIsDead();
         gameOver(MenuType.WINNER);
         return;
       }
@@ -211,6 +212,8 @@ public class ChapsChallenge {
    * Restarts the game.
    */
   public void restartGame() {
+    gui.resetMenuSettings();
+    gui.playerIsAlive();
     board.setCurrentLevel(0);
     resetLogistics();
   }
@@ -247,6 +250,8 @@ public class ChapsChallenge {
    * Restart current level.
    */
   public void restartLevel() {
+    gui.resetMenuSettings();
+    gui.playerIsAlive();
     int current = board.getCurrentLevel();
     board.setCurrentLevel(current);
     resetLogistics();
@@ -316,6 +321,7 @@ public class ChapsChallenge {
               }
             } catch (InterruptedException e) {
               // If anything was to go unsuccessfully, then control crash the game with a time out
+              gui.playerIsDead();
               gameOver(MenuType.TIMEOUT);
               return;
             }
@@ -484,7 +490,7 @@ public class ChapsChallenge {
    */
   public void startRunningThread() {
     if (thread != null && thread.isAlive()) {
-      thread.interrupt();
+      return;
     }
     if(!threadMade)runningThread();
   }

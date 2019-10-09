@@ -102,7 +102,7 @@ public class JsonReadWrite {
 
     // Dump game info
     builder = Json.createObjectBuilder()
-        .add("level",game.getLevel())
+        .add("level", game.getLevel())
         .add("timeLeft", game.getTimeLeft())
         .add("board", jsonBoard)
         .add("player", jsonPlayer)

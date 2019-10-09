@@ -35,8 +35,12 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
   // Colour Space.
   static final Color BACKGROUND_COLOUR = new Color(67, 104, 101);
 
+
   // Dimension of the frame, based on screen size.
-  private Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
+  private static final int inlet = 100;
+  private Dimension screenDimension = new Dimension(
+      Toolkit.getDefaultToolkit().getScreenSize().width - inlet,
+      Toolkit.getDefaultToolkit().getScreenSize().height - inlet);
   private int menuHeight = screenDimension.height / 30;
   private int screenWidth = screenDimension.width;
   private int screenHeight = screenDimension.height - menuHeight;
@@ -58,6 +62,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
   private String direction;
 
   private boolean isBusy;
+  private boolean playerDead;
 
   private int resizeCycle;
 
@@ -70,6 +75,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
     resizeCycle = 0;
     direction = "";
     application = chapsChallenge;
+    playerDead = false;
 
     // Create new set for hosting keys currently pressed
     activeKeys = new HashSet<>();
@@ -88,7 +94,6 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
     getContentPane().setBackground(BACKGROUND_COLOUR);
     addComponentListener(this);
     addKeyListener(this);
-    pack();
   }
 
   /**
@@ -459,6 +464,10 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
 
     // SPACE
     if (activeKeys.contains(KeyEvent.VK_SPACE) && activeKeys.size() == 1) {
+      if (playerDead) {
+        return;
+      }
+
       if (application.isGamePaused()) {
         application.resumeGame();
       } else {
@@ -478,7 +487,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
         application.resumeGame();
       }
     }
-
+    // Return if recording is running
     if (RecordAndPlay.getIsRunning()) {
       return;
     }
@@ -584,5 +593,28 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
    */
   int getMenuHeight() {
     return menuHeight;
+  }
+
+  /**
+   * Called when the player dies or times out. This means that the menu is not able to be quit out
+   * of.
+   */
+  public void playerIsDead() {
+    playerDead = true;
+  }
+
+  /**
+   * Called when the player restarts the level or game. This means that the player can access the
+   * pause menu again
+   */
+  public void playerIsAlive() {
+    playerDead = false;
+  }
+
+  /**
+   * Resets the menu type when restarting a level
+   */
+  public void resetMenuSettings() {
+    gameMenu.setMenuType(MenuType.PAUSE);
   }
 }
