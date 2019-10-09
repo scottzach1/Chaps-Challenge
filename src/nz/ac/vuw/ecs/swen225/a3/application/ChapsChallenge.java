@@ -81,7 +81,6 @@ public class ChapsChallenge {
    * @param direction the direction to move in.
    */
   public void move(Tile.Direction direction) {
-    System.out.println(getLevel());
     if (gamePaused) {
       return;
     }
