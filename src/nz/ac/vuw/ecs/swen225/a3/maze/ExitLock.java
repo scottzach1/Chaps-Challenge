@@ -35,7 +35,7 @@ public class ExitLock extends Tile {
    *
    * @param t treasures to set.
    */
-  void setTotalTreasures(int t) {
+  public void setTotalTreasures(int t) {
     totalTreasures = t;
   }
 

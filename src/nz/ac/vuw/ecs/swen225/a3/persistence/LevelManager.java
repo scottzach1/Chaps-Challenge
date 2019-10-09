@@ -12,7 +12,7 @@ import java.util.zip.ZipFile;
 
 public class LevelManager {
     static ArrayList<String> levelDescriptions = new ArrayList<>();
-    static int currentLevel = 0;
+    public static int currentLevel = 0;
     public static Set<Class> classSet = new HashSet<>();
 
     public static void loadLevels(){
@@ -82,6 +82,7 @@ public class LevelManager {
     public static int getCurrentLevelInt() {
         return currentLevel;
     }
+
 
     public static String getCurrentLevelStream(int level) {
         return levelDescriptions.get(level);

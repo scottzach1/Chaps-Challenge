@@ -366,16 +366,6 @@ public class ChapsChallenge {
     return board.getStream(player.getLocation());
   }
 
-  /**
-   * Sets the board to the string, changes the level.
-   *
-   * @param level the level to change to.
-   */
-  public void setCustomLevel(String level) {
-    board.setCustomLevel(level);
-    player = new Player(board.getPlayerLocation());
-    resetLogistics();
-  }
 
   /**
    * Gets the current level of this game.
@@ -443,7 +433,7 @@ public class ChapsChallenge {
    * Makes a new Mob manager.
    * Makes a new Player.
    */
-  private void resetLogistics() {
+  public void resetLogistics() {
     timeLeft = totalTime;
     startTime = System.currentTimeMillis();
     mobManager = new MobManager(board);
