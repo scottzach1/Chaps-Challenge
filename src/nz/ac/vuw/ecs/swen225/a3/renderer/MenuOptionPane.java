@@ -11,9 +11,9 @@ import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
 /**
  * MenuOptions extends JMenuBar and is responsible for hosting the options in the menu bar at the
  * top of the GUI.
- * @author Zac Scott, Harrison Cook, Jacob Fraser.
+ * @author Zac Scott 300447976, Harrison Cook 300402048, Jacob Fraser.
  */
-class MenuOptions extends JMenuBar {
+class MenuOptionPane extends JMenuBar {
 
   /**
    * Default serial number.
@@ -23,9 +23,10 @@ class MenuOptions extends JMenuBar {
   /**
    * Constructor: Creates MenuBar and adds all game relevant components.
    */
-  MenuOptions(ChapsChallenge application) {
+  MenuOptionPane(ChapsChallenge application) {
     // Set the Size of the Control panel
-    setPreferredSize(new Dimension(Gui.screenWidth, Gui.MENU_HEIGHT));
+    Gui gui = application.getGui();
+    setPreferredSize(new Dimension(gui.getScreenWidth(), gui.getMenuHeight()));
     setFont(new Font("Serif", Font.BOLD, 18));
 
     // Create the file menu

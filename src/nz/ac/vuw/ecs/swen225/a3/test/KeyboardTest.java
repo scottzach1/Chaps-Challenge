@@ -2,6 +2,7 @@ package nz.ac.vuw.ecs.swen225.a3.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertLinesMatch;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -408,6 +409,10 @@ class KeyboardTest {
     assertEquals(0, application.getLevel());
   }
 
+  /**
+   * Checks GUI restarts level on ctrl + p.
+   * @throws InterruptedException from sleep.
+   */
   @SuppressWarnings("deprecation")
   @Test
   void testRestartLevel() throws InterruptedException {
@@ -450,4 +455,33 @@ class KeyboardTest {
     assertEquals(resetTile.getRow(), start.getRow());
   }
 
+  /**
+   * Tests Gui doesn't respond to KeyTyped input.
+   * @throws InterruptedException from sleep.
+   */
+  @SuppressWarnings("deprecation")
+  @Test
+  void testKeyTyped() throws InterruptedException {
+    // Make game
+    ChapsChallenge application = new ChapsChallenge();
+    Gui gui = application.getGui();
+    Board board = application.getBoard();
+    final String boardState = board.toString();
+
+    for (int keyEvent=KeyEvent.VK_UNDEFINED; keyEvent<=KeyEvent.VK_Z; ++keyEvent) {
+      while (gui.isBusy()) {
+        Thread.sleep(100);
+      }
+      // Input ctrl + P keys
+      try {
+        gui.keyTyped(
+            new KeyEvent(gui, KeyEvent.KEY_TYPED, System.currentTimeMillis(), KeyEvent.VK_UNDEFINED,
+                keyEvent));
+      } catch (IllegalArgumentException e) {
+        // Try next key.
+      }
+    }
+    // Check board state still same.
+    assertEquals(boardState, board.toString());
+  }
 }

@@ -12,6 +12,7 @@ import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
 import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
 import nz.ac.vuw.ecs.swen225.a3.persistence.LevelManager;
 import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
+import nz.ac.vuw.ecs.swen225.a3.renderer.GameMenu.MenuType;
 import nz.ac.vuw.ecs.swen225.a3.renderer.Gui;
 
 /**
@@ -58,6 +59,7 @@ public class ChapsChallenge {
 
     // Creates a GUI and gives it a keyListener
     gui = new Gui(this);
+    gui.addLayoutComponents();
 
   }
 
@@ -104,7 +106,7 @@ public class ChapsChallenge {
       return; //invalid move
     }
     if (nextLocation.isOccupied()) { // stepped on a mob
-      restartLevel();
+      gameOver(MenuType.DEATH);
       return;
     }
     currentLocation.setTileUnoccupied();
@@ -121,7 +123,8 @@ public class ChapsChallenge {
   private void checkFields() {
     if (player.getLocation().getType() == Tile.Type.Exit) {
       if (!board.setNextLevel()) {
-        gameEnd();
+        gameOver(MenuType.WINNER);
+        return;
       }
       player = new Player(board.getPlayerLocation());
       timeLeft = totalTime;
@@ -157,6 +160,7 @@ public class ChapsChallenge {
    */
   public void pauseGame() {
     gamePaused = true;
+    startTime = System.currentTimeMillis();
     gui.pauseGame();
   }
 
@@ -165,16 +169,17 @@ public class ChapsChallenge {
    */
   public void resumeGame() {
     gamePaused = false;
+    startTime = System.currentTimeMillis();
     gui.resumeGame();
     runningThread();
-    startTime = System.currentTimeMillis();
   }
 
   /**
    * Loads the game.
    */
   public void loadGame() {
-    gamePaused = false;
+    gamePaused = true;
+    startTime = System.currentTimeMillis();
     if (gui.loadGame()) {
       try {
         //TODO: use the field "loadFile" - a File object
@@ -193,6 +198,7 @@ public class ChapsChallenge {
    */
   public void saveGame() {
     gamePaused = true;
+    startTime = System.currentTimeMillis();
     if (gui.saveGame()) {
       JsonReadWrite.saveGameState(this, saveFile.getAbsolutePath());
     }
@@ -263,14 +269,11 @@ public class ChapsChallenge {
    */
   public void exitGame() {
     gamePaused = true;
+    startTime = System.currentTimeMillis();
     if (gui.exitGame()) {
       System.exit(0);
     }
     resumeGame();
-  }
-
-  private void timeOut() {
-    gameOver("Timed Out!");
   }
 
   /**
@@ -310,7 +313,7 @@ public class ChapsChallenge {
               }
             } catch (InterruptedException e) {
               // If anything was to go unsuccessfully, then control crash the game with a time out
-              timeOut();
+              gameOver(MenuType.TIMEOUT);
               return;
             }
           }
@@ -394,14 +397,11 @@ public class ChapsChallenge {
     return player;
   }
 
-  private void gameOver(String reason) {
+  private void gameOver(MenuType reason) {
+    gamePaused = true;
     gui.gameOver(reason);
-    exitGame();
   }
 
-  private void gameEnd() {
-    gui.endGame();
-  }
 
   /**
    * Get time remaining.

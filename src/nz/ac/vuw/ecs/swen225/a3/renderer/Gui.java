@@ -20,10 +20,12 @@ import javax.swing.WindowConstants;
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
 import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
+import nz.ac.vuw.ecs.swen225.a3.renderer.GameMenu.MenuType;
 
 /**
  * GUI class extends JFrame and is responsible with maintain the Graphical Interface.
- * @author Harrison Cook, Zac Scott.
+ *
+ * @author Harrison Cook 300402048, Zac Scott 300447976.
  */
 public class Gui extends JFrame implements ComponentListener, KeyListener {
 
@@ -34,17 +36,17 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
   static final Color BACKGROUND_COLOUR = new Color(67, 104, 101);
 
   // Dimension of the frame, based on screen size.
-  static Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
-  static final int MENU_HEIGHT = screenDimension.height / 30;
-  static int screenWidth = screenDimension.width;
-  static int screenHeight = screenDimension.height - MENU_HEIGHT;
-  static int canvasWidth = (screenDimension.width * 2) / 3;
-  static int dashboardWidth = (screenDimension.width) / 3;
+  private Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
+  private int menuHeight = screenDimension.height / 30;
+  private int screenWidth = screenDimension.width;
+  private int screenHeight = screenDimension.height - menuHeight;
+  private int canvasWidth = (screenDimension.width * 2) / 3;
+  private int dashboardWidth = (screenDimension.width) / 3;
 
   // ChapsChallenge component fields.
   private Canvas canvas;
   private DashboardHolder dashboardHolder;
-  private PauseMenu pauseMenu;
+  private GameMenu gameMenu;
   private JMenuBar menuBar;
   private ChapsChallenge application;
 
@@ -55,7 +57,6 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
   private HashSet<Integer> activeKeys;
   private String direction;
 
-  private boolean loaded;
   private boolean isBusy;
 
   private int resizeCycle;
@@ -66,7 +67,6 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
    * components then redraws.
    */
   public Gui(ChapsChallenge chapsChallenge) {
-    setLoaded(false);
     resizeCycle = 0;
     direction = "";
     application = chapsChallenge;
@@ -74,15 +74,8 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
     // Create new set for hosting keys currently pressed
     activeKeys = new HashSet<>();
 
-    // Add components.
-    canvas = new Canvas(application);
-    dashboardHolder = new DashboardHolder(application);
-    pauseMenu = new PauseMenu(application);
-    menuBar = new MenuOptions(application);
-
     // Set GridBag
     setLayout(new GridBagLayout());
-    addLayoutComponents();
 
     //Create & init the frame.
     setPreferredSize(screenDimension.getSize());
@@ -95,7 +88,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
     getContentPane().setBackground(BACKGROUND_COLOUR);
     addComponentListener(this);
     addKeyListener(this);
-
+    pack();
   }
 
   /**
@@ -110,7 +103,13 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
   /**
    * Sets up GridBagLayout with all screen components.
    */
-  private void addLayoutComponents() {
+  public void addLayoutComponents() {
+    // Add components.
+    canvas = new Canvas(application);
+    dashboardHolder = new DashboardHolder(application);
+    gameMenu = new GameMenu(application);
+    menuBar = new MenuOptionPane(application);
+
     // Add MenuBar.
     setJMenuBar(menuBar);
     constraints.fill = GridBagConstraints.BOTH;
@@ -129,7 +128,6 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
     constraints.weightx = 1;
     constraints.weighty = 1;
     add(dashboardHolder, constraints);
-
     pack();
   }
 
@@ -142,9 +140,9 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
     constraints.fill = GridBagConstraints.BOTH;
     constraints.weightx = 1;
     constraints.weighty = 1;
-    pauseMenu.renderPauseMenu();
+    gameMenu.renderMenu();
 
-    add(pauseMenu, constraints);
+    add(gameMenu, constraints);
     redraw();
     componentResized(new ComponentEvent(this, ComponentEvent.COMPONENT_RESIZED));
   }
@@ -218,7 +216,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
     JOptionPane.showOptionDialog(null,
         "Invalid file\n",
         "WARNING",
-        JOptionPane.OK_OPTION,
+        JOptionPane.YES_NO_OPTION,
         JOptionPane.ERROR_MESSAGE,
         null,
         options,
@@ -285,7 +283,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
     JOptionPane.showOptionDialog(null,
         text + "\n",
         "INFO",
-        JOptionPane.OK_OPTION,
+        JOptionPane.YES_NO_OPTION,
         JOptionPane.QUESTION_MESSAGE,
         null,
         options,
@@ -302,20 +300,36 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
 
 
   /**
-   * TODO: Endgame promping provided reason.
-   *
-   * @param reason given.
+   * Renders the game menu upon death, timing out, or winning.
+   * @param reason - MenuType to be displayed based on the reason for the game ending.
    */
-  public void gameOver(String reason) {
-    // TODO: Implement method and add test.
-  }
+  public void gameOver(MenuType reason) {
+    getContentPane().removeAll();
+    constraints = new GridBagConstraints();
+    constraints.fill = GridBagConstraints.BOTH;
+    constraints.weightx = 1;
+    constraints.weighty = 1;
 
+    switch (reason) {
+      case TIMEOUT:
+        gameMenu.setMenuType(MenuType.TIMEOUT);
+        break;
+      case DEATH:
+        gameMenu.setMenuType(MenuType.DEATH);
+        break;
+      case WINNER:
+        gameMenu.setMenuType(MenuType.WINNER);
+        break;
+      default:
+        gameMenu.setMenuType(MenuType.ERROR);
+    }
 
-  /**
-   * TODO: Endgame with no provided reason.
-   */
-  public void endGame() {
-    // TODO: Implement method and add test.
+    gameMenu.renderMenu();
+
+    add(gameMenu, constraints);
+    redraw();
+    componentResized(new ComponentEvent(this, ComponentEvent.COMPONENT_RESIZED));
+
   }
 
 
@@ -330,9 +344,11 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
     isBusy = true;
     resizeCycle++;
 
+    System.out.println(resizeCycle);
+
     screenDimension = getSize();
     screenWidth = screenDimension.width;
-    screenHeight = screenDimension.height - MENU_HEIGHT;
+    screenHeight = screenDimension.height - menuHeight;
     canvasWidth = (screenDimension.width * 2) / 3;
     dashboardWidth = (screenDimension.width) / 3;
 
@@ -341,18 +357,17 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
       if (canvas != null && dashboardHolder != null) {
         canvas.resize();
         dashboardHolder.resize();
-        setLoaded(true);
       }
       redraw();
 
-      if (resizeCycle == 1) {
+      if (resizeCycle == 2) {
         componentResized(new ComponentEvent(this, ComponentEvent.COMPONENT_RESIZED));
         application.startRunningThread();
       }
 
     } else {
-      if (pauseMenu != null) {
-        pauseMenu.resize();
+      if (gameMenu != null) {
+        gameMenu.resize();
       }
       redraw();
     }
@@ -366,7 +381,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
    */
   @Override
   public void componentMoved(ComponentEvent e) {
-
+    /* NOT UTILISED */
   }
 
   /**
@@ -376,13 +391,11 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
    */
   @Override
   public void componentShown(ComponentEvent e) {
-    if (application.isGamePaused()) {
-      application.resumeGame();
-    }
+    /* NOT UTILISED */
   }
 
   /**
-   * Overridden but not utilized.
+   * Pauses the game on component hidden.
    *
    * @param e event.
    */
@@ -400,7 +413,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
    */
   @Override
   public void keyTyped(KeyEvent e) {
-    /* UNUSED */
+    /* NOT UTILISED */
   }
 
   /**
@@ -533,13 +546,43 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
     direction = "";
   }
 
-  public boolean isLoaded() {
-    return loaded;
+  /**
+   * Returns the whole width of this JFrame.
+   * @return - An integer representation of the screen width
+   */
+  int getScreenWidth() {
+    return screenWidth;
   }
 
-  public void setLoaded(boolean loaded) {
-    this.loaded = loaded;
+  /**
+   * Returns the whole height of this JFrame.
+   * @return - An integer representation of the screen height
+   */
+  int getScreenHeight() {
+    return screenHeight;
   }
 
+  /**
+   * Return 2/3 of the width of this JFrame.
+   * @return - The canvas width
+   */
+  int getCanvasWidth() {
+    return canvasWidth;
+  }
 
+  /**
+   * Return 1/3 of the width of this JFrame.
+   * @return - The Dashboard width
+   */
+  int getDashboardWidth() {
+    return dashboardWidth;
+  }
+
+  /**
+   * Return the height of the menu bar
+   * @return - The menu bar height
+   */
+  int getMenuHeight() {
+    return menuHeight;
+  }
 }

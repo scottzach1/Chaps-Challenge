@@ -2,6 +2,7 @@ package nz.ac.vuw.ecs.swen225.a3.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import javax.swing.ImageIcon;
 import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
@@ -36,6 +37,21 @@ class AssetTest {
   @Test
   void checkUnknown() {
     checkAsset("unknown.png");
+  }
+
+  /**
+   * Checks unknown assets are loaded as unknown.png
+   */
+  @Test
+  void checkInvalidFile() {
+    AssetManager.clearAssets();
+
+    ImageIcon invalidIcon = AssetManager.getScaledImage("1234");
+
+    assertEquals("unknown.png", invalidIcon.getDescription());
+
+    assertTrue(invalidIcon.getIconWidth() >= 0);
+    assertTrue(invalidIcon.getIconHeight() >= 0);
   }
 
   /**
@@ -104,5 +120,65 @@ class AssetTest {
       assertTrue(imageIcon.getIconWidth() >= 0);
       assertTrue(imageIcon.getIconHeight() >= 0);
     }
+  }
+
+    /**
+     * Checks for no Illegal Arg exception on cellSize = 0.
+     */
+    @Test
+    void testCellSize0() {
+      checkAsset("free.png");
+
+      try {
+        AssetManager.scaleImages(0);
+      } catch (IllegalArgumentException e ) {
+        fail("Program should not throw exception on 0 cell size.");
+      }
+    }
+
+  /**
+   * Checks for no Illegal Arg exception on cellSize = 0.
+   */
+  @Test
+  void testScaledInstance() {
+    AssetManager.clearAssets();
+
+    ImageIcon imageIcon = AssetManager.getScaledImageInstance("free.png", 50);
+
+    assertEquals(imageIcon.getIconWidth(), 50);
+    assertEquals(imageIcon.getIconHeight(), 50);
+  }
+
+  /**
+   * Checks AssetManager scales stored assets to specified sizes.
+   */
+  @Test
+  void testScaleAssets1() throws InterruptedException {
+    // Sleep to allow concurrent test windows to finish scaling.
+    try {
+      Thread.sleep(100);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+
+    AssetManager.clearAssets();
+
+    AssetManager.getScaledImage("free.png");
+    AssetManager.scaleImages(50);
+
+    assertEquals(50, AssetManager.getScaledImage("free.png").getIconHeight());
+  }
+
+  /**
+   * Checks AssetManager scales new assets to previously specified sizes.
+   */
+  @Test
+  void testScaleAssets2() {
+    AssetManager.clearAssets();
+
+    AssetManager.scaleImages(50);
+    AssetManager.getScaledImage("wall.png");
+
+    assertEquals(50, AssetManager.getScaledImage("wall.png").getIconHeight());
   }
 }
