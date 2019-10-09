@@ -94,6 +94,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
     getContentPane().setBackground(BACKGROUND_COLOUR);
     addComponentListener(this);
     addKeyListener(this);
+    pack();
   }
 
   /**
@@ -429,6 +430,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
    */
   @Override
   public void keyPressed(KeyEvent e) {
+
     // Add the key pressed to the current list of pressed keys
     activeKeys.add(e.getKeyCode());
     // CTRL + X

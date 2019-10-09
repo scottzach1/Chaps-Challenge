@@ -1,8 +1,10 @@
 package nz.ac.vuw.ecs.swen225.a3.application;
 
+import java.awt.event.ComponentEvent;
 import java.io.File;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 import nz.ac.vuw.ecs.swen225.a3.maze.Board;
 import nz.ac.vuw.ecs.swen225.a3.maze.InfoField;
@@ -41,8 +43,6 @@ public class ChapsChallenge {
   private File loadFile;
 
   private Thread thread;
-
-  private static boolean threadMade;
 
   /**
    * Create main game application.
@@ -173,9 +173,6 @@ public class ChapsChallenge {
     gamePaused = false;
     startTime = System.currentTimeMillis();
     gui.resumeGame();
-    if (!threadMade) {
-      runningThread();
-    }
   }
 
   /**
@@ -286,7 +283,7 @@ public class ChapsChallenge {
    * every second
    */
   private void runningThread() {
-    threadMade = true;
+
     Runnable runnable = new Runnable() {
 
       private int timeCheck = 0;
@@ -318,10 +315,18 @@ public class ChapsChallenge {
                 throw new InterruptedException("TIMED OUT");
               }
             } catch (InterruptedException e) {
+              System.out.println("FAILED");
               // If anything was to go unsuccessfully, then control crash the game with a time out
               gui.playerIsDead();
               gameOver(MenuType.TIMEOUT);
-              return;
+              break;
+            }
+          } else {
+            // This ensures that the sleep function does not interupt itself with actions
+            // by the user.
+            try {
+              Thread.sleep(10);
+            } catch (Exception e) {
             }
           }
         }
@@ -487,9 +492,7 @@ public class ChapsChallenge {
     if (thread != null && thread.isAlive()) {
       return;
     }
-    if (!threadMade) {
-      runningThread();
-    }
+    runningThread();
   }
 
   public void setMobManager(MobManager mobManager) {
