@@ -87,21 +87,6 @@ class AssetTest {
     checkAsset("locked_door_red.png");
   }
 
-  /**
-   * Checks the water asset can be loaded correctly.
-   */
-  @Test
-  void checkWater() {
-    checkAsset("water.png");
-  }
-
-  /**
-   * Checks the flipper asset can be loaded correctly.
-   */
-  @Test
-  void checkFlippers() {
-    checkAsset("flippers.png");
-  }
 
   /**
    * Checks the number overlay assets can be loaded correctly.

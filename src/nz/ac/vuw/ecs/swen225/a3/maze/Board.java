@@ -11,8 +11,6 @@ import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
 import nz.ac.vuw.ecs.swen225.a3.persistence.LevelManager;
 import nz.ac.vuw.ecs.swen225.a3.renderer.Canvas;
 
-
-
 /**
  * Board class.
  * Holds a 2D array of all the current tiles.
@@ -28,8 +26,6 @@ public class Board {
   private List<Tile> allTiles;
   private Tile[][] tiles = new Tile[boardSize][boardSize];
 
-  private List<String> allLevels;
-  private int currentLevel;
   private int treasureCount = 0;
 
   private ChapsChallenge chapsChallenge;
@@ -46,110 +42,6 @@ public class Board {
     setupAdjacency();
   }
 
-  /**
-   * Sets the board to a custom level.
-   * @param level to set.
-   */
-  public void setCustomLevel(String level) {
-    try {
-      if (!allLevels.contains(level)) {
-        allLevels.add(0,level);
-        currentLevel = 0;
-      }
-      parseBoard(level);
-    } catch (ParsingException p) {
-      System.out.println(p.getMessage());
-      throw new Error(p.getMessage());
-    } catch (MultiplePlayersFoundException m) {
-      System.out.println(m.getMessage());
-      throw new Error(m.getMessage());
-    } catch (PlayerNotFoundException pnf) {
-      System.out.println(pnf.getMessage());
-      throw new Error(pnf.getMessage());
-    }
-    setupAdjacency();
-  }
-
-  /**
-   * Parse board string into tile array.
-   *
-   * @param level String representation of board
-   */
-  private void parseBoard(String level)
-      throws MultiplePlayersFoundException, ParsingException, PlayerNotFoundException {
-    boolean foundChap = false;
-    String[] values = level.split("\\|");
-    int index = 0;
-    for (String v : values) {
-      switch (v) {
-        case "W":
-        case "F":
-        case "_":
-          setTile(index / 20, index % 20, new Free());
-          break;
-        case "#":
-          setTile(index / 20, index % 20, new Wall());
-          break;
-        case "T":
-          setTile(index / 20, index % 20, new Treasure());
-          break;
-        case "?":
-          setTile(index / 20, index % 20, new InfoField("Test"));
-          break;
-        case "Exit":
-          setTile(index / 20, index % 20, new Exit());
-          break;
-        case "ExitLock":
-          setTile(index / 20, index % 20, new ExitLock());
-          break;
-        case "C":
-          if (foundChap) {
-            throw new MultiplePlayersFoundException();
-          }
-          foundChap = true;
-          Free tile = new Free();
-
-          // FIXME: This might not be the best place.
-          tile.imageUrl = "chap_front.png";
-
-          setTile(index / 20, index % 20, tile);
-          break;
-        default:
-          // Must be a colored key or door
-          String itemType = v.substring(0, 1);
-
-          // Check for invalid token
-          if (!(itemType.equals("K") || itemType.equals("D"))) {
-            throw new ParsingException();
-          }
-
-          String colour = v.substring(1).toLowerCase();
-
-          // Create colored key or door
-          if (itemType.equals("K")) {
-            setTile(index / 20, index % 20, new Key(colour));
-          } else {
-            setTile(index / 20, index % 20, new LockedDoor(colour));
-          }
-      }
-      index++;
-    }
-    if (!foundChap) {
-      throw new PlayerNotFoundException();
-    }
-
-    allTiles = new ArrayList<>();
-    for (int row = 0; row < boardSize; row++) {
-      allTiles.addAll(Arrays.asList(tiles[row]).subList(0, boardSize));
-    }
-
-    // Count number of treasures
-    treasureCount = (int) allTiles.stream().filter(p -> p.toString().equals("Treasure")).count();
-
-    // Set all exit locks to require correct number of treasures
-    allTiles.stream().filter(p -> p.getType() == Tile.Type.ExitLock)
-        .map(c -> (ExitLock) c).forEach(s -> s.setTotalTreasures(treasureCount));
-  }
 
   /**
    * Add tile to 2d array and store row and column.
@@ -230,6 +122,15 @@ public class Board {
   }
 
   /**
+   * Sets the treasure count to the number specified.
+   *
+   * @param treasureCount the treasure count.
+   */
+  public void setTreasureCount(int treasureCount) {
+    this.treasureCount = treasureCount;
+  }
+
+  /**
    * Returns the tile corresponding to the row and col specified.
    *
    * @param row the row of the tile.
@@ -259,53 +160,53 @@ public class Board {
    * Sets the current level to 0.
    */
   private void addLevels() {
-    currentLevel = 0; // Set current level to 0.
+    //currentLevel = 0; // Set current level to 0.
 
-    allLevels = new ArrayList<>();
-    // Level 1
-    allLevels.add(
-        "_|_|_|T|T|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-            + "#|#|_|_|_|_|KYellow|KBlue|KRed|KGreen|_|_|C|_|_|_|_|_|_|_|"
-            + "T|DBlue|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-            + "#|#|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-            + "T|DRed|_|_|_|_|_|_|_|_|_|#|ExitLock|#|_|_|_|_|_|_|"
-            + "#|#|_|_|_|_|_|_|_|_|_|#|Exit|#|_|_|_|_|_|_|"
-            + "T|DGreen|_|_|_|_|_|_|_|_|_|#|#|#|_|_|_|_|_|_|"
-            + "#|#|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-            + "T|DYellow|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-            + "#|#|_|_|_|_|_|_|_|_|?|_|_|_|_|_|_|_|_|_|"
-            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-            + "#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|"
-            + "#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|"
-            + "#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|"
-            + "#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|"
-            + "#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|"
-            + "#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|"
-            + "#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|");
-    // Level 2
-    allLevels.add(
-              "W|W|_|_|_|_|_|_|_|#|KRed|#|_|_|_|_|_|_|_|_|"
-            + "W|W|_|_|_|F|_|?|_|#|T|#|_|_|_|_|_|_|_|_|"
-            + "W|W|_|_|_|_|_|_|_|#|_|#|_|_|_|_|_|_|_|_|"
-            + "W|W|_|#|#|#|#|_|_|#|_|#|_|#|#|#|#|_|_|_|"
-            + "W|W|_|#|T|T|#|_|_|#|_|#|_|#|T|KYellow|#|_|_|_|"
-            + "W|W|_|#|T|T|#|_|_|#|_|#|_|#|T|T|#|_|_|_|"
-            + "W|W|_|#|#|DYellow|#|_|_|_|_|_|_|#|DGreen|#|#|_|_|_|"
-            + "W|W|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-            + "W|W|W|W|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-            + "W|W|W|W|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-            + "T|W|W|W|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-            + "W|W|W|W|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-            + "W|W|W|W|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-            + "#|#|#|#|#|DBlue|#|_|_|_|_|_|_|#|DRed|#|#|_|_|_|"
-            + "_|_|_|#|T|T|#|_|_|#|_|#|_|#|T|T|#|_|_|_|"
-            + "_|_|_|#|KGreen|T|#|_|_|#|_|#|_|#|T|KBlue|#|_|_|_|"
-            + "_|_|_|#|#|#|#|_|_|#|_|#|_|#|#|#|#|_|_|_|"
-            + "_|_|_|_|_|_|_|_|_|#|C|#|_|_|_|_|_|_|_|_|"
-            + "_|_|_|_|_|_|_|_|_|#|ExitLock|#|_|_|_|_|_|_|_|_|"
-            + "_|_|_|_|_|_|_|_|_|#|Exit|#|_|_|_|_|_|_|_|_|");
+//    allLevels = new ArrayList<>();
+//    // Level 1
+//    allLevels.add(
+//        "_|_|_|T|T|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+//            + "#|#|_|_|_|_|KYellow|KBlue|KRed|KGreen|_|_|C|_|_|_|_|_|_|_|"
+//            + "T|DBlue|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+//            + "#|#|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+//            + "T|DRed|_|_|_|_|_|_|_|_|_|#|ExitLock|#|_|_|_|_|_|_|"
+//            + "#|#|_|_|_|_|_|_|_|_|_|#|Exit|#|_|_|_|_|_|_|"
+//            + "T|DGreen|_|_|_|_|_|_|_|_|_|#|#|#|_|_|_|_|_|_|"
+//            + "#|#|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+//            + "T|DYellow|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+//            + "#|#|_|_|_|_|_|_|_|_|?|_|_|_|_|_|_|_|_|_|"
+//            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+//            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+//            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+//            + "#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|"
+//            + "#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|"
+//            + "#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|"
+//            + "#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|"
+//            + "#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|"
+//            + "#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|"
+//            + "#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|");
+//    // Level 2
+//    allLevels.add(
+//              "W|W|_|_|_|_|_|_|_|#|KRed|#|_|_|_|_|_|_|_|_|"
+//            + "W|W|_|_|_|F|_|?|_|#|T|#|_|_|_|_|_|_|_|_|"
+//            + "W|W|_|_|_|_|_|_|_|#|_|#|_|_|_|_|_|_|_|_|"
+//            + "W|W|_|#|#|#|#|_|_|#|_|#|_|#|#|#|#|_|_|_|"
+//            + "W|W|_|#|T|T|#|_|_|#|_|#|_|#|T|KYellow|#|_|_|_|"
+//            + "W|W|_|#|T|T|#|_|_|#|_|#|_|#|T|T|#|_|_|_|"
+//            + "W|W|_|#|#|DYellow|#|_|_|_|_|_|_|#|DGreen|#|#|_|_|_|"
+//            + "W|W|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+//            + "W|W|W|W|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+//            + "W|W|W|W|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+//            + "T|W|W|W|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+//            + "W|W|W|W|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+//            + "W|W|W|W|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+//            + "#|#|#|#|#|DBlue|#|_|_|_|_|_|_|#|DRed|#|#|_|_|_|"
+//            + "_|_|_|#|T|T|#|_|_|#|_|#|_|#|T|T|#|_|_|_|"
+//            + "_|_|_|#|KGreen|T|#|_|_|#|_|#|_|#|T|KBlue|#|_|_|_|"
+//            + "_|_|_|#|#|#|#|_|_|#|_|#|_|#|#|#|#|_|_|_|"
+//            + "_|_|_|_|_|_|_|_|_|#|C|#|_|_|_|_|_|_|_|_|"
+//            + "_|_|_|_|_|_|_|_|_|#|ExitLock|#|_|_|_|_|_|_|_|_|"
+//            + "_|_|_|_|_|_|_|_|_|#|Exit|#|_|_|_|_|_|_|_|_|");
 //    // Level 3
 //    allLevels.add(
 //              "Exit|ExitLock|_|_|_|_|_|_|_|C|_|KRed|_|_|_|_|_|DBlue|T|KGreen|"
@@ -384,6 +285,7 @@ public class Board {
     if (currentLevel < LevelManager.getNumLevels() - 1) {
     JsonReadWrite.loadGameState(LevelManager.getCurrentLevelStream(currentLevel + 1),
         chapsChallenge);
+      LevelManager.currentLevel++;
       return true;
     }
     return false;
@@ -395,8 +297,9 @@ public class Board {
    * @param level to set.
    */
   public void setCurrentLevel(int level) {
-    if (level > 0 && level < LevelManager.getNumLevels()) {
+    if (level >= 0 && level < LevelManager.getNumLevels()) {
     JsonReadWrite.loadGameState(LevelManager.getCurrentLevelStream(level), chapsChallenge);
+      LevelManager.currentLevel = level;
     }
   }
 
@@ -422,6 +325,24 @@ public class Board {
    */
   public int getBoardSize() {
     return boardSize;
+  }
+
+  /**
+   * Gets the tiles.
+   *
+   * @return the tiles.
+   */
+  public Tile[][] getTiles() {
+    return tiles;
+  }
+
+  /**
+   * Sets the tiles.
+   *
+   * @param tiles 2D array of tiles.
+   */
+  public void setTiles(Tile[][] tiles) {
+    this.tiles = tiles;
   }
 
   /**
@@ -493,7 +414,14 @@ public class Board {
    */
   @Override
   public String toString() {
-    return allLevels.get(currentLevel); // todo change
+    StringBuilder toReturn = new StringBuilder();
+    for (int i = 0; i < tiles.length; i++) {
+      for (int j = 0; j < tiles[i].length; j++) {
+        toReturn.append(tiles[i][j]);
+        toReturn.append(" , ");
+      }
+    }
+    return toReturn.substring(0, toReturn.length() - 2);
   }
   
 }
