@@ -436,7 +436,7 @@ public class ChapsChallenge {
   public void resetLogistics() {
     timeLeft = totalTime;
     startTime = System.currentTimeMillis();
-    //mobManager = new MobManager(board);
+    mobManager = new MobManager(board);
     player = new Player(board.getPlayerLocation());
   }
 
@@ -485,6 +485,10 @@ public class ChapsChallenge {
       thread.interrupt();
     }
     runningThread();
+  }
+
+  public void setMobManager(MobManager mobManager) {
+    this.mobManager = mobManager;
   }
 
   /**

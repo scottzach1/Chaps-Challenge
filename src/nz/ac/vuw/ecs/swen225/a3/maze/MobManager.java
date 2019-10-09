@@ -1,5 +1,6 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,10 +38,10 @@ public class MobManager {
    * @param board board to control mob.
    */
   public MobManager(Board board) {
-    // TODO: This shouldn't take board in the future.
     this.setBoard(board);
     this.mobs = new HashSet<>();
 
+//
   }
 
   /**
