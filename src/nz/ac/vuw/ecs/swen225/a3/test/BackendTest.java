@@ -34,7 +34,6 @@ class BackendTest {
   private ChapsChallenge chapsChallenge = new ChapsChallenge();
 
   private List<String> allLevels = new ArrayList<>();
-  private int currentLevel;
 
   /**
    * The default chaps challenge should start at level 1; which is also the default for a new board.
@@ -653,11 +652,10 @@ class BackendTest {
    *
    * @param level to set.
    */
-  public void setCustomLevel(String level, Board board) {
+  void setCustomLevel(String level, Board board) {
     try {
       if (!allLevels.contains(level)) {
         allLevels.add(0, level);
-        currentLevel = 0;
       }
       parseTestBoards(level, board);
     } catch (ParsingException p) {

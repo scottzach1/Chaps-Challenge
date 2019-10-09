@@ -1,12 +1,11 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
-import nz.ac.vuw.ecs.swen225.a3.persistence.GameNotFoundException;
 import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
 import nz.ac.vuw.ecs.swen225.a3.persistence.LevelManager;
 import nz.ac.vuw.ecs.swen225.a3.renderer.Canvas;
@@ -415,11 +414,11 @@ public class Board {
   @Override
   public String toString() {
     StringBuilder toReturn = new StringBuilder();
-    for (int i = 0; i < tiles.length; i++) {
-      for (int j = 0; j < tiles[i].length; j++) {
-        toReturn.append(tiles[i][j]);
+    for (Tile[] tile : tiles) {
+      IntStream.range(0, tile.length).forEach(j -> {
+        toReturn.append(tile[j]);
         toReturn.append(" , ");
-      }
+      });
     }
     return toReturn.substring(0, toReturn.length() - 2);
   }
