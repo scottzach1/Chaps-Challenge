@@ -22,9 +22,8 @@ import nz.ac.vuw.ecs.swen225.a3.renderer.CombinedImageIcon;
 public class AssetManager {
 
   private static String assetPath = "assets/";
-  private static String customAssetPath = "";
-  private static boolean loaded = false;
 
+  private static boolean loaded = false;
   private static boolean scaling = false;
 
   /**
@@ -44,22 +43,13 @@ public class AssetManager {
   }
 
   /**
-   * Sets the path to look for assets.
-   *
-   * @param path path to load assets.
-   */
-  public static void setCustomAssetPath(String path) {
-    customAssetPath = path;
-  }
-
-
-  /**
    * Loads an asset from an input stream.
    * @param inputStream containing asset.
    * @param fname of asset.
    * @throws IOException on ImageIO read.
    */
   public static void loadAssetFromInputStream(InputStream inputStream, String fname) throws IOException {
+    fname = fname.toLowerCase();
     BufferedImage bufferedImage = ImageIO.read(inputStream);
 
     // -- Load base image -- //
@@ -106,20 +96,13 @@ public class AssetManager {
       loadAsset("unknown.png");
     }
 
+    fname = fname.toLowerCase();
     if (baseImageIcons.containsKey(fname)) {
       return;
     }
 
     // -- Load base image -- //
-
-    // Try Custom path.
-    ImageIcon baseIcon = new ImageIcon(customAssetPath + fname);
-
-    // Otherwise try Local path.
-    if (baseIcon.getIconWidth() <= 0 || baseIcon.getIconHeight() <= 0) {
-      baseIcon = new ImageIcon(assetPath + fname);
-    }
-
+    ImageIcon baseIcon = new ImageIcon(assetPath + fname);
     baseIcon.setDescription(fname);
 
     // Else use unknown from local path.
@@ -172,6 +155,8 @@ public class AssetManager {
    * @return ImageIcon.
    */
   public static ImageIcon getScaledImage(String fname) {
+    fname = fname.toLowerCase();
+
     if (fname.contains("-")) {
       return getOverlaidImages(fname);
     }
@@ -181,7 +166,14 @@ public class AssetManager {
     return scaledImageIcons.get(fname);
   }
 
+  /**
+   * Gets an overlayed ImageIcon of the files within the conjoined filename.
+   * Filename has '-' delimitation. Ie, "free.png-flippers.png"
+   * @param mergedFnames of files with "-" delimiter.
+   * @return combined imageIcon.
+   */
   private static ImageIcon getOverlaidImages(String mergedFnames) {
+
     List<String> fnames = new ArrayList<>(Arrays.asList(mergedFnames.split("-")));
     List<ImageIcon> layers = new ArrayList<>();
     StringBuilder description = new StringBuilder();
@@ -212,6 +204,7 @@ public class AssetManager {
    * @return ImageIcon.
    */
   public static ImageIcon getNumberedScaledImage(String fname, int number) {
+    fname = fname.toLowerCase();
     // Number clipping.
     String nname = ((number < 10 && number > 0) ? number : "NaN") + ".png";
 
@@ -225,6 +218,7 @@ public class AssetManager {
    * @return ImageIcon.
    */
   public static ImageIcon getScaledImageInstance(String fname, int newCellSize) {
+    fname = fname.toLowerCase();
     loadAsset(fname);
 
     // Get base image
