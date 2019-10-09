@@ -181,6 +181,9 @@ public class JsonReadWrite {
 
     b.setBoardSize(boardSize);
     b.setAllTiles(allTiles);
+    b.setTreasureCount(
+        (int) allTiles.stream().filter(p -> p.toString().equals("Treasure")).count());
+
 
     // Parse player
     JsonReader playerJsonReader = Json.createReader(new StringReader(game.getString("player")));
