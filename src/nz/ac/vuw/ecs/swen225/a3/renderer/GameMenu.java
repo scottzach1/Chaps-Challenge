@@ -41,6 +41,7 @@ public class GameMenu extends JPanel {
   private CustomTextPane textPane;
   private int textPaneFontSize;
   private ChapsChallenge application;
+  private Gui gui;
   private Color buttonForeground;
   private Color buttonBackground;
   private Color otherForeground;
@@ -57,26 +58,27 @@ public class GameMenu extends JPanel {
    */
   GameMenu(ChapsChallenge chapsChallenge) {
     application = chapsChallenge;
+    gui = application.getGui();
     menuType = MenuType.PAUSE;
     oldMenuType = MenuType.PAUSE;
 
     centerAlign = new SimpleAttributeSet();
     StyleConstants.setAlignment(centerAlign, StyleConstants.ALIGN_CENTER);
 
-    setPreferredSize(new Dimension(Gui.screenWidth, Gui.screenHeight));
-    setBackground(Gui.BACKGROUND_COLOUR.darker());
+    setPreferredSize(new Dimension(gui.getScreenWidth(), gui.getScreenHeight()));
+    setBackground(gui.BACKGROUND_COLOUR.darker());
     setLayout(new BorderLayout());
     setVisible(true);
 
-    buttonBackground = Gui.BACKGROUND_COLOUR.darker().darker();
+    buttonBackground = gui.BACKGROUND_COLOUR.darker().darker();
     buttonForeground = new Color(193, 193, 193);
     otherBackground = buttonBackground.darker();
     otherForeground = buttonForeground.brighter();
 
     panel = new JPanel();
     panel.setPreferredSize(
-        new Dimension(Gui.screenWidth / 4, Gui.screenHeight - (Gui.screenHeight / 10)));
-    panel.setBackground(Gui.BACKGROUND_COLOUR);
+        new Dimension(gui.getScreenWidth() / 4, gui.getScreenHeight() - (gui.getScreenHeight() / 10)));
+    panel.setBackground(gui.BACKGROUND_COLOUR);
     panel.setLayout(new GridBagLayout());
   }
 
@@ -89,8 +91,8 @@ public class GameMenu extends JPanel {
     menuButtons.clear();
 
     // Create the width and height of the components
-    int width = Gui.screenWidth / 2;
-    int height = Gui.screenHeight / (3 * 2);
+    int width = gui.getScreenWidth() / 2;
+    int height = gui.getScreenHeight() / (3 * 2);
 
     // Create the buttons
     MenuButton resume = new MenuButton("Resume", new ActionListener() {
@@ -132,8 +134,8 @@ public class GameMenu extends JPanel {
     menuButtons.clear();
 
     // Create the width and height of the components
-    int width = Gui.screenWidth / 2;
-    int height = Gui.screenHeight / (3 * 2);
+    int width = gui.getScreenWidth() / 2;
+    int height = gui.getScreenHeight() / (3 * 2);
 
     MenuButton restartLevel = new MenuButton("Restart Level", new ActionListener() {
       @Override
@@ -355,8 +357,8 @@ public class GameMenu extends JPanel {
    */
   private Font findFont(Component component, Font oldFont, String text) {
     // Get the size of the area the text can take up
-    int boxWidth = (Gui.screenWidth / 2);
-    int boxHeight = (Gui.screenHeight / 6);
+    int boxWidth = (gui.getScreenWidth() / 2);
+    int boxHeight = (gui.getScreenHeight() / 6);
     Dimension componentSize = new Dimension(boxWidth, boxHeight);
 
     // The default size and text if no size is found to fit

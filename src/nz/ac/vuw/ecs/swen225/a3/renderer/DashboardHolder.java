@@ -20,7 +20,6 @@ public class DashboardHolder extends JPanel {
   private Dashboard dashboard;
   private GridBagConstraints gbc;
   private ChapsChallenge application;
-
   private int dashboardHeight;
 
   /**
@@ -28,8 +27,8 @@ public class DashboardHolder extends JPanel {
    */
   public DashboardHolder(ChapsChallenge chapsChallenge) {
     setApplication(chapsChallenge);
-
-    setPreferredSize(new Dimension(Gui.dashboardWidth, Gui.screenHeight));
+    Gui gui = application.getGui();
+    setPreferredSize(new Dimension(gui.getDashboardWidth(), gui.getScreenHeight()));
 
     dashboard = new Dashboard(chapsChallenge, this);
 

@@ -25,7 +25,8 @@ class MenuOptionPane extends JMenuBar {
    */
   MenuOptionPane(ChapsChallenge application) {
     // Set the Size of the Control panel
-    setPreferredSize(new Dimension(Gui.screenWidth, Gui.MENU_HEIGHT));
+    Gui gui = application.getGui();
+    setPreferredSize(new Dimension(gui.getScreenWidth(), gui.getMenuHeight()));
     setFont(new Font("Serif", Font.BOLD, 18));
 
     // Create the file menu

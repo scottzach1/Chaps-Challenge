@@ -56,6 +56,7 @@ public class ChapsChallenge {
 
     // Creates a GUI and gives it a keyListener
     gui = new Gui(this);
+    gui.addLayoutComponents();
 
   }
 
@@ -156,6 +157,7 @@ public class ChapsChallenge {
    */
   public void pauseGame() {
     gamePaused = true;
+    startTime = System.currentTimeMillis();
     gui.pauseGame();
   }
 
@@ -164,16 +166,17 @@ public class ChapsChallenge {
    */
   public void resumeGame() {
     gamePaused = false;
+    startTime = System.currentTimeMillis();
     gui.resumeGame();
     runningThread();
-    startTime = System.currentTimeMillis();
   }
 
   /**
    * Loads the game.
    */
   public void loadGame() {
-    gamePaused = false;
+    gamePaused = true;
+    startTime = System.currentTimeMillis();
     if (gui.loadGame()) {
       try {
         //TODO: use the field "loadFile" - a File object
@@ -192,6 +195,7 @@ public class ChapsChallenge {
    */
   public void saveGame() {
     gamePaused = true;
+    startTime = System.currentTimeMillis();
     if (gui.saveGame()) {
       JsonReadWrite.saveGameState(this, saveFile.getAbsolutePath());
     }
@@ -262,6 +266,7 @@ public class ChapsChallenge {
    */
   public void exitGame() {
     gamePaused = true;
+    startTime = System.currentTimeMillis();
     if (gui.exitGame()) {
       System.exit(0);
     }

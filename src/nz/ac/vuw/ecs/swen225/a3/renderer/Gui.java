@@ -36,12 +36,12 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
   static final Color BACKGROUND_COLOUR = new Color(67, 104, 101);
 
   // Dimension of the frame, based on screen size.
-  private static Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
-  static final int MENU_HEIGHT = screenDimension.height / 30;
-  static int screenWidth = screenDimension.width;
-  static int screenHeight = screenDimension.height - MENU_HEIGHT;
-  static int canvasWidth = (screenDimension.width * 2) / 3;
-  static int dashboardWidth = (screenDimension.width) / 3;
+  private Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
+  private int menuHeight = screenDimension.height / 30;
+  private int screenWidth = screenDimension.width;
+  private int screenHeight = screenDimension.height - menuHeight;
+  private int canvasWidth = (screenDimension.width * 2) / 3;
+  private int dashboardWidth = (screenDimension.width) / 3;
 
   // ChapsChallenge component fields.
   private Canvas canvas;
@@ -74,15 +74,8 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
     // Create new set for hosting keys currently pressed
     activeKeys = new HashSet<>();
 
-    // Add components.
-    canvas = new Canvas(application);
-    dashboardHolder = new DashboardHolder(application);
-    gameMenu = new GameMenu(application);
-    menuBar = new MenuOptionPane(application);
-
     // Set GridBag
     setLayout(new GridBagLayout());
-    addLayoutComponents();
 
     //Create & init the frame.
     setPreferredSize(screenDimension.getSize());
@@ -95,7 +88,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
     getContentPane().setBackground(BACKGROUND_COLOUR);
     addComponentListener(this);
     addKeyListener(this);
-
+    pack();
   }
 
   /**
@@ -110,7 +103,13 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
   /**
    * Sets up GridBagLayout with all screen components.
    */
-  private void addLayoutComponents() {
+  public void addLayoutComponents() {
+    // Add components.
+    canvas = new Canvas(application);
+    dashboardHolder = new DashboardHolder(application);
+    gameMenu = new GameMenu(application);
+    menuBar = new MenuOptionPane(application);
+
     // Add MenuBar.
     setJMenuBar(menuBar);
     constraints.fill = GridBagConstraints.BOTH;
@@ -129,7 +128,6 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
     constraints.weightx = 1;
     constraints.weighty = 1;
     add(dashboardHolder, constraints);
-
     pack();
   }
 
@@ -346,9 +344,11 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
     isBusy = true;
     resizeCycle++;
 
+    System.out.println(resizeCycle);
+
     screenDimension = getSize();
     screenWidth = screenDimension.width;
-    screenHeight = screenDimension.height - MENU_HEIGHT;
+    screenHeight = screenDimension.height - menuHeight;
     canvasWidth = (screenDimension.width * 2) / 3;
     dashboardWidth = (screenDimension.width) / 3;
 
@@ -360,7 +360,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
       }
       redraw();
 
-      if (resizeCycle == 1) {
+      if (resizeCycle == 2) {
         componentResized(new ComponentEvent(this, ComponentEvent.COMPONENT_RESIZED));
         application.startRunningThread();
       }
@@ -546,4 +546,27 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
     direction = "";
   }
 
+  public Dimension getScreenDimension() {
+    return screenDimension;
+  }
+
+  public int getScreenWidth() {
+    return screenWidth;
+  }
+
+  public int getScreenHeight() {
+    return screenHeight;
+  }
+
+  public int getCanvasWidth() {
+    return canvasWidth;
+  }
+
+  public int getDashboardWidth() {
+    return dashboardWidth;
+  }
+
+  public int getMenuHeight() {
+    return menuHeight;
+  }
 }

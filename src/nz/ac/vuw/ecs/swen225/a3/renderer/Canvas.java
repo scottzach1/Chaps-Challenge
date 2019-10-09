@@ -34,7 +34,8 @@ public class Canvas extends JPanel {
    */
   Canvas(ChapsChallenge app) {
     application = app;
-    setPreferredSize(new Dimension(Gui.canvasWidth, Gui.screenHeight));
+    Gui gui = application.getGui();
+    setPreferredSize(new Dimension(gui.getCanvasWidth(), gui.getScreenHeight()));
 
     setLayout(new GridBagLayout());
     setBackground(Gui.BACKGROUND_COLOUR);
