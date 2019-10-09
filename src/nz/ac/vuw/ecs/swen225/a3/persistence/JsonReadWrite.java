@@ -227,8 +227,6 @@ public class JsonReadWrite {
       }
     }
 
-
-
     b.setupAdjacency();
 
     // Ensure mobs are using correct tiles from board
