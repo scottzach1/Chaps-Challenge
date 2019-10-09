@@ -44,6 +44,8 @@ public class ChapsChallenge {
 
   private Thread thread;
 
+  private static boolean threadMade;
+
   /**
    * Create main game application.
    */
@@ -171,7 +173,7 @@ public class ChapsChallenge {
     gamePaused = false;
     startTime = System.currentTimeMillis();
     gui.resumeGame();
-    runningThread();
+    if(!threadMade)runningThread();
   }
 
   /**
@@ -281,8 +283,9 @@ public class ChapsChallenge {
    * and runs a timer, updating the dashboard every second
    */
   private void runningThread() {
-
+    threadMade = true;
     Runnable runnable = new Runnable() {
+
       private int timeCheck = 0;
 
       @Override
@@ -436,7 +439,6 @@ public class ChapsChallenge {
   public void resetLogistics() {
     timeLeft = totalTime;
     startTime = System.currentTimeMillis();
-    mobManager = new MobManager(board);
     player = new Player(board.getPlayerLocation());
   }
 
@@ -484,7 +486,7 @@ public class ChapsChallenge {
     if (thread != null && thread.isAlive()) {
       thread.interrupt();
     }
-    runningThread();
+    if(!threadMade)runningThread();
   }
 
   public void setMobManager(MobManager mobManager) {
