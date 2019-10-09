@@ -35,8 +35,10 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
   // Colour Space.
   static final Color BACKGROUND_COLOUR = new Color(67, 104, 101);
 
+
   // Dimension of the frame, based on screen size.
-  private Dimension screenDimension = new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width - 100, Toolkit.getDefaultToolkit().getScreenSize().height - 100);
+  private static final int inlet = 100;
+  private Dimension screenDimension = new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width - inlet, Toolkit.getDefaultToolkit().getScreenSize().height - inlet);
   private int menuHeight = screenDimension.height / 30;
   private int screenWidth = screenDimension.width;
   private int screenHeight = screenDimension.height - menuHeight;
