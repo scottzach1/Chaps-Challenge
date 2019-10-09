@@ -44,7 +44,7 @@ public class Canvas extends JPanel {
   /**
    * Creates canvas components.
    */
-  public void createCanvasComponents() {
+  private void createCanvasComponents() {
     removeAll();
     components.clear();
     for (int row = 0; row < VIEW_SIZE; row++) {
@@ -61,7 +61,7 @@ public class Canvas extends JPanel {
    * NOTE: This is just a test method and not intended in final product. Renders the board stored in
    * application on the  canvas.
    */
-  public void refreshComponents() {
+  void refreshComponents() {
 
     // Retrieve tiles and add all components.
     // Convert the Stream to List
@@ -82,7 +82,7 @@ public class Canvas extends JPanel {
    * Revalidate's components on GridBagLayout to VIEW_SIZE x VIEW_SIZE.
    * DOES NOT REPAINT.
    */
-  public void renderCanvasComponents() {
+  private void renderCanvasComponents() {
 
     if (getWidth() <= 0) {
       return;
@@ -111,7 +111,7 @@ public class Canvas extends JPanel {
   /**
    * Recalculates cell size then resize the canvas.
    */
-  public void resize() {
+  void resize() {
 
     int cellSize = Math.min(getWidth(), getHeight()) / VIEW_SIZE;
     AssetManager.scaleImages(cellSize);

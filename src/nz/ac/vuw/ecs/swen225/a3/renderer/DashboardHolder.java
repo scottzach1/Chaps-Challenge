@@ -18,15 +18,14 @@ public class DashboardHolder extends JPanel {
    */
   private static final long serialVersionUID = 1L;
   private Dashboard dashboard;
-  private GridBagConstraints gbc;
   private ChapsChallenge application;
   private int dashboardHeight;
 
   /**
    * Constructor creates a new dashboard but does no render.
    */
-  public DashboardHolder(ChapsChallenge chapsChallenge) {
-    setApplication(chapsChallenge);
+  DashboardHolder(ChapsChallenge chapsChallenge) {
+    application = chapsChallenge;
     Gui gui = application.getGui();
     setPreferredSize(new Dimension(gui.getDashboardWidth(), gui.getScreenHeight()));
 
@@ -41,11 +40,11 @@ public class DashboardHolder extends JPanel {
   /**
    * Recalculates and renders the dashboard.
    */
-  public void renderDashboard() {
+  void renderDashboard() {
     removeAll();
     dashboardHeight = AssetManager.getScaledImage("free.png").getIconHeight() * Canvas.VIEW_SIZE;
 
-    gbc = new GridBagConstraints();
+    GridBagConstraints gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.ipady = dashboardHeight;
     gbc.weightx = 1;
@@ -60,7 +59,7 @@ public class DashboardHolder extends JPanel {
   /**
    * Resize's the dashboard to the new calculated size.
    */
-  public void resize() {
+  void resize() {
     dashboard.createDashboardComponents();
     dashboard.renderDashboardComponents();
     renderDashboard();
@@ -71,15 +70,7 @@ public class DashboardHolder extends JPanel {
    *
    * @return dashboard height.
    */
-  protected int getDashboardHeight() {
+  int getDashboardHeight() {
     return dashboardHeight;
-  }
-
-  public ChapsChallenge getApplication() {
-    return application;
-  }
-
-  public void setApplication(ChapsChallenge application) {
-    this.application = application;
   }
 }

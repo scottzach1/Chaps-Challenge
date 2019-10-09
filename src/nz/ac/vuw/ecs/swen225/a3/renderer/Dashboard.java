@@ -24,7 +24,7 @@ import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
  * The side object of the GUI that displays the level, time, chipsLeft.
  * @author Harrison Cook 300402048.
  */
-public class Dashboard extends JPanel {
+class Dashboard extends JPanel {
 
   /*
   DASHBOARD FIELDS
@@ -35,24 +35,24 @@ public class Dashboard extends JPanel {
    */
   private static final long serialVersionUID = 1L;
   // Colour Space.
-  static final Color TEXT_COLOUR = new Color(0, 0, 0);
-  static final Color ACCENT_COLOUR = new Color(0, 255, 0);
-  static final Color BACKGROUND_COLOUR = new Color(192, 192, 192);
+  private static final Color TEXT_COLOUR = new Color(0, 0, 0);
+  private static final Color ACCENT_COLOUR = new Color(0, 255, 0);
+  private static final Color BACKGROUND_COLOUR = new Color(192, 192, 192);
 
   // Padding around boarders of boxes
-  int paddingOfBox;
+  private int paddingOfBox;
 
   // Create the alignment for the custom text
   private SimpleAttributeSet centerAlign;
   private SimpleAttributeSet rightAlign;
 
   // CustomTextPane constants
-  CustomTextPane level;
-  CustomTextPane levelNum;
-  CustomTextPane time;
-  CustomTextPane timeNum;
-  CustomTextPane chipsLeft;
-  CustomTextPane chipsLeftNum;
+  private CustomTextPane level;
+  private CustomTextPane levelNum;
+  private CustomTextPane time;
+  private CustomTextPane timeNum;
+  private CustomTextPane chipsLeft;
+  private CustomTextPane chipsLeftNum;
 
   private static final int gridWidth = 4;
   private static final int gridHeight = 8;
@@ -92,7 +92,7 @@ public class Dashboard extends JPanel {
    * Creates all the components for the dashboard. - This is separated such that the components are
    * not needing to be resized and recreated every update, only their values need to be redone
    */
-  public void createDashboardComponents() {
+  void createDashboardComponents() {
     removeAll();
     // Create the level text. Center aligned
     level = new CustomTextPane("LEVEL", centerAlign, null, TEXT_COLOUR, false);
@@ -116,7 +116,7 @@ public class Dashboard extends JPanel {
   /**
    * Adds the components of the dashboard. This consists of two JPanels and their related parts.
    */
-  protected void renderDashboardComponents() {
+  void renderDashboardComponents() {
     removeAll();
 
     /*
@@ -210,7 +210,7 @@ public class Dashboard extends JPanel {
   /**
    * Updates the components text within the dashboard.
    */
-  public void refreshDashboardComponents() {
+  void refreshDashboardComponents() {
     // If the components don't exist then ignore the command
     // Usually a resizing error will refresh the components before they're instantiated
     if (levelNum == null || timeNum == null || chipsLeftNum == null) {
@@ -250,12 +250,12 @@ public class Dashboard extends JPanel {
     }
 
     // Find all duplicates
-    for (int i = 0; i < items.size(); i++) {
+    for (String value : items) {
       // Add a new item to the bag if it doesn't already exist
-      if (!chapsBag.containsKey(items.get(i))) {
-        chapsBag.put(items.get(i), 1);
+      if (!chapsBag.containsKey(value)) {
+        chapsBag.put(value, 1);
       } else { // If it exists in the bag, then increment the number associated with it by 1
-        chapsBag.put(items.get(i), chapsBag.get(items.get(i)) + 1);
+        chapsBag.put(value, chapsBag.get(value) + 1);
       }
     }
 

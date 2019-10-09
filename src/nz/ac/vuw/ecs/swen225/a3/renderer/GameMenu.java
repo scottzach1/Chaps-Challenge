@@ -8,7 +8,6 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -30,7 +29,7 @@ import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 public class GameMenu extends JPanel {
 
   public enum MenuType {
-    PAUSE, DEATH, TIMEOUT, WINNER, ERROR;
+    PAUSE, DEATH, TIMEOUT, WINNER, ERROR
   }
 
   /**
@@ -66,11 +65,11 @@ public class GameMenu extends JPanel {
     StyleConstants.setAlignment(centerAlign, StyleConstants.ALIGN_CENTER);
 
     setPreferredSize(new Dimension(gui.getScreenWidth(), gui.getScreenHeight()));
-    setBackground(gui.BACKGROUND_COLOUR.darker());
+    setBackground(Gui.BACKGROUND_COLOUR.darker());
     setLayout(new BorderLayout());
     setVisible(true);
 
-    buttonBackground = gui.BACKGROUND_COLOUR.darker().darker();
+    buttonBackground = Gui.BACKGROUND_COLOUR.darker().darker();
     buttonForeground = new Color(193, 193, 193);
     otherBackground = buttonBackground.darker();
     otherForeground = buttonForeground.brighter();
@@ -78,14 +77,14 @@ public class GameMenu extends JPanel {
     panel = new JPanel();
     panel.setPreferredSize(
         new Dimension(gui.getScreenWidth() / 4, gui.getScreenHeight() - (gui.getScreenHeight() / 10)));
-    panel.setBackground(gui.BACKGROUND_COLOUR);
+    panel.setBackground(Gui.BACKGROUND_COLOUR);
     panel.setLayout(new GridBagLayout());
   }
 
   /**
    * Creates the buttons and text necessary for the pause menu
    */
-  void createPauseComponents() {
+  private void createPauseComponents() {
     removeAll();
     panel.removeAll();
     menuButtons.clear();
@@ -95,27 +94,14 @@ public class GameMenu extends JPanel {
     int height = gui.getScreenHeight() / (3 * 2);
 
     // Create the buttons
-    MenuButton resume = new MenuButton("Resume", new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        application.resumeGame();
-      }
+    MenuButton resume = new MenuButton("Resume", e -> application.resumeGame(), width, height);
+
+    MenuButton restart = new MenuButton("Restart", e -> {
+      application.resumeGame();
+      application.restartGame();
     }, width, height);
 
-    MenuButton restart = new MenuButton("Restart", new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        application.resumeGame();
-        application.restartGame();
-      }
-    }, width, height);
-
-    MenuButton quit = new MenuButton("Quit", new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        application.exitGame();
-      }
-    }, width, height);
+    MenuButton quit = new MenuButton("Quit", e -> application.exitGame(), width, height);
 
     menuButtons.add(resume);
     menuButtons.add(restart);
@@ -128,7 +114,7 @@ public class GameMenu extends JPanel {
   /**
    * Creates the buttons and text necessary for the timeout menu
    */
-  void createOtherComponents() {
+  private void createOtherComponents() {
     removeAll();
     panel.removeAll();
     menuButtons.clear();
@@ -137,28 +123,17 @@ public class GameMenu extends JPanel {
     int width = gui.getScreenWidth() / 2;
     int height = gui.getScreenHeight() / (3 * 2);
 
-    MenuButton restartLevel = new MenuButton("Restart Level", new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        application.resumeGame();
-        application.restartLevel();
-      }
+    MenuButton restartLevel = new MenuButton("Restart Level", e -> {
+      application.resumeGame();
+      application.restartLevel();
     }, width, height);
 
-    MenuButton restartGame = new MenuButton("Restart Game", new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        application.resumeGame();
-        application.restartGame();
-      }
+    MenuButton restartGame = new MenuButton("Restart Game", e -> {
+      application.resumeGame();
+      application.restartGame();
     }, width, height);
 
-    MenuButton quit = new MenuButton("Quit", new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        application.exitGame();
-      }
-    }, width, height);
+    MenuButton quit = new MenuButton("Quit", e -> application.exitGame(), width, height);
 
     menuButtons.add(restartLevel);
     menuButtons.add(restartGame);
@@ -241,7 +216,7 @@ public class GameMenu extends JPanel {
    *
    * @param mt - The menu type to change to
    */
-  public void setMenuType(MenuType mt) {
+  void setMenuType(MenuType mt) {
     menuType = mt;
   }
 
@@ -252,6 +227,11 @@ public class GameMenu extends JPanel {
    */
   private class MenuButton extends JButton {
 
+    /**
+     * Default serial number.
+     */
+    private static final long serialVersionUID = 1L;
+
 
     /**
      * MenuButton Constructor
@@ -261,7 +241,7 @@ public class GameMenu extends JPanel {
      * @param width  - The buttons preferred width
      * @param height - The buttons preferred height
      */
-    public MenuButton(String name, ActionListener action, int width, int height) {
+    MenuButton(String name, ActionListener action, int width, int height) {
       super(name);
       setBackground(buttonBackground);
       setForeground(buttonForeground);

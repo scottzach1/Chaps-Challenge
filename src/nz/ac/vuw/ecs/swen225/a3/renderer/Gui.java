@@ -216,7 +216,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
     JOptionPane.showOptionDialog(null,
         "Invalid file\n",
         "WARNING",
-        JOptionPane.OK_OPTION,
+        JOptionPane.YES_NO_OPTION,
         JOptionPane.ERROR_MESSAGE,
         null,
         options,
@@ -283,7 +283,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
     JOptionPane.showOptionDialog(null,
         text + "\n",
         "INFO",
-        JOptionPane.OK_OPTION,
+        JOptionPane.YES_NO_OPTION,
         JOptionPane.QUESTION_MESSAGE,
         null,
         options,
@@ -546,27 +546,43 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
     direction = "";
   }
 
-  public Dimension getScreenDimension() {
-    return screenDimension;
-  }
-
-  public int getScreenWidth() {
+  /**
+   * Returns the whole width of this JFrame.
+   * @return - An integer representation of the screen width
+   */
+  int getScreenWidth() {
     return screenWidth;
   }
 
-  public int getScreenHeight() {
+  /**
+   * Returns the whole height of this JFrame.
+   * @return - An integer representation of the screen height
+   */
+  int getScreenHeight() {
     return screenHeight;
   }
 
-  public int getCanvasWidth() {
+  /**
+   * Return 2/3 of the width of this JFrame.
+   * @return - The canvas width
+   */
+  int getCanvasWidth() {
     return canvasWidth;
   }
 
-  public int getDashboardWidth() {
+  /**
+   * Return 1/3 of the width of this JFrame.
+   * @return - The Dashboard width
+   */
+  int getDashboardWidth() {
     return dashboardWidth;
   }
 
-  public int getMenuHeight() {
+  /**
+   * Return the height of the menu bar
+   * @return - The menu bar height
+   */
+  int getMenuHeight() {
     return menuHeight;
   }
 }
