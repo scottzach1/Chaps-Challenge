@@ -16,11 +16,9 @@ import nz.ac.vuw.ecs.swen225.a3.renderer.GameMenu.MenuType;
 import nz.ac.vuw.ecs.swen225.a3.renderer.Gui;
 
 /**
- * Chip and Chap.
- * Chap’s challenge is a creative clone of the (first level of the)
- * 1989 Atari game Chips Challenge. To learn more about Chip’s Challenge.
- * ChapsChallenge maintains the functionality of the game.
- * It also provides the link between the Maze, Renderer and Persistence packages.
+ * Chip and Chap. Chap’s challenge is a creative clone of the (first level of the) 1989 Atari game
+ * Chips Challenge. To learn more about Chip’s Challenge. ChapsChallenge maintains the functionality
+ * of the game. It also provides the link between the Maze, Renderer and Persistence packages.
  *
  * @author Luisa Kristen 300444458.
  */
@@ -67,6 +65,7 @@ public class ChapsChallenge {
 
   /**
    * Gets the GUI of the game.
+   *
    * @return GUI of the game.
    */
   public Gui getGui() {
@@ -74,9 +73,8 @@ public class ChapsChallenge {
   }
 
   /**
-   * Moves the player in the direction specified.
-   * Checks if the tile is able to be moved onto by interacting with it.
-   * If valid, it sets the location of the player to the new tile.
+   * Moves the player in the direction specified. Checks if the tile is able to be moved onto by
+   * interacting with it. If valid, it sets the location of the player to the new tile.
    *
    * @param direction the direction to move in.
    */
@@ -142,8 +140,8 @@ public class ChapsChallenge {
   }
 
   /**
-   * Checks the amount of time that has elapsed since the start of the game.
-   * Subtracts this from the total time available.
+   * Checks the amount of time that has elapsed since the start of the game. Subtracts this from the
+   * total time available.
    *
    * @return the time left to play
    */
@@ -175,7 +173,9 @@ public class ChapsChallenge {
     gamePaused = false;
     startTime = System.currentTimeMillis();
     gui.resumeGame();
-    if(!threadMade)runningThread();
+    if (!threadMade) {
+      runningThread();
+    }
   }
 
   /**
@@ -219,8 +219,7 @@ public class ChapsChallenge {
   }
 
   /**
-   * Sets the game to the previous level.
-   * If there is no previous level, level 1 is restarted.
+   * Sets the game to the previous level. If there is no previous level, level 1 is restarted.
    */
   public void previousLevel() {
     int current = board.getCurrentLevel();
@@ -233,8 +232,7 @@ public class ChapsChallenge {
   }
 
   /**
-   * Sets the game to the next level.
-   * If there is no next level, current level is restarted.
+   * Sets the game to the next level. If there is no next level, current level is restarted.
    */
   public void nextLevel() {
     int current = board.getCurrentLevel();
@@ -258,8 +256,8 @@ public class ChapsChallenge {
   }
 
   /**
-   * Sets the game to the desired level.
-   * If level isn't valid, ignore.
+   * Sets the game to the desired level. If level isn't valid, ignore.
+   *
    * @param level number.
    */
   public void setLevel(int level) {
@@ -284,8 +282,8 @@ public class ChapsChallenge {
   }
 
   /**
-   * Running thread opens a new thread (double threaded).
-   * and runs a timer, updating the dashboard every second
+   * Running thread opens a new thread (double threaded). and runs a timer, updating the dashboard
+   * every second
    */
   private void runningThread() {
     threadMade = true;
@@ -437,10 +435,7 @@ public class ChapsChallenge {
   }
 
   /**
-   * Resets the logistics of the game.
-   * Resets timer.
-   * Makes a new Mob manager.
-   * Makes a new Player.
+   * Resets the logistics of the game. Resets timer. Makes a new Mob manager. Makes a new Player.
    */
   public void resetLogistics() {
     timeLeft = totalTime;
@@ -492,7 +487,9 @@ public class ChapsChallenge {
     if (thread != null && thread.isAlive()) {
       return;
     }
-    if(!threadMade)runningThread();
+    if (!threadMade) {
+      runningThread();
+    }
   }
 
   public void setMobManager(MobManager mobManager) {

@@ -17,8 +17,7 @@ import javax.json.JsonReader;
 public class Exit extends Tile {
 
   /**
-   * Constructor.
-   * Sets the isAccessible to true.
+   * Constructor. Sets the isAccessible to true.
    */
   public Exit() {
     super(Type.Exit);
@@ -51,12 +50,12 @@ public class Exit extends Tile {
   @Override
   public String getJson() {
     JsonObjectBuilder objectBuilder = Json.createObjectBuilder()
-        .add("isAccessible",getIsAccessible())
+        .add("isAccessible", getIsAccessible())
         .add("type", getType().toString())
         .add("row", getRow())
         .add("col", getCol())
-        .add("imageUrl",getImageUrl())
-        .add("defaultImageUrl",getDefaultImageUrl());
+        .add("imageUrl", getImageUrl())
+        .add("defaultImageUrl", getDefaultImageUrl());
 
     JsonObject jsonObject = objectBuilder.build();
 
