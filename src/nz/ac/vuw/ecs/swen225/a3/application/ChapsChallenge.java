@@ -497,6 +497,10 @@ public class ChapsChallenge {
     runningThread();
   }
 
+  public void setMobManager(MobManager mobManager) {
+    this.mobManager = mobManager;
+  }
+
   /**
    * ChapsChallenge invocation point for running the game.
    *

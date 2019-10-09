@@ -10,20 +10,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
-import javax.json.JsonReader;
-import javax.json.JsonString;
+import javax.json.*;
 
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
-import nz.ac.vuw.ecs.swen225.a3.maze.Board;
-import nz.ac.vuw.ecs.swen225.a3.maze.Mob;
-import nz.ac.vuw.ecs.swen225.a3.maze.Player;
-import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
-import nz.ac.vuw.ecs.swen225.a3.maze.Wall;
+import nz.ac.vuw.ecs.swen225.a3.maze.*;
 
 
 /**
@@ -208,8 +198,30 @@ public class JsonReadWrite {
 
     Set<Mob> mobs = new HashSet<>();
 
-    for (JsonString j : mobsArray.getValuesAs(JsonString.class)) {
-      mobs.add(createMobFromJson(j.toString()));
+    for (int i = 0; i <mobsArray.size(); ++i){
+      JsonString s = mobsArray.getJsonString(i);
+      JsonReader mobJsonReader = Json.createReader(new StringReader(s.getString()));
+      JsonObject mob = mobJsonReader.readObject();
+      String name = mob.getString("mobName");
+      for (Class classes : LevelManager.classSet) {
+        if (classes.getName().equals(name)) {
+          try {
+            Object o = classes.getDeclaredConstructor().newInstance();
+            Method m = classes.getDeclaredMethod("setMobFromJson", JsonReader.class);
+            m.invoke(o, Json.createReader(new StringReader(s.getString())));
+            mobs.add((Mob)o);
+            break;
+          } catch (InstantiationException ex) {
+            ex.printStackTrace();
+          } catch (InvocationTargetException ex) {
+            System.out.println(ex.getCause());
+          } catch (NoSuchMethodException ex) {
+            ex.printStackTrace();
+          } catch (IllegalAccessException ex) {
+            ex.printStackTrace();
+          }
+        }
+      }
     }
 
 
@@ -220,13 +232,15 @@ public class JsonReadWrite {
     for (Mob m : mobs) {
       m.setHost(b.getTile(m.getHost().getRow(), m.getHost().getCol()));
     }
+    MobManager mm = new MobManager(b);
+    mm.setMobs(mobs);
     int timeLeft = game.getInt("timeLeft");
 
     // Set game properties
     g.setBoard(b);
     g.setTimeLeft(timeLeft);
     g.setPlayer(p);
-    //g.getMobManager().setMobs(mobs);
+    g.setMobManager(mm);
 
     return g;
   }
