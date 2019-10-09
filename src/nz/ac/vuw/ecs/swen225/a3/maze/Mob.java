@@ -115,9 +115,11 @@ public abstract class Mob {
     host = target;
 
     if (target != null) {
-      Tile player = board.getPlayerLocation();
-      if (player != null && player.equals(target)) {
-        board.getChapsChallenge().gameOver(MenuType.DEATH);
+      if (board != null) {
+        Tile player = board.getPlayerLocation();
+        if (player != null && player.equals(target)) {
+          board.getChapsChallenge().gameOver(MenuType.DEATH);
+        }
       }
       target.setTileOccupied(target.getImageUrl() + "-" + imageUrl);
       target.setOccupied(true);
