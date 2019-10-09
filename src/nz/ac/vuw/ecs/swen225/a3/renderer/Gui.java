@@ -585,4 +585,11 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
   int getMenuHeight() {
     return menuHeight;
   }
+
+  /**
+   * Resets the menu type when restarting a level
+   */
+  public void resetMenuSettings(){
+    gameMenu.setMenuType(MenuType.PAUSE);
+  }
 }

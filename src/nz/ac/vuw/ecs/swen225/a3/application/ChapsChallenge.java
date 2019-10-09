@@ -242,6 +242,7 @@ public class ChapsChallenge {
    * Restart current level.
    */
   public void restartLevel() {
+    gui.resetMenuSettings();
     int current = board.getCurrentLevel();
     board.setCurrentLevel(current);
     resetLogistics();
