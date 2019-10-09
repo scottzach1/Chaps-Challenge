@@ -30,11 +30,15 @@ public class Board {
 
   /**
    * Constructs and parses a new board.
+   * @param chapsChallenge to make board from
    */
   public Board(ChapsChallenge chapsChallenge) {
     this.chapsChallenge = chapsChallenge;
   }
-
+  
+  /**
+   * Sets up the board.
+   */
   public void setup() {
     JsonReadWrite.loadGameState(LevelManager.getCurrentLevelStream(0), chapsChallenge);
     setupAdjacency();
@@ -76,6 +80,7 @@ public class Board {
 
   /**
    * Gets stream of View_Size x View_Size cells focused on player.
+   * @param t 
    *
    * @return Stream of all cells, left to right, top to bottom.
    */
