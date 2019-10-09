@@ -479,6 +479,10 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
     // CTRL + R
     if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_R)
         && activeKeys.size() == 2) {
+      if (playerDead) {
+        return;
+      }
+      
       if (application.isGamePaused()) {
         application.resumeGame();
       }
