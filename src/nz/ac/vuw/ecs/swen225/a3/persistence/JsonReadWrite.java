@@ -102,6 +102,7 @@ public class JsonReadWrite {
 
     // Dump game info
     builder = Json.createObjectBuilder()
+        .add("level",game.getLevel())
         .add("timeLeft", game.getTimeLeft())
         .add("board", jsonBoard)
         .add("player", jsonPlayer)
@@ -243,6 +244,7 @@ public class JsonReadWrite {
     g.setTimeLeft(timeLeft);
     g.setPlayer(p);
     g.setMobManager(mm);
+    LevelManager.currentLevel = game.getInt("level");
 
     return g;
   }
