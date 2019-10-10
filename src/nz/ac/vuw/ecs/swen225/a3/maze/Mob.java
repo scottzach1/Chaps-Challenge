@@ -26,6 +26,7 @@ public abstract class Mob {
   public Map<Tile.Direction, String> images = new HashMap<>();
   public Set<Tile.Type> safeTiles = new HashSet<>(Arrays.asList(Tile.Type.Free));
   public Board board;
+  public int id;
 
 
   /**

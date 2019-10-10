@@ -35,7 +35,7 @@ public class ChapsChallenge {
   private long timeLeft = totalTime;
   private boolean gamePaused = false;
 
-  private final int fps = 20;
+  private int fps = 20;
 
   private MobManager mobManager;
 
@@ -293,7 +293,7 @@ public class ChapsChallenge {
         // While the time has not run out
         while (true) {
           // Only run while the game is not paused
-          if (!gamePaused) {
+          if (!gamePaused && !RecordAndPlay.getIsRunning()) {
             // Attempt to sleep the thread if there is time left
             try {
               if (timeLeft > 0) {
@@ -513,6 +513,11 @@ public class ChapsChallenge {
    */
   public void setMobManager(MobManager mobManager) {
     this.mobManager = mobManager;
+  }
+
+
+  public void setFps(int fps) {
+    this.fps = fps;
   }
 
   /**

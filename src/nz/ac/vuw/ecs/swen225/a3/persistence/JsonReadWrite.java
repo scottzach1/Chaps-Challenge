@@ -270,39 +270,6 @@ public class JsonReadWrite {
   }
 
   /**
-   * Create mob object from JSON description.
-   *
-   * @param string JSON representation.
-   * @return Mob object.
-   */
-  private static Mob createMobFromJson(String string) {
-    JsonReader reader = Json.createReader(new StringReader(string));
-    JsonObject mobObject = reader.readObject();
-    String name = mobObject.getString("mobName");
-    // Use reflection to find correct class
-    // Done to allow dynamic drop in of new tile types
-    for (Class classes : LevelManager.classSet) {
-      if (classes.getName().equals(name)) {
-        try {
-          Object o = classes.getDeclaredConstructor().newInstance();
-          Method m = classes.getDeclaredMethod("setTileFromJson", JsonReader.class);
-          m.invoke(o, Json.createReader(new StringReader(string)));
-          return (Mob) o;
-        } catch (InstantiationException ex) {
-          ex.printStackTrace();
-        } catch (InvocationTargetException ex) {
-          System.out.println(ex.getCause());
-        } catch (NoSuchMethodException ex) {
-          ex.printStackTrace();
-        } catch (IllegalAccessException ex) {
-          ex.printStackTrace();
-        }
-      }
-    }
-    return null;
-  }
-
-  /**
    * Create tile object from JSON description.
    *
    * @param tile JSON representation.
