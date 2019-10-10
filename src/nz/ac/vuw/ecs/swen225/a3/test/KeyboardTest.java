@@ -7,6 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.event.KeyEvent;
+
+import org.junit.jupiter.api.BeforeAll;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tile.Direction;
 import org.junit.jupiter.api.Test;
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
@@ -20,6 +22,11 @@ import nz.ac.vuw.ecs.swen225.a3.renderer.Gui;
  * @author Zac Scott.
  */
 class KeyboardTest {
+
+  @BeforeAll
+  public static void setup(){
+    BackendTest.testing = true;
+  }
 
   /**
    * Test movement to left.

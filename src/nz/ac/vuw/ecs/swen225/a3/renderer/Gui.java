@@ -11,6 +11,7 @@ import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
+import java.io.IOException;
 import java.util.HashSet;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -22,6 +23,7 @@ import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
 import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
 import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
 import nz.ac.vuw.ecs.swen225.a3.renderer.GameMenu.MenuType;
+import nz.ac.vuw.ecs.swen225.a3.test.BackendTest;
 
 /**
  * GUI class extends JFrame and is responsible with maintain the Graphical Interface.
@@ -263,7 +265,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
    * @param text to display.
    */
   public void renderInfoField(String text) {
-      if(!RecordAndPlay.getIsRunning()) {
+      if(!RecordAndPlay.getIsRunning() && !BackendTest.testing) {
           // Button options
           String[] options = {"Okay"};
 
@@ -613,6 +615,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
 
   /**
    * Gets the AssetManager corresponding to this application instance.
+   *
    * @return assetManager for gui.
    */
   AssetManager getAssetManager() {

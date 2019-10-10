@@ -108,6 +108,7 @@ public class LevelManager {
 
   /**
    * Gets the total number of levels.
+   *
    * @return the number of levels.
    */
   public static int getNumLevels() {

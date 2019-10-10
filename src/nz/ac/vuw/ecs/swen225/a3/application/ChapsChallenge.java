@@ -517,6 +517,7 @@ public class ChapsChallenge {
 
   /**
    * Sets the refresh-rate of the program (frames per second).
+   *
    * @param fps frames per second.
    */
   public void setFps(int fps) {
