@@ -61,8 +61,8 @@ class MenuOptionPane extends JMenuBar {
     game.add(pauseItem);
 
     // Create the Help button
-    JMenuItem helpItem = new JMenuItem("Pause");
-    pauseItem.addActionListener(arg0 -> application.helpMenu());
+    JMenuItem helpItem = new JMenuItem("Help");
+    helpItem.addActionListener(arg0 -> application.helpMenu());
     game.add(helpItem);
 
     //Create Recording dropdown

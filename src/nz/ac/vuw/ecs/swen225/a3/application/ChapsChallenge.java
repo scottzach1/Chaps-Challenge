@@ -296,7 +296,6 @@ public class ChapsChallenge {
                 // Tick counter cycles (0, 1)
                 timeCheck = (timeCheck + 1) % fps;
               } catch (InterruptedException e) {
-                System.out.println("HERE 1");
                 gameOver(MenuType.ERROR);
               }
 
@@ -308,7 +307,6 @@ public class ChapsChallenge {
             try {
               Thread.sleep(10);
             } catch (InterruptedException e) {
-              System.out.println("HERE 2");
               gameOver(MenuType.ERROR);
             }
           }

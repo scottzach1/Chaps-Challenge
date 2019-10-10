@@ -166,6 +166,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
    * Loads in the first page of the help menu
    */
   public void helpMenuPageOne(){
+    gameMenu.setMenuType(MenuType.HELP);
     getContentPane().removeAll();
     constraints = new GridBagConstraints();
     constraints.fill = GridBagConstraints.BOTH;
@@ -174,7 +175,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
     helpMenu.createPageOne();
     helpMenu.renderPage();
 
-    add(gameMenu, constraints);
+    add(helpMenu, constraints);
     redraw();
   }
 
@@ -182,15 +183,17 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
    * Loads in the second page of the help menu
    */
   public void helpMenuPageTwo(){
+    System.out.println("PAGE 2");
+    gameMenu.setMenuType(MenuType.HELP);
     getContentPane().removeAll();
     constraints = new GridBagConstraints();
     constraints.fill = GridBagConstraints.BOTH;
     constraints.weightx = 1;
     constraints.weighty = 1;
-    helpMenu.createPageOne();
+    helpMenu.createPageTwo();
     helpMenu.renderPage();
 
-    add(gameMenu, constraints);
+    add(helpMenu, constraints);
     redraw();
   }
 
@@ -397,8 +400,13 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
       }
 
     } else {
-      if (gameMenu != null) {
-        gameMenu.resize();
+      switch (gameMenu.getMenuType()){
+        case HELP:
+          helpMenu.resize();
+          break;
+        default:
+          gameMenu.resize();
+          break;
       }
       redraw();
     }

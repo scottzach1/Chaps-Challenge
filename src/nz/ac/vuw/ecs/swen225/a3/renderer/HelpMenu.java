@@ -30,6 +30,10 @@ public class HelpMenu extends JPanel {
   private Color otherForeground;
   private Color otherBackground;
 
+  private int buttonHeight, buttonWidth, titleWidth, titleHeight, textWidth, textHeight;
+
+  private int pageNumber;
+
   private CustomTextPane title;
   private MenuButton next, prev;
   private CustomTextPane text;
@@ -40,6 +44,10 @@ public class HelpMenu extends JPanel {
   public HelpMenu(ChapsChallenge aChapsChallenge) {
     application = aChapsChallenge;
     gui = application.getGui();
+
+    pageNumber = 1;
+
+    setSizes();
 
     centerAlign = new SimpleAttributeSet();
     StyleConstants.setAlignment(centerAlign, StyleConstants.ALIGN_CENTER);
@@ -55,24 +63,40 @@ public class HelpMenu extends JPanel {
     otherForeground = buttonForeground.brighter();
   }
 
+  private void setSizes(){
+    buttonHeight = gui.getScreenHeight() / 16;
+    buttonWidth = gui.getScreenWidth() / 8;
+
+    titleWidth = gui.getScreenWidth() / 2;
+    titleHeight = gui.getScreenHeight() / 8;
+
+    textWidth = gui.getScreenWidth() / 2;
+    textHeight = (gui.getScreenHeight() * 6) / 8;
+  }
+
   public void createPageOne() {
-    title = new CustomTextPane("CHAPS CHALLENGE", centerAlign, null, buttonForeground, false);
-    next = new MenuButton("NEXT", e -> gui.helpMenuPageTwo(), gui.getScreenWidth() / 8, gui.getScreenHeight() / 10);
-    prev = new MenuButton("BACK", e -> application.resumeGame(), gui.getScreenWidth() / 8, gui.getScreenHeight() / 10);
-    text = new CustomTextPane(pageOneText, centerAlign, null, buttonForeground, true);
+    pageNumber = 1;
+    title = new CustomTextPane("CHAPS CHALLENGE", centerAlign, null, buttonForeground, false, titleWidth, titleHeight);
+    next = new MenuButton("NEXT", e -> gui.helpMenuPageTwo(), buttonWidth, buttonHeight);
+    prev = new MenuButton("BACK", e -> {application.resumeGame(); application.restartLevel();}, buttonWidth, buttonHeight);
+    text = new CustomTextPane(pageOneText, centerAlign, otherBackground, buttonForeground, false, textWidth, textHeight);
   }
 
   public void createPageTwo() {
-    title = new CustomTextPane("CONTROLS", centerAlign, null, buttonForeground, false);
-    next = new MenuButton("BACK", e -> application.resumeGame(), gui.getScreenWidth() / 8, gui.getScreenHeight() / 10);
-    prev = new MenuButton("PREV", e -> gui.helpMenuPageOne(), gui.getScreenWidth() / 8, gui.getScreenHeight() / 10);
-    text = new CustomTextPane(pageTwoText, centerAlign, null, buttonForeground, true);
+    pageNumber = 2;
+    title = new CustomTextPane("CONTROLS", centerAlign, null, buttonForeground, false, titleWidth, titleHeight);
+    next = new MenuButton("BACK", e -> {application.resumeGame(); application.restartLevel();}, buttonWidth, buttonHeight);
+    prev = new MenuButton("PREV", e -> gui.helpMenuPageOne(), buttonWidth, buttonHeight);
+    text = new CustomTextPane(pageTwoText, centerAlign, null, buttonForeground, false, textWidth, textHeight);
   }
 
   public void renderPage() {
     if (title == null) {
       return;
     }
+
+    removeAll();
+
     GridBagConstraints gbc = new GridBagConstraints();
 
 
@@ -89,7 +113,7 @@ public class HelpMenu extends JPanel {
     gbc.gridy = 1;
     gbc.gridwidth = 2;
     gbc.weightx = 4;
-    gbc.weighty = 10;
+    gbc.weighty = 20;
     add(text, gbc);
 
 
@@ -111,6 +135,21 @@ public class HelpMenu extends JPanel {
 
     revalidate();
     repaint();
+  }
+
+
+  public void resize(){
+    setSizes();
+    switch (pageNumber){
+      case 2:
+        createPageTwo();
+        break;
+      default:
+        createPageOne();
+        break;
+    }
+
+    renderPage();
   }
 
 
@@ -140,7 +179,7 @@ public class HelpMenu extends JPanel {
       setForeground(buttonForeground);
       addActionListener(action);
       setPreferredSize(new Dimension(width, height));
-      setFont(findFont(this, new Font("Ariel", Font.BOLD, 30), name));
+      setFont(findFont(this, new Dimension(width, height), new Font("Ariel", Font.BOLD, 30), name));
 
       addMouseListener(new MouseAdapter() {
         @Override
@@ -179,7 +218,7 @@ public class HelpMenu extends JPanel {
      * @param border        - If true: Add a matte border of foreground color, if false, no border
      */
     private CustomTextPane(String text, SimpleAttributeSet textAlignment, Color background,
-        Color foreground, boolean border) {
+        Color foreground, boolean border, int width, int height) {
 
       // Basic setup:
       // - Not editable
@@ -189,7 +228,7 @@ public class HelpMenu extends JPanel {
       // - Set the foreground color to the parsed in color
       setForeground(foreground);
       // - Set the font, using a below method to find the font size
-      setFont(findFont(this, new Font("Arial", Font.BOLD, 20), text));
+      setFont(findFont(this, new Dimension(width, height), new Font("Arial", Font.BOLD, 20), text));
 
       // - If the border boolean parsed in is true, make one
       if (border) {
@@ -228,12 +267,7 @@ public class HelpMenu extends JPanel {
    * @param text      to display
    * @return font with correct size and values.
    */
-  private Font findFont(Component component, Font oldFont, String text) {
-    // Get the size of the area the text can take up
-    int boxWidth = (gui.getScreenWidth() / 2);
-    int boxHeight = (gui.getScreenHeight() / 6);
-    Dimension componentSize = new Dimension(boxWidth, boxHeight);
-
+  private Font findFont(Component component, Dimension componentSize, Font oldFont, String text) {
     // The default size and text if no size is found to fit
     Font savedFont = oldFont;
 
@@ -261,8 +295,24 @@ public class HelpMenu extends JPanel {
   }
 
 
-  String pageOneText = "";
+  String pageOneText = "The premise of the game is that friendly monster 'Chip' has"
+      + "\nmet Melinda-the-Mental-Marvel at the scare school science laboratory. Chip must navigate "
+      + "\nthrough Melinda's 'House Of Horrors', a series of increasingly difficult puzzles, "
+      + "\nIn order to prove himself and gain membership to the very exclusive Bit Busters Club.\n"
+      + "\n"
+      + "Chip's Challenge consists of a series of two-dimensional levels which feature the player 'Chip'"
+      + "\nand various game elements such as computer chips, locked doors, water and lethal bully monsters. "
+      + "\nGameplay involves using arrow keys to move Chip about each of the levels in turn, collecting"
+      + "\nenough chips to open the chip socket at the end of each level, get to the exit, and move on to the next level.";
 
 
-  String pageTwoText = "";
+  String pageTwoText = "CTRL-X  - exits the game, the current game state will be lost, the next time the "
+      + "\n\tgame is started, it will resume from the last unfinished level\n"
+      + "CTRL-S  - exit the game, saves the game state, game will resume next time the application will be started\n"
+      + "CTRL-R  - resume a saved game\n"
+      + "CTRL-P  - start a new game at the last unfinished level\n"
+      + "CTRL-1 - start a new game at level 1\n"
+      + "SPACE - pause the game and display a “game is paused” dialog\n"
+      + "ESC - close the “game is paused” dialog and resume the game\n"
+      + "UP, DOWN, LEFT, RIGHT ARROWS -- move Chap within the maze\n";
 }
