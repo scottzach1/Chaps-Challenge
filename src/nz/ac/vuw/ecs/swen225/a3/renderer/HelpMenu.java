@@ -1,6 +1,5 @@
 package nz.ac.vuw.ecs.swen225.a3.renderer;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -8,7 +7,6 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -21,7 +19,11 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 
-public class HelpMenu extends JPanel {
+
+/**
+ * Used to create the help menus along with all the pages that go with them.
+ */
+class HelpMenu extends JPanel {
 
   private Gui gui;
   private ChapsChallenge application;
@@ -41,7 +43,11 @@ public class HelpMenu extends JPanel {
   private SimpleAttributeSet centerAlign;
 
 
-  public HelpMenu(ChapsChallenge aChapsChallenge) {
+  /**
+   * The HelpMenu Constructor
+   * @param aChapsChallenge - The ChapsChallenge object that created this.
+   */
+  HelpMenu(ChapsChallenge aChapsChallenge) {
     application = aChapsChallenge;
     gui = application.getGui();
 
@@ -63,6 +69,9 @@ public class HelpMenu extends JPanel {
     otherForeground = buttonForeground.brighter();
   }
 
+  /**
+   * Used to recalculate the size of the boxes for each object
+   */
   private void setSizes(){
     buttonWidth = gui.getScreenWidth() / 8;
     buttonHeight = gui.getScreenHeight() / 16;
@@ -74,7 +83,10 @@ public class HelpMenu extends JPanel {
     textHeight = gui.getScreenHeight() / 2;
   }
 
-  public void createPageOne() {
+  /**
+   * Creates all the objects needed for help page one.
+   */
+  void createPageOne() {
     pageNumber = 1;
     title = new CustomTextPane("CHAPS CHALLENGE", centerAlign, null, buttonForeground, false, titleWidth, titleHeight);
     next = new MenuButton("NEXT", e -> gui.helpMenuPageTwo(), buttonWidth, buttonHeight);
@@ -82,7 +94,10 @@ public class HelpMenu extends JPanel {
     text = new CustomTextPane(pageOneText, centerAlign, null, buttonForeground, false, textWidth, textHeight);
   }
 
-  public void createPageTwo() {
+  /**
+   * Creates all the objects needed for help page two
+   */
+  void createPageTwo() {
     pageNumber = 2;
     title = new CustomTextPane("CONTROLS", centerAlign, null, buttonForeground, false, titleWidth, titleHeight);
     next = new MenuButton("BACK", e -> {application.resumeGame(); application.restartLevel();}, buttonWidth, buttonHeight);
@@ -90,7 +105,10 @@ public class HelpMenu extends JPanel {
     text = new CustomTextPane(pageTwoText, centerAlign, null, buttonForeground, false, textWidth, textHeight);
   }
 
-  public void renderPage() {
+  /**
+   * Uses a GridBagLayout to place the items of the HelpMenu.
+   */
+  void renderPage() {
     if (title == null) {
       return;
     }
@@ -137,16 +155,15 @@ public class HelpMenu extends JPanel {
     repaint();
   }
 
-
-  public void resize(){
+  /**
+   * Used when the GUI is resized on the HelpMenu.
+   */
+  void resize(){
     setSizes();
-    switch (pageNumber){
-      case 2:
-        createPageTwo();
-        break;
-      default:
-        createPageOne();
-        break;
+    if (pageNumber == 2) {
+      createPageTwo();
+    } else {
+      createPageOne();
     }
 
     renderPage();
@@ -294,7 +311,8 @@ public class HelpMenu extends JPanel {
     return oldFont;
   }
 
-  String pageOneText = "The premise of the game is that friendly monster 'Chip' has"
+  // The text for the first page
+  private String pageOneText = "The premise of the game is that friendly monster 'Chip' has"
       + "\nmet Melinda-the-Mental-Marvel at the scare school science laboratory. "
       + "\nChip must navigate through Melinda's 'House Of Horrors', a series "
       + "\nof increasingly difficult puzzles, in order to prove himself and "
@@ -306,8 +324,8 @@ public class HelpMenu extends JPanel {
       + "\nlevels in turn, collecting enough chips to open the chip socket "
       + "\nat the end of each level, get to the exit, and move on to the next level.";
 
-
-  String pageTwoText = "CTRL-X  - exits the game, the current game state will be lost, "
+  // The text for the second page
+  private String pageTwoText = "CTRL-X  - exits the game, the current game state will be lost, "
       + "\n\tthe next time the game is started, it will resume "
       + "\n\tfrom the last unfinished level"
       + "\nCTRL-S  - exit the game, saves the game state, game will "

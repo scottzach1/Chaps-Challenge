@@ -218,6 +218,9 @@ public class GameMenu extends JPanel {
   }
 
 
+  /**
+   * Switched between different types of gameplay menus and warnings
+   */
   private void switchMenu() {
     switch (menuType){
       case PAUSE:
