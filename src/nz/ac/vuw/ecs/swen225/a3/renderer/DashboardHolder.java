@@ -49,9 +49,12 @@ public class DashboardHolder extends JPanel {
     gbc.ipady = dashboardHeight;
     gbc.weightx = 1;
     gbc.weighty = 1;
-    dashboard.refreshDashboardComponents();
     add(dashboard, gbc);
+    refreshDashboard();
+  }
 
+  void refreshDashboard(){
+    dashboard.refreshDashboardComponents();
     revalidate();
     repaint();
   }

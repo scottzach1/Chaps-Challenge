@@ -29,7 +29,7 @@ import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 public class GameMenu extends JPanel {
 
   public enum MenuType {
-    PAUSE, DEATH, TIMEOUT, WINNER, ERROR
+    PAUSE, DEATH, TIMEOUT, WINNER, ERROR, QUITTER
   }
 
   /**
@@ -156,6 +156,29 @@ public class GameMenu extends JPanel {
     }
   }
 
+  /**
+   * Creates the buttons and text necessary for the timeout menu
+   */
+  private void createQuitComponents() {
+    removeAll();
+    panel.removeAll();
+    menuButtons.clear();
+
+    // Create the width and height of the components
+    int width = gui.getScreenWidth() / 2;
+    int height = gui.getScreenHeight() / (3 * 2);
+
+    MenuButton yesButton = new MenuButton("Yes please", e -> System.exit(0), width, height);
+
+    MenuButton noButton = new MenuButton("Opps, NO!", e -> application.resumeGame(), width, height);
+
+    menuButtons.add(yesButton);
+    menuButtons.add(noButton);
+
+    // Create the text for the menu
+    textPane = new CustomTextPane("QUIT?", centerAlign, null, buttonForeground, false);
+  }
+
 
   /**
    * Renders the pause menu.
@@ -166,8 +189,6 @@ public class GameMenu extends JPanel {
     }
 
     GridBagConstraints gbc = new GridBagConstraints();
-
-//    gbc.fill = GridBagConstraints.BOTH;
 
     // Add the CustomTextPane
     gbc.weighty = 2;
@@ -196,10 +217,16 @@ public class GameMenu extends JPanel {
 
 
   private void switchMenu() {
-    if (menuType == MenuType.PAUSE) {
-      createPauseComponents();
-    } else {
-      createOtherComponents();
+    switch (menuType){
+      case PAUSE:
+        createPauseComponents();
+        break;
+      case QUITTER:
+        createQuitComponents();
+        break;
+      default:
+        createOtherComponents();
+        break;
     }
   }
 

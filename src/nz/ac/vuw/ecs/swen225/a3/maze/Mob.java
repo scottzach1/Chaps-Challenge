@@ -122,7 +122,7 @@ public abstract class Mob {
         board.getChapsChallenge().gameOver(MenuType.DEATH);
         return;
       }
-      if(!target.isOccupied) {
+      if (!target.isOccupied()) {
         host = target;
         target.setTileOccupied(target.getImageUrl() + "-" + imageUrl);
         target.setOccupied(true);

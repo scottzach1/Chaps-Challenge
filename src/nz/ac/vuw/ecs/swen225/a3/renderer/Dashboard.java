@@ -218,12 +218,6 @@ class Dashboard extends JPanel {
       return;
     }
 
-    // Check that the size is correct
-    if (levelNum.getHeight() != parent.getDashboardHeight() / gridHeight) {
-      createDashboardComponents();
-      renderDashboardComponents();
-    }
-
     levelNum.setText((application.getLevel() + 1) + "");
     timeNum.setText(application.timeLeft() + "");
     chipsLeftNum.setText((application.getTotalTreasures() - application.getTreasures()) + "");

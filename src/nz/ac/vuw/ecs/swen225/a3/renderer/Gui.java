@@ -62,7 +62,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
   private String direction;
 
   private boolean isBusy;
-  private boolean playerDead;
+  private boolean playerIsDead;
 
   private int resizeCycle;
 
@@ -75,7 +75,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
     resizeCycle = 0;
     direction = "";
     application = chapsChallenge;
-    playerDead = false;
+    playerIsDead = false;
 
     // Create new set for hosting keys currently pressed
     activeKeys = new HashSet<>();
@@ -150,7 +150,6 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
 
     add(gameMenu, constraints);
     redraw();
-    componentResized(new ComponentEvent(this, ComponentEvent.COMPONENT_RESIZED));
   }
 
   /**
@@ -177,7 +176,6 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
     constraints.weighty = 1;
     add(dashboardHolder, constraints);
     redraw();
-    componentResized(new ComponentEvent(this, ComponentEvent.COMPONENT_RESIZED));
   }
 
   /**
@@ -231,29 +229,6 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
   }
 
   /**
-   * Handles GUI actions related to exiting the game. Invokes a pop up menu to confirm the player
-   * wants to exit the game.
-   */
-  public boolean exitGame() {
-    // Button options
-    String[] options = {"Yes please", "Opps, wrong button"};
-
-    // Create and display the JOptionPane
-    int choice = JOptionPane.showOptionDialog(null,
-        "Would you like to exit the game?\n",
-        "QUIT?",
-        JOptionPane.YES_NO_OPTION,
-        JOptionPane.QUESTION_MESSAGE,
-        null,
-        options,
-        options[0]);
-
-    // (True) = Exit Game, (False) = Don't Exit Game
-    return choice != JOptionPane.CLOSED_OPTION && choice != 1;
-  }
-
-
-  /**
    * If not busy executes move and redraws dashboard.
    */
   public void updateBoard() {
@@ -272,7 +247,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
     if (isBusy) {
       return;
     }
-    dashboardHolder.renderDashboard();
+    dashboardHolder.refreshDashboard();
     redraw();
   }
 
@@ -309,6 +284,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
 
   /**
    * Renders the game menu upon death, timing out, or winning.
+   *
    * @param reason - MenuType to be displayed based on the reason for the game ending.
    */
   public void gameOver(MenuType reason) {
@@ -328,6 +304,9 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
       case WINNER:
         gameMenu.setMenuType(MenuType.WINNER);
         break;
+      case QUITTER:
+        gameMenu.setMenuType(MenuType.QUITTER);
+        break;
       default:
         gameMenu.setMenuType(MenuType.ERROR);
     }
@@ -336,8 +315,6 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
 
     add(gameMenu, constraints);
     redraw();
-    componentResized(new ComponentEvent(this, ComponentEvent.COMPONENT_RESIZED));
-
   }
 
 
@@ -348,9 +325,9 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
    */
   @Override
   public void componentResized(ComponentEvent e) {
-
     isBusy = true;
     resizeCycle++;
+    System.out.println("RESIZE CYCLE: " + resizeCycle);
 
     //System.out.println(resizeCycle);
 
@@ -368,7 +345,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
       }
       redraw();
 
-      if (resizeCycle == 2) {
+      if (resizeCycle > 1 && resizeCycle < 4) {
         componentResized(new ComponentEvent(this, ComponentEvent.COMPONENT_RESIZED));
         application.startRunningThread();
       }
@@ -468,7 +445,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
 
     // SPACE
     if (activeKeys.contains(KeyEvent.VK_SPACE) && activeKeys.size() == 1) {
-      if (playerDead) {
+      if (playerIsDead) {
         return;
       }
 
@@ -481,10 +458,10 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
     // CTRL + R
     if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_R)
         && activeKeys.size() == 2) {
-      if (playerDead) {
+      if (playerIsDead) {
         return;
       }
-      
+
       if (application.isGamePaused()) {
         application.resumeGame();
       }
@@ -565,6 +542,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
 
   /**
    * Returns the whole width of this JFrame.
+   *
    * @return - An integer representation of the screen width
    */
   int getScreenWidth() {
@@ -573,6 +551,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
 
   /**
    * Returns the whole height of this JFrame.
+   *
    * @return - An integer representation of the screen height
    */
   int getScreenHeight() {
@@ -581,6 +560,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
 
   /**
    * Return 2/3 of the width of this JFrame.
+   *
    * @return - The canvas width
    */
   int getCanvasWidth() {
@@ -589,6 +569,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
 
   /**
    * Return 1/3 of the width of this JFrame.
+   *
    * @return - The Dashboard width
    */
   int getDashboardWidth() {
@@ -597,6 +578,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
 
   /**
    * Return the height of the menu bar
+   *
    * @return - The menu bar height
    */
   int getMenuHeight() {
@@ -607,16 +589,16 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
    * Called when the player dies or times out. This means that the menu is not able to be quit out
    * of.
    */
-  public void playerIsDead() {
-    playerDead = true;
+  public void setPlayerDead() {
+    playerIsDead = true;
   }
 
   /**
    * Called when the player restarts the level or game. This means that the player can access the
    * pause menu again
    */
-  public void playerIsAlive() {
-    playerDead = false;
+  public void setPlayerAlive() {
+    playerIsDead = false;
   }
 
   /**
