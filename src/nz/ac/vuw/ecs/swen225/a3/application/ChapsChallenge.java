@@ -1,6 +1,9 @@
 package nz.ac.vuw.ecs.swen225.a3.application;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
@@ -60,7 +63,39 @@ public class ChapsChallenge {
     // Creates a GUI and gives it a keyListener
     gui = new Gui(this, assetManager);
     gui.addLayoutComponents();
+  }
 
+  /**
+   * Check for saves and load most recently modified file.
+   */
+  public void getLatestSave(){
+    File out = new File("saves/");
+    File[] saves = out.listFiles();
+    Arrays.sort(saves, Comparator.comparingLong(File::lastModified));
+    if(saves.length > 0){
+      try {
+        JsonReadWrite.loadGameStateFromFile(saves[saves.length-1].getAbsolutePath(),this);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
+  /**
+   * Get level of most recently played save.
+   */
+  public void getLastPlayedLevel(){
+    File out = new File("saves/");
+    File[] saves = out.listFiles();
+    Arrays.sort(saves, Comparator.comparingLong(File::lastModified));
+    if(saves.length > 0){
+      try {
+        JsonReadWrite.loadGameStateFromFile(saves[saves.length-1].getAbsolutePath(),this);
+        restartLevel();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
   }
 
   /**
@@ -530,6 +565,6 @@ public class ChapsChallenge {
    * @param args main arguments
    */
   public static void main(String[] args) {
-    new ChapsChallenge();
+    new ChapsChallenge().getLatestSave();
   }
 }

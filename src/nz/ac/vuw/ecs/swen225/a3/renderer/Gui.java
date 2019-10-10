@@ -191,7 +191,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
    */
   public boolean saveGame() {
     JFileChooser jfc = new JFileChooser();
-    jfc.setCurrentDirectory(new File("."));
+    jfc.setCurrentDirectory(new File("saves/"));
     jfc.setDialogTitle("Save file");
 
     if (jfc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
@@ -205,8 +205,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
    * Handles GUI actions related to loading the game.
    */
   public boolean loadGame() {
-    JFileChooser jfc = new JFileChooser();
-    jfc.setCurrentDirectory(new File("."));
+    JFileChooser jfc = new JFileChooser("saves/");
     jfc.setDialogTitle("Load file");
     jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 
@@ -443,7 +442,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
     // CTRL + P
     if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_P)
         && activeKeys.size() == 2) {
-      application.restartLevel();
+      application.getLastPlayedLevel();
     }
 
     // CTRL + Number
@@ -473,10 +472,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
       if (playerIsDead) {
         return;
       }
-
-      if (application.isGamePaused()) {
-        application.resumeGame();
-      }
+      application.loadGame();
     }
     // ESC
     if (activeKeys.contains(KeyEvent.VK_ESCAPE) && activeKeys.size() == 1) {
