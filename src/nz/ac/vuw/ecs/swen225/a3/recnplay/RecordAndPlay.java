@@ -182,9 +182,8 @@ public class RecordAndPlay {
 
       game.update();
 
-    } catch (Exception e) {
+    } catch (IOException e) {
       System.out.println(e.getMessage());
-      //Todo: deal
     }
   }
 
