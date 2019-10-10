@@ -29,7 +29,7 @@ import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 public class GameMenu extends JPanel {
 
   public enum MenuType {
-    PAUSE, DEATH, TIMEOUT, WINNER, ERROR, QUITTER
+    PAUSE, DEATH, TIMEOUT, WINNER, ERROR, QUITTER, HELP
   }
 
   /**
@@ -139,6 +139,8 @@ public class GameMenu extends JPanel {
     // Create the text for the menu
     System.out.println("TYPE - " + menuType);
     switch (menuType) {
+      case HELP:
+        break;
       case TIMEOUT:
         textPane = new CustomTextPane("OUT OF TIME", centerAlign, null, buttonForeground, false);
         break;
@@ -245,6 +247,10 @@ public class GameMenu extends JPanel {
    */
   void setMenuType(MenuType mt) {
     menuType = mt;
+  }
+
+  MenuType getMenuType(){
+    return menuType;
   }
 
 

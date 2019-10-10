@@ -56,6 +56,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
   private Canvas canvas;
   private DashboardHolder dashboardHolder;
   private GameMenu gameMenu;
+  private HelpMenu helpMenu;
   private JMenuBar menuBar;
   private ChapsChallenge application;
 
@@ -122,6 +123,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
     canvas = new Canvas(application);
     dashboardHolder = new DashboardHolder(application);
     gameMenu = new GameMenu(application);
+    helpMenu = new HelpMenu(application);
     menuBar = new MenuOptionPane(application);
 
     // Add MenuBar.
@@ -157,6 +159,41 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
     gameMenu.renderMenu();
 
     add(gameMenu, constraints);
+    redraw();
+  }
+
+  /**
+   * Loads in the first page of the help menu
+   */
+  public void helpMenuPageOne(){
+    gameMenu.setMenuType(MenuType.HELP);
+    getContentPane().removeAll();
+    constraints = new GridBagConstraints();
+    constraints.fill = GridBagConstraints.BOTH;
+    constraints.weightx = 1;
+    constraints.weighty = 1;
+    helpMenu.createPageOne();
+    helpMenu.renderPage();
+
+    add(helpMenu, constraints);
+    redraw();
+  }
+
+  /**
+   * Loads in the second page of the help menu
+   */
+  public void helpMenuPageTwo(){
+    System.out.println("PAGE 2");
+    gameMenu.setMenuType(MenuType.HELP);
+    getContentPane().removeAll();
+    constraints = new GridBagConstraints();
+    constraints.fill = GridBagConstraints.BOTH;
+    constraints.weightx = 1;
+    constraints.weighty = 1;
+    helpMenu.createPageTwo();
+    helpMenu.renderPage();
+
+    add(helpMenu, constraints);
     redraw();
   }
 
@@ -363,8 +400,13 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
       }
 
     } else {
-      if (gameMenu != null) {
-        gameMenu.resize();
+      switch (gameMenu.getMenuType()){
+        case HELP:
+          helpMenu.resize();
+          break;
+        default:
+          gameMenu.resize();
+          break;
       }
       redraw();
     }
