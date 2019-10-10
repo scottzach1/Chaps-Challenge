@@ -157,24 +157,7 @@ public class Board {
   public List<Tile> getAllTiles() {
     return allTiles;
   }
-
-
-  /**
-   * Sets the board level to the next level. Retains level if on final level.
-   *
-   * @return boolean board changed.
-   */
-  public boolean setNextLevel() {
-    int currentLevel = LevelManager.getCurrentLevelInt();
-    if (currentLevel < LevelManager.getNumLevels() - 1) {
-      JsonReadWrite.loadGameState(LevelManager.getCurrentLevelStream(currentLevel + 1),
-          chapsChallenge);
-      LevelManager.currentLevel++;
-      return true;
-    }
-    return false;
-  }
-
+  
   /**
    * Sets the board level to the desired level. Retains level if given level is invalid.
    *

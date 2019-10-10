@@ -499,7 +499,7 @@ class BackendTest {
    */
   @Test
   void prevLevel() {
-    chapsChallenge.getBoard().setNextLevel();
+    chapsChallenge.nextLevel();
     int current = chapsChallenge.getBoard().getCurrentLevel();
     chapsChallenge.previousLevel();
     assertEquals(current - 1, chapsChallenge.getBoard().getCurrentLevel());
@@ -525,7 +525,7 @@ class BackendTest {
   @Test
   void nextLevel() {
     int current = chapsChallenge.getBoard().getCurrentLevel();
-    chapsChallenge.getBoard().setNextLevel();
+    chapsChallenge.nextLevel();
     int updated = chapsChallenge.getBoard().getCurrentLevel();
 
     assertEquals(current + 1, updated);

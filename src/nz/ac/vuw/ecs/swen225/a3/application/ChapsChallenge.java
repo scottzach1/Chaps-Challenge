@@ -121,7 +121,7 @@ public class ChapsChallenge {
 
   private void checkFields() {
     if (player.getLocation().getType() == Tile.Type.Exit) {
-      if (!board.setNextLevel()) {
+      if (!nextLevel()) {
         gameOver(MenuType.WINNER);
         return;
       }
@@ -225,16 +225,17 @@ public class ChapsChallenge {
   }
 
   /**
-   * Sets the game to the next level. If there is no next level, current level is restarted.
+   * Sets the game to the next level. If there is no next level, end screen is displayed.
    */
-  public void nextLevel() {
+  public boolean nextLevel() {
     int current = board.getCurrentLevel();
     if (current < board.getFinalLevel()) {
       board.setCurrentLevel(current + 1);
     } else {
-      board.setCurrentLevel(board.getFinalLevel());
+      return false;
     }
     resetLogistics();
+    return true;
   }
 
   /**
