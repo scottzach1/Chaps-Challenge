@@ -10,7 +10,7 @@ import javax.swing.ImageIcon;
  * @author Zac Scott 300447976.
  * https://stackoverflow.com/questions/17088599/how-to-combine-two-icons-in-java
  */
-public class CombinedImageIcon extends ImageIcon {
+class CombinedImageIcon extends ImageIcon {
 
   /**
    * Default serial number.
@@ -22,7 +22,7 @@ public class CombinedImageIcon extends ImageIcon {
    *
    * @param layers Layers to stack.
    */
-  public CombinedImageIcon(List<ImageIcon> layers) {
+  CombinedImageIcon(List<ImageIcon> layers) {
     super();
     BufferedImage combinedImage = new BufferedImage(layers.get(0).getIconWidth(),
         layers.get(0).getIconHeight(), BufferedImage.TYPE_INT_ARGB);
