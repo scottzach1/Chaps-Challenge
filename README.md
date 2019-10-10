@@ -1,6 +1,12 @@
 # Chaps Challenge
 
-Chap’s challenge is a creative clone of the (first level of the) 1989 Atari game Chips Challenge.
+Chap’s challenge is a creative clone of the (first level of the) 1989 Atari game [Chips Challenge](https://en.wikipedia.org/wiki/Chip%27s_Challenge).
+
+## Basics
+
+The objective of this game is to collect all of the chips/treasures on every level before advancing onto the next level. In order to obtain these chips the player must overcome obsticals such ast traversing water, avoiding hostile mobs and unlocking locked doors. 
+
+The design elements drew heavy inspiration from the online flash game [squaremeal](http://www.nitrome.com/games/squaremeal/). 
 
 ## Playing
 
@@ -34,7 +40,7 @@ Playback speed can be selected from the "Playback speed" menu item.
 
 After the recording finishes, movement will be enabled and you may continue from the end of the recording.
 
-## Creators
+## Authors
 
 * Harrison Cook
 * Jacob Fraser
