@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test;
  *
  * Namely:
  * GUI.
- * * saveGame()
+ * * saveRecording()
  * * loadGame()
  * * noFileFound()
  * * exitGame()

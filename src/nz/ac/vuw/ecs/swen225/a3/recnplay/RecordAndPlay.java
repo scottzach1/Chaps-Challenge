@@ -38,6 +38,7 @@ public class RecordAndPlay {
 
   private static long delay = 200;
   private static boolean isRunning;
+  private static int timeLeftAfterRun;
 
   /**
    * Set playback delay.
@@ -84,7 +85,7 @@ public class RecordAndPlay {
   /**
    * Save action history to file.
    */
-  public static void saveGame() {
+  public static void saveRecording(ChapsChallenge g) {
     if (isRecording) {
       JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
 
@@ -94,7 +95,8 @@ public class RecordAndPlay {
       }
       JsonObjectBuilder builder = Json.createObjectBuilder()
           .add("game", gameState)
-          .add("moves", arrayBuilder);
+          .add("moves", arrayBuilder)
+          .add("timeLeft",g.getTimeLeft());
 
       // Save moves to file
       try (Writer writer = new StringWriter()) {
@@ -109,6 +111,8 @@ public class RecordAndPlay {
       } catch (IOException e) {
         throw new Error("Failed to save moves");
       }
+
+
 
       isRecording = false;
     }
@@ -164,6 +168,11 @@ public class RecordAndPlay {
       if (moves.size() > 0) {
         isRunning = true;
       }
+
+      // Update timeLeft
+      timeLeftAfterRun = object.getInt("timeLeft");
+
+
       game.update();
     } catch (Exception e) {
       throw new Error(e.getMessage());
@@ -182,6 +191,7 @@ public class RecordAndPlay {
       moves.remove(0);
       if (moves.size() == 0) {
         isRunning = false;
+        game.setTimeLeft(timeLeftAfterRun);
       }
       game.update();
     }
@@ -205,6 +215,7 @@ public class RecordAndPlay {
         }
       }
       isRunning = false;
+      game.setTimeLeft(timeLeftAfterRun);
     };
     Thread thread = new Thread(runnable);
     thread.start();
