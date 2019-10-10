@@ -33,6 +33,7 @@ import nz.ac.vuw.ecs.swen225.a3.maze.MobManager;
 import nz.ac.vuw.ecs.swen225.a3.maze.Player;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
 import nz.ac.vuw.ecs.swen225.a3.maze.Wall;
+import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
 
 
 /**
@@ -68,7 +69,6 @@ public class JsonReadWrite {
     String jsonGame = "";
     String jsonBoard = "";
     String jsonPlayer = "";
-    JsonString jsonMobs;
 
     // Json dump board
     Board board = game.getBoard();

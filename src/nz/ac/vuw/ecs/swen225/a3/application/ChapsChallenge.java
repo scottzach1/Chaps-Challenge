@@ -121,7 +121,7 @@ public class ChapsChallenge {
 
   private void checkFields() {
     if (player.getLocation().getType() == Tile.Type.Exit) {
-      if (!board.setNextLevel()) {
+      if (!nextLevel()) {
         gameOver(MenuType.WINNER);
         return;
       }
@@ -225,16 +225,17 @@ public class ChapsChallenge {
   }
 
   /**
-   * Sets the game to the next level. If there is no next level, current level is restarted.
+   * Sets the game to the next level. If there is no next level, end screen is displayed.
    */
-  public void nextLevel() {
+  public boolean nextLevel() {
     int current = board.getCurrentLevel();
     if (current < board.getFinalLevel()) {
       board.setCurrentLevel(current + 1);
     } else {
-      board.setCurrentLevel(board.getFinalLevel());
+      return false;
     }
     resetLogistics();
+    return true;
   }
 
   /**
@@ -243,6 +244,7 @@ public class ChapsChallenge {
   public void restartLevel() {
     gui.resetMenuSettings();
     int current = board.getCurrentLevel();
+    RecordAndPlay.endRecording();
     board.setCurrentLevel(current);
     resetLogistics();
   }
@@ -400,6 +402,8 @@ public class ChapsChallenge {
    * @param reason for gameover.
    */
   public void gameOver(MenuType reason) {
+    if(RecordAndPlay.getIsRunning())return;
+    RecordAndPlay.endRecording();
     gamePaused = true;
     gui.setPlayerDead();
     gui.gameOver(reason);

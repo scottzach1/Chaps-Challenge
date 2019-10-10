@@ -36,16 +36,6 @@ class BackendTest {
   private List<String> allLevels = new ArrayList<>();
 
   /**
-   * The default chaps challenge should start at level 1; which is also the default for a new board.
-   */
-  @Test
-  void loadDefault() {
-    chapsChallenge = new ChapsChallenge();
-    Board board = new Board(chapsChallenge);
-    assertEquals(chapsChallenge.getBoard().toString(), board.toString());
-  }
-
-  /**
    * Creates an invalid board with 3 Chaps Should throw an error.
    */
   @Test
@@ -509,7 +499,7 @@ class BackendTest {
    */
   @Test
   void prevLevel() {
-    chapsChallenge.getBoard().setNextLevel();
+    chapsChallenge.nextLevel();
     int current = chapsChallenge.getBoard().getCurrentLevel();
     chapsChallenge.previousLevel();
     assertEquals(current - 1, chapsChallenge.getBoard().getCurrentLevel());
@@ -535,7 +525,7 @@ class BackendTest {
   @Test
   void nextLevel() {
     int current = chapsChallenge.getBoard().getCurrentLevel();
-    chapsChallenge.getBoard().setNextLevel();
+    chapsChallenge.nextLevel();
     int updated = chapsChallenge.getBoard().getCurrentLevel();
 
     assertEquals(current + 1, updated);

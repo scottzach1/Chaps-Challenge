@@ -198,20 +198,27 @@ public class RecordAndPlay {
    * @param game Game object.
    */
   public static void step(ChapsChallenge game) {
-    if (moves.size() > 0 && isRunning) {
-      if(agents.get(0) == 0){
-        game.move(moves.get(0));
+    try {
+      if (moves.size() > 0 && isRunning) {
+        if (agents.get(0) == 0) {
+          game.move(moves.get(0));
+          moves.remove(0);
+          agents.remove(0);
+        } else {
+          game.getMobManager().moveMob(agents.get(0), moves.get(0));
+          moves.remove(0);
+          agents.remove(0);
+          if (moves.size() > 0) step(game);
+        }
+
+        if (moves.size() == 0) {
+          isRunning = false;
+          game.setTimeLeft(timeLeftAfterRun);
+        }
+        game.update();
       }
-      else{
-        game.getMobManager().moveMob(agents.get(0),moves.get(0));
-      }
-      moves.remove(0);
-      agents.remove(0);
-      if (moves.size() == 0) {
-        isRunning = false;
-        game.setTimeLeft(timeLeftAfterRun);
-      }
-      game.update();
+    }catch(IndexOutOfBoundsException e){
+      //todo: deal
     }
   }
 
@@ -248,6 +255,15 @@ public class RecordAndPlay {
    */
   public static boolean getIsRecording() {
     return isRecording;
+  }
+
+  public static void endRecording(){
+    isRecording = false;
+    isRunning = false;
+    saveName = null;
+    moves.clear();
+    agents.clear();
+    gameState = null;
   }
 
   /**
