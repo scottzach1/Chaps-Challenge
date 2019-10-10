@@ -226,8 +226,9 @@ public class RecordAndPlay {
     Runnable runnable = () -> {
       while (moves.size() > 0 && isRunning) {
         try {
+          if(agents.size() > 0 && agents.get(0) == 0)
+            Thread.sleep(delay);
           step(game);
-          Thread.sleep(delay);
         } catch (InterruptedException e) {
           System.out.println("Running through recording was interrupted:" + e);
         }
