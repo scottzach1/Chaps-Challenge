@@ -36,16 +36,6 @@ class BackendTest {
   private List<String> allLevels = new ArrayList<>();
 
   /**
-   * The default chaps challenge should start at level 1; which is also the default for a new board.
-   */
-  @Test
-  void loadDefault() {
-    chapsChallenge = new ChapsChallenge();
-    Board board = new Board(chapsChallenge);
-    assertEquals(chapsChallenge.getBoard().toString(), board.toString());
-  }
-
-  /**
    * Creates an invalid board with 3 Chaps Should throw an error.
    */
   @Test
