@@ -154,7 +154,6 @@ public class RecordAndPlay {
       }
 
       JsonArray movesJson = object != null ? object.getJsonArray("moves") : null;
-
       for (int i = 0; i < movesJson.size(); ++i) {
         JsonObject object2 = movesJson.getJsonObject(i);
         String direction = object2.getString("move");
@@ -188,9 +187,8 @@ public class RecordAndPlay {
 
       game.update();
 
-    } catch (Exception e) {
+    } catch (IOException e) {
       System.out.println(e.getMessage());
-      //Todo: deal
     }
   }
 
