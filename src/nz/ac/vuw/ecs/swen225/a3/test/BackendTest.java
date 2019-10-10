@@ -12,7 +12,6 @@ import java.util.List;
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 import nz.ac.vuw.ecs.swen225.a3.maze.Board;
 import nz.ac.vuw.ecs.swen225.a3.maze.Board.MultiplePlayersFoundException;
-import nz.ac.vuw.ecs.swen225.a3.maze.Board.ParsingException;
 import nz.ac.vuw.ecs.swen225.a3.maze.Board.PlayerNotFoundException;
 import nz.ac.vuw.ecs.swen225.a3.maze.Exit;
 import nz.ac.vuw.ecs.swen225.a3.maze.ExitLock;
@@ -24,9 +23,7 @@ import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
 import nz.ac.vuw.ecs.swen225.a3.maze.Treasure;
 import nz.ac.vuw.ecs.swen225.a3.maze.Wall;
 import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -569,7 +566,7 @@ public class BackendTest {
    * @param level String representation of board
    */
   private void parseTestBoards(String level, Board board)
-      throws MultiplePlayersFoundException, ParsingException, PlayerNotFoundException {
+      throws MultiplePlayersFoundException, PlayerNotFoundException {
     boolean foundChap = false;
     String[] values = level.split("\\|");
     int index = 0;
@@ -613,7 +610,11 @@ public class BackendTest {
 
           // Check for invalid token
           if (!(itemType.equals("K") || itemType.equals("D"))) {
-            throw new ParsingException();
+            try {
+              throw new Exception("Failed to parse");
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
           }
 
           String colour = v.substring(1).toLowerCase();
@@ -659,9 +660,6 @@ public class BackendTest {
         allLevels.add(0, level);
       }
       parseTestBoards(level, board);
-    } catch (ParsingException p) {
-      System.out.println(p.getMessage());
-      throw new Error(p.getMessage());
     } catch (MultiplePlayersFoundException m) {
       System.out.println(m.getMessage());
       throw new Error(m.getMessage());
