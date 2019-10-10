@@ -18,7 +18,6 @@ class DashboardHolder extends JPanel {
    */
   private static final long serialVersionUID = 1L;
   private Dashboard dashboard;
-  private AssetManager assetManager;
   private int dashboardHeight;
 
   /**
@@ -26,7 +25,6 @@ class DashboardHolder extends JPanel {
    */
   DashboardHolder(ChapsChallenge chapsChallenge) {
     Gui gui = chapsChallenge.getGui();
-    assetManager = gui.getAssetManager();
     setPreferredSize(new Dimension(gui.getDashboardWidth(), gui.getScreenHeight()));
 
     dashboard = new Dashboard(chapsChallenge, this);
@@ -42,7 +40,7 @@ class DashboardHolder extends JPanel {
    */
   private void renderDashboard() {
     removeAll();
-    dashboardHeight = assetManager.getScaledImage("free.png").getIconHeight() * Canvas.VIEW_SIZE;
+    dashboardHeight = AssetManager.getScaledImage("free.png").getIconHeight() * Canvas.VIEW_SIZE;
 
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.HORIZONTAL;

@@ -18,13 +18,9 @@ public class Key extends Tile {
   private String colour;
   private boolean collected;
 
-  /**
-   * Constructor without Colour.
-   */
   public Key() {
     super(Type.Key);
   }
-  
   /**
    * Constructor.
    * Sets the isAccessible to true.

@@ -1,4 +1,4 @@
-package nz.ac.vuw.ecs.swen225.a3.persistence;
+package nz.ac.vuw.ecs.swen225.a3.renderer;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -10,7 +10,7 @@ import javax.swing.ImageIcon;
  * @author Zac Scott 300447976.
  * https://stackoverflow.com/questions/17088599/how-to-combine-two-icons-in-java
  */
-class CombinedImageIcon extends ImageIcon {
+public class CombinedImageIcon extends ImageIcon {
 
   /**
    * Default serial number.
@@ -22,7 +22,7 @@ class CombinedImageIcon extends ImageIcon {
    *
    * @param layers Layers to stack.
    */
-  CombinedImageIcon(List<ImageIcon> layers) {
+  public CombinedImageIcon(List<ImageIcon> layers) {
     super();
     BufferedImage combinedImage = new BufferedImage(layers.get(0).getIconWidth(),
         layers.get(0).getIconHeight(), BufferedImage.TYPE_INT_ARGB);

@@ -11,7 +11,6 @@ import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
-import java.io.IOException;
 import java.util.HashSet;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -20,10 +19,8 @@ import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
-import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
 import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
 import nz.ac.vuw.ecs.swen225.a3.renderer.GameMenu.MenuType;
-import nz.ac.vuw.ecs.swen225.a3.test.BackendTest;
 
 /**
  * GUI class extends JFrame and is responsible with maintain the Graphical Interface.
@@ -32,9 +29,7 @@ import nz.ac.vuw.ecs.swen225.a3.test.BackendTest;
  */
 public class Gui extends JFrame implements ComponentListener, KeyListener {
 
-  /**
-   * Default serial number.
-   */
+  // Nothing important
   private static final long serialVersionUID = 1L;
 
   // Colour Space.
@@ -56,14 +51,11 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
   private Canvas canvas;
   private DashboardHolder dashboardHolder;
   private GameMenu gameMenu;
-  private HelpMenu helpMenu;
   private JMenuBar menuBar;
   private ChapsChallenge application;
 
   // Layout object
   private GridBagConstraints constraints = new GridBagConstraints();
-
-  private AssetManager assetManager;
 
   // HashSet of actively pressed keys
   private HashSet<Integer> activeKeys;
@@ -79,11 +71,10 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
    * Constructor: Creates a new JFrame and sets preferred sizes. Creates and adds all relevant GUI
    * components then redraws.
    */
-  public Gui(ChapsChallenge chapsChallenge, AssetManager assetManager) {
+  public Gui(ChapsChallenge chapsChallenge) {
     resizeCycle = 0;
     direction = "";
     application = chapsChallenge;
-    this.assetManager = assetManager;
     playerIsDead = false;
 
     // Create new set for hosting keys currently pressed
@@ -123,7 +114,6 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
     canvas = new Canvas(application);
     dashboardHolder = new DashboardHolder(application);
     gameMenu = new GameMenu(application);
-    helpMenu = new HelpMenu(application);
     menuBar = new MenuOptionPane(application);
 
     // Add MenuBar.
@@ -163,41 +153,6 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
   }
 
   /**
-   * Loads in the first page of the help menu
-   */
-  public void helpMenuPageOne(){
-    gameMenu.setMenuType(MenuType.HELP);
-    getContentPane().removeAll();
-    constraints = new GridBagConstraints();
-    constraints.fill = GridBagConstraints.BOTH;
-    constraints.weightx = 1;
-    constraints.weighty = 1;
-    helpMenu.createPageOne();
-    helpMenu.renderPage();
-
-    add(helpMenu, constraints);
-    redraw();
-  }
-
-  /**
-   * Loads in the second page of the help menu
-   */
-  public void helpMenuPageTwo(){
-    System.out.println("PAGE 2");
-    gameMenu.setMenuType(MenuType.HELP);
-    getContentPane().removeAll();
-    constraints = new GridBagConstraints();
-    constraints.fill = GridBagConstraints.BOTH;
-    constraints.weightx = 1;
-    constraints.weighty = 1;
-    helpMenu.createPageTwo();
-    helpMenu.renderPage();
-
-    add(helpMenu, constraints);
-    redraw();
-  }
-
-  /**
    * Closes the pause menu and loads the game screen.
    */
   public void resumeGame() {
@@ -228,7 +183,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
    */
   public boolean saveGame() {
     JFileChooser jfc = new JFileChooser();
-    jfc.setCurrentDirectory(new File("saves/"));
+    jfc.setCurrentDirectory(new File("."));
     jfc.setDialogTitle("Save file");
 
     if (jfc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
@@ -242,7 +197,8 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
    * Handles GUI actions related to loading the game.
    */
   public boolean loadGame() {
-    JFileChooser jfc = new JFileChooser("saves/");
+    JFileChooser jfc = new JFileChooser();
+    jfc.setCurrentDirectory(new File("."));
     jfc.setDialogTitle("Load file");
     jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 
@@ -301,7 +257,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
    * @param text to display.
    */
   public void renderInfoField(String text) {
-      if(!RecordAndPlay.getIsRunning() && !BackendTest.testing) {
+    if (!RecordAndPlay.getIsRunning()) {
           // Button options
           String[] options = {"Okay"};
 
@@ -399,13 +355,8 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
       }
 
     } else {
-      switch (gameMenu.getMenuType()){
-        case HELP:
-          helpMenu.resize();
-          break;
-        default:
-          gameMenu.resize();
-          break;
+      if (gameMenu != null) {
+        gameMenu.resize();
       }
       redraw();
     }
@@ -484,7 +435,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
     // CTRL + P
     if (activeKeys.contains(KeyEvent.VK_CONTROL) && activeKeys.contains(KeyEvent.VK_P)
         && activeKeys.size() == 2) {
-      application.getLastPlayedLevel();
+      application.restartLevel();
     }
 
     // CTRL + Number
@@ -514,7 +465,10 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
       if (playerIsDead) {
         return;
       }
-      application.loadGame();
+
+      if (application.isGamePaused()) {
+        application.resumeGame();
+      }
     }
     // ESC
     if (activeKeys.contains(KeyEvent.VK_ESCAPE) && activeKeys.size() == 1) {
@@ -649,15 +603,6 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
    */
   public void setPlayerAlive() {
     playerIsDead = false;
-  }
-
-  /**
-   * Gets the AssetManager corresponding to this application instance.
-   *
-   * @return assetManager for gui.
-   */
-  AssetManager getAssetManager() {
-    return assetManager;
   }
 
   /**

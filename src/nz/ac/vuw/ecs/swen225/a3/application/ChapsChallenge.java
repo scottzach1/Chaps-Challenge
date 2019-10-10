@@ -1,17 +1,15 @@
 package nz.ac.vuw.ecs.swen225.a3.application;
 
+import java.awt.event.ComponentEvent;
 import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 import nz.ac.vuw.ecs.swen225.a3.maze.Board;
 import nz.ac.vuw.ecs.swen225.a3.maze.InfoField;
 import nz.ac.vuw.ecs.swen225.a3.maze.MobManager;
 import nz.ac.vuw.ecs.swen225.a3.maze.Player;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
-import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
 import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
 import nz.ac.vuw.ecs.swen225.a3.persistence.LevelManager;
 import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
@@ -32,6 +30,7 @@ public class ChapsChallenge {
   private Player player;
 
   private long totalTime = 100; //100 seconds
+  private long startTime;
   private long timeLeft = totalTime;
   private boolean gamePaused = false;
 
@@ -48,50 +47,19 @@ public class ChapsChallenge {
    * Create main game application.
    */
   public ChapsChallenge() {
-    AssetManager assetManager = new AssetManager();
-    LevelManager.loadLevels(assetManager);
+    LevelManager.loadLevels();
     // Load the board.
     board = new Board(this);
     board.setup();
     player = new Player(board.getPlayerLocation());
     mobManager = new MobManager(board);
 
+    startTime = System.currentTimeMillis();
+
     // Creates a GUI and gives it a keyListener
-    gui = new Gui(this, assetManager);
+    gui = new Gui(this);
     gui.addLayoutComponents();
-  }
 
-  /**
-   * Check for saves and load most recently modified file.
-   */
-  public void getLatestSave(){
-    File out = new File("saves/");
-    File[] saves = out.listFiles();
-    Arrays.sort(saves, Comparator.comparingLong(File::lastModified));
-    if(saves.length > 0){
-      try {
-        JsonReadWrite.loadGameStateFromFile(saves[saves.length-1].getAbsolutePath(),this);
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
-  }
-
-  /**
-   * Get level of most recently played save.
-   */
-  public void getLastPlayedLevel(){
-    File out = new File("saves/");
-    File[] saves = out.listFiles();
-    Arrays.sort(saves, Comparator.comparingLong(File::lastModified));
-    if(saves.length > 0){
-      try {
-        JsonReadWrite.loadGameStateFromFile(saves[saves.length-1].getAbsolutePath(),this);
-        restartLevel();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
   }
 
   /**
@@ -169,10 +137,29 @@ public class ChapsChallenge {
   }
 
   /**
+   * Checks the amount of time that has elapsed since the start of the game. Subtracts this from the
+   * total time available.
+   *
+   * @return the time left to play
+   */
+  public int timeLeft() {
+    if (gamePaused) {
+      return (int) timeLeft;
+    }
+    long elapsedTime = System.currentTimeMillis() - startTime;
+    timeLeft -= TimeUnit.MILLISECONDS.toSeconds(elapsedTime);
+
+    startTime = System.currentTimeMillis();
+
+    return (int) timeLeft;
+  }
+
+  /**
    * Pauses the game.
    */
   public void pauseGame() {
     gamePaused = true;
+    startTime = System.currentTimeMillis();
     gui.pauseGame();
   }
 
@@ -181,15 +168,8 @@ public class ChapsChallenge {
    */
   public void resumeGame() {
     gamePaused = false;
+    startTime = System.currentTimeMillis();
     gui.resumeGame();
-  }
-
-  /**
-   * Loads the help menu on page one
-   */
-  public void helpMenu(){
-    gamePaused = true;
-    gui.helpMenuPageOne();
   }
 
   /**
@@ -197,6 +177,7 @@ public class ChapsChallenge {
    */
   public void loadGame() {
     gamePaused = true;
+    startTime = System.currentTimeMillis();
     if (gui.loadGame()) {
       try {
         JsonReadWrite.loadGameStateFromFile(loadFile.getAbsolutePath(), this);
@@ -214,6 +195,7 @@ public class ChapsChallenge {
    */
   public void saveGame() {
     gamePaused = true;
+    startTime = System.currentTimeMillis();
     if (gui.saveGame()) {
       JsonReadWrite.saveGameState(this, saveFile.getAbsolutePath());
     }
@@ -227,7 +209,6 @@ public class ChapsChallenge {
     gui.resetMenuSettings();
     board.setCurrentLevel(0);
     resetLogistics();
-    resumeGame();
   }
 
   /**
@@ -263,10 +244,8 @@ public class ChapsChallenge {
   public void restartLevel() {
     gui.resetMenuSettings();
     int current = board.getCurrentLevel();
-    RecordAndPlay.endRecording();
     board.setCurrentLevel(current);
     resetLogistics();
-    resumeGame();
   }
 
   /**
@@ -288,6 +267,7 @@ public class ChapsChallenge {
    */
   public void exitGame() {
     gamePaused = true;
+    startTime = System.currentTimeMillis();
     gui.setPlayerDead();
     gui.gameOver(MenuType.QUITTER);
   }
@@ -301,7 +281,6 @@ public class ChapsChallenge {
     Runnable runnable = new Runnable() {
 
       private int timeCheck = 0;
-      private boolean pastFirstSecond = false;
 
       @Override
       public void run() {
@@ -313,17 +292,12 @@ public class ChapsChallenge {
             if (timeLeft > 0) {
               // Update the board every 1/fps second
               gui.updateBoard();
-              gui.updateDashboard();
 
               // Every second
               if (timeCheck == 0) {
                 // Update the dashboard and mobs
+                gui.updateDashboard();
                 mobManager.advanceByOneTick();
-                if (pastFirstSecond) {
-                  timeLeft--;
-                } else {
-                  pastFirstSecond = true;
-                }
               }
               // Restricts the frame rate to 30 fps
               try {
@@ -331,7 +305,6 @@ public class ChapsChallenge {
                 // Tick counter cycles (0, 1)
                 timeCheck = (timeCheck + 1) % fps;
               } catch (InterruptedException e) {
-                gameOver(MenuType.ERROR);
               }
 
             } else {
@@ -342,7 +315,6 @@ public class ChapsChallenge {
             try {
               Thread.sleep(10);
             } catch (InterruptedException e) {
-              gameOver(MenuType.ERROR);
             }
           }
         }
@@ -350,18 +322,6 @@ public class ChapsChallenge {
     };
     thread = new Thread(runnable);
     thread.start();
-  }
-
-  /**
-   * Returns the amount of time left to play
-   *
-   * @return the time left to play
-   */
-  public int timeLeft() {
-    if (timeLeft <= 0) {
-      return 0;
-    }
-    return (int) timeLeft;
   }
 
   /**
@@ -438,15 +398,11 @@ public class ChapsChallenge {
   }
 
   /**
-   * Called when game over is reached.
+   * Called when gameover is reached.
    *
-   * @param reason for game over.
+   * @param reason for gameover.
    */
   public void gameOver(MenuType reason) {
-    if (RecordAndPlay.getIsRunning()) {
-      return;
-    }
-    RecordAndPlay.endRecording();
     gamePaused = true;
     gui.setPlayerDead();
     gui.gameOver(reason);
@@ -463,7 +419,7 @@ public class ChapsChallenge {
   }
 
   /**
-   * Sets the current save file.
+   * Sets the current savefile.
    *
    * @param saveFile to set
    */
@@ -472,7 +428,7 @@ public class ChapsChallenge {
   }
 
   /**
-   * Sets the current load file.
+   * Sets the current loadfile.
    *
    * @param loadFile to set
    */
@@ -492,6 +448,7 @@ public class ChapsChallenge {
    */
   public void resetLogistics() {
     timeLeft = totalTime;
+    startTime = System.currentTimeMillis();
     player = new Player(board.getPlayerLocation());
     gui.setPlayerAlive();
   }
@@ -552,11 +509,7 @@ public class ChapsChallenge {
     this.mobManager = mobManager;
   }
 
-  /**
-   * Sets the refresh-rate of the program (frames per second).
-   *
-   * @param fps frames per second.
-   */
+
   public void setFps(int fps) {
     this.fps = fps;
   }
@@ -567,6 +520,6 @@ public class ChapsChallenge {
    * @param args main arguments
    */
   public static void main(String[] args) {
-    new ChapsChallenge().getLatestSave();
+    new ChapsChallenge();
   }
 }

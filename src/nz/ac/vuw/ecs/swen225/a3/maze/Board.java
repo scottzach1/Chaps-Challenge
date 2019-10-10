@@ -275,6 +275,22 @@ public class Board {
   }
 
   /**
+   * Exception thrown when invalid token found in level description.
+   */
+  public static class ParsingException extends Exception {
+
+    /**
+     * Default serial number.
+     */
+    private static final long serialVersionUID = 1L;
+
+    @Override
+    public String getMessage() {
+      return "Invalid token in string description of level";
+    }
+  }
+
+  /**
    * Gets string representation of the board.
    *
    * @return string representation of the board.

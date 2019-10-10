@@ -12,30 +12,26 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.zip.ZipFile;
 
-/**
- * Manages JSON level files and plugin functionality.
- * @author Zac Durant 300449785
- */
 public class LevelManager {
 
-  private static ArrayList<String> levelDescriptions = new ArrayList<>();
+  static ArrayList<String> levelDescriptions = new ArrayList<>();
   public static int currentLevel = 0;
-  static Set<Class> classSet = new HashSet<>();
+  public static Set<Class> classSet = new HashSet<>();
 
-  public static void loadLevels(AssetManager assetManager) {
+  public static void loadLevels() {
     //Load level description and assets
     File folder = new File("src/levels/");
-    List<File> files = Arrays.asList(Objects.requireNonNull(folder.listFiles()));
+    List<File> files = Arrays.asList(folder.listFiles());
     Collections.sort(files);
     for (File f : files) {
       try {
-        try (ZipFile zf = new ZipFile(f.getAbsolutePath())) {
+        ZipFile zf = new ZipFile(f.getAbsolutePath());
+        try {
           zf.stream().filter(p -> p.getName().contains(".txt"))
               .forEach(s -> {
                 try {
@@ -50,11 +46,13 @@ public class LevelManager {
           zf.stream().filter(p -> p.getName().contains(".png"))
               .forEach(s -> {
                 try {
-                  assetManager.loadAssetFromInputStream(zf.getInputStream(s), s.getName());
+                  AssetManager.loadAssetFromInputStream(zf.getInputStream(s), s.getName());
                 } catch (Exception e) {
                   System.out.println("Error loading assets from file: " + e);
                 }
               });
+        } finally {
+          zf.close();
         }
       } catch (Exception e) {
         System.out.println("Error opening Zip: " + e);
@@ -65,7 +63,7 @@ public class LevelManager {
     try {
 
       folder = new File("src/levels/");
-      for (File f : Objects.requireNonNull(folder.listFiles())) {
+      for (File f : folder.listFiles()) {
         JarFile jarFile = new JarFile(f);
         Enumeration<JarEntry> e = jarFile.entries();
 
@@ -100,21 +98,11 @@ public class LevelManager {
     return currentLevel;
   }
 
-  /**
-   * Gets the current level as a string.
-   *
-   * @param level the level number.
-   * @return the level as a string.
-   */
+
   public static String getCurrentLevelStream(int level) {
     return levelDescriptions.get(level);
   }
 
-  /**
-   * Gets the total number of levels.
-   *
-   * @return the number of levels.
-   */
   public static int getNumLevels() {
     return levelDescriptions.size();
   }

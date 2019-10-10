@@ -29,7 +29,7 @@ import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 public class GameMenu extends JPanel {
 
   public enum MenuType {
-    PAUSE, DEATH, TIMEOUT, WINNER, ERROR, QUITTER, HELP
+    PAUSE, DEATH, TIMEOUT, WINNER, ERROR, QUITTER
   }
 
   /**
@@ -97,7 +97,8 @@ public class GameMenu extends JPanel {
     MenuButton resume = new MenuButton("Resume", e -> application.resumeGame(), width, height);
 
     MenuButton restart = new MenuButton("Restart", e -> {
-      application.restartLevel();
+      application.resumeGame();
+      application.restartGame();
     }, width, height);
 
     MenuButton quit = new MenuButton("Quit", e -> application.exitGame(), width, height);
@@ -123,10 +124,12 @@ public class GameMenu extends JPanel {
     int height = gui.getScreenHeight() / (3 * 2);
 
     MenuButton restartLevel = new MenuButton("Restart Level", e -> {
+      application.resumeGame();
       application.restartLevel();
     }, width, height);
 
     MenuButton restartGame = new MenuButton("Restart Game", e -> {
+      application.resumeGame();
       application.restartGame();
     }, width, height);
 
@@ -137,10 +140,7 @@ public class GameMenu extends JPanel {
     menuButtons.add(quit);
 
     // Create the text for the menu
-    System.out.println("TYPE - " + menuType);
     switch (menuType) {
-      case HELP:
-        break;
       case TIMEOUT:
         textPane = new CustomTextPane("OUT OF TIME", centerAlign, null, buttonForeground, false);
         break;
@@ -149,8 +149,6 @@ public class GameMenu extends JPanel {
         break;
       case WINNER:
         textPane = new CustomTextPane("YOU WON !!!", centerAlign, null, buttonForeground, false);
-        break;
-      case PAUSE:
         break;
       default:
         textPane = new CustomTextPane("An Error Occurred", centerAlign, null, buttonForeground, false);
@@ -172,7 +170,7 @@ public class GameMenu extends JPanel {
 
     MenuButton yesButton = new MenuButton("Yes please", e -> System.exit(0), width, height);
 
-    MenuButton noButton = new MenuButton("Oops, NO!", e -> application.resumeGame(), width, height);
+    MenuButton noButton = new MenuButton("Opps, NO!", e -> application.resumeGame(), width, height);
 
     menuButtons.add(yesButton);
     menuButtons.add(noButton);
@@ -218,9 +216,6 @@ public class GameMenu extends JPanel {
   }
 
 
-  /**
-   * Switched between different types of gameplay menus and warnings
-   */
   private void switchMenu() {
     switch (menuType){
       case PAUSE:
@@ -250,10 +245,6 @@ public class GameMenu extends JPanel {
    */
   void setMenuType(MenuType mt) {
     menuType = mt;
-  }
-
-  MenuType getMenuType(){
-    return menuType;
   }
 
 
