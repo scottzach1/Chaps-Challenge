@@ -150,6 +150,14 @@ public class ChapsChallenge {
   }
 
   /**
+   * Loads the help menu on page one
+   */
+  public void helpMenu(){
+    gamePaused = true;
+    gui.helpMenuPageOne();
+  }
+
+  /**
    * Loads the game.
    */
   public void loadGame() {
