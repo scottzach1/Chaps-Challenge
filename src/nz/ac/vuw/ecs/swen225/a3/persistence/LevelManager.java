@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -19,19 +20,18 @@ import java.util.zip.ZipFile;
 
 public class LevelManager {
 
-  static ArrayList<String> levelDescriptions = new ArrayList<>();
+  private static ArrayList<String> levelDescriptions = new ArrayList<>();
   public static int currentLevel = 0;
-  public static Set<Class> classSet = new HashSet<>();
+  static Set<Class> classSet = new HashSet<>();
 
   public static void loadLevels(AssetManager assetManager) {
     //Load level description and assets
     File folder = new File("src/levels/");
-    List<File> files = Arrays.asList(folder.listFiles());
+    List<File> files = Arrays.asList(Objects.requireNonNull(folder.listFiles()));
     Collections.sort(files);
     for (File f : files) {
       try {
-        ZipFile zf = new ZipFile(f.getAbsolutePath());
-        try {
+        try (ZipFile zf = new ZipFile(f.getAbsolutePath())) {
           zf.stream().filter(p -> p.getName().contains(".txt"))
               .forEach(s -> {
                 try {
@@ -51,8 +51,6 @@ public class LevelManager {
                   System.out.println("Error loading assets from file: " + e);
                 }
               });
-        } finally {
-          zf.close();
         }
       } catch (Exception e) {
         System.out.println("Error opening Zip: " + e);
@@ -63,7 +61,7 @@ public class LevelManager {
     try {
 
       folder = new File("src/levels/");
-      for (File f : folder.listFiles()) {
+      for (File f : Objects.requireNonNull(folder.listFiles())) {
         JarFile jarFile = new JarFile(f);
         Enumeration<JarEntry> e = jarFile.entries();
 
@@ -98,11 +96,20 @@ public class LevelManager {
     return currentLevel;
   }
 
-
+  /**
+   * Gets the current level as a string.
+   *
+   * @param level the level number.
+   * @return the level as a string.
+   */
   public static String getCurrentLevelStream(int level) {
     return levelDescriptions.get(level);
   }
 
+  /**
+   * Gets the total number of levels.
+   * @return the number of levels.
+   */
   public static int getNumLevels() {
     return levelDescriptions.size();
   }

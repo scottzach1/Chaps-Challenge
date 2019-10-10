@@ -66,9 +66,9 @@ public class JsonReadWrite {
    * @return Json string.
    */
   public static String getGameState(ChapsChallenge game) {
-    String jsonGame = "";
-    String jsonBoard = "";
-    String jsonPlayer = "";
+    String jsonGame;
+    String jsonBoard;
+    String jsonPlayer;
 
     // Json dump board
     Board board = game.getBoard();
@@ -142,12 +142,11 @@ public class JsonReadWrite {
    *
    * @param fileName Name of file to load from.
    * @param g Chaps challenge object.
-   * @return Chaps challenge object.
    */
-  public static ChapsChallenge loadGameStateFromFile(String fileName, ChapsChallenge g) {
+  public static void loadGameStateFromFile(String fileName, ChapsChallenge g) {
     try {
       InputStream reader = new FileInputStream(new File(fileName));
-      return loadGameState(new BufferedReader(new InputStreamReader(reader)).readLine(), g);
+      loadGameState(new BufferedReader(new InputStreamReader(reader)).readLine(), g);
     } catch (Exception e) {
       //TODO: Deal
       throw new Error("FAILED TO READ LEVEL");
@@ -159,10 +158,8 @@ public class JsonReadWrite {
    *
    * @param saveGame Name of file.
    * @param g Game object.
-   * @return Updated game Object.
-   * @throws GameNotFoundException Thrown when file not found.
    */
-  public static ChapsChallenge loadGameState(String saveGame, ChapsChallenge g) {
+  public static void loadGameState(String saveGame, ChapsChallenge g) {
     JsonObject game;
     JsonReader jsonReader = Json.createReader(new StringReader(saveGame));
     game = jsonReader.readObject();
@@ -238,11 +235,12 @@ public class JsonReadWrite {
           } catch (InstantiationException ex) {
             ex.printStackTrace();
           } catch (InvocationTargetException ex) {
-            System.out.println(ex.getCause());
+            System.out.println("Invocation exception: " + ex.getCause());
           } catch (NoSuchMethodException ex) {
-            ex.printStackTrace();
+            System.out.println("No such method: " + ex);
+
           } catch (IllegalAccessException ex) {
-            ex.printStackTrace();
+            System.out.println("Illegal access: " + ex);
           }
         }
       }
@@ -265,8 +263,6 @@ public class JsonReadWrite {
     g.setPlayer(p);
     g.setMobManager(mm);
     LevelManager.currentLevel = game.getInt("level");
-
-    return g;
   }
 
   /**
@@ -298,22 +294,23 @@ public class JsonReadWrite {
           } catch (InstantiationException ex) {
             ex.printStackTrace();
           } catch (InvocationTargetException ex) {
-            System.out.println(ex.getCause());
+            System.out.println("Invocation exception: " + ex.getCause());
           } catch (NoSuchMethodException ex) {
-            ex.printStackTrace();
+            System.out.println("No such method: " + ex);
           } catch (IllegalAccessException ex) {
-            ex.printStackTrace();
+            System.out.println("Illegal access: " + ex);
           }
         }
       }
     } catch (NoSuchMethodException e) {
-      e.printStackTrace();
+      System.out.println("No such method: " + e);
     } catch (IllegalAccessException e) {
+      System.out.println("Illegal access: " + e);
       e.printStackTrace();
     } catch (InstantiationException e) {
-      e.printStackTrace();
+      System.out.println("Instantiation Exception: " + e);
     } catch (InvocationTargetException e) {
-      e.printStackTrace();
+      System.out.println("Invocation Target Exception" + e);
     }
     return new Wall().setTileFromJson(Json.createReader(new StringReader(tile)));
   }
