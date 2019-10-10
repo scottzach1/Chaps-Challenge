@@ -26,6 +26,7 @@ public abstract class Mob {
   public Map<Tile.Direction, String> images = new HashMap<>();
   public Set<Tile.Type> safeTiles = new HashSet<>(Arrays.asList(Tile.Type.Free));
   public Board board;
+  public int id;
 
 
   /**
@@ -121,9 +122,11 @@ public abstract class Mob {
         board.getChapsChallenge().gameOver(MenuType.DEATH);
         return;
       }
-      host = target;
-      target.setTileOccupied(target.getImageUrl() + "-" + imageUrl);
-      target.setOccupied(true);
+      if (!target.isOccupied()) {
+        host = target;
+        target.setTileOccupied(target.getImageUrl() + "-" + imageUrl);
+        target.setOccupied(true);
+      }
     }
     active = target != null;
   }

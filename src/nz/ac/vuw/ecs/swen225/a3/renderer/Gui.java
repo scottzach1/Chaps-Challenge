@@ -257,18 +257,20 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
    * @param text to display.
    */
   public void renderInfoField(String text) {
-    // Button options
-    String[] options = {"Okay"};
+      if(!RecordAndPlay.getIsRunning()) {
+          // Button options
+          String[] options = {"Okay"};
 
-    // Create and display the JOptionPane
-    JOptionPane.showOptionDialog(null,
-        text + "\n",
-        "INFO",
-        JOptionPane.YES_NO_OPTION,
-        JOptionPane.QUESTION_MESSAGE,
-        null,
-        options,
-        options[0]);
+          // Create and display the JOptionPane
+          JOptionPane.showOptionDialog(null,
+                  text + "\n",
+                  "INFO",
+                  JOptionPane.YES_NO_OPTION,
+                  JOptionPane.QUESTION_MESSAGE,
+                  null,
+                  options,
+                  options[0]);
+      }
   }
 
   /**
