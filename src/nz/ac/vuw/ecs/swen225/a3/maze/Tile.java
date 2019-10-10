@@ -288,6 +288,7 @@ public abstract class Tile {
    * Set tile properties from json.
    *
    * @param json the json to read the object from.
+   * @return the tile
    */
   public abstract Tile setTileFromJson(JsonReader json);
 
