@@ -101,11 +101,19 @@ public class MobManager {
   public void removeAllMobs() {
     mobs.clear();
   }
-
+  
+  /**
+   * Gets the board.
+   * @return board.
+   */
   public Board getBoard() {
     return board;
   }
 
+  /**
+   * Sets the board.
+   * @param board to be used
+   */
   public void setBoard(Board board) {
     this.board = board;
   }
