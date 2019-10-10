@@ -7,6 +7,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Test record and play functionality.
+ * @author Zac Durant 300449785.
+ */
 public class RecordAndPlayTest {
 
     private ChapsChallenge chapsChallenge = new ChapsChallenge();
