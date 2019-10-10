@@ -50,7 +50,7 @@ public class AssetManager {
    * @param fname       of asset.
    * @throws IOException on ImageIO read.
    */
-  public static void loadAssetFromInputStream(InputStream inputStream, String fname)
+  static void loadAssetFromInputStream(InputStream inputStream, String fname)
       throws IOException {
     fname = fname.toLowerCase();
     BufferedImage bufferedImage = ImageIO.read(inputStream);
@@ -242,7 +242,4 @@ public class AssetManager {
   }
 
 
-  public static int getCellSize() {
-    return cellSize;
-  }
 }

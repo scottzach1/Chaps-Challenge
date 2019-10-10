@@ -1,6 +1,5 @@
 package nz.ac.vuw.ecs.swen225.a3.application;
 
-import java.awt.event.ComponentEvent;
 import java.io.File;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -304,7 +303,10 @@ public class ChapsChallenge {
                 Thread.sleep(1000 / fps);
                 // Tick counter cycles (0, 1)
                 timeCheck = (timeCheck + 1) % fps;
-              } catch (InterruptedException e) {}
+              } catch (InterruptedException e) {
+                System.out.println("Error sleeping: " + e);
+                break;
+              }
 
             } else {
               // When the player runs out of time
@@ -313,7 +315,10 @@ public class ChapsChallenge {
           } else {
             try {
               Thread.sleep(10);
-            } catch (InterruptedException e) {}
+            } catch (InterruptedException e) {
+              System.out.println("Error sleeping: " + e);
+              break;
+            }
           }
         }
       }
@@ -396,9 +401,9 @@ public class ChapsChallenge {
   }
 
   /**
-   * Called when gameover is reached.
+   * Called when game over is reached.
    *
-   * @param reason for gameover.
+   * @param reason for game over.
    */
   public void gameOver(MenuType reason) {
     gamePaused = true;
@@ -417,7 +422,7 @@ public class ChapsChallenge {
   }
 
   /**
-   * Sets the current savefile.
+   * Sets the current save file.
    *
    * @param saveFile to set
    */
@@ -426,7 +431,7 @@ public class ChapsChallenge {
   }
 
   /**
-   * Sets the current loadfile.
+   * Sets the current load file.
    *
    * @param loadFile to set
    */
