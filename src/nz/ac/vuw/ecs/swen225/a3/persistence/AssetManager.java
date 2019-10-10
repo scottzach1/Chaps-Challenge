@@ -17,6 +17,7 @@ import nz.ac.vuw.ecs.swen225.a3.renderer.CombinedImageIcon;
 /**
  * AssetManager class is responsible for dealing with storing and scaling all the assets used in the
  * game.
+ *
  * @author Zac Scott.
  */
 public class AssetManager {
@@ -44,8 +45,9 @@ public class AssetManager {
 
   /**
    * Loads an asset from an input stream.
+   *
    * @param inputStream containing asset.
-   * @param fname of asset.
+   * @param fname       of asset.
    * @throws IOException on ImageIO read.
    */
   public static void loadAssetFromInputStream(InputStream inputStream, String fname)
@@ -168,8 +170,9 @@ public class AssetManager {
   }
 
   /**
-   * Gets an overlayed ImageIcon of the files within the conjoined filename.
-   * Filename has '-' delimitation. Ie, "free.png-flippers.png"
+   * Gets an overlayed ImageIcon of the files within the conjoined filename. Filename has '-'
+   * delimitation. Ie, "free.png-flippers.png"
+   *
    * @param mergedFnames of files with "-" delimiter.
    * @return combined imageIcon.
    */
@@ -197,10 +200,10 @@ public class AssetManager {
   }
 
   /**
-   * Gets an ImageIcon at the last scaled size, with a number overlay.
-   * Number will be clipped from [1,9].
+   * Gets an ImageIcon at the last scaled size, with a number overlay. Number will be clipped from
+   * [1,9].
    *
-   * @param fname file path.
+   * @param fname  file path.
    * @param number to overlay from [1,9].
    * @return ImageIcon.
    */
@@ -236,5 +239,10 @@ public class AssetManager {
 
   public static String combineFnames(String base, String overlay) {
     return base + "-" + overlay;
+  }
+
+
+  public static int getCellSize() {
+    return cellSize;
   }
 }

@@ -1,5 +1,6 @@
 package nz.ac.vuw.ecs.swen225.a3.application;
 
+import java.awt.event.ComponentEvent;
 import java.io.File;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -28,7 +29,7 @@ public class ChapsChallenge {
   private Gui gui;
   private Player player;
 
-  private long totalTime = 3; //100 seconds
+  private long totalTime = 100; //100 seconds
   private long startTime;
   private long timeLeft = totalTime;
   private boolean gamePaused = false;
