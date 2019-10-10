@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.event.ComponentEvent;
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
+import nz.ac.vuw.ecs.swen225.a3.renderer.GameMenu.MenuType;
 import nz.ac.vuw.ecs.swen225.a3.renderer.Gui;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -32,7 +33,8 @@ import org.junit.jupiter.api.Test;
  */
 class FrontendTest {
 
-  @BeforeAll public static void setup(){
+  @BeforeAll
+  static void setup(){
     BackendTest.testing = true;
   }
 
@@ -62,5 +64,18 @@ class FrontendTest {
     // Show JFrame, should remain paused.
     gui.componentShown(new ComponentEvent(gui, ComponentEvent.COMPONENT_SHOWN));
     assertTrue(chapsChallenge.isGamePaused());
+  }
+
+  @Test
+  void testPauseOnGameMenu() {
+    for (MenuType menuType : MenuType.values()) {
+      ChapsChallenge chapsChallenge = new ChapsChallenge();
+
+      assertFalse(chapsChallenge.isGamePaused());
+
+      chapsChallenge.gameOver(menuType);
+
+      assertTrue(chapsChallenge.isGamePaused());
+    }
   }
 }
