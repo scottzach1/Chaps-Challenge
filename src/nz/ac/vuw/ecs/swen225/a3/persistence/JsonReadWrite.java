@@ -164,7 +164,6 @@ public class JsonReadWrite {
    */
   public static ChapsChallenge loadGameState(String saveGame, ChapsChallenge g) {
     JsonObject game;
-    RecordAndPlay.endRecording();
     JsonReader jsonReader = Json.createReader(new StringReader(saveGame));
     game = jsonReader.readObject();
 

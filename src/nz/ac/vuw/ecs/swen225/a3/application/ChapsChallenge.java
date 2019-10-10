@@ -244,6 +244,7 @@ public class ChapsChallenge {
   public void restartLevel() {
     gui.resetMenuSettings();
     int current = board.getCurrentLevel();
+    RecordAndPlay.endRecording();
     board.setCurrentLevel(current);
     resetLogistics();
   }
@@ -401,6 +402,7 @@ public class ChapsChallenge {
    * @param reason for gameover.
    */
   public void gameOver(MenuType reason) {
+    if(RecordAndPlay.getIsRunning())return;
     RecordAndPlay.endRecording();
     gamePaused = true;
     gui.setPlayerDead();
