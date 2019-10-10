@@ -144,14 +144,9 @@ public class JsonReadWrite {
    * @param g Chaps challenge object.
    * @return Chaps challenge object.
    */
-  public static ChapsChallenge loadGameStateFromFile(String fileName, ChapsChallenge g) {
-    try {
-      InputStream reader = new FileInputStream(new File(fileName));
-      return loadGameState(new BufferedReader(new InputStreamReader(reader)).readLine(), g);
-    } catch (Exception e) {
-      //TODO: Deal
-      throw new Error("FAILED TO READ LEVEL");
-    }
+  public static ChapsChallenge loadGameStateFromFile(String fileName, ChapsChallenge g) throws IOException {
+    InputStream reader = new FileInputStream(new File(fileName));
+    return loadGameState(new BufferedReader(new InputStreamReader(reader)).readLine(), g);
   }
 
   /**
@@ -160,7 +155,6 @@ public class JsonReadWrite {
    * @param saveGame Name of file.
    * @param g Game object.
    * @return Updated game Object.
-   * @throws GameNotFoundException Thrown when file not found.
    */
   public static ChapsChallenge loadGameState(String saveGame, ChapsChallenge g) {
     JsonObject game;

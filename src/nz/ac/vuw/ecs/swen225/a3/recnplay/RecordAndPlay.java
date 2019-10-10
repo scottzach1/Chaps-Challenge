@@ -43,6 +43,8 @@ public class RecordAndPlay {
   private static boolean isRunning;
   private static int timeLeftAfterRun;
 
+  static Thread thread;
+
   /**
    * Set playback delay.
    *
@@ -229,7 +231,6 @@ public class RecordAndPlay {
    */
   public static void run(ChapsChallenge game) {
 
-    game.setFps((int)(1000/delay));
     Runnable runnable = () -> {
       while (moves.size() > 0 && isRunning) {
         try {
@@ -243,7 +244,7 @@ public class RecordAndPlay {
       isRunning = false;
       game.setTimeLeft(timeLeftAfterRun);
     };
-    Thread thread = new Thread(runnable);
+    thread = new Thread(runnable);
     thread.start();
   }
 
@@ -264,6 +265,7 @@ public class RecordAndPlay {
     moves.clear();
     agents.clear();
     gameState = null;
+    thread = null;
   }
 
   /**
@@ -278,4 +280,15 @@ public class RecordAndPlay {
     }
   }
 
+  public static ArrayList<Tile.Direction> getMoves() {
+    return moves;
+  }
+
+  public static ArrayList<Integer> getAgents() {
+    return agents;
+  }
+
+  public static Thread getThread() {
+    return thread;
+  }
 }

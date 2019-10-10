@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,6 +23,10 @@ import nz.ac.vuw.ecs.swen225.a3.maze.LockedDoor;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
 import nz.ac.vuw.ecs.swen225.a3.maze.Treasure;
 import nz.ac.vuw.ecs.swen225.a3.maze.Wall;
+import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -29,11 +34,18 @@ import org.junit.jupiter.api.Test;
  *
  * @author Luisa Kristen 300444458
  */
-class BackendTest {
+public class BackendTest {
+  public static boolean testing = false;
+
+
+  @BeforeAll public static void setup(){
+    testing = true;
+  }
 
   private ChapsChallenge chapsChallenge = new ChapsChallenge();
 
   private List<String> allLevels = new ArrayList<>();
+
 
   /**
    * Creates an invalid board with 3 Chaps Should throw an error.
@@ -435,63 +447,62 @@ class BackendTest {
    * Saves the game. Moves. Loads game. Position should be the position before moving.
    */
 
-//  @Test todo bring bad boy back
-//  void saveAndLoadGame() {
-//
-//    String level =
-//        "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-//            + "_|W|W|_|?|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-//            + "_|_|F|_|?|_|_|Exit|_|_|_|_|_|_|_|_|_|_|_|_|"
-//            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-//            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-//            + "_|_|_|_|_|_|_|_|T|T|_|_|_|#|_|_|_|_|_|_|"
-//            + "_|_|_|_|_|_|_|_|_|_|_|_|_|#|_|_|_|_|_|_|"
-//            + "_|_|_|_|_|_|_|_|_|_|_|_|_|#|_|_|_|_|_|_|"
-//            + "_|_|_|_|ExitLock|_|_|_|C|_|_|_|_|#|_|_|_|_|_|_|"
-//            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-//            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-//            + "_|_|_|_|_|_|_|DBlue|_|_|_|_|_|_|_|_|_|_|_|_|"
-//            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-//            + "_|_|_|_|_|_|_|_|_|_|KBlue|_|_|_|_|_|_|_|_|_|"
-//            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-//            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-//            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-//            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-//            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
-//            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|";
-//
-//    chapsChallenge.setCustomLevel(level);
-//
-//    JsonReadWrite.saveGameState(chapsChallenge, "saveTest.txt");
-//    Tile tile = chapsChallenge.getPlayer().getLocation();
-//
-//    chapsChallenge.move(Tile.Direction.Left);
-//
-//    try {
-//      JsonReadWrite.loadGameState("saveTest.txt", chapsChallenge);
-//    } catch (GameNotFoundException e) {
-//      e.printStackTrace();
-//    }
-//
-//    assertEquals(tile.getCol(), chapsChallenge.getPlayer().getLocation().getCol());
-//    assertEquals(tile.getRow(), chapsChallenge.getPlayer().getLocation().getRow());
-//  }
-//
-//  /**
-//   * Tries to load an invalid game.
-//   */
-//  //@Test
-//  void loadGameInvalid() {
-//    boolean failed = false;
-//    try {
-//      JsonReadWrite.loadGameState("failed.txt", chapsChallenge);
-//    } catch (GameNotFoundException e) {
-//      System.out.println(e.getMessage());
-//      failed = true;
-//    }
-//    assertTrue(failed);
-//  }
-//
+  @Test
+  void saveAndLoadGame() {
+
+    String level =
+            "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|W|W|_|?|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|F|_|?|_|_|Exit|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|T|T|_|_|_|#|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|#|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|#|_|_|_|_|_|_|"
+            + "_|_|_|_|ExitLock|_|_|_|C|_|_|_|_|#|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|DBlue|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|KBlue|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|"
+            + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|";
+
+    setCustomLevel(level,chapsChallenge.getBoard());
+
+    JsonReadWrite.saveGameState(chapsChallenge, "saveTest.txt");
+    Tile tile = chapsChallenge.getPlayer().getLocation();
+
+    chapsChallenge.move(Tile.Direction.Left);
+
+    try {
+      JsonReadWrite.loadGameStateFromFile("saveTest.txt", chapsChallenge);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    assertEquals(tile.getCol(), chapsChallenge.getPlayer().getLocation().getCol());
+    assertEquals(tile.getRow(), chapsChallenge.getPlayer().getLocation().getRow());
+  }
+
+  /**
+   * Tries to load an invalid game.
+   */
+  @Test
+  void loadGameInvalid() {
+    boolean failed = false;
+    try {
+      JsonReadWrite.loadGameStateFromFile("failed.txt", chapsChallenge);
+    } catch (IOException e) {
+      failed = true;
+    }
+    assertTrue(failed);
+  }
+
 
 
   /**
@@ -635,35 +646,6 @@ class BackendTest {
 
     board.setAllTiles(allTiles);
     board.setTiles(tiles);
-  }
-
-  public void designLevel(){
-    String level =
-              "#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|"
-            + "#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|"
-            + "#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|"
-            + "#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|"
-            + "#|#|#|#|#|_|_|_|#|#|#|_|_|_|#|#|#|#|#|#|"
-            + "#|#|#|#|#|_|T|_|#|Exit|#|_|T|_|#|#|#|#|#|#|"
-            + "#|#|#|#|#|#|#|DGreen|#|ExitLock|#|DGreen|#|#|#|#|#|#|#|#|"
-            + "#|#|#|#|T|_|DBlue|_|_|_|_|_|DRed|_|T|#|#|#|#|#|"
-            + "#|#|#|#|KRed|_|#|T|_|_|_|T|#|_|KYellow|#|#|#|#|#|"
-            + "#|#|#|#|#|#|#|KGreen|_|C|_|KRed|#|#|#|#|#|#|#|#|"
-            + "#|#|#|#|KBlue|_|#|T|_|?|_|T|#|_|KYellow|#|#|#|#|#|"
-            + "#|#|#|#|T|_|DRed|_|_|T|_|_|DBlue|_|T|#|#|#|#|#|"
-            + "#|#|#|#|#|#|#|#|DYellow|#|DYellow|#|#|#|#|#|#|#|#|#|"
-            + "#|#|#|#|#|#|#|_|_|#|_|_|#|#|#|#|#|#|#|#|"
-            + "#|#|#|#|#|#|#|KGReen|T|#|T|KBlue|#|#|#|#|#|#|#|#|"
-            + "#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|"
-            + "#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|"
-            + "#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|"
-            + "#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|"
-            + "#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|";
-    setCustomLevel(level,chapsChallenge.getBoard());
-  }
-
-  public static void main(String args[]){
-    new BackendTest().designLevel();
   }
 
   /**
