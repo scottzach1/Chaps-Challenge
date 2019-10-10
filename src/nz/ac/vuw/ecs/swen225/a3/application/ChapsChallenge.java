@@ -400,6 +400,7 @@ public class ChapsChallenge {
    * @param reason for gameover.
    */
   public void gameOver(MenuType reason) {
+    RecordAndPlay.endRecording();
     gamePaused = true;
     gui.setPlayerDead();
     gui.gameOver(reason);

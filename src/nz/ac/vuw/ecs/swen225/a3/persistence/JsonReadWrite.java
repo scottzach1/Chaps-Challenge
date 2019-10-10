@@ -68,7 +68,6 @@ public class JsonReadWrite {
     String jsonGame = "";
     String jsonBoard = "";
     String jsonPlayer = "";
-    JsonString jsonMobs;
 
     // Json dump board
     Board board = game.getBoard();

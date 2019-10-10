@@ -250,6 +250,15 @@ public class RecordAndPlay {
     return isRecording;
   }
 
+  public static void endRecording(){
+    isRecording = false;
+    isRunning = false;
+    saveName = null;
+    moves.clear();
+    agents.clear();
+    gameState = null;
+  }
+
   /**
    * Store move of mob.
    * @param d Direction of movement.
