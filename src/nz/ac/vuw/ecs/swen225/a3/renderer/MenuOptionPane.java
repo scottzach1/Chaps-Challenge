@@ -70,7 +70,7 @@ class MenuOptionPane extends JMenuBar {
 
     // Create the saveRecording button
     JMenuItem saveRecording = new JMenuItem("Save Recording");
-    saveRecording.addActionListener(arg0 -> RecordAndPlay.saveGame());
+    saveRecording.addActionListener(arg0 -> RecordAndPlay.saveRecording(application));
     recording.add(saveRecording);
 
     //Create the loadRecording button

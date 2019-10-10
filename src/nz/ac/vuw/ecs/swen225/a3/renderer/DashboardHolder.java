@@ -11,22 +11,20 @@ import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
  * DashBoardHolder contains the dashboard such that it can be resized.
  * @author Harrison Cook 300402048.
  */
-public class DashboardHolder extends JPanel {
+class DashboardHolder extends JPanel {
 
   /**
    * Default serial number.
    */
   private static final long serialVersionUID = 1L;
   private Dashboard dashboard;
-  private ChapsChallenge application;
   private int dashboardHeight;
 
   /**
    * Constructor creates a new dashboard but does no render.
    */
   DashboardHolder(ChapsChallenge chapsChallenge) {
-    application = chapsChallenge;
-    Gui gui = application.getGui();
+    Gui gui = chapsChallenge.getGui();
     setPreferredSize(new Dimension(gui.getDashboardWidth(), gui.getScreenHeight()));
 
     dashboard = new Dashboard(chapsChallenge, this);
@@ -40,7 +38,7 @@ public class DashboardHolder extends JPanel {
   /**
    * Recalculates and renders the dashboard.
    */
-  void renderDashboard() {
+  private void renderDashboard() {
     removeAll();
     dashboardHeight = AssetManager.getScaledImage("free.png").getIconHeight() * Canvas.VIEW_SIZE;
 
