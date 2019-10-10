@@ -264,7 +264,8 @@ class Dashboard extends JPanel {
     }
 
     // Fill the rest of the bag with blanks (using j as i is predefined)
-    for (int j = items.size(); j < 8; j++) {
+    System.out.println(chapsBag.keySet().size());
+    for (int j = chapsBag.keySet().size(); j < 8; j++) {
       JLabel item = chapsBagImages.get(j);
       item.setIcon(AssetManager.getScaledImage("free.png"));
     }
