@@ -20,10 +20,10 @@ class AssetTest {
    *
    * @param fname asset name
    */
-  public void checkAsset(String fname) {
-    AssetManager.clearAssets();
+  void checkAsset(String fname) {
+    AssetManager assetManager = new AssetManager();
 
-    ImageIcon imageIcon = AssetManager.getScaledImage(fname);
+    ImageIcon imageIcon = assetManager.getScaledImage(fname);
 
     assertEquals(fname, imageIcon.getDescription());
 
@@ -44,9 +44,7 @@ class AssetTest {
    */
   @Test
   void checkInvalidFile() {
-    AssetManager.clearAssets();
-
-    ImageIcon invalidIcon = AssetManager.getScaledImage("1234");
+    ImageIcon invalidIcon = new AssetManager().getScaledImage("1234");
 
     assertEquals("unknown.png", invalidIcon.getDescription());
 
@@ -109,11 +107,11 @@ class AssetTest {
    */
   @Test
   void testNumbers() {
-    AssetManager.clearAssets();
+    AssetManager assetManager = new AssetManager();
 
     for (int i = -2; i < 12; ++i) {
-      String num = (i > 0 && i < 10) ? "" + i : "NaN";
-      ImageIcon imageIcon = AssetManager.getNumberedScaledImage("free.png", i);
+      String num = (i > 0 && i < 10) ? "" + i : "nan";
+      ImageIcon imageIcon = assetManager.getNumberedScaledImage("free.png", i);
 
       assertEquals("free.png-" + num + ".png", imageIcon.getDescription());
 
@@ -127,46 +125,27 @@ class AssetTest {
      */
     @Test
     void testCellSize0() {
-      checkAsset("free.png");
+      AssetManager assetManager = new AssetManager();
+      assetManager.getScaledImage("free.png");
 
       try {
-        AssetManager.scaleImages(0);
+        assetManager.scaleImages(0);
       } catch (IllegalArgumentException e ) {
         fail("Program should not throw exception on 0 cell size.");
       }
     }
 
   /**
-   * Checks for no Illegal Arg exception on cellSize = 0.
-   */
-  @Test
-  void testScaledInstance() {
-    AssetManager.clearAssets();
-
-    ImageIcon imageIcon = AssetManager.getScaledImageInstance("free.png", 50);
-
-    assertEquals(imageIcon.getIconWidth(), 50);
-    assertEquals(imageIcon.getIconHeight(), 50);
-  }
-
-  /**
    * Checks AssetManager scales stored assets to specified sizes.
    */
   @Test
-  void testScaleAssets1() throws InterruptedException {
-    // Sleep to allow concurrent test windows to finish scaling.
-    try {
-      Thread.sleep(100);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
+  void testScaleAssets1() {
+    AssetManager assetManager = new AssetManager();
 
-    AssetManager.clearAssets();
+    assetManager.getScaledImage("free.png");
+    assetManager.scaleImages(50);
 
-    AssetManager.getScaledImage("free.png");
-    AssetManager.scaleImages(50);
-
-    assertEquals(50, AssetManager.getScaledImage("free.png").getIconHeight());
+    assertEquals(50, assetManager.getScaledImage("free.png").getIconHeight());
   }
 
   /**
@@ -174,11 +153,11 @@ class AssetTest {
    */
   @Test
   void testScaleAssets2() {
-    AssetManager.clearAssets();
+    AssetManager assetManager = new AssetManager();
 
-    AssetManager.scaleImages(50);
-    AssetManager.getScaledImage("wall.png");
+    assetManager.scaleImages(50);
+    assetManager.getScaledImage("wall.png");
 
-    assertEquals(50, AssetManager.getScaledImage("wall.png").getIconHeight());
+    assertEquals(50, assetManager.getScaledImage("wall.png").getIconHeight());
   }
 }

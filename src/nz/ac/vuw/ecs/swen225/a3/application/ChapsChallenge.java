@@ -1,6 +1,5 @@
 package nz.ac.vuw.ecs.swen225.a3.application;
 
-import java.awt.event.ComponentEvent;
 import java.io.File;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -10,6 +9,7 @@ import nz.ac.vuw.ecs.swen225.a3.maze.InfoField;
 import nz.ac.vuw.ecs.swen225.a3.maze.MobManager;
 import nz.ac.vuw.ecs.swen225.a3.maze.Player;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
+import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
 import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
 import nz.ac.vuw.ecs.swen225.a3.persistence.LevelManager;
 import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
@@ -47,7 +47,8 @@ public class ChapsChallenge {
    * Create main game application.
    */
   public ChapsChallenge() {
-    LevelManager.loadLevels();
+    AssetManager assetManager = new AssetManager();
+    LevelManager.loadLevels(assetManager);
     // Load the board.
     board = new Board(this);
     board.setup();
@@ -57,7 +58,7 @@ public class ChapsChallenge {
     startTime = System.currentTimeMillis();
 
     // Creates a GUI and gives it a keyListener
-    gui = new Gui(this);
+    gui = new Gui(this, assetManager);
     gui.addLayoutComponents();
 
   }
@@ -134,24 +135,6 @@ public class ChapsChallenge {
       gui.renderInfoField(info.getInfo());
     }
 
-  }
-
-  /**
-   * Checks the amount of time that has elapsed since the start of the game. Subtracts this from the
-   * total time available.
-   *
-   * @return the time left to play
-   */
-  public int timeLeft() {
-    if (gamePaused) {
-      return (int) timeLeft;
-    }
-    long elapsedTime = System.currentTimeMillis() - startTime;
-    timeLeft -= TimeUnit.MILLISECONDS.toSeconds(elapsedTime);
-
-    startTime = System.currentTimeMillis();
-
-    return (int) timeLeft;
   }
 
   /**
@@ -282,6 +265,7 @@ public class ChapsChallenge {
     Runnable runnable = new Runnable() {
 
       private int timeCheck = 0;
+      private boolean pastFirstSecond = false;
 
       @Override
       public void run() {
@@ -293,19 +277,25 @@ public class ChapsChallenge {
             if (timeLeft > 0) {
               // Update the board every 1/fps second
               gui.updateBoard();
+              gui.updateDashboard();
 
               // Every second
               if (timeCheck == 0) {
                 // Update the dashboard and mobs
-                gui.updateDashboard();
                 mobManager.advanceByOneTick();
+                if (pastFirstSecond) {
+                  timeLeft--;
+                } else {
+                  pastFirstSecond = true;
+                }
               }
               // Restricts the frame rate to 30 fps
               try {
                 Thread.sleep(1000 / fps);
                 // Tick counter cycles (0, 1)
                 timeCheck = (timeCheck + 1) % fps;
-              } catch (InterruptedException e) {}
+              } catch (InterruptedException e) {
+              }
 
             } else {
               // When the player runs out of time
@@ -314,13 +304,26 @@ public class ChapsChallenge {
           } else {
             try {
               Thread.sleep(10);
-            } catch (InterruptedException e) {}
+            } catch (InterruptedException e) {
+            }
           }
         }
       }
     };
     thread = new Thread(runnable);
     thread.start();
+  }
+
+  /**
+   * Returns the amount of time left to play
+   *
+   * @return the time left to play
+   */
+  public int timeLeft() {
+    if (timeLeft <= 0) {
+      return 0;
+    }
+    return (int) timeLeft;
   }
 
   /**
@@ -397,12 +400,14 @@ public class ChapsChallenge {
   }
 
   /**
-   * Called when gameover is reached.
+   * Called when game over is reached.
    *
-   * @param reason for gameover.
+   * @param reason for game over.
    */
   public void gameOver(MenuType reason) {
-    if(RecordAndPlay.getIsRunning())return;
+    if (RecordAndPlay.getIsRunning()) {
+      return;
+    }
     RecordAndPlay.endRecording();
     gamePaused = true;
     gui.setPlayerDead();
@@ -420,7 +425,7 @@ public class ChapsChallenge {
   }
 
   /**
-   * Sets the current savefile.
+   * Sets the current save file.
    *
    * @param saveFile to set
    */
@@ -429,7 +434,7 @@ public class ChapsChallenge {
   }
 
   /**
-   * Sets the current loadfile.
+   * Sets the current load file.
    *
    * @param loadFile to set
    */
@@ -510,7 +515,11 @@ public class ChapsChallenge {
     this.mobManager = mobManager;
   }
 
-
+  /**
+   * Sets the refresh-rate of the program (frames per second).
+   *
+   * @param fps frames per second.
+   */
   public void setFps(int fps) {
     this.fps = fps;
   }

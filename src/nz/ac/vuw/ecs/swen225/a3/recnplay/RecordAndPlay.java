@@ -9,17 +9,12 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
-import javax.json.JsonString;
 
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
@@ -96,18 +91,18 @@ public class RecordAndPlay {
 
       JsonArrayBuilder arrayBuilder1 = Json.createArrayBuilder();
 
-      for(int i = 0; i < agents.size(); ++i){
+      for (int i = 0; i < agents.size(); ++i) {
         JsonObjectBuilder builder = Json.createObjectBuilder()
-                .add("agent",agents.get(i))
-                .add("move",moves.get(i).toString());
+            .add("agent", agents.get(i))
+            .add("move", moves.get(i).toString());
         arrayBuilder1.add(builder.build());
 
       }
 
       JsonObjectBuilder builder = Json.createObjectBuilder()
-              .add("game", gameState)
-              .add("moves", arrayBuilder1)
-              .add("timeLeft", g.getTimeLeft());
+          .add("game", gameState)
+          .add("moves", arrayBuilder1)
+          .add("timeLeft", g.getTimeLeft());
 
       // Save moves to file
       try (Writer writer = new StringWriter()) {
@@ -123,7 +118,6 @@ public class RecordAndPlay {
         throw new Error("Failed to save moves");
       }
 
-
       isRecording = false;
     }
   }
@@ -132,7 +126,7 @@ public class RecordAndPlay {
    * Load game state and move list from recording file.
    *
    * @param fileName File name.
-   * @param game     game object to be updated.
+   * @param game game object to be updated.
    */
   public static void loadRecording(String fileName, ChapsChallenge game) {
     JsonObject object = null;
@@ -154,27 +148,28 @@ public class RecordAndPlay {
       }
 
       JsonArray movesJson = object != null ? object.getJsonArray("moves") : null;
-
-      for (int i = 0; i < movesJson.size(); ++i) {
-        JsonObject object2 = movesJson.getJsonObject(i);
-        String direction = object2.getString("move");
-        int agent = object2.getInt("agent");
-        agents.add(agent);
-        switch (direction) {
-          case "Left":
-            moves.add(Tile.Direction.Left);
-            break;
-          case "Right":
-            moves.add(Tile.Direction.Right);
-            break;
-          case "Up":
-            moves.add(Tile.Direction.Up);
-            break;
-          case "Down":
-            moves.add(Tile.Direction.Down);
-            break;
-          default:
-            break;
+      if (movesJson != null) {
+        for (int i = 0; i < movesJson.size(); ++i) {
+          JsonObject object2 = movesJson.getJsonObject(i);
+          String direction = object2.getString("move");
+          int agent = object2.getInt("agent");
+          agents.add(agent);
+          switch (direction) {
+            case "Left":
+              moves.add(Tile.Direction.Left);
+              break;
+            case "Right":
+              moves.add(Tile.Direction.Right);
+              break;
+            case "Up":
+              moves.add(Tile.Direction.Up);
+              break;
+            case "Down":
+              moves.add(Tile.Direction.Down);
+              break;
+            default:
+              break;
+          }
         }
       }
 
@@ -183,8 +178,7 @@ public class RecordAndPlay {
       }
 
       // Update timeLeft
-      timeLeftAfterRun = object.getInt("timeLeft");
-
+      timeLeftAfterRun = object != null ? object.getInt("timeLeft") : 0;
 
       game.update();
 
@@ -210,7 +204,9 @@ public class RecordAndPlay {
           game.getMobManager().moveMob(agents.get(0), moves.get(0));
           moves.remove(0);
           agents.remove(0);
-          if (moves.size() > 0) step(game);
+          if (moves.size() > 0) {
+            step(game);
+          }
         }
 
         if (moves.size() == 0) {
@@ -219,7 +215,7 @@ public class RecordAndPlay {
         }
         game.update();
       }
-    }catch(IndexOutOfBoundsException e){
+    } catch (IndexOutOfBoundsException e) {
       //todo: deal
     }
   }
@@ -231,11 +227,13 @@ public class RecordAndPlay {
    */
   public static void run(ChapsChallenge game) {
 
+    game.setFps((int) (1000 / delay));
     Runnable runnable = () -> {
       while (moves.size() > 0 && isRunning) {
         try {
-          if(agents.size() > 0 && agents.get(0) == 0)
+          if (agents.size() > 0 && agents.get(0) == 0) {
             Thread.sleep(delay);
+          }
           step(game);
         } catch (InterruptedException e) {
           System.out.println("Running through recording was interrupted:" + e);
@@ -258,7 +256,7 @@ public class RecordAndPlay {
     return isRecording;
   }
 
-  public static void endRecording(){
+  public static void endRecording() {
     isRecording = false;
     isRunning = false;
     saveName = null;
@@ -270,11 +268,12 @@ public class RecordAndPlay {
 
   /**
    * Store move of mob.
+   *
    * @param d Direction of movement.
    * @param id Id of mob.
    */
-  public static void storeMobMove(Tile.Direction d, int id){
-    if(isRecording) {
+  public static void storeMobMove(Tile.Direction d, int id) {
+    if (isRecording) {
       moves.add(d);
       agents.add(id);
     }

@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import nz.ac.vuw.ecs.swen225.a3.renderer.CombinedImageIcon;
 
 
 /**
@@ -22,107 +21,93 @@ import nz.ac.vuw.ecs.swen225.a3.renderer.CombinedImageIcon;
  */
 public class AssetManager {
 
-  private static String assetPath = "assets/";
+  private final static String ASSET_PATH = "assets/";
+  private final static String SEPARATOR = "-";
 
-  private static boolean loaded = false;
-  private static boolean scaling = false;
+  private boolean scaling = false;
 
   /**
    * Private static fields to store important GUI data.
    */
-  private static Map<String, ImageIcon> baseImageIcons = new HashMap<>();
-  private static Map<String, ImageIcon> scaledImageIcons = new HashMap<>();
-  private static int cellSize = 10;
-
-  /**
-   * Clears all assets stored by the asset manager.
-   */
-  public static void clearAssets() {
-    baseImageIcons.clear();
-    scaledImageIcons.clear();
-    loaded = false;
-  }
+  private Map<String, ImageIcon> baseImageIcons = new HashMap<>();
+  private Map<String, ImageIcon> scaledImageIcons = new HashMap<>();
+  private int cellSize = 10;
 
   /**
    * Loads an asset from an input stream.
    *
    * @param inputStream containing asset.
-   * @param fname       of asset.
+   * @param fname filename of asset.
    * @throws IOException on ImageIO read.
    */
-  public static void loadAssetFromInputStream(InputStream inputStream, String fname)
+  void loadAssetFromInputStream(InputStream inputStream, String fname)
       throws IOException {
+
     fname = fname.toLowerCase();
     BufferedImage bufferedImage = ImageIO.read(inputStream);
 
-    // -- Load base image -- //
+    ImageIcon imageIcon = new ImageIcon(bufferedImage);
+    imageIcon.setDescription(fname);
 
-    ImageIcon baseIcon = new ImageIcon(bufferedImage);
-
-    if (baseImageIcons.containsKey(fname)) {
-      return;
-    }
-
-    if (baseIcon.getIconHeight() <= 0 || baseIcon.getIconWidth() <= 0) {
-      baseIcon = new ImageIcon(assetPath + fname);
-    }
-
-    baseIcon.setDescription(fname);
-
-    // Else use unknown from local path.
-    if (baseIcon.getIconWidth() <= 0 || baseIcon.getIconHeight() <= 0) {
-      baseIcon = new ImageIcon(assetPath + "unknown.png");
-      baseIcon.setDescription("unknown.png");
-    }
-
-    //  -- Load scaled image -- //
-
-    ImageIcon scaledIcon = new ImageIcon(baseIcon.getImage()
-        .getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH));
-
-    scaledIcon.setDescription(baseIcon.getDescription());
-
-    // -- Save icons -- //
-
-    baseImageIcons.put(fname, baseIcon);
-    scaledImageIcons.put(fname, scaledIcon);
+    loadAsset(imageIcon, fname);
   }
 
   /**
-   * Loads asset from filename.
+   * Loads asset filename from asset directory.
    *
-   * @param fname filename.
+   * @param fname filename of asset.
    */
-  private static void loadAsset(String fname) {
+  private void loadAsset(String fname) {
     // Load unknown asset if first run.
-    if (loaded != (loaded = true)) {
-      loadAsset("unknown.png");
-    }
-
     fname = fname.toLowerCase();
     if (baseImageIcons.containsKey(fname)) {
       return;
     }
 
-    // -- Load base image -- //
-    ImageIcon baseIcon = new ImageIcon(assetPath + fname);
+    ImageIcon imageIcon = new ImageIcon(ASSET_PATH + fname);
+    imageIcon.setDescription(fname);
+
+    loadAsset(imageIcon, fname);
+  }
+
+  /**
+   * Loads an asset from an ImageIcon.
+   *
+   * If invalid asset, will replace Image and description with
+   * 'unknown.png' and corresponding image stored within the
+   * assets directory.
+   *
+   * @param imageIcon ImageIcon to load.
+   * @param fname filename of asset.
+   */
+  private void loadAsset(ImageIcon imageIcon, String fname) {
+    // Don't load if already loaded.
+    if (baseImageIcons.containsKey(fname)) {
+      return;
+    }
+
+    // Line makes parameter name for ImageIcon easier to understand.
+    ImageIcon baseIcon = new ImageIcon(imageIcon.getImage());
+
+    // If underlying image is invalid, attempt to load from assets directory.
+    if (baseIcon.getIconHeight() <= 0 || baseIcon.getIconWidth() <= 0) {
+      baseIcon = new ImageIcon(ASSET_PATH + fname);
+    }
     baseIcon.setDescription(fname);
 
-    // Else use unknown from local path.
+    // Otherwise use 'unknown.png' asset from the local path.
     if (baseIcon.getIconWidth() <= 0 || baseIcon.getIconHeight() <= 0) {
-      baseIcon = new ImageIcon(assetPath + "unknown.png");
+      baseIcon = new ImageIcon(ASSET_PATH + "unknown.png");
       baseIcon.setDescription("unknown.png");
     }
 
-    //  -- Load scaled image -- //
-
+    // Load the scaled image.
     ImageIcon scaledIcon = new ImageIcon(baseIcon.getImage()
         .getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH));
 
     scaledIcon.setDescription(baseIcon.getDescription());
 
-    // -- Save icons -- //
-
+    // Store the icons.
     baseImageIcons.put(fname, baseIcon);
     scaledImageIcons.put(fname, scaledIcon);
   }
@@ -132,18 +117,31 @@ public class AssetManager {
    *
    * @param newCellSize Cell size.
    */
-  public static void scaleImages(int newCellSize) {
+  public void scaleImages(int newCellSize) {
     if (newCellSize == 0) {
       return;
     }
 
-    if (scaling != (scaling = true)) {
+    /*
+     * Scales all assets stored within baseImageIcons and
+     * stores these in scaledImageIcons.
+     *
+     * To avoid concurrent modification a scaling boolean
+     * is used.
+     */
+    if (!scaling) {
+      scaling = true;
+
       cellSize = newCellSize;
       for (String key : baseImageIcons.keySet()) {
+        // Get base image.
         ImageIcon baseImage = baseImageIcons.get(key);
+        // Make scaled image.
         ImageIcon scaledIcon = new ImageIcon(baseImage.getImage()
             .getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH));
+        // Update image description
         scaledIcon.setDescription(baseImage.getDescription());
+        // Store scaled asset.
         scaledImageIcons.put(key, scaledIcon);
       }
 
@@ -157,10 +155,10 @@ public class AssetManager {
    * @param fname file path.
    * @return ImageIcon.
    */
-  public static ImageIcon getScaledImage(String fname) {
+  public ImageIcon getScaledImage(String fname) {
     fname = fname.toLowerCase();
 
-    if (fname.contains("-")) {
+    if (fname.contains(SEPARATOR)) {
       return getOverlaidImages(fname);
     }
 
@@ -170,23 +168,23 @@ public class AssetManager {
   }
 
   /**
-   * Gets an overlayed ImageIcon of the files within the conjoined filename. Filename has '-'
-   * delimitation. Ie, "free.png-flippers.png"
+   * Gets an overlaid ImageIcon of the files within the conjoined filename.
+   * Filename has '-' delimitation. Ie, "free.png-flippers.png"
    *
-   * @param mergedFnames of files with "-" delimiter.
+   * @param mergedFnames of files with SEPARATOR final field delimiter.
    * @return combined imageIcon.
    */
-  private static ImageIcon getOverlaidImages(String mergedFnames) {
+  private ImageIcon getOverlaidImages(String mergedFnames) {
 
-    List<String> fnames = new ArrayList<>(Arrays.asList(mergedFnames.split("-")));
+    List<String> fnames = new ArrayList<>(Arrays.asList(mergedFnames.split(SEPARATOR)));
     List<ImageIcon> layers = new ArrayList<>();
     StringBuilder description = new StringBuilder();
 
-    // Get icons.
+    // Get icons and store in list, also join filenames.
     for (int i = 0; i != fnames.size(); ++i) {
       layers.add(getScaledImage(fnames.get(i)));
       description.append(fnames.get(i));
-      // Also append joiner if not last image.
+      // Append joiner if not last image.
       if (i != fnames.size() - 1) {
         description.append("-");
       }
@@ -207,42 +205,16 @@ public class AssetManager {
    * @param number to overlay from [1,9].
    * @return ImageIcon.
    */
-  public static ImageIcon getNumberedScaledImage(String fname, int number) {
+  public ImageIcon getNumberedScaledImage(String fname, int number) {
     fname = fname.toLowerCase();
-    // Number clipping.
-    String nname = ((number < 10 && number > 0) ? number : "NaN") + ".png";
+    // If number invalid, use '?' overlay asset instead.
+    String nname = ((number < 10 && number > 0) ? number : "nan") + ".png";
 
-    return getOverlaidImages(fname + "-" + nname);
-  }
-
-  /**
-   * Gets an ImageIcon at the specified size.
-   *
-   * @param fname file path.
-   * @return ImageIcon.
-   */
-  public static ImageIcon getScaledImageInstance(String fname, int newCellSize) {
-    fname = fname.toLowerCase();
-    loadAsset(fname);
-
-    // Get base image
-    ImageIcon baseIcon = baseImageIcons.get(fname);
-    String desc = baseIcon.getDescription();
-
-    // Scale new image
-    baseIcon = new ImageIcon(baseIcon.getImage()
-        .getScaledInstance(newCellSize, newCellSize, Image.SCALE_SMOOTH));
-
-    baseIcon.setDescription(desc);
-    return baseIcon;
+    return getOverlaidImages(fname + SEPARATOR + nname);
   }
 
   public static String combineFnames(String base, String overlay) {
     return base + "-" + overlay;
   }
 
-
-  public static int getCellSize() {
-    return cellSize;
-  }
 }

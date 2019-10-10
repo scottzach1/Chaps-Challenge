@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,7 +36,8 @@ public class BackendTest {
   public static boolean testing = false;
 
 
-  @BeforeAll public static void setup(){
+  @BeforeAll
+  static void setup() {
     testing = true;
   }
 
@@ -470,7 +472,7 @@ public class BackendTest {
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|";
 
     setCustomLevel(level,chapsChallenge.getBoard());
-
+    File save = new File("saveTest.txt");
     JsonReadWrite.saveGameState(chapsChallenge, "saveTest.txt");
     Tile tile = chapsChallenge.getPlayer().getLocation();
 
@@ -613,7 +615,8 @@ public class BackendTest {
             try {
               throw new Exception("Failed to parse");
             } catch (Exception e) {
-              e.printStackTrace();
+              System.out.println("Failed to parse");
+              return;
             }
           }
 
@@ -666,6 +669,8 @@ public class BackendTest {
     } catch (PlayerNotFoundException pnf) {
       System.out.println(pnf.getMessage());
       throw new Error(pnf.getMessage());
+    } catch (Exception e) {
+      throw new Error(e.getMessage());
     }
     board.setupAdjacency();
     chapsChallenge.resetLogistics();
