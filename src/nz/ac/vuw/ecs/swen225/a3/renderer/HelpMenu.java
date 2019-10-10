@@ -64,14 +64,14 @@ public class HelpMenu extends JPanel {
   }
 
   private void setSizes(){
-    buttonHeight = gui.getScreenHeight() / 16;
     buttonWidth = gui.getScreenWidth() / 8;
+    buttonHeight = gui.getScreenHeight() / 16;
 
     titleWidth = gui.getScreenWidth() / 2;
     titleHeight = gui.getScreenHeight() / 8;
 
     textWidth = gui.getScreenWidth() / 2;
-    textHeight = (gui.getScreenHeight() * 6) / 8;
+    textHeight = gui.getScreenHeight() / 2;
   }
 
   public void createPageOne() {
@@ -79,7 +79,7 @@ public class HelpMenu extends JPanel {
     title = new CustomTextPane("CHAPS CHALLENGE", centerAlign, null, buttonForeground, false, titleWidth, titleHeight);
     next = new MenuButton("NEXT", e -> gui.helpMenuPageTwo(), buttonWidth, buttonHeight);
     prev = new MenuButton("BACK", e -> {application.resumeGame(); application.restartLevel();}, buttonWidth, buttonHeight);
-    text = new CustomTextPane(pageOneText, centerAlign, otherBackground, buttonForeground, false, textWidth, textHeight);
+    text = new CustomTextPane(pageOneText, centerAlign, null, buttonForeground, false, textWidth, textHeight);
   }
 
   public void createPageTwo() {
@@ -105,7 +105,7 @@ public class HelpMenu extends JPanel {
     gbc.gridy = 0;
     gbc.gridwidth = 2;
     gbc.weightx = 4;
-    gbc.weighty = 2;
+    gbc.weighty = 1;
     add(title, gbc);
 
     // Add the text to the middle of the page
@@ -113,7 +113,7 @@ public class HelpMenu extends JPanel {
     gbc.gridy = 1;
     gbc.gridwidth = 2;
     gbc.weightx = 4;
-    gbc.weighty = 20;
+    gbc.weighty = 2;
     add(text, gbc);
 
 
@@ -272,7 +272,7 @@ public class HelpMenu extends JPanel {
     Font savedFont = oldFont;
 
     // Cycle through font sizes, from 0 to 150 to find a fitting size
-    for (int i = 0; i < 150; i++) {
+    for (int i = 0; i < 100; i++) {
       // Create a new font to test on, incrementing it's size with i
       Font newFont = new Font(savedFont.getFontName(), savedFont.getStyle(), i);
 
@@ -294,25 +294,28 @@ public class HelpMenu extends JPanel {
     return oldFont;
   }
 
-
   String pageOneText = "The premise of the game is that friendly monster 'Chip' has"
-      + "\nmet Melinda-the-Mental-Marvel at the scare school science laboratory. Chip must navigate "
-      + "\nthrough Melinda's 'House Of Horrors', a series of increasingly difficult puzzles, "
-      + "\nIn order to prove himself and gain membership to the very exclusive Bit Busters Club.\n"
-      + "\n"
-      + "Chip's Challenge consists of a series of two-dimensional levels which feature the player 'Chip'"
-      + "\nand various game elements such as computer chips, locked doors, water and lethal bully monsters. "
-      + "\nGameplay involves using arrow keys to move Chip about each of the levels in turn, collecting"
-      + "\nenough chips to open the chip socket at the end of each level, get to the exit, and move on to the next level.";
+      + "\nmet Melinda-the-Mental-Marvel at the scare school science laboratory. "
+      + "\nChip must navigate through Melinda's 'House Of Horrors', a series "
+      + "\nof increasingly difficult puzzles, in order to prove himself and "
+      + "\ngain membership to the very exclusive Bit Busters Club."
+      + "\nChip's Challenge consists of a series of two-dimensional levels "
+      + "\nwhich feature the player 'Chip' and various game elements "
+      + "\nsuch as computer chips, locked doors, water and lethal bully monsters. "
+      + "\nGameplay involves using arrow keys to move Chip about each of the "
+      + "\nlevels in turn, collecting enough chips to open the chip socket "
+      + "\nat the end of each level, get to the exit, and move on to the next level.";
 
 
-  String pageTwoText = "CTRL-X  - exits the game, the current game state will be lost, the next time the "
-      + "\n\tgame is started, it will resume from the last unfinished level\n"
-      + "CTRL-S  - exit the game, saves the game state, game will resume next time the application will be started\n"
-      + "CTRL-R  - resume a saved game\n"
-      + "CTRL-P  - start a new game at the last unfinished level\n"
-      + "CTRL-1 - start a new game at level 1\n"
-      + "SPACE - pause the game and display a “game is paused” dialog\n"
-      + "ESC - close the “game is paused” dialog and resume the game\n"
-      + "UP, DOWN, LEFT, RIGHT ARROWS -- move Chap within the maze\n";
+  String pageTwoText = "CTRL-X  - exits the game, the current game state will be lost, "
+      + "\n\tthe next time the game is started, it will resume "
+      + "\n\tfrom the last unfinished level"
+      + "\nCTRL-S  - exit the game, saves the game state, game will "
+      + "\n\tresume next time the application will be started"
+      + "\nCTRL-R  - resume a saved game"
+      + "\nCTRL-P  - start a new game at the last unfinished level"
+      + "\nCTRL-1 - start a new game at level 1"
+      + "\nSPACE - pause the game and display a “game is paused” dialog"
+      + "\nESC - close the “game is paused” dialog and resume the game"
+      + "\nUP, DOWN, LEFT, RIGHT ARROWS -- move Chap within the maze";
 }
