@@ -21,7 +21,7 @@ This will stop recording your moves and will create a file "record.txt".
 
 If you die during a recording, the recording is deleted and cannot be saved.
 
-## Loadn and Save Recordings
+## Loading and Save Recordings
 
 To load and play a recording Select "Recording Options > Load Recording" from the top bar of the gui. This will load the recording stored in "record.txt"
 if present. All movement will be disabled and the game will be set to the state of the recording start.
