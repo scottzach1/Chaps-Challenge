@@ -1,5 +1,6 @@
 package nz.ac.vuw.ecs.swen225.a3.application;
 
+import java.awt.event.ComponentEvent;
 import java.io.File;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -14,7 +15,6 @@ import nz.ac.vuw.ecs.swen225.a3.persistence.LevelManager;
 import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
 import nz.ac.vuw.ecs.swen225.a3.renderer.GameMenu.MenuType;
 import nz.ac.vuw.ecs.swen225.a3.renderer.Gui;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 /**
  * Chip and Chap. Chap’s challenge is a creative clone of the (first level of the) 1989 Atari game
@@ -29,7 +29,7 @@ public class ChapsChallenge {
   private Gui gui;
   private Player player;
 
-  private long totalTime = 3; //100 seconds
+  private long totalTime = 100; //100 seconds
   private long startTime;
   private long timeLeft = totalTime;
   private boolean gamePaused = false;
