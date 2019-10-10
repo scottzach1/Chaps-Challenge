@@ -211,7 +211,7 @@ public class RecordAndPlay {
           game.update();
           Thread.sleep(delay);
         } catch (InterruptedException e) {
-          System.out.println("Running through recording was interupted:" + e);
+          System.out.println("Running through recording was interrupted:" + e);
         }
       }
       isRunning = false;
