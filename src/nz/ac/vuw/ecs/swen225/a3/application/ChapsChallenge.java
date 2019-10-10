@@ -1,10 +1,8 @@
 package nz.ac.vuw.ecs.swen225.a3.application;
 
-import java.awt.event.ComponentEvent;
 import java.io.File;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 import nz.ac.vuw.ecs.swen225.a3.maze.Board;
 import nz.ac.vuw.ecs.swen225.a3.maze.InfoField;
@@ -16,6 +14,7 @@ import nz.ac.vuw.ecs.swen225.a3.persistence.LevelManager;
 import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
 import nz.ac.vuw.ecs.swen225.a3.renderer.GameMenu.MenuType;
 import nz.ac.vuw.ecs.swen225.a3.renderer.Gui;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 /**
  * Chip and Chap. Chap’s challenge is a creative clone of the (first level of the) 1989 Atari game
@@ -106,7 +105,6 @@ public class ChapsChallenge {
       return; //invalid move
     }
     if (nextLocation.isOccupied()) { // stepped on a mob
-      gui.playerIsDead();
       gameOver(MenuType.DEATH);
       return;
     }
@@ -124,7 +122,6 @@ public class ChapsChallenge {
   private void checkFields() {
     if (player.getLocation().getType() == Tile.Type.Exit) {
       if (!board.setNextLevel()) {
-        gui.playerIsDead();
         gameOver(MenuType.WINNER);
         return;
       }
@@ -210,7 +207,6 @@ public class ChapsChallenge {
    */
   public void restartGame() {
     gui.resetMenuSettings();
-    gui.playerIsAlive();
     board.setCurrentLevel(0);
     resetLogistics();
   }
@@ -246,7 +242,6 @@ public class ChapsChallenge {
    */
   public void restartLevel() {
     gui.resetMenuSettings();
-    gui.playerIsAlive();
     int current = board.getCurrentLevel();
     board.setCurrentLevel(current);
     resetLogistics();
@@ -295,39 +290,31 @@ public class ChapsChallenge {
           // Only run while the game is not paused
           if (!gamePaused) {
             // Attempt to sleep the thread if there is time left
-            try {
-              if (timeLeft > 0) {
-                // Every second
-                if (timeCheck == 0) {
-                  // Update the dashboard and mobs
-                  gui.updateDashboard();
-                  mobManager.advanceByOneTick();
-                }
-                // Update the board every 1/fps second
-                gui.updateBoard();
+            if (timeLeft > 0) {
+              // Update the board every 1/fps second
+              gui.updateBoard();
 
-                // Restricts the frame rate to 30 fps
+              // Every second
+              if (timeCheck == 0) {
+                // Update the dashboard and mobs
+                gui.updateDashboard();
+                mobManager.advanceByOneTick();
+              }
+              // Restricts the frame rate to 30 fps
+              try {
                 Thread.sleep(1000 / fps);
-
                 // Tick counter cycles (0, 1)
                 timeCheck = (timeCheck + 1) % fps;
-              } else {
-                throw new InterruptedException("TIMED OUT");
-              }
-            } catch (InterruptedException e) {
-              System.out.println("FAILED");
-              // If anything was to go unsuccessfully, then control crash the game with a time out
-              gui.playerIsDead();
+              } catch (InterruptedException e) {}
+
+            } else {
+              // When the player runs out of time
               gameOver(MenuType.TIMEOUT);
-              break;
             }
           } else {
-            // This ensures that the sleep function does not interupt itself with actions
-            // by the user.
             try {
               Thread.sleep(10);
-            } catch (Exception e) {
-            }
+            } catch (InterruptedException e) {}
           }
         }
       }
@@ -411,10 +398,12 @@ public class ChapsChallenge {
 
   /**
    * Called when gameover is reached.
+   *
    * @param reason for gameover.
    */
   public void gameOver(MenuType reason) {
     gamePaused = true;
+    gui.setPlayerDead();
     gui.gameOver(reason);
   }
 
@@ -430,6 +419,7 @@ public class ChapsChallenge {
 
   /**
    * Sets the current savefile.
+   *
    * @param saveFile to set
    */
   public void setSaveFile(File saveFile) {
@@ -438,6 +428,7 @@ public class ChapsChallenge {
 
   /**
    * Sets the current loadfile.
+   *
    * @param loadFile to set
    */
   public void setLoadFile(File loadFile) {
@@ -458,6 +449,7 @@ public class ChapsChallenge {
     timeLeft = totalTime;
     startTime = System.currentTimeMillis();
     player = new Player(board.getPlayerLocation());
+    gui.setPlayerAlive();
   }
 
   /**
@@ -509,6 +501,7 @@ public class ChapsChallenge {
 
   /**
    * Sets the mob manager.
+   *
    * @param mobManager to set.
    */
   public void setMobManager(MobManager mobManager) {
