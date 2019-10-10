@@ -3,6 +3,7 @@ package nz.ac.vuw.ecs.swen225.a3.renderer;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -25,6 +26,8 @@ public class Canvas extends JPanel {
   public static final int VIEW_SIZE = 9;
 
   private ArrayList<JLabel> components = new ArrayList<>();
+
+  private int cellSize;
 
   private ChapsChallenge application;
 
@@ -62,7 +65,6 @@ public class Canvas extends JPanel {
    * application on the  canvas.
    */
   void refreshComponents() {
-
     // Retrieve tiles and add all components.
     // Convert the Stream to List
     AtomicInteger i = new AtomicInteger();
@@ -113,7 +115,7 @@ public class Canvas extends JPanel {
    */
   void resize() {
 
-    int cellSize = Math.min(getWidth(), getHeight()) / VIEW_SIZE;
+    cellSize = Math.min(getWidth(), getHeight()) / VIEW_SIZE;
     AssetManager.scaleImages(cellSize);
 
     createCanvasComponents();

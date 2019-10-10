@@ -350,7 +350,7 @@ class Dashboard extends JPanel {
      */
     private Font findFont(Component component, Font oldFont, String text) {
       // Get the size of the area the text can take up
-      int boxWidth = (parent.getWidth() / gridWidth);
+      int boxWidth = (parent.getPreferredSize().width / gridWidth);
       int boxHeight = (parent.getDashboardHeight() / gridHeight);
       Dimension componentSize = new Dimension(boxWidth, boxHeight);
 

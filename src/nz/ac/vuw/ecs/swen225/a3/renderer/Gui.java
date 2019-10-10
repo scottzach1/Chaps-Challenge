@@ -325,9 +325,11 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
    */
   @Override
   public void componentResized(ComponentEvent e) {
+    if(isBusy){
+      return;
+    }
     isBusy = true;
     resizeCycle++;
-    System.out.println("RESIZE CYCLE: " + resizeCycle);
 
     //System.out.println(resizeCycle);
 
@@ -342,12 +344,14 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
       if (canvas != null && dashboardHolder != null) {
         canvas.resize();
         dashboardHolder.resize();
-      }
-      redraw();
+        redraw();
 
-      if (resizeCycle > 1 && resizeCycle < 4) {
-        componentResized(new ComponentEvent(this, ComponentEvent.COMPONENT_RESIZED));
-        application.startRunningThread();
+        if (resizeCycle >= 1 && resizeCycle < 4) {
+          isBusy = false;
+          componentResized(new ComponentEvent(this, ComponentEvent.COMPONENT_RESIZED));
+          application.startRunningThread();
+          return;
+        }
       }
 
     } else {

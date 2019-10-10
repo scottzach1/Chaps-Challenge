@@ -1,5 +1,6 @@
 package nz.ac.vuw.ecs.swen225.a3.application;
 
+import java.awt.event.ComponentEvent;
 import java.io.File;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -14,7 +15,6 @@ import nz.ac.vuw.ecs.swen225.a3.persistence.LevelManager;
 import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
 import nz.ac.vuw.ecs.swen225.a3.renderer.GameMenu.MenuType;
 import nz.ac.vuw.ecs.swen225.a3.renderer.Gui;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 /**
  * Chip and Chap. Chap’s challenge is a creative clone of the (first level of the) 1989 Atari game
@@ -121,7 +121,7 @@ public class ChapsChallenge {
 
   private void checkFields() {
     if (player.getLocation().getType() == Tile.Type.Exit) {
-      if (!board.setNextLevel()) {
+      if (!nextLevel()) {
         gameOver(MenuType.WINNER);
         return;
       }
@@ -225,16 +225,17 @@ public class ChapsChallenge {
   }
 
   /**
-   * Sets the game to the next level. If there is no next level, current level is restarted.
+   * Sets the game to the next level. If there is no next level, end screen is displayed.
    */
-  public void nextLevel() {
+  public boolean nextLevel() {
     int current = board.getCurrentLevel();
     if (current < board.getFinalLevel()) {
       board.setCurrentLevel(current + 1);
     } else {
-      board.setCurrentLevel(board.getFinalLevel());
+      return false;
     }
     resetLogistics();
+    return true;
   }
 
   /**
