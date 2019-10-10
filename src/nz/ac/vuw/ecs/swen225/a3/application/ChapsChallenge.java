@@ -14,7 +14,6 @@ import nz.ac.vuw.ecs.swen225.a3.persistence.LevelManager;
 import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
 import nz.ac.vuw.ecs.swen225.a3.renderer.GameMenu.MenuType;
 import nz.ac.vuw.ecs.swen225.a3.renderer.Gui;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 /**
  * Chip and Chap. Chap’s challenge is a creative clone of the (first level of the) 1989 Atari game
