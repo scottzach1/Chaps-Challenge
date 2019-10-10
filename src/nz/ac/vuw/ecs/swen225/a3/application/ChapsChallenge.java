@@ -1,6 +1,5 @@
 package nz.ac.vuw.ecs.swen225.a3.application;
 
-import java.awt.event.ComponentEvent;
 import java.io.File;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -10,6 +9,7 @@ import nz.ac.vuw.ecs.swen225.a3.maze.InfoField;
 import nz.ac.vuw.ecs.swen225.a3.maze.MobManager;
 import nz.ac.vuw.ecs.swen225.a3.maze.Player;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
+import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
 import nz.ac.vuw.ecs.swen225.a3.persistence.JsonReadWrite;
 import nz.ac.vuw.ecs.swen225.a3.persistence.LevelManager;
 import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
@@ -47,7 +47,8 @@ public class ChapsChallenge {
    * Create main game application.
    */
   public ChapsChallenge() {
-    LevelManager.loadLevels();
+    AssetManager assetManager = new AssetManager();
+    LevelManager.loadLevels(assetManager);
     // Load the board.
     board = new Board(this);
     board.setup();
@@ -57,7 +58,7 @@ public class ChapsChallenge {
     startTime = System.currentTimeMillis();
 
     // Creates a GUI and gives it a keyListener
-    gui = new Gui(this);
+    gui = new Gui(this, assetManager);
     gui.addLayoutComponents();
 
   }
@@ -510,7 +511,10 @@ public class ChapsChallenge {
     this.mobManager = mobManager;
   }
 
-
+  /**
+   * Sets the refresh-rate of the program (frames per second).
+   * @param fps frames per second.
+   */
   public void setFps(int fps) {
     this.fps = fps;
   }

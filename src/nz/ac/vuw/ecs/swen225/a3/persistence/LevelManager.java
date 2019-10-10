@@ -23,7 +23,7 @@ public class LevelManager {
   public static int currentLevel = 0;
   public static Set<Class> classSet = new HashSet<>();
 
-  public static void loadLevels() {
+  public static void loadLevels(AssetManager assetManager) {
     //Load level description and assets
     File folder = new File("src/levels/");
     List<File> files = Arrays.asList(folder.listFiles());
@@ -46,7 +46,7 @@ public class LevelManager {
           zf.stream().filter(p -> p.getName().contains(".png"))
               .forEach(s -> {
                 try {
-                  AssetManager.loadAssetFromInputStream(zf.getInputStream(s), s.getName());
+                  assetManager.loadAssetFromInputStream(zf.getInputStream(s), s.getName());
                 } catch (Exception e) {
                   System.out.println("Error loading assets from file: " + e);
                 }

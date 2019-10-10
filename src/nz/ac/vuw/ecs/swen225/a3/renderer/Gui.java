@@ -19,6 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
+import nz.ac.vuw.ecs.swen225.a3.persistence.AssetManager;
 import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
 import nz.ac.vuw.ecs.swen225.a3.renderer.GameMenu.MenuType;
 
@@ -29,7 +30,9 @@ import nz.ac.vuw.ecs.swen225.a3.renderer.GameMenu.MenuType;
  */
 public class Gui extends JFrame implements ComponentListener, KeyListener {
 
-  // Nothing important
+  /**
+   * Default serial number.
+   */
   private static final long serialVersionUID = 1L;
 
   // Colour Space.
@@ -57,6 +60,8 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
   // Layout object
   private GridBagConstraints constraints = new GridBagConstraints();
 
+  private AssetManager assetManager;
+
   // HashSet of actively pressed keys
   private HashSet<Integer> activeKeys;
   private String direction;
@@ -71,10 +76,11 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
    * Constructor: Creates a new JFrame and sets preferred sizes. Creates and adds all relevant GUI
    * components then redraws.
    */
-  public Gui(ChapsChallenge chapsChallenge) {
+  public Gui(ChapsChallenge chapsChallenge, AssetManager assetManager) {
     resizeCycle = 0;
     direction = "";
     application = chapsChallenge;
+    this.assetManager = assetManager;
     playerIsDead = false;
 
     // Create new set for hosting keys currently pressed
@@ -603,6 +609,14 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
    */
   public void setPlayerAlive() {
     playerIsDead = false;
+  }
+
+  /**
+   * Gets the AssetManager corresponding to this application instance.
+   * @return assetManager for gui.
+   */
+  AssetManager getAssetManager() {
+    return assetManager;
   }
 
   /**

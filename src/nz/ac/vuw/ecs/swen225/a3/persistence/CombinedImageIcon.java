@@ -1,4 +1,4 @@
-package nz.ac.vuw.ecs.swen225.a3.renderer;
+package nz.ac.vuw.ecs.swen225.a3.persistence;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
