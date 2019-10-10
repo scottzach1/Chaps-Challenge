@@ -29,7 +29,7 @@ public class ChapsChallenge {
   private Gui gui;
   private Player player;
 
-  private long totalTime = 100; //100 seconds
+  private long totalTime = 3; //100 seconds
   private long startTime;
   private long timeLeft = totalTime;
   private boolean gamePaused = false;
@@ -267,10 +267,8 @@ public class ChapsChallenge {
   public void exitGame() {
     gamePaused = true;
     startTime = System.currentTimeMillis();
-    if (gui.exitGame()) {
-      System.exit(0);
-    }
-    resumeGame();
+    gui.setPlayerDead();
+    gui.gameOver(MenuType.QUITTER);
   }
 
   /**

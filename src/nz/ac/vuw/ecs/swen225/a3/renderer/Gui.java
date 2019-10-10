@@ -229,29 +229,6 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
   }
 
   /**
-   * Handles GUI actions related to exiting the game. Invokes a pop up menu to confirm the player
-   * wants to exit the game.
-   */
-  public boolean exitGame() {
-    // Button options
-    String[] options = {"Yes please", "Opps, wrong button"};
-
-    // Create and display the JOptionPane
-    int choice = JOptionPane.showOptionDialog(null,
-        "Would you like to exit the game?\n",
-        "QUIT?",
-        JOptionPane.YES_NO_OPTION,
-        JOptionPane.QUESTION_MESSAGE,
-        null,
-        options,
-        options[0]);
-
-    // (True) = Exit Game, (False) = Don't Exit Game
-    return choice != JOptionPane.CLOSED_OPTION && choice != 1;
-  }
-
-
-  /**
    * If not busy executes move and redraws dashboard.
    */
   public void updateBoard() {
@@ -325,6 +302,9 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
       case WINNER:
         gameMenu.setMenuType(MenuType.WINNER);
         break;
+      case QUITTER:
+        gameMenu.setMenuType(MenuType.QUITTER);
+        break;
       default:
         gameMenu.setMenuType(MenuType.ERROR);
     }
@@ -345,6 +325,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
   public void componentResized(ComponentEvent e) {
     isBusy = true;
     resizeCycle++;
+    System.out.println("RESIZE CYCLE: " + resizeCycle);
 
     //System.out.println(resizeCycle);
 
