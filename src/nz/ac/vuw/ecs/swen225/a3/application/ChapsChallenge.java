@@ -409,6 +409,10 @@ public class ChapsChallenge {
     return player;
   }
 
+  /**
+   * Called when gameover is reached.
+   * @param reason for gameover.
+   */
   public void gameOver(MenuType reason) {
     gamePaused = true;
     gui.gameOver(reason);
@@ -424,10 +428,18 @@ public class ChapsChallenge {
     return timeLeft;
   }
 
+  /**
+   * Sets the current savefile.
+   * @param saveFile to set
+   */
   public void setSaveFile(File saveFile) {
     this.saveFile = saveFile;
   }
 
+  /**
+   * Sets the current loadfile.
+   * @param loadFile to set
+   */
   public void setLoadFile(File loadFile) {
     this.loadFile = loadFile;
   }
@@ -495,6 +507,10 @@ public class ChapsChallenge {
     runningThread();
   }
 
+  /**
+   * Sets the mob manager.
+   * @param mobManager to set.
+   */
   public void setMobManager(MobManager mobManager) {
     this.mobManager = mobManager;
   }
