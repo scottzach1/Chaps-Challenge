@@ -494,4 +494,46 @@ class KeyboardTest {
     // Check board state still same.
     assertEquals(boardState, board.toString());
   }
+
+  /**
+   * Checks application pauses on exit menu.
+   * @throws InterruptedException from sleep.
+   */
+  @SuppressWarnings("deprecation")
+  @Test
+  void testQuitMenu() throws InterruptedException {
+    // Make game
+    ChapsChallenge application = new ChapsChallenge();
+    Gui gui = application.getGui();
+
+    // Check game not paused
+    assertFalse(application.isGamePaused());
+
+    // Wait while gui is busy.
+    while (gui.isBusy()) {
+      Thread.sleep(100);
+    }
+
+    // Input ctrl + X keys
+    gui.keyPressed(
+        new KeyEvent(gui, KeyEvent.KEY_PRESSED, System.currentTimeMillis(), KeyEvent.VK_UNDEFINED,
+            KeyEvent.VK_CONTROL));
+    application.update();
+    while (gui.isBusy()) {
+      Thread.sleep(100);
+    }
+    gui.keyPressed(
+        new KeyEvent(gui, KeyEvent.KEY_PRESSED, System.currentTimeMillis(), KeyEvent.VK_UNDEFINED,
+            KeyEvent.VK_X));
+    application.update();
+
+    // Wait while gui is busy.
+    while (gui.isBusy()) {
+      Thread.sleep(100);
+    }
+
+    // Check game paused.
+    assertTrue(application.isGamePaused());
+  }
+
 }
