@@ -137,24 +137,6 @@ public class ChapsChallenge {
   }
 
   /**
-   * Checks the amount of time that has elapsed since the start of the game. Subtracts this from the
-   * total time available.
-   *
-   * @return the time left to play
-   */
-  public int timeLeft() {
-    if (gamePaused) {
-      return (int) timeLeft;
-    }
-    long elapsedTime = System.currentTimeMillis() - startTime;
-    timeLeft -= TimeUnit.MILLISECONDS.toSeconds(elapsedTime);
-
-    startTime = System.currentTimeMillis();
-
-    return (int) timeLeft;
-  }
-
-  /**
    * Pauses the game.
    */
   public void pauseGame() {
@@ -282,6 +264,7 @@ public class ChapsChallenge {
     Runnable runnable = new Runnable() {
 
       private int timeCheck = 0;
+      private boolean pastFirstSecond = false;
 
       @Override
       public void run() {
@@ -293,19 +276,25 @@ public class ChapsChallenge {
             if (timeLeft > 0) {
               // Update the board every 1/fps second
               gui.updateBoard();
+              gui.updateDashboard();
 
               // Every second
               if (timeCheck == 0) {
                 // Update the dashboard and mobs
-                gui.updateDashboard();
                 mobManager.advanceByOneTick();
+                if (pastFirstSecond) {
+                  timeLeft--;
+                } else {
+                  pastFirstSecond = true;
+                }
               }
               // Restricts the frame rate to 30 fps
               try {
                 Thread.sleep(1000 / fps);
                 // Tick counter cycles (0, 1)
                 timeCheck = (timeCheck + 1) % fps;
-              } catch (InterruptedException e) {}
+              } catch (InterruptedException e) {
+              }
 
             } else {
               // When the player runs out of time
@@ -314,13 +303,26 @@ public class ChapsChallenge {
           } else {
             try {
               Thread.sleep(10);
-            } catch (InterruptedException e) {}
+            } catch (InterruptedException e) {
+            }
           }
         }
       }
     };
     thread = new Thread(runnable);
     thread.start();
+  }
+
+  /**
+   * Returns the amount of time left to play
+   *
+   * @return the time left to play
+   */
+  public int timeLeft() {
+    if (timeLeft <= 0) {
+      return 0;
+    }
+    return (int) timeLeft;
   }
 
   /**
