@@ -20,8 +20,11 @@ public class LockedDoor extends Tile {
 
   private String colour;
   private boolean active = true;
-
-  public LockedDoor(){
+  
+  /**
+   * Constructor without colour.
+   */
+  public LockedDoor() {
     super(Type.LockedDoor);
   }
 

@@ -18,6 +18,10 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.zip.ZipFile;
 
+/**
+ * Manages JSON level files and plugin functionality.
+ * @author Zac Durant 300449785
+ */
 public class LevelManager {
 
   private static ArrayList<String> levelDescriptions = new ArrayList<>();
