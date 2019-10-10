@@ -73,7 +73,7 @@ public class Canvas extends JPanel {
         components.get(i.get()).setIcon(AssetManager.getScaledImage(t.getCombinedUrl()));
         i.getAndIncrement();
       } catch (Exception e) {
-        //System.out.println("Error refreshing: " + e);
+        System.out.println("Error refreshing: " + e);
       }
     });
 
