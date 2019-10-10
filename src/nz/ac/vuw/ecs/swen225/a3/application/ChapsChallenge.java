@@ -29,7 +29,7 @@ public class ChapsChallenge {
   private Gui gui;
   private Player player;
 
-  private long totalTime = 3; //100 seconds
+  private long totalTime = 100; //100 seconds
   private long startTime;
   private long timeLeft = totalTime;
   private boolean gamePaused = false;

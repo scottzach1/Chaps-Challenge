@@ -33,6 +33,7 @@ import nz.ac.vuw.ecs.swen225.a3.maze.MobManager;
 import nz.ac.vuw.ecs.swen225.a3.maze.Player;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
 import nz.ac.vuw.ecs.swen225.a3.maze.Wall;
+import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
 
 
 /**
@@ -163,6 +164,7 @@ public class JsonReadWrite {
    */
   public static ChapsChallenge loadGameState(String saveGame, ChapsChallenge g) {
     JsonObject game;
+    RecordAndPlay.endRecording();
     JsonReader jsonReader = Json.createReader(new StringReader(saveGame));
     game = jsonReader.readObject();
 
