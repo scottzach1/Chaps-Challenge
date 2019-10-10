@@ -1,17 +1,11 @@
 package nz.ac.vuw.ecs.swen225.a3.test;
 
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
-import nz.ac.vuw.ecs.swen225.a3.maze.Mob;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
 import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.stream.Collectors;
 
 public class RecordAndPlayTest {
 
