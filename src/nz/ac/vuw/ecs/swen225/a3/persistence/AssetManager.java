@@ -17,7 +17,7 @@ import javax.swing.ImageIcon;
  * AssetManager class is responsible for dealing with storing and scaling all the assets used in the
  * game.
  *
- * @author Zac Scott.
+ * @author Zac Scott 300447976.
  */
 public class AssetManager {
 

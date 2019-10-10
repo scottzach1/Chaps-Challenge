@@ -14,7 +14,7 @@ import nz.ac.vuw.ecs.swen225.a3.renderer.GameMenu.MenuType;
  * they act as a spider that latches onto a Tile and scale the board. Although the Constructor takes
  * a Board, the board is not modified at all.
  *
- * @author Zac Scott.
+ * @author Zac Scott 300447976.
  */
 public abstract class Mob {
 

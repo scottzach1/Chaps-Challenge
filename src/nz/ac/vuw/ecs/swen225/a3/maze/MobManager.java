@@ -8,7 +8,7 @@ import java.util.Set;
 
 /**
  * Stores and controls the ticking of all mobs in game.
- * @author Zac Scott.
+ * @author Zac Scott 300447976.
  */
 public class MobManager {
 

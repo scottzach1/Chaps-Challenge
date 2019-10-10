@@ -19,7 +19,7 @@ import nz.ac.vuw.ecs.swen225.a3.renderer.Gui;
 
 /**
  * Tests keyboard inputs effects on the game.
- * @author Zac Scott.
+ * @author Zac Scott 300447976.
  */
 class KeyboardTest {
 
