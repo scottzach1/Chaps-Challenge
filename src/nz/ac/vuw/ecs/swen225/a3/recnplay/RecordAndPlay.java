@@ -144,7 +144,8 @@ public class RecordAndPlay {
         JsonReader jsonReader = Json.createReader(new StringReader(reader.readLine()));
         object = jsonReader.readObject();
       } catch (IOException e) {
-        //TODO: deal withs
+        System.out.println("Error reading file: " + e);
+        return;
       }
 
       JsonArray movesJson = object != null ? object.getJsonArray("moves") : null;
@@ -214,8 +215,7 @@ public class RecordAndPlay {
         }
         game.update();
       }
-    } catch (IndexOutOfBoundsException e) {
-      //todo: deal
+    } catch (IndexOutOfBoundsException ignored) {
     }
   }
 
