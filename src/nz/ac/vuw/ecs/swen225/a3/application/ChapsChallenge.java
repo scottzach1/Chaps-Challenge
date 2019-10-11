@@ -36,7 +36,6 @@ public class ChapsChallenge {
   private boolean gamePaused = false;
 
   private int fps = 20;
-
   private MobManager mobManager;
 
   private File saveFile;
