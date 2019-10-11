@@ -75,7 +75,6 @@ class MenuOptionPane extends JMenuBar {
 
     //Create the loadRecording button
     JMenuItem loadRecording = new JMenuItem("Load Recording");
-    //TODO: allow choice of load file
     loadRecording.addActionListener(arg0 -> RecordAndPlay.loadRecording("record.txt", application));
     recording.add(loadRecording);
 
