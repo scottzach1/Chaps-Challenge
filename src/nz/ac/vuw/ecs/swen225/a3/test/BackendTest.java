@@ -611,12 +611,7 @@ public class BackendTest {
 
           // Check for invalid token
           if (!(itemType.equals("K") || itemType.equals("D"))) {
-            try {
-              throw new Exception("Failed to parse");
-            } catch (Exception e) {
-              System.out.println("Failed to parse");
-              return;
-            }
+              throw new Error("Failed to parse");
           }
 
           String colour = v.substring(1).toLowerCase();
