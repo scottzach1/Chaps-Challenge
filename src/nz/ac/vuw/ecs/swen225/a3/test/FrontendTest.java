@@ -8,6 +8,7 @@ import java.awt.event.ComponentEvent;
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 import nz.ac.vuw.ecs.swen225.a3.renderer.Gui;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -30,6 +31,11 @@ import org.junit.jupiter.api.Test;
  * @author Zac Scott.
  */
 class FrontendTest {
+
+  @BeforeAll
+  public static void setup() {
+    BackendTest.testing = true;
+  }
 
   /**
    * Tests Gui is loaded fully.

@@ -60,6 +60,7 @@ class Dashboard extends JPanel {
   private HashMap<String, Integer> chapsBag;
   private ArrayList<JLabel> chapsBagImages;
   private ChapsChallenge application;
+  private AssetManager assetManager;
   private DashboardHolder parent;
 
   /**
@@ -70,6 +71,7 @@ class Dashboard extends JPanel {
    */
   Dashboard(ChapsChallenge chapsChallenge, DashboardHolder dashboardHolder) {
     application = chapsChallenge;
+    assetManager = application.getGui().getAssetManager();
     parent = dashboardHolder;
     chapsBag = new HashMap<>();
     chapsBagImages = new ArrayList<>();
@@ -259,14 +261,14 @@ class Dashboard extends JPanel {
       JLabel item = chapsBagImages.get(i);
 
       // See if the parsed item exists
-      item.setIcon(AssetManager.getNumberedScaledImage("free.png-" + s + ".png", chapsBag.get(s)));
+      item.setIcon(assetManager.getNumberedScaledImage("free.png-" + s + ".png", chapsBag.get(s)));
       i++;
     }
 
     // Fill the rest of the bag with blanks (using j as i is predefined)
-    for (int j = items.size(); j < 8; j++) {
+    for (int j = chapsBag.keySet().size(); j < 8; j++) {
       JLabel item = chapsBagImages.get(j);
-      item.setIcon(AssetManager.getScaledImage("free.png"));
+      item.setIcon(assetManager.getScaledImage("free.png"));
     }
   }
 
@@ -277,7 +279,7 @@ class Dashboard extends JPanel {
   private void fillChapsBagWithBlanks() {
     chapsBagImages = new ArrayList<>();
     for (int i = 0; i < 8; i++) {
-      JLabel item = new JLabel(AssetManager.getScaledImage("free.png"));
+      JLabel item = new JLabel(assetManager.getScaledImage("free.png"));
       item.setPreferredSize(new Dimension(getWidth() / 4, getHeight() / (6 * 2)));
       chapsBagImages.add(item);
     }

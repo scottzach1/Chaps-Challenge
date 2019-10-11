@@ -98,7 +98,7 @@ public class GameMenu extends JPanel {
 
     MenuButton restart = new MenuButton("Restart", e -> {
       application.resumeGame();
-      application.restartGame();
+      application.restartLevel();
     }, width, height);
 
     MenuButton quit = new MenuButton("Quit", e -> application.exitGame(), width, height);

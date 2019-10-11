@@ -7,6 +7,9 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.event.KeyEvent;
+
+import org.junit.jupiter.api.BeforeAll;
+import nz.ac.vuw.ecs.swen225.a3.maze.Tile.Direction;
 import org.junit.jupiter.api.Test;
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 import nz.ac.vuw.ecs.swen225.a3.maze.Board;
@@ -19,6 +22,11 @@ import nz.ac.vuw.ecs.swen225.a3.renderer.Gui;
  * @author Zac Scott.
  */
 class KeyboardTest {
+
+  @BeforeAll
+  public static void setup() {
+    BackendTest.testing = true;
+  }
 
   /**
    * Test movement to left.
@@ -106,6 +114,8 @@ class KeyboardTest {
     // Make game
     ChapsChallenge application = new ChapsChallenge();
     Gui gui = application.getGui();
+    // THIS LINE IS TO AVOID THE INFO TILE POPUP!
+    application.move(Direction.Left);
 
     // Get initial tile
     final Tile oldTile = application.getBoard().getPlayerLocation();
@@ -423,7 +433,7 @@ class KeyboardTest {
 
     // Move player and check new location.
     Tile start = application.getBoard().getPlayerLocation();
-    application.move(Tile.Direction.Down);
+    application.move(Tile.Direction.Left);
     assertNotEquals(start, board.getPlayerLocation());
 
     // Wait while gui is busy.

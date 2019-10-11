@@ -30,6 +30,7 @@ public class Canvas extends JPanel {
   private int cellSize;
 
   private ChapsChallenge application;
+  private AssetManager assetManager;
 
 
   /**
@@ -38,6 +39,8 @@ public class Canvas extends JPanel {
   Canvas(ChapsChallenge app) {
     application = app;
     Gui gui = application.getGui();
+    assetManager = gui.getAssetManager();
+
     setPreferredSize(new Dimension(gui.getCanvasWidth(), gui.getScreenHeight()));
 
     setLayout(new GridBagLayout());
@@ -53,7 +56,7 @@ public class Canvas extends JPanel {
     for (int row = 0; row < VIEW_SIZE; row++) {
       for (int col = 0; col < VIEW_SIZE; col++) {
         JLabel item = new JLabel();
-        item.setIcon(AssetManager.getScaledImage("free.png"));
+        item.setIcon(assetManager.getScaledImage("free.png"));
         components.add(item);
       }
     }
@@ -70,10 +73,9 @@ public class Canvas extends JPanel {
     AtomicInteger i = new AtomicInteger();
     application.getTilesToRender().collect(Collectors.toList()).forEach(t -> {
       try {
-        components.get(i.get()).setIcon(AssetManager.getScaledImage(t.getCombinedUrl()));
+        components.get(i.get()).setIcon(assetManager.getScaledImage(t.getCombinedUrl()));
         i.getAndIncrement();
       } catch (Exception e) {
-        //System.out.println("Error refreshing: " + e);
       }
     });
 
@@ -116,7 +118,7 @@ public class Canvas extends JPanel {
   void resize() {
 
     cellSize = Math.min(getWidth(), getHeight()) / VIEW_SIZE;
-    AssetManager.scaleImages(cellSize);
+    assetManager.scaleImages(cellSize);
 
     createCanvasComponents();
     refreshComponents();
