@@ -40,6 +40,11 @@ public abstract class Tile {
   public enum Direction {
     Left, Right, Up, Down;
 
+    /**
+     * Gets the direction opposite the current one.
+     *
+     * @return the opposite Direction.
+     */
     public Direction reverse() {
       switch (this) {
         case Left:
@@ -53,6 +58,10 @@ public abstract class Tile {
       }
     }
 
+    /**
+     * Gets the direction clockwise of this one.
+     * @return the next clockwise direction
+     */
     public Direction clockWise() {
       switch (this) {
         case Left:
@@ -66,6 +75,10 @@ public abstract class Tile {
       }
     }
 
+    /**
+     * Gets the direction anticlockwise of this one.
+     * @return the next anticlockwise direction
+     */
     public Direction antiClockWise() {
       switch (this) {
         case Left:

@@ -266,19 +266,19 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
    */
   public void renderInfoField(String text) {
     if (!RecordAndPlay.getIsRunning() && !BackendTest.testing) {
-          // Button options
-          String[] options = {"Okay"};
+      // Button options
+      String[] options = {"Okay"};
 
-          // Create and display the JOptionPane
-          JOptionPane.showOptionDialog(null,
-                  text + "\n",
-                  "INFO",
-                  JOptionPane.YES_NO_OPTION,
-                  JOptionPane.QUESTION_MESSAGE,
-                  null,
-                  options,
-                  options[0]);
-      }
+      // Create and display the JOptionPane
+      JOptionPane.showOptionDialog(null,
+          text + "\n",
+          "INFO",
+          JOptionPane.YES_NO_OPTION,
+          JOptionPane.QUESTION_MESSAGE,
+          null,
+          options,
+          options[0]);
+    }
   }
 
   /**
@@ -333,7 +333,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
    */
   @Override
   public void componentResized(ComponentEvent e) {
-    if(isBusy){
+    if (isBusy) {
       return;
     }
     isBusy = true;
@@ -589,7 +589,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
   }
 
   /**
-   * Return the height of the menu bar
+   * Return the height of the menu bar.
    *
    * @return - The menu bar height
    */
@@ -598,8 +598,8 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
   }
 
   /**
-   * Called when the player dies or times out. This means that the menu is not able to be quit out
-   * of.
+   * Called when the player dies or times out.
+   * This means that the menu is not able to be quit out of.
    */
   public void setPlayerDead() {
     playerIsDead = true;
@@ -623,7 +623,7 @@ public class Gui extends JFrame implements ComponentListener, KeyListener {
   }
 
   /**
-   * Resets the menu type when restarting a level
+   * Resets the menu type when restarting a level.
    */
   public void resetMenuSettings() {
     gameMenu.setMenuType(MenuType.PAUSE);

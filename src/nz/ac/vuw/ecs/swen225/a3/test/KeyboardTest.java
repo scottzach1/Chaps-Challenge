@@ -8,17 +8,18 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.event.KeyEvent;
 
-import org.junit.jupiter.api.BeforeAll;
-import nz.ac.vuw.ecs.swen225.a3.maze.Tile.Direction;
-import org.junit.jupiter.api.Test;
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 import nz.ac.vuw.ecs.swen225.a3.maze.Board;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
+import nz.ac.vuw.ecs.swen225.a3.maze.Tile.Direction;
 import nz.ac.vuw.ecs.swen225.a3.renderer.Gui;
 
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests keyboard inputs effects on the game.
+ *
  * @author Zac Scott.
  */
 class KeyboardTest {
@@ -30,6 +31,7 @@ class KeyboardTest {
 
   /**
    * Test movement to left.
+   *
    * @throws InterruptedException from sleep.
    */
   @SuppressWarnings("deprecation")
@@ -421,6 +423,7 @@ class KeyboardTest {
 
   /**
    * Checks GUI restarts level on ctrl + p.
+   *
    * @throws InterruptedException from sleep.
    */
   @SuppressWarnings("deprecation")
@@ -467,6 +470,7 @@ class KeyboardTest {
 
   /**
    * Tests Gui doesn't respond to KeyTyped input.
+   *
    * @throws InterruptedException from sleep.
    */
   @SuppressWarnings("deprecation")
@@ -478,7 +482,7 @@ class KeyboardTest {
     Board board = application.getBoard();
     final String boardState = board.toString();
 
-    for (int keyEvent=KeyEvent.VK_UNDEFINED; keyEvent<=KeyEvent.VK_Z; ++keyEvent) {
+    for (int keyEvent = KeyEvent.VK_UNDEFINED; keyEvent <= KeyEvent.VK_Z; ++keyEvent) {
       while (gui.isBusy()) {
         Thread.sleep(100);
       }

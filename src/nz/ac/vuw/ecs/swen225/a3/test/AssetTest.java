@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * JUnit Tests: Checks all assets are loaded correctly.
+ *
  * @author Zac Scott
  */
 class AssetTest {
@@ -120,20 +121,20 @@ class AssetTest {
     }
   }
 
-    /**
-     * Checks for no Illegal Arg exception on cellSize = 0.
-     */
-    @Test
-    void testCellSize0() {
-      AssetManager assetManager = new AssetManager();
-      assetManager.getScaledImage("free.png");
+  /**
+   * Checks for no Illegal Arg exception on cellSize = 0.
+   */
+  @Test
+  void testCellSize0() {
+    AssetManager assetManager = new AssetManager();
+    assetManager.getScaledImage("free.png");
 
-      try {
-        assetManager.scaleImages(0);
-      } catch (IllegalArgumentException e ) {
-        fail("Program should not throw exception on 0 cell size.");
-      }
+    try {
+      assetManager.scaleImages(0);
+    } catch (IllegalArgumentException e) {
+      fail("Program should not throw exception on 0 cell size.");
     }
+  }
 
   /**
    * Checks AssetManager scales stored assets to specified sizes.

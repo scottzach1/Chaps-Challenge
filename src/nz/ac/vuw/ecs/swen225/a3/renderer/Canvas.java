@@ -76,6 +76,7 @@ public class Canvas extends JPanel {
         components.get(i.get()).setIcon(assetManager.getScaledImage(t.getCombinedUrl()));
         i.getAndIncrement();
       } catch (Exception e) {
+        return;
       }
     });
 

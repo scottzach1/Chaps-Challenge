@@ -1,13 +1,13 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
-import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
-
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
+
 /**
  * Stores and controls the ticking of all mobs in game.
+ *
  * @author Zac Scott.
  */
 public class MobManager {
@@ -52,10 +52,10 @@ public class MobManager {
       Tile before = mob.getHost();
       mob.advanceByTick();
       Tile after = mob.getHost();
-      if(before != null && after != null && before != after && RecordAndPlay.getIsRecording()){
-        for(Tile.Direction d : Tile.Direction.values()){
-          if(before.getDir(d) == after){
-            RecordAndPlay.storeMobMove(d,mob.id);
+      if (before != null && after != null && before != after && RecordAndPlay.getIsRecording()) {
+        for (Tile.Direction d : Tile.Direction.values()) {
+          if (before.getDir(d) == after) {
+            RecordAndPlay.storeMobMove(d, mob.id);
           }
         }
       }
@@ -64,12 +64,15 @@ public class MobManager {
 
   /**
    * Move a particular mob in a direction.
+   *
    * @param id Id of move to move.
    * @param d Direction to move mob.
    */
-  public void moveMob(int id, Tile.Direction d){
+  public void moveMob(int id, Tile.Direction d) {
     Mob m = mobs.stream().filter(p -> p.id == id).findFirst().orElse(null);
-    if(m != null) m.occupyHost(m.getHost().getDir(d));
+    if (m != null) {
+      m.occupyHost(m.getHost().getDir(d));
+    }
   }
 
 

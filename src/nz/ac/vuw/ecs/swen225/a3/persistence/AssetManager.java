@@ -21,8 +21,8 @@ import javax.swing.ImageIcon;
  */
 public class AssetManager {
 
-  private final static String ASSET_PATH = "assets/";
-  private final static String SEPARATOR = "-";
+  private static final String ASSET_PATH = "assets/";
+  private static final String SEPARATOR = "-";
 
   private boolean scaling = false;
 
@@ -72,7 +72,6 @@ public class AssetManager {
 
   /**
    * Loads an asset from an ImageIcon.
-   *
    * If invalid asset, will replace Image and description with
    * 'unknown.png' and corresponding image stored within the
    * assets directory.

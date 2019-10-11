@@ -1,17 +1,17 @@
 package nz.ac.vuw.ecs.swen225.a3.test;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.stream.Collectors;
+
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
 import nz.ac.vuw.ecs.swen225.a3.maze.Mob;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
 import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.stream.Collectors;
 
 public class RecordAndPlayTest {
 
@@ -51,13 +51,13 @@ public class RecordAndPlayTest {
    */
   @Test
   void loadSimpleRecording() {
-    Tile t = chapsChallenge.getPlayer().getLocation();
+    final Tile t = chapsChallenge.getPlayer().getLocation();
     RecordAndPlay.newSave(chapsChallenge, "testRecording.txt");
     chapsChallenge.move(Tile.Direction.Up);
     RecordAndPlay.saveRecording(chapsChallenge);
     RecordAndPlay.loadRecording("testRecording.txt", chapsChallenge);
-    assert chapsChallenge.getPlayer().getLocation().getCol() == t.getCol() &&
-        chapsChallenge.getPlayer().getLocation().getRow() == t.getRow();
+    assert chapsChallenge.getPlayer().getLocation().getCol() == t.getCol()
+        && chapsChallenge.getPlayer().getLocation().getRow() == t.getRow();
   }
 
   /**
@@ -65,16 +65,16 @@ public class RecordAndPlayTest {
    */
   @Test
   void replaySimpleRecording() {
-    Tile t = chapsChallenge.getPlayer().getLocation();
+    final Tile t = chapsChallenge.getPlayer().getLocation();
     RecordAndPlay.newSave(chapsChallenge, "testRecording.txt");
     chapsChallenge.move(Tile.Direction.Up);
     RecordAndPlay.saveRecording(chapsChallenge);
     RecordAndPlay.loadRecording("testRecording.txt", chapsChallenge);
-    assert chapsChallenge.getPlayer().getLocation().getCol() == t.getCol() &&
-        chapsChallenge.getPlayer().getLocation().getRow() == t.getRow();
+    assert chapsChallenge.getPlayer().getLocation().getCol() == t.getCol()
+        && chapsChallenge.getPlayer().getLocation().getRow() == t.getRow();
     RecordAndPlay.step(chapsChallenge);
-    assert chapsChallenge.getPlayer().getLocation().getCol() == t.getUp().getCol() &&
-        chapsChallenge.getPlayer().getLocation().getRow() == t.getUp().getRow();
+    assert chapsChallenge.getPlayer().getLocation().getCol() == t.getUp().getCol()
+        && chapsChallenge.getPlayer().getLocation().getRow() == t.getUp().getRow();
   }
 
   /**
@@ -82,21 +82,21 @@ public class RecordAndPlayTest {
    */
   @Test
   void playbackSimpleRecording() {
-    Tile t = chapsChallenge.getPlayer().getLocation();
+    final Tile t = chapsChallenge.getPlayer().getLocation();
     RecordAndPlay.newSave(chapsChallenge, "testRecording.txt");
     chapsChallenge.move(Tile.Direction.Up);
     RecordAndPlay.saveRecording(chapsChallenge);
     RecordAndPlay.loadRecording("testRecording.txt", chapsChallenge);
-    assert chapsChallenge.getPlayer().getLocation().getCol() == t.getCol() &&
-        chapsChallenge.getPlayer().getLocation().getRow() == t.getRow();
+    assert chapsChallenge.getPlayer().getLocation().getCol() == t.getCol()
+        && chapsChallenge.getPlayer().getLocation().getRow() == t.getRow();
     RecordAndPlay.run(chapsChallenge);
     try {
       RecordAndPlay.getThread().join();
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
-    assert chapsChallenge.getPlayer().getLocation().getCol() == t.getUp().getCol() &&
-        chapsChallenge.getPlayer().getLocation().getRow() == t.getUp().getRow();
+    assert chapsChallenge.getPlayer().getLocation().getCol() == t.getUp().getCol()
+        && chapsChallenge.getPlayer().getLocation().getRow() == t.getUp().getRow();
   }
 
   /**
@@ -139,7 +139,7 @@ public class RecordAndPlayTest {
    */
   @Test
   void playbackLongRecording() {
-    Tile t = chapsChallenge.getPlayer().getLocation();
+    final Tile t = chapsChallenge.getPlayer().getLocation();
     RecordAndPlay.newSave(chapsChallenge, "testRecording.txt");
     chapsChallenge.move(Tile.Direction.Up);
     chapsChallenge.move(Tile.Direction.Down);
@@ -152,8 +152,8 @@ public class RecordAndPlayTest {
     chapsChallenge.move(Tile.Direction.Up);
     RecordAndPlay.saveRecording(chapsChallenge);
     RecordAndPlay.loadRecording("testRecording.txt", chapsChallenge);
-    assert chapsChallenge.getPlayer().getLocation().getCol() == t.getCol() &&
-        chapsChallenge.getPlayer().getLocation().getRow() == t.getRow();
+    assert chapsChallenge.getPlayer().getLocation().getCol() == t.getCol()
+        && chapsChallenge.getPlayer().getLocation().getRow() == t.getRow();
     RecordAndPlay.setDelay(100);
     RecordAndPlay.run(chapsChallenge);
     try {
@@ -161,8 +161,8 @@ public class RecordAndPlayTest {
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
-    assert chapsChallenge.getPlayer().getLocation().getCol() == t.getUp().getCol() &&
-        chapsChallenge.getPlayer().getLocation().getRow() == t.getUp().getRow();
+    assert chapsChallenge.getPlayer().getLocation().getCol() == t.getUp().getCol()
+        && chapsChallenge.getPlayer().getLocation().getRow() == t.getUp().getRow();
   }
 
   /**

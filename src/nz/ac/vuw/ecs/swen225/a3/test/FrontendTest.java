@@ -19,7 +19,7 @@ import org.junit.jupiter.api.Test;
  * option pane. These pauses the JUnit test suite and
  * result in a Gui hang.
  *
- * Namely:
+ * <p>Namely:
  * GUI.
  * * saveRecording()
  * * loadGame()

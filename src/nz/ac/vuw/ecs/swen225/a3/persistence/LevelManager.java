@@ -24,6 +24,12 @@ public class LevelManager {
   public static int currentLevel = 0;
   static Set<Class> classSet = new HashSet<>();
 
+  /**
+   * For each zip file in the levels/ directory: load the JSON string description of the level, the
+   * classes and the assets.
+   *
+   * @param assetManager the current asset manager.
+   */
   public static void loadLevels(AssetManager assetManager) {
     //Load level description and assets
     File folder = new File("src/levels/");

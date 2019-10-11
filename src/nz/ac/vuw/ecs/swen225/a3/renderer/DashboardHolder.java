@@ -53,7 +53,7 @@ class DashboardHolder extends JPanel {
     refreshDashboard();
   }
 
-  void refreshDashboard(){
+  void refreshDashboard() {
     dashboard.refreshDashboardComponents();
     revalidate();
     repaint();

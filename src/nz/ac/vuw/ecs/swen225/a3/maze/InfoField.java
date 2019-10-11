@@ -21,12 +21,13 @@ public class InfoField extends Tile {
   /**
    * Constructor for InfoField tile.
    */
-  public InfoField(){
+  public InfoField() {
     super(Type.InfoField);
   }
 
   /**
    * Constructor. Sets the isAccessible to true. Sets the information contained in the tile.
+   *
    * @param info string to display.
    */
   public InfoField(String info) {
@@ -50,6 +51,7 @@ public class InfoField extends Tile {
 
   /**
    * Returns the info text.
+   *
    * @return info
    */
   public String getInfo() {

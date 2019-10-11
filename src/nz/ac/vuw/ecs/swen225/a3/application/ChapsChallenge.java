@@ -294,6 +294,7 @@ public class ChapsChallenge {
                 // Tick counter cycles (0, 1)
                 timeCheck = (timeCheck + 1) % fps;
               } catch (InterruptedException e) {
+                System.out.println("Interrupted: " + e);
               }
 
             } else {
@@ -304,6 +305,7 @@ public class ChapsChallenge {
             try {
               Thread.sleep(10);
             } catch (InterruptedException e) {
+              System.out.println("Interrupted: " + e);
             }
           }
         }
@@ -314,7 +316,7 @@ public class ChapsChallenge {
   }
 
   /**
-   * Returns the amount of time left to play
+   * Returns the amount of time left to play.
    *
    * @return the time left to play
    */

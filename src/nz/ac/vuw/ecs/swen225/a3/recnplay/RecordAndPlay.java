@@ -255,6 +255,9 @@ public class RecordAndPlay {
     return isRecording;
   }
 
+  /**
+   * Ends the current recoding.
+   */
   public static void endRecording() {
     isRecording = false;
     isRunning = false;

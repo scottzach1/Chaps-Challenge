@@ -21,6 +21,7 @@ public class Key extends Tile {
   public Key() {
     super(Type.Key);
   }
+
   /**
    * Constructor.
    * Sets the isAccessible to true.

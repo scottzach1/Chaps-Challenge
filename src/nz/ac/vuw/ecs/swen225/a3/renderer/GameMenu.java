@@ -51,9 +51,9 @@ public class GameMenu extends JPanel {
   private SimpleAttributeSet centerAlign;
 
   /**
-   * Constructor for the PauseMenu, by Default it is set to pause
+   * Constructor for the PauseMenu, by Default it is set to pause.
    *
-   * @param chapsChallenge - The chapsChallenge object for the game this object is in
+   * @param chapsChallenge - The chapsChallenge object for the game this object is in.
    */
   GameMenu(ChapsChallenge chapsChallenge) {
     application = chapsChallenge;
@@ -76,13 +76,14 @@ public class GameMenu extends JPanel {
 
     panel = new JPanel();
     panel.setPreferredSize(
-        new Dimension(gui.getScreenWidth() / 4, gui.getScreenHeight() - (gui.getScreenHeight() / 10)));
+        new Dimension(gui.getScreenWidth() / 4, gui.getScreenHeight()
+            - (gui.getScreenHeight() / 10)));
     panel.setBackground(Gui.BACKGROUND_COLOUR);
     panel.setLayout(new GridBagLayout());
   }
 
   /**
-   * Creates the buttons and text necessary for the pause menu
+   * Creates the buttons and text necessary for the pause menu.
    */
   private void createPauseComponents() {
     removeAll();
@@ -112,7 +113,7 @@ public class GameMenu extends JPanel {
   }
 
   /**
-   * Creates the buttons and text necessary for the timeout menu
+   * Creates the buttons and text necessary for the timeout menu.
    */
   private void createOtherComponents() {
     removeAll();
@@ -142,22 +143,26 @@ public class GameMenu extends JPanel {
     // Create the text for the menu
     switch (menuType) {
       case TIMEOUT:
-        textPane = new CustomTextPane("OUT OF TIME", centerAlign, null, buttonForeground, false);
+        textPane = new CustomTextPane("OUT OF TIME", centerAlign,
+            null, buttonForeground, false);
         break;
       case DEATH:
-        textPane = new CustomTextPane("YOU DIED", centerAlign, null, buttonForeground, false);
+        textPane = new CustomTextPane("YOU DIED", centerAlign,
+            null, buttonForeground, false);
         break;
       case WINNER:
-        textPane = new CustomTextPane("YOU WON !!!", centerAlign, null, buttonForeground, false);
+        textPane = new CustomTextPane("YOU WON !!!", centerAlign,
+            null, buttonForeground, false);
         break;
       default:
-        textPane = new CustomTextPane("An Error Occurred", centerAlign, null, buttonForeground, false);
+        textPane = new CustomTextPane("An Error Occurred", centerAlign,
+            null, buttonForeground, false);
         break;
     }
   }
 
   /**
-   * Creates the buttons and text necessary for the timeout menu
+   * Creates the buttons and text necessary for the timeout menu.
    */
   private void createQuitComponents() {
     removeAll();
@@ -217,7 +222,7 @@ public class GameMenu extends JPanel {
 
 
   private void switchMenu() {
-    switch (menuType){
+    switch (menuType) {
       case PAUSE:
         createPauseComponents();
         break;
@@ -261,7 +266,7 @@ public class GameMenu extends JPanel {
 
 
     /**
-     * MenuButton Constructor
+     * MenuButton Constructor.
      *
      * @param name   - Name and text of the button
      * @param action - An ActionListener to perform
