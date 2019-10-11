@@ -1,11 +1,6 @@
 package nz.ac.vuw.ecs.swen225.a3.test;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.stream.Collectors;
-
 import nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge;
-import nz.ac.vuw.ecs.swen225.a3.maze.Mob;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
 import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
 
@@ -179,7 +174,6 @@ public class RecordAndPlayTest {
    */
   @Test
   void loadAllDirections() {
-    Tile t = chapsChallenge.getPlayer().getLocation();
     RecordAndPlay.newSave(chapsChallenge, "testRecording.txt");
     chapsChallenge.move(Tile.Direction.Up);
     chapsChallenge.move(Tile.Direction.Left);

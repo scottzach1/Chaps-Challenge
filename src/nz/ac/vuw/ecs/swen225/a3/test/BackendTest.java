@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -473,7 +472,6 @@ public class BackendTest {
             + "_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|";
 
     setCustomLevel(level, chapsChallenge.getBoard());
-    File save = new File("saveTest.txt");
     JsonReadWrite.saveGameState(chapsChallenge, "saveTest.txt");
     Tile tile = chapsChallenge.getPlayer().getLocation();
 

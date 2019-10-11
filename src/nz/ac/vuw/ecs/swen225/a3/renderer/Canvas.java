@@ -3,7 +3,6 @@ package nz.ac.vuw.ecs.swen225.a3.renderer;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -76,7 +75,7 @@ public class Canvas extends JPanel {
         components.get(i.get()).setIcon(assetManager.getScaledImage(t.getCombinedUrl()));
         i.getAndIncrement();
       } catch (Exception e) {
-        return;
+        e.printStackTrace();
       }
     });
 

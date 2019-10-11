@@ -11,7 +11,6 @@ import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
-import java.io.IOException;
 import java.util.HashSet;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;

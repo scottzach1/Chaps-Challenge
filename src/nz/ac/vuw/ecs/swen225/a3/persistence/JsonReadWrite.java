@@ -33,7 +33,6 @@ import nz.ac.vuw.ecs.swen225.a3.maze.MobManager;
 import nz.ac.vuw.ecs.swen225.a3.maze.Player;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
 import nz.ac.vuw.ecs.swen225.a3.maze.Wall;
-import nz.ac.vuw.ecs.swen225.a3.recnplay.RecordAndPlay;
 
 
 /**
@@ -146,7 +145,16 @@ public class JsonReadWrite {
   public static ChapsChallenge loadGameStateFromFile(String fileName, ChapsChallenge g)
       throws IOException {
     InputStream reader = new FileInputStream(new File(fileName));
-    return loadGameState(new BufferedReader(new InputStreamReader(reader)).readLine(), g);
+    InputStreamReader inputReader = new InputStreamReader(reader);
+    BufferedReader buffReader = new BufferedReader(inputReader);
+    String line = buffReader.readLine();
+    if (line == null) {
+      line = "";
+    }
+    ChapsChallenge game = loadGameState(line, g);
+    inputReader.close();
+    buffReader.close();
+    return game;
   }
 
   /**
@@ -221,7 +229,7 @@ public class JsonReadWrite {
       JsonReader mobJsonReader = Json.createReader(new StringReader(s.getString()));
       JsonObject mob = mobJsonReader.readObject();
       String name = mob.getString("mobName");
-      for (Class classes : LevelManager.classSet) {
+      for (Class<?> classes : LevelManager.classSet) {
         if (classes.getName().equals(name)) {
           try {
             Object o = classes.getDeclaredConstructor().newInstance();
@@ -279,12 +287,12 @@ public class JsonReadWrite {
     // Done to allow dynamic drop in of new tile types
 
     try {
-      Class c = Class.forName("nz.ac.vuw.ecs.swen225.a3.maze." + type);
+      Class<?> c = Class.forName("nz.ac.vuw.ecs.swen225.a3.maze." + type);
       Object o = c.getDeclaredConstructor().newInstance();
       Method m = c.getDeclaredMethod("setTileFromJson", JsonReader.class);
       return (Tile) m.invoke(o, Json.createReader(new StringReader(tile)));
     } catch (ClassNotFoundException e) {
-      for (Class classes : LevelManager.classSet) {
+      for (Class<?> classes : LevelManager.classSet) {
         if (classes.getName().equals(type)) {
           try {
             Object o = classes.getDeclaredConstructor().newInstance();

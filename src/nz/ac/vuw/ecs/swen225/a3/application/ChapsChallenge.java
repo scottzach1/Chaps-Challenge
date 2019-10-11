@@ -2,7 +2,6 @@ package nz.ac.vuw.ecs.swen225.a3.application;
 
 import java.io.File;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 import nz.ac.vuw.ecs.swen225.a3.maze.Board;
 import nz.ac.vuw.ecs.swen225.a3.maze.InfoField;
@@ -30,7 +29,6 @@ public class ChapsChallenge {
   private Player player;
 
   private long totalTime = 100; //100 seconds
-  private long startTime;
   private long timeLeft = totalTime;
   private boolean gamePaused = false;
 
@@ -53,8 +51,6 @@ public class ChapsChallenge {
     board.setup();
     player = new Player(board.getPlayerLocation());
     mobManager = new MobManager(board);
-
-    startTime = System.currentTimeMillis();
 
     // Creates a GUI and gives it a keyListener
     gui = new Gui(this, assetManager);
@@ -141,7 +137,6 @@ public class ChapsChallenge {
    */
   public void pauseGame() {
     gamePaused = true;
-    startTime = System.currentTimeMillis();
     gui.pauseGame();
   }
 
@@ -150,7 +145,6 @@ public class ChapsChallenge {
    */
   public void resumeGame() {
     gamePaused = false;
-    startTime = System.currentTimeMillis();
     gui.resumeGame();
   }
 
@@ -159,7 +153,6 @@ public class ChapsChallenge {
    */
   public void loadGame() {
     gamePaused = true;
-    startTime = System.currentTimeMillis();
     if (gui.loadGame()) {
       try {
         JsonReadWrite.loadGameStateFromFile(loadFile.getAbsolutePath(), this);
@@ -177,7 +170,6 @@ public class ChapsChallenge {
    */
   public void saveGame() {
     gamePaused = true;
-    startTime = System.currentTimeMillis();
     if (gui.saveGame()) {
       JsonReadWrite.saveGameState(this, saveFile.getAbsolutePath());
     }
@@ -250,7 +242,6 @@ public class ChapsChallenge {
    */
   public void exitGame() {
     gamePaused = true;
-    startTime = System.currentTimeMillis();
     gui.setPlayerDead();
     gui.gameOver(MenuType.QUITTER);
   }
@@ -455,7 +446,6 @@ public class ChapsChallenge {
    */
   public void resetLogistics() {
     timeLeft = totalTime;
-    startTime = System.currentTimeMillis();
     player = new Player(board.getPlayerLocation());
     gui.setPlayerAlive();
   }

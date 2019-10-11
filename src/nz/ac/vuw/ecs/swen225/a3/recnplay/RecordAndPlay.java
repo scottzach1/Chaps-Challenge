@@ -142,6 +142,7 @@ public class RecordAndPlay {
       try {
         BufferedReader reader = new BufferedReader(new FileReader(fileName));
         JsonReader jsonReader = Json.createReader(new StringReader(reader.readLine()));
+        reader.close();
         object = jsonReader.readObject();
       } catch (IOException e) {
         System.out.println("Error reading file: " + e);
@@ -216,6 +217,7 @@ public class RecordAndPlay {
         game.update();
       }
     } catch (IndexOutOfBoundsException ignored) {
+      // Swallowed.
     }
   }
 

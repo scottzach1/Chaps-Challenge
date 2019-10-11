@@ -7,12 +7,10 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -22,6 +20,7 @@ public class LevelManager {
 
   private static ArrayList<String> levelDescriptions = new ArrayList<>();
   public static int currentLevel = 0;
+  @SuppressWarnings("rawtypes")
   static Set<Class> classSet = new HashSet<>();
 
   /**
@@ -32,8 +31,14 @@ public class LevelManager {
    */
   public static void loadLevels(AssetManager assetManager) {
     //Load level description and assets
-    File folder = new File("src/levels/");
-    List<File> files = Arrays.asList(Objects.requireNonNull(folder.listFiles()));
+    File[] folder = new File("src/levels/").listFiles();
+    List<File> files = new ArrayList<>();
+    if (folder == null) {
+      return;
+    }
+    for (File file : folder) {
+      files.add(file);
+    }
     Collections.sort(files);
     for (File f : files) {
       try {
@@ -66,8 +71,12 @@ public class LevelManager {
     // Load classes
     try {
 
-      folder = new File("src/levels/");
-      for (File f : Objects.requireNonNull(folder.listFiles())) {
+      folder = new File("src/levels/").listFiles();
+      files.clear();
+      for (File file : files) {
+        files.add(file);
+      }
+      for (File f : files) {
         JarFile jarFile = new JarFile(f);
         Enumeration<JarEntry> e = jarFile.entries();
 
@@ -82,9 +91,10 @@ public class LevelManager {
           // -6 because of .class
           String className = je.getName().substring(0, je.getName().length() - 6);
           className = className.replace('/', '.');
-          Class c = cl.loadClass(className);
+          Class<?> c = cl.loadClass(className);
           classSet.add(c);
         }
+        jarFile.close();
       }
 
     } catch (Exception e) {
