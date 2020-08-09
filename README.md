@@ -11,11 +11,9 @@ The design elements drew heavy inspiration from the online flash game [squaremea
 ## Playing
 
 Start the game by invoking the main method in the application package.
-
 ```
 nz.ac.vuw.ecs.swen225.a3.application.ChapsChallenge.main
 ```
-
 Enable level 2 by dropping the level-2.zip into the src/levels directory.
 All dynamic class loading should be done automatically.
 
